@@ -160,27 +160,93 @@ const messageItem = ({ sender, message, created }) => (
 const state = {
   allBubbles,
   bubble,
-  thread
+  thread,
+  currentView: "bubbleView"
 }
 
 const actions = {
-
+  navigate: destination => state => ({ currentView: destination })
 }
 
 const view = (state, actions) =>
-  h("main", {}, [
+  h("div", { class: "slider " + state.currentView }, [
     h("div", { class: "global-view" }, [
       h("h2", {}, "My bubbles"),
       h("ul", { class: "bubbles" }, state.allBubbles.map(bubbleItem))
     ]),
     h("div", { class: "bubble-view" }, [
-      h("h2", {}, "TEST TITLE"),
+      h("h2", {}, "Bubble view"),
       h("ul", { class: "threads" }, state.bubble.threads.map(threadItem))
     ]),
     h("div", { class: "thread-view" }, [
-      h("h2", {}, "TEST TITLE"),
+      h("h2", {}, "My new car"),
       h("ul", { class: "messages" }, state.thread.messages.map(messageItem))
     ])
   ])
 
-window.main = app(state, actions, view, document.body)
+window.main = app(state, actions, view, document.querySelector("main"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ======================================================================
+// Navigation jumbo, probably needs better integration with hyperapp
+// ======================================================================
+
+var currentView = state.currentView
+
+new Swipe(document.body, function(e, direction) {
+	e.preventDefault()
+  destination = getDestination(direction);
+  if (destination != currentView) {
+    main.navigate(destination)
+    currentView = destination
+    console.log(currentView);
+  }
+});
+
+document.addEventListener('keydown', function(event) {
+  if (event.keyCode == 37 || event.keyCode == 39) {
+    if(event.keyCode == 37) {
+      destination = getDestination("right");
+    } else if(event.keyCode == 39) {
+      destination = getDestination("left");
+    }
+    if (destination != currentView) {
+      main.navigate(destination)
+      currentView = destination
+    }
+  }
+});
+
+// Figure out the wanted view from the swipe direction and current view
+function getDestination(direction) {
+  if (currentView == "bubbleView") {
+    if (direction == "right") {
+      return "globalView"
+    } else if (direction == "left") {
+      return "threadView"
+    }
+  } else if (currentView == "threadView" && direction == "right") {
+    return "bubbleView"
+  } else if (currentView == "globalView" && direction == "left") {
+    return "bubbleView"
+  }
+  return currentView
+}
