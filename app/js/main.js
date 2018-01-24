@@ -3,125 +3,6 @@ const { h, app } = hyperapp
 
 
 
-// Test data - user account
-var user = {
-  username: "loteoo",
-  created: "2018-01-23 21:38:09"
-}
-
-
-// Test data - global view (bubble list)
-var allBubbles = [
-  {
-    id: "csgo",
-    name: "CS:GO",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    created: "2018-01-23 21:38:09"
-  },
-  {
-    id: "potatoes",
-    name: "Potato group",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    created: "2018-01-23 21:38:09"
-  },
-  {
-    id: "webdev",
-    name: "Web developpment",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    created: "2018-01-23 21:38:09"
-  },
-  {
-    id: "testory",
-    name: "Test bubble",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    created: "2018-01-23 21:38:09"
-  }
-]
-
-
-
-// Test data - bubble view (thread list)
-var bubble = {
-  id: "testory",
-  name: "Test bubble",
-  desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  created: "2018-01-23 21:38:09",
-  threads: [
-    {
-      id: 232,
-      name: "My new car",
-      score: 21,
-      created: "2018-01-23 21:38:09",
-      content: {
-        type: "image",
-        url: "https://i.redd.it/mcljmha8ufb01.jpg"
-      }
-    },
-    {
-      id: 232,
-      name: "Hey watsup guys its the boi here",
-      score: 25,
-      created: "2018-01-23 21:38:09",
-      content: {
-        type: "text",
-        text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-      }
-    },
-    {
-      id: 232,
-      name: "Some youtube video",
-      score: 12,
-      created: "2018-01-23 21:38:09",
-      content: {
-        type: "youtube",
-        url: "https://www.youtube.com/watch?v=3BJU2drrtCM"
-      }
-    }
-  ]
-}
-
-
-
-// Test data - thread view (message list)
-var thread = {
-  id: 232,
-  name: "Hey watsup guys its the boi here",
-  score: 25,
-  content: {
-    type: "text",
-    text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  },
-  messages: [
-    {
-      sender: "loteoo",
-      message: "Test message hello hello",
-      created: "2018-01-23 21:38:09"
-    },
-    {
-      sender: "asdasd",
-      message: "message das das das dasd asd  hello",
-      created: "2018-01-23 21:38:09"
-    },
-    {
-      sender: "tototo",
-      message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-      created: "2018-01-23 21:38:09"
-    }
-  ]
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ==============
 // Components
 // ==============
@@ -130,24 +11,29 @@ const bubbleItem = ({ id, name, desc, created }) => (
   h("li", { created: created }, name)
 )
 
-const threadItem = ({ id, name, score, content, created }) => (
-  h("li", { created: created }, name)
-)
+const threadItem = ({ id, name, score, type, content, created }) => {
+  if (type == "text") {
+    content = [
+      h("p", {}, name),
+      h("h6", {}, content.text)
+    ]
+  } else if (type == "image") {
+    content = [
+      h("div", { class: "img", style: { "background-image": "url('"+content.url+"')" } }),
+      h("p", {}, name)
+    ]
+  } else if (type == "youtube") {
+    content = [
+      h("div", { style: "background-image: url('"+content.youtubeId+"')" }),
+      h("p", {}, name)
+    ]
+  }
+  return h("li", { class: type, "data-created": created }, content)
+}
 
 const messageItem = ({ sender, message, created }) => (
-  h("li", { created: created }, message)
+  h("li", { created: created, sender: sender }, message)
 )
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -158,6 +44,7 @@ const messageItem = ({ sender, message, created }) => (
 
 
 const state = {
+  user,
   allBubbles,
   bubble,
   thread,
@@ -171,15 +58,15 @@ const actions = {
 const view = (state, actions) =>
   h("div", { class: "slider " + state.currentView }, [
     h("div", { class: "global-view" }, [
-      h("h2", {}, "My bubbles"),
+      h("h2", {}, state.user.username),
       h("ul", { class: "bubbles" }, state.allBubbles.map(bubbleItem))
     ]),
     h("div", { class: "bubble-view" }, [
-      h("h2", {}, "Bubble view"),
+      h("h2", {}, state.bubble.name),
       h("ul", { class: "threads" }, state.bubble.threads.map(threadItem))
     ]),
     h("div", { class: "thread-view" }, [
-      h("h2", {}, "My new car"),
+      h("h2", {}, state.thread.name),
       h("ul", { class: "messages" }, state.thread.messages.map(messageItem))
     ])
   ])
@@ -217,7 +104,6 @@ new Swipe(document.body, function(e, direction) {
   if (destination != currentView) {
     main.navigate(destination)
     currentView = destination
-    console.log(currentView);
   }
 });
 
