@@ -13,22 +13,20 @@ const threadItem = ({ id, name, score, type, content, created, author }) => {
   // let timeString = new Date(created).toLocaleTimeString()
   let timeString = new Date(created).toLocaleString()
   if (type == "text") {
-    content = [
-      h("div", { class: "thread-header" }, name),
-      h("h6", {}, content.text)
-    ]
+    contentView = h("div", { class: "text" }, content.text)
   } else if (type == "image") {
-    content = [
-      h("div", { class: "thread-header" }, name),
-      h("div", { class: "img", style: { "background-image": "url('"+content.url+"')" } })
-    ]
+    contentView = h("div", { class: "img", style: { "background-image": "url('"+content.url+"')" } })
   } else if (type == "youtube") {
-    content = [
-      h("div", { class: "thread-header" }, name),
-      h("div", { style: "background-image: url('"+content.youtubeId+"')" })
-    ]
+    contentView = h("div", { class: "thumbnail", style: "background-image: url('"+content.youtubeId+"')" })
   }
-  return h("li", { class: type, "data-created": timeString }, content)
+  return h("li", { class: type, "data-created": timeString }, [
+    h("div", { class: "thread-header" }, [
+      h("h4", {}, name),
+      h("p", {}, "by " + author + " on " + state.bubble.id + " at " + timeString)
+    ]),
+    contentView,
+    h("div", { class: "thread-footer" }, name)
+  ])
 }
 
 const messageItem = ({ sender, message, created }) => {

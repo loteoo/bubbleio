@@ -412,10 +412,23 @@ footer {
 	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
 }
 
-.bubble-view .threads li h6,
-.bubble-view .threads li p {
-	margin: 0.5em;
+
+.bubble-view .threads li .thread-header {
+	padding: 0.5rem;
 }
+.bubble-view .threads li .thread-header h4 {
+	margin: 0;
+}
+.bubble-view .threads li .thread-header p {
+	margin: 0;
+	font-size: 0.8em;
+}
+
+
+.bubble-view .threads li .thread-footer {
+	padding: 0.5rem;
+}
+
 
 
 
@@ -428,6 +441,10 @@ footer {
 	background-repeat: no-repeat;
 }
 .bubble-view .threads li.image p {
+}
+
+.bubble-view .threads li.text {
+	padding: 0.5em;
 }
 
 
