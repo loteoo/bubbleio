@@ -420,6 +420,7 @@ footer {
 	margin: 0;
 }
 .bubble-view .threads li .thread-header p {
+	opacity: 0.5;
 	margin: 0;
 	font-size: 0.8em;
 }
@@ -443,8 +444,8 @@ footer {
 .bubble-view .threads li.image p {
 }
 
-.bubble-view .threads li.text {
-	padding: 0.5em;
+.bubble-view .threads li .text {
+	padding: 0.5rem;
 }
 
 
