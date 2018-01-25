@@ -7,9 +7,7 @@ const { h, app } = hyperapp
 // Components
 // ==============
 
-const bubbleItem = ({ id, name, desc, created }) => (
-  h("li", { created: created }, name)
-)
+const bubbleItem = ({ id, name, desc, created }) => h("li", { "data-created": created }, name)
 
 const threadItem = ({ id, name, score, type, content, created }) => {
   if (type == "text") {
@@ -31,12 +29,22 @@ const threadItem = ({ id, name, score, type, content, created }) => {
   return h("li", { class: type, "data-created": created }, content)
 }
 
-const messageItem = ({ sender, message, created }) => (
-  h("li", { created: created, sender: sender }, message)
+const messageItem = ({ sender, message, created }) => {
+  if (sender == state.user.username) {
+    provenance = "sent"
+  } else {
+    provenance = "received"
+  }
+  return h("li", { class: provenance }, message)
+}
+
+
+const keyboard = (state, actions) => (
+  h("form", { class: "keyboard", onsubmit: (e) => { actions.keyboardSubmit(e); return false } }, [
+    h("input", { type: "text", value: state.inputVal }),
+    h("button", { type: "submit" })
+  ])
 )
-
-
-
 
 
 
@@ -48,26 +56,60 @@ const state = {
   allBubbles,
   bubble,
   thread,
-  currentView: "bubbleView"
+  currentView: "bubbleView",
+  inputVal: ""
 }
 
 const actions = {
-  navigate: destination => state => ({ currentView: destination })
+  navigate: destination => state => ({ currentView: destination }),
+  keyboardSubmit: e => state => {
+    if (e.target[0].value) {
+      if (state.currentView == "bubbleView") {
+        // also push to DB
+        state.bubble.threads.push({
+          id: 232,
+          name: e.target[0].value,
+          score: 21,
+          created: "2018-01-23 21:38:09",
+          type: "text",
+          content: {
+            text: e.target[0].value
+          }
+        })
+      } else {
+        // also push to DB
+        state.thread.messages.push({
+          sender: state.user.username,
+          message: e.target[0].value,
+          created: "2018-01-23 21:38:09"
+        })
+      }
+    }
+    return true
+  }
 }
 
 const view = (state, actions) =>
   h("div", { class: "slider " + state.currentView }, [
     h("div", { class: "global-view" }, [
-      h("h2", {}, state.user.username),
-      h("ul", { class: "bubbles" }, state.allBubbles.map(bubbleItem))
+      h("div", { class: "frame" }, [
+        h("h2", {}, state.user.username),
+        h("ul", { class: "bubbles" }, state.allBubbles.map(bubbleItem))
+      ])
     ]),
     h("div", { class: "bubble-view" }, [
-      h("h2", {}, state.bubble.name),
-      h("ul", { class: "threads" }, state.bubble.threads.map(threadItem))
+      h("div", { class: "frame" }, [
+        h("h2", {}, state.bubble.name),
+        h("ul", { class: "threads" }, state.bubble.threads.map(threadItem)),
+        keyboard(state, actions)
+      ])
     ]),
     h("div", { class: "thread-view" }, [
-      h("h2", {}, state.thread.name),
-      h("ul", { class: "messages" }, state.thread.messages.map(messageItem))
+      h("div", { class: "frame" }, [
+        h("h2", {}, state.thread.name),
+        h("ul", { class: "messages" }, state.thread.messages.map(messageItem)),
+        keyboard(state, actions)
+      ])
     ])
   ])
 

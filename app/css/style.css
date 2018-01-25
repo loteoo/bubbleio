@@ -195,6 +195,8 @@ button,
 input[type="button"],
 input[type="submit"] {
 	cursor: pointer;
+	background: none;
+	border: none;
 }
 
 button:focus,
@@ -232,7 +234,10 @@ label {
 
 input,
 textarea {
-
+	border: 0;
+	width: 100%;
+	padding: 0.5em 1em;
+	line-height:  2;
 }
 
 input:focus,
@@ -336,6 +341,14 @@ footer {
 }
 
 
+.slider>div>.frame {
+	height: 100vh;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	position: relative;
+}
+
+
 
 
 
@@ -398,6 +411,15 @@ footer {
 	border-radius: .625rem;
 	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
 }
+
+.bubble-view .threads li h6,
+.bubble-view .threads li p {
+	margin: 0.5em;
+}
+
+
+
+
 .bubble-view .threads li.image .img {
 	height: 6em;
 	width: 100%;
@@ -405,7 +427,8 @@ footer {
 	background-size: cover;
 	background-repeat: no-repeat;
 }
-
+.bubble-view .threads li.image p {
+}
 
 
 
@@ -429,9 +452,72 @@ footer {
 	right: -100%;
 }
 
+.thread-view h2 {
+	padding: 1em 2em;
+	margin: 0;
+}
+
+.thread-view .messages {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.thread-view .messages li {
+	display: block;
+  border-radius: 1.5em;
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  max-width: 66%;
+}
+.thread-view .messages li.received {
+  background-color: #d9d9d9;
+  color: rgba(0, 0, 0, 1);
+	align-self: flex-start;
+}
+.thread-view .messages li.sent {
+  background-color: #007bff;
+  color: rgba(255, 255, 255, 1);
+	align-self: flex-end;
+}
 
 
 
+
+
+
+
+
+
+
+/*------------------------------------*\
+    Keyboard
+\*------------------------------------*/
+
+.keyboard {
+	position: relative;
+	border-top: 1px solid #e9ecef;
+	display: flex;
+	justify-content: space-between;
+	height: 5rem;
+}
+.keyboard input {
+  padding: 0.5em 3em 0.5em 1em;
+}
+.keyboard button {
+	position: absolute;
+	top: 0.5rem;
+	bottom: 0.5rem;
+	right: 0.5rem;
+	width: 4rem;
+	height: 4rem;
+	border-radius: 100%;
+	background-color: #007bff;
+	background-image: url(../img/arrow-right.svg);
+	background-position: 58% 50%;
+	background-size: 50%;
+	background-repeat: no-repeat;
+}
 
 
 
