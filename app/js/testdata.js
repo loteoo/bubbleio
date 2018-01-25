@@ -48,6 +48,7 @@ var bubble = {
       name: "My new car",
       score: 21,
       created: "2018-01-23 21:38:09",
+      author: "pkasdasdl",
       type: "image",
       content: {
         url: "https://i.redd.it/mcljmha8ufb01.jpg"
@@ -58,6 +59,7 @@ var bubble = {
       name: "Hey watsup guys its the boi here",
       score: 25,
       created: "2018-01-23 21:38:09",
+      author: "ahkdklas",
       type: "text",
       content: {
         text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -68,6 +70,7 @@ var bubble = {
       name: "Some youtube video",
       score: 12,
       created: "2018-01-23 21:38:09",
+      author: "fulsfojisdf",
       type: "youtube",
       content: {
         youtubeId: "3BJU2drrtCM"

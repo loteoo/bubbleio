@@ -7,26 +7,28 @@ const { h, app } = hyperapp
 // Components
 // ==============
 
-const bubbleItem = ({ id, name, desc, created }) => h("li", { "data-created": created }, name)
+const bubbleItem = ({ id, name, desc }) => h("li", {}, name)
 
-const threadItem = ({ id, name, score, type, content, created }) => {
+const threadItem = ({ id, name, score, type, content, created, author }) => {
+  // let timeString = new Date(created).toLocaleTimeString()
+  let timeString = new Date(created).toLocaleString()
   if (type == "text") {
     content = [
-      h("p", {}, name),
+      h("div", { class: "thread-header" }, name),
       h("h6", {}, content.text)
     ]
   } else if (type == "image") {
     content = [
-      h("div", { class: "img", style: { "background-image": "url('"+content.url+"')" } }),
-      h("p", {}, name)
+      h("div", { class: "thread-header" }, name),
+      h("div", { class: "img", style: { "background-image": "url('"+content.url+"')" } })
     ]
   } else if (type == "youtube") {
     content = [
-      h("div", { style: "background-image: url('"+content.youtubeId+"')" }),
-      h("p", {}, name)
+      h("div", { class: "thread-header" }, name),
+      h("div", { style: "background-image: url('"+content.youtubeId+"')" })
     ]
   }
-  return h("li", { class: type, "data-created": created }, content)
+  return h("li", { class: type, "data-created": timeString }, content)
 }
 
 const messageItem = ({ sender, message, created }) => {
@@ -64,24 +66,25 @@ const actions = {
   navigate: destination => state => ({ currentView: destination }),
   keyboardSubmit: e => state => {
     if (e.target[0].value) {
+      let timestamp = new Date().getTime(); // Milliseconds, not seconds, since epoch
       if (state.currentView == "bubbleView") {
-        // also push to DB
+        // Create thread and push to DB
         state.bubble.threads.push({
           id: 232,
           name: e.target[0].value,
           score: 21,
-          created: "2018-01-23 21:38:09",
+          created: timestamp,
           type: "text",
           content: {
             text: e.target[0].value
           }
         })
       } else {
-        // also push to DB
+        // Send message and push to DB
         state.thread.messages.push({
           sender: state.user.username,
           message: e.target[0].value,
-          created: "2018-01-23 21:38:09"
+          created: timestamp
         })
       }
     }
