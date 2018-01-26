@@ -428,14 +428,24 @@ footer {
 
 .bubble-view .threads li .thread-footer {
 	padding: 0.5rem;
+	display: flex;
+	justify-content:  flex-end;
+}
+.bubble-view .threads li .thread-footer .upvote {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5em;
 }
 
 
 
 
 
+
 .bubble-view .threads li.image .img {
-	height: 6em;
+	height: 10em;
 	width: 100%;
 	background-position: center;
 	background-size: cover;

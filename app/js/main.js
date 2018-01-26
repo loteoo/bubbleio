@@ -10,9 +10,10 @@ const { h, app } = hyperapp
 const bubbleItem = ({ id, name, desc }) => h("li", {}, name)
 
 const threadItem = ({ id, name, score, type, content, created, author }) => {
-  // let timeString = new Date(created).toLocaleTimeString()
   let timeString = new Date(created).toLocaleString()
-  if (type == "text") {
+  if (type == "message") {
+    contentView = null
+  } else if (type == "text") {
     contentView = h("div", { class: "text" }, content.text)
   } else if (type == "image") {
     contentView = h("div", { class: "img", style: { "background-image": "url('"+content.url+"')" } })
@@ -25,7 +26,9 @@ const threadItem = ({ id, name, score, type, content, created, author }) => {
       h("p", {}, "by " + author + " on " + state.bubble.id + " at " + timeString)
     ]),
     contentView,
-    h("div", { class: "thread-footer" }, name)
+    h("div", { class: "thread-footer" }, [
+      h("button", { class: "upvote", onclick: () => main.upvote(id) }, score)
+    ])
   ])
 }
 
@@ -39,8 +42,8 @@ const messageItem = ({ sender, message, created }) => {
 }
 
 
-const keyboard = (state, actions) => (
-  h("form", { class: "keyboard", onsubmit: (e) => { actions.keyboardSubmit(e); return false } }, [
+const keyboard = (state) => (
+  h("form", { class: "keyboard", onsubmit: (e) => { main.keyboardSubmit(e); return false } }, [
     h("input", { type: "text", value: state.inputVal }),
     h("button", { type: "submit" })
   ])
@@ -62,20 +65,21 @@ const state = {
 
 const actions = {
   navigate: destination => state => ({ currentView: destination }),
+  upvote: threadId => state => {
+    state.bubble.threads.find(thread => thread.id === threadId).score++
+    return true
+  },
   keyboardSubmit: e => state => {
     if (e.target[0].value) {
       let timestamp = new Date().getTime(); // Milliseconds, not seconds, since epoch
       if (state.currentView == "bubbleView") {
         // Create thread and push to DB
         state.bubble.threads.push({
-          id: 232,
+          id: Math.floor(Math.random()*100),
           name: e.target[0].value,
-          score: 21,
+          score: 1,
           created: timestamp,
-          type: "text",
-          content: {
-            text: e.target[0].value
-          }
+          type: "message"
         })
       } else {
         // Send message and push to DB
@@ -102,14 +106,14 @@ const view = (state, actions) =>
       h("div", { class: "frame" }, [
         h("h2", {}, state.bubble.name),
         h("ul", { class: "threads" }, state.bubble.threads.map(threadItem)),
-        keyboard(state, actions)
+        keyboard(state)
       ])
     ]),
     h("div", { class: "thread-view" }, [
       h("div", { class: "frame" }, [
         h("h2", {}, state.thread.name),
         h("ul", { class: "messages" }, state.thread.messages.map(messageItem)),
-        keyboard(state, actions)
+        keyboard(state)
       ])
     ])
   ])
