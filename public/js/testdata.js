@@ -1,7 +1,7 @@
 
 // Test data - user account
 var user = {
-  username: "loteoo",
+  usertitle: "loteoo",
   created: "2018-01-23 21:38:09"
 }
 
@@ -9,26 +9,30 @@ var user = {
 // Test data - global view (bubble list)
 var allBubbles = [
   {
-    id: "csgo",
-    name: "CS:GO",
+    id: 1,
+    name: "csgo",
+    title: "CS:GO",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     created: "2018-01-23 21:38:09"
   },
   {
-    id: "potatoes",
-    name: "Potato group",
+    id: 2,
+    name: "potatoes",
+    title: "Potato group",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     created: "2018-01-23 21:38:09"
   },
   {
-    id: "webdev",
-    name: "Web developpment",
+    id: 3,
+    name: "webdev",
+    title: "Web developpment",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     created: "2018-01-23 21:38:09"
   },
   {
-    id: "testory",
-    name: "Test bubble",
+    id: 4,
+    name: "testory",
+    title: "Test bubble",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     created: "2018-01-23 21:38:09"
   }
@@ -38,14 +42,15 @@ var allBubbles = [
 
 // Test data - bubble view (thread list)
 var bubble = {
-  id: "testory",
-  name: "Test bubble",
+  id: 5,
+  name: "testory",
+  title: "Test bubble",
   desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   created: "2018-01-23 21:38:09",
   threads: [
     {
       id: 232,
-      name: "My new car",
+      title: "My new car",
       score: 21,
       created: "2018-01-23 21:38:09",
       author: "pkasdasdl",
@@ -56,7 +61,7 @@ var bubble = {
     },
     {
       id: 234,
-      name: "Hey watsup guys its the boi here",
+      title: "Hey watsup guys its the boi here",
       score: 25,
       created: "2018-01-23 21:38:09",
       author: "ahkdklas",
@@ -67,7 +72,7 @@ var bubble = {
     },
     {
       id: 236,
-      name: "Some youtube video",
+      title: "Some youtube video",
       score: 12,
       created: "2018-01-23 21:38:09",
       author: "fulsfojisdf",
@@ -84,7 +89,7 @@ var bubble = {
 // Test data - thread view (message list)
 var thread = {
   id: 232,
-  name: "Hey watsup guys its the boi here",
+  title: "Hey watsup guys its the boi here",
   score: 25,
   type: "text",
   content: {

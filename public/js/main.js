@@ -7,9 +7,9 @@ const { h, app } = hyperapp
 // Components
 // ==============
 
-const bubbleItem = ({ id, name, desc }) => h("li", {}, name)
+const bubbleItem = ({ id, title, desc }) => h("li", {}, title)
 
-const threadItem = ({ id, name, score, type, content, created, author }) => {
+const threadItem = ({ id, title, score, type, content, created, author }) => {
   let timeString = new Date(created).toLocaleString()
   if (type == "message") {
     contentView = null
@@ -22,7 +22,7 @@ const threadItem = ({ id, name, score, type, content, created, author }) => {
   }
   return h("li", { class: type, onclick: (e) => { main.navigate("threadView") }, touchstart: (e) => {console.log(e);} }, [
     h("div", { class: "thread-header" }, [
-      h("h4", {}, name),
+      h("h4", {}, title),
       h("p", {}, "by " + author + " on " + state.bubble.id + " at " + timeString)
     ]),
     contentView,
@@ -89,7 +89,7 @@ const actions = {
         // Create thread and push to DB
         state.bubble.threads.push({
           id: Math.floor(Math.random()*100),
-          name: e.target[0].value,
+          title: e.target[0].value,
           score: 1,
           created: timestamp,
           type: "message"
@@ -117,7 +117,7 @@ const view = (state, actions) =>
     ]),
     h("div", { class: "bubble-view" }, [
       h("div", { class: "frame" }, [
-        h("h2", {}, state.bubble.name),
+        h("h2", {}, state.bubble.title),
         h("ul", { class: "threads" }, state.bubble.threads.map(threadItem)),
         keyboard(state)
       ])
@@ -126,7 +126,7 @@ const view = (state, actions) =>
       h("div", { class: "frame" }, [
         h("div", { class: "thread-header" }, [
           h("div", { class: "back", onclick: () => main.navigate("bubbleView") }),
-          h("h2", {}, state.thread.name)
+          h("h2", {}, state.thread.title)
         ]),
         h("ul", { class: "messages" }, state.thread.messages.map(messageItem)),
         keyboard(state)
