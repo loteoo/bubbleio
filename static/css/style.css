@@ -83,7 +83,7 @@ html {
 body {
 	font-family: 'CircularStd-Book', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 1.8rem;
-	color: #444;
+	color: #757575;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -95,7 +95,7 @@ img {
 }
 
 main {
-	max-width: 1280px;
+	max-width: 600px;
   width: 100vw;
   height: 100vh;
   margin: 0 auto;
@@ -532,7 +532,7 @@ footer {
 .keyboard input {
   padding: 0.5em 3em 0.5em 1em;
 }
-.keyboard button {
+.keyboard .submit {
 	position: absolute;
 	top: 0.5rem;
 	bottom: 0.5rem;
@@ -546,7 +546,64 @@ footer {
 	background-size: 50%;
 	background-repeat: no-repeat;
 }
+.keyboard .expander {
+	position: absolute;
+	top: 0.5rem;
+	bottom: 0.5rem;
+	left: 0.5rem;
+	width: 4rem;
+	height: 4rem;
+	background-color: #cccccc;
+	/* background-image: url(../img/arrow-right.svg); */
+	cursor: pointer;
+	background-position: 58% 50%;
+	background-size: 50%;
+	background-repeat: no-repeat;
+}
+.keyboard .expander .text,
+.keyboard .expander .link,
+.keyboard .expander .picture {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s;
+	position: absolute;
+	left: 0;
+	right: 0;
+	background-color: #cccccc;
+	height: 100%;
+}
+.keyboard .expander .text {
+	bottom: calc(100% + 1em);
+	transition-delay: 100ms;
+}
+.keyboard .expander .link {
+	bottom: calc(200% + 2em);
+	transition-delay: 50ms;
+}
+.keyboard .expander .picture {
+	bottom: calc(300% + 3em);
+	transition-delay: 0ms;
+}
 
+
+/* Expanded  */
+
+
+.keyboard .expander.opened .text,
+.keyboard .expander.opened .link,
+.keyboard .expander.opened .picture {
+	opacity: 1;
+	pointer-events: all;
+}
+.keyboard .expander.opened .text {
+	transition-delay: 0ms;
+}
+.keyboard .expander.opened .link {
+	transition-delay: 50ms;
+}
+.keyboard .expander.opened .picture {
+	transition-delay: 100ms;
+}
 
 
 
