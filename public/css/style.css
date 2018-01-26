@@ -439,7 +439,7 @@ footer {
 
 
 
-
+/* Image thread */
 .bubble-view .threads li.image .img {
 	height: 10em;
 	width: 100%;
@@ -447,15 +447,25 @@ footer {
 	background-size: cover;
 	background-repeat: no-repeat;
 }
-.bubble-view .threads li.image p {
+
+
+
+
+
+/* Text thread */
+.bubble-view .threads li.text .text {
+	padding: 1.5rem;
 }
 
 
 
 
-/* Message post */
-.bubble-view .threads li .text {
-	padding: 1.5rem;
+
+/* message thread */
+.bubble-view .threads li.message {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 
