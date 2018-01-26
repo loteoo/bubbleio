@@ -20,14 +20,14 @@ const threadItem = ({ id, name, score, type, content, created, author }) => {
   } else if (type == "youtube") {
     contentView = h("div", { class: "thumbnail", style: "background-image: url('"+content.youtubeId+"')" })
   }
-  return h("li", { class: type, onclick: (e) => { main.navigate("threadView") } }, [
+  return h("li", { class: type, onclick: (e) => { main.navigate("threadView") }, touchstart: (e) => {console.log(e);} }, [
     h("div", { class: "thread-header" }, [
       h("h4", {}, name),
       h("p", {}, "by " + author + " on " + state.bubble.id + " at " + timeString)
     ]),
     contentView,
     h("div", { class: "thread-footer" }, [
-      h("button", { class: "upvote", onclick: (e) => { e.stopPropagation; main.upvote(id); } }, score)
+      h("button", { class: "upvote", onclick: (e) => { e.stopPropagation(); main.upvote(id); } }, score)
     ])
   ])
 }
@@ -45,9 +45,9 @@ const messageItem = ({ sender, message, created }) => {
 const keyboard = (state) => (
   h("form", { class: "keyboard", onsubmit: (e) => { main.keyboardSubmit(e); return false } }, [
     h("div", { class: "expander " + state.keyboardStatus, onclick: () => main.expandKeyboard(state.keyboardStatus) }, [
-      h("div", { class: "text", onclick: (e) => { e.stopPropagation } }),
-      h("div", { class: "link", onclick: (e) => { e.stopPropagation } }),
-      h("div", { class: "picture", onclick: (e) => { e.stopPropagation } })
+      h("div", { class: "text", onclick: (e) => { e.stopPropagation() } }, "txt"),
+      h("div", { class: "link", onclick: (e) => { e.stopPropagation() } }, "url"),
+      h("div", { class: "picture", onclick: (e) => { e.stopPropagation() } }, "pic")
     ]),
     h("input", { type: "text", value: state.keyboardVal }),
     h("button", { class: "submit", type: "submit" })
@@ -124,7 +124,10 @@ const view = (state, actions) =>
     ]),
     h("div", { class: "thread-view" }, [
       h("div", { class: "frame" }, [
-        h("h2", {}, state.thread.name),
+        h("div", { class: "thread-header" }, [
+          h("div", { class: "back", onclick: () => main.navigate("bubbleView") }),
+          h("h2", {}, state.thread.name)
+        ]),
         h("ul", { class: "messages" }, state.thread.messages.map(messageItem)),
         keyboard(state)
       ])
@@ -157,15 +160,6 @@ window.main = app(state, actions, view, document.querySelector("main"));
 // ======================================================================
 
 var currentView = state.currentView
-
-new Swipe(document.body, function(e, direction) {
-	e.preventDefault()
-  destination = getDestination(direction);
-  if (destination != currentView) {
-    main.navigate(destination)
-    currentView = destination
-  }
-});
 
 document.addEventListener('keydown', function(event) {
   if (event.keyCode == 37 || event.keyCode == 39) {

@@ -404,17 +404,14 @@ footer {
 }
 
 .bubble-view .threads li {
-	margin: 0 1em 1em 1em;
-	overflow: hidden;
+	margin: 0 0 1em 0;
 	background-color: #fff;
-	border: none;
-	border-radius: .625rem;
 	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
 }
 
 
 .bubble-view .threads li .thread-header {
-	padding: 0.5rem;
+	padding: 1.5rem;
 }
 .bubble-view .threads li .thread-header h4 {
 	margin: 0;
@@ -427,7 +424,6 @@ footer {
 
 
 .bubble-view .threads li .thread-footer {
-	padding: 0.5rem;
 	display: flex;
 	justify-content:  flex-end;
 }
@@ -436,7 +432,7 @@ footer {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0.5em;
+	padding: 1em 1.5em;
 }
 
 
@@ -454,8 +450,12 @@ footer {
 .bubble-view .threads li.image p {
 }
 
+
+
+
+/* Message post */
 .bubble-view .threads li .text {
-	padding: 0.5rem;
+	padding: 1.5rem;
 }
 
 
@@ -480,8 +480,19 @@ footer {
 	right: -100%;
 }
 
-.thread-view h2 {
-	padding: 1em 2em;
+.thread-view .thread-header {
+	padding: 1em;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+.thread-view .thread-header .back {
+	width: 2em;
+	height: 2em;
+	margin-right: 1em;
+	background-color: #ccc;
+}
+.thread-view .thread-header h2 {
 	margin: 0;
 }
 
@@ -530,7 +541,7 @@ footer {
 	height: 5rem;
 }
 .keyboard input {
-  padding: 0.5em 3em 0.5em 1em;
+  padding: 0.5em 3em;
 }
 .keyboard .submit {
 	position: absolute;
@@ -571,6 +582,9 @@ footer {
 	right: 0;
 	background-color: #cccccc;
 	height: 100%;
+	display:  flex;
+	align-items:  center;
+	justify-content:  center;
 }
 .keyboard .expander .text {
 	bottom: calc(100% + 1em);
