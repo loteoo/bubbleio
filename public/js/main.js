@@ -7,6 +7,8 @@ const { h, app } = hyperapp
 
 
 
+// TODO: Split component, state and actions in different files and use webpack or an other bundler
+
 // ==============
 // Components
 // ==============
@@ -210,6 +212,8 @@ const actions = {
     console.log(thread);
     let bubble = state.bubbles.find(bubble => bubble.name === thread.bubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
     bubble.threads.push(thread.thread);
+
+    // TODO Threads should be re-ordered by our score algorithm
     return true
   }
 }
@@ -267,7 +271,7 @@ socket.on('new message', function(message) {
 
 
 // ======================================================================
-// Navigation jumbo, probably needs better integration with hyperapp
+// TODO: Navigation jumbo, probably needs better integration with hyperapp
 // ======================================================================
 
 var currentView = state.currentView

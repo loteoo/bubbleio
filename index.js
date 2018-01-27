@@ -37,6 +37,8 @@ io.on('connection', function (socket) {
   // Pass all received thread to all clients
   socket.on('new thread', function (data) {
 
+
+
     console.log(data);
 
     // TODO: only emit thread to clients that have the bubble opened and visible
