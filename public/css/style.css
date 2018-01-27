@@ -197,6 +197,9 @@ input[type="submit"] {
 	cursor: pointer;
 	background: none;
 	border: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 button:focus,
@@ -439,14 +442,19 @@ footer {
 
 .bubble-view .threads li .thread-footer {
 	display: flex;
-	justify-content:  flex-end;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 1.5rem;
+}
+.bubble-view .threads li .thread-footer .info {
+	font-size: 0.8em;
 }
 .bubble-view .threads li .thread-footer .upvote {
 	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 1em 1.5em;
+	padding: 1rem;
 }
 
 
@@ -455,7 +463,7 @@ footer {
 
 /* Image thread */
 .bubble-view .threads li.image .img {
-	height: 10em;
+	height: 24rem;
 	width: 100%;
 	background-position: center;
 	background-size: cover;

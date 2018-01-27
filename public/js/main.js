@@ -7,7 +7,7 @@ const { h, app } = hyperapp
 // Components
 // ==============
 
-const bubbleItem = ({ id, title, desc }) => h("li", { onclick: () => main.navigate("bubbleView") }, title)
+const bubbleItem = ({ id, name, title, desc }) => h("li", { onclick: () => main.navigate({destination: "bubbleView", bubbleName: name}) }, title)
 
 
 
@@ -15,7 +15,7 @@ const bubbleViewComponent = (state, actions, bubble) => {
   return h("div", { class: "bubble-view" }, [
     h("div", { class: "frame" }, [
       h("div", { class: "bubble-header" }, [
-        h("div", { class: "back", onclick: () => actions.navigate("globalView") }),
+        h("div", { class: "back", onclick: () => actions.navigate({destination: "globalView"}) }),
         h("h2", {}, bubble.title)
       ]),
       h("ul", { class: "threads" }, bubble.threads.map(threadItem, bubble)),
@@ -37,13 +37,14 @@ const threadItem = (thread, bubble) => {
   } else if (thread.type == "youtube") {
     contentView = h("div", { class: "thumbnail", style: "background-image: url('"+thread.content.youtubeId+"')" })
   }
-  return h("li", { class: thread.type, onclick: (e) => { main.navigate("threadView") }, touchstart: (e) => {console.log(e);} }, [
+  return h("li", { class: thread.type, onclick: (e) => { main.navigate({destination: "threadView", threadId: thread.id}) }, touchstart: (e) => {console.log(e);} }, [
     h("div", { class: "thread-header" }, [
       h("h4", {}, thread.title),
       h("p", {}, "by " + thread.author + " on " + bubble.name + " at " + timeString)
     ]),
     contentView,
     h("div", { class: "thread-footer" }, [
+      h("div", { class: "info" }, 8 + " in this thread"),
       h("button", { class: "upvote", onclick: (e) => { e.stopPropagation(); main.upvote(thread); } }, thread.score)
     ])
   ])
@@ -53,7 +54,7 @@ const threadItem = (thread, bubble) => {
 
 const threadViewComponent = (state, actions, thread) => {
   if (!thread) {
-    thread =  {
+    thread = {
       title: "No Thread Selected",
       messages: []
     }
@@ -61,7 +62,7 @@ const threadViewComponent = (state, actions, thread) => {
   return h("div", { class: "thread-view" }, [
     h("div", { class: "frame" }, [
       h("div", { class: "thread-header" }, [
-        h("div", { class: "back", onclick: () => actions.navigate("bubbleView") }),
+        h("div", { class: "back", onclick: () => actions.navigate({destination: "bubbleView"}) }),
         h("h2", {}, thread.title)
       ]),
       h("ul", { class: "messages" }, thread.messages.map(messageItem)),
@@ -112,7 +113,18 @@ const state = {
 }
 
 const actions = {
-  navigate: destination => ({ currentView: destination }),
+  navigate: ({destination, bubbleName, threadId}) => {
+    let state = {
+      currentView: destination,
+    }
+    if (bubbleName) {
+      state.currentBubble = bubbleName;
+    }
+    if (threadId) {
+      state.currentThreadId = threadId;
+    }
+    return state;
+   },
   upvote: thread => ({ score: thread.score++ }),
   expandKeyboard: status => {
     if (status == "closed") {
@@ -148,6 +160,8 @@ const actions = {
 }
 
 const view = (state, actions) => {
+  // console.log(state.currentBubble);
+  // console.log(state.currentThreadId);
   let bubble = state.bubbles.find(bubble => bubble.name === state.currentBubble);
   let thread = bubble.threads.find(thread => thread.id === state.currentThreadId);
   return h("div", { class: "slider " + state.currentView }, [
@@ -197,7 +211,7 @@ document.addEventListener('keydown', function(event) {
       destination = getDestination("left");
     }
     if (destination != currentView) {
-      main.navigate(destination)
+      main.navigate({destination: destination})
       currentView = destination
     }
   }

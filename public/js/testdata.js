@@ -189,7 +189,7 @@ var bubbles = [
           messages: [
             {
               sender: "loteoo",
-              message: "Test message hello hello",
+              message: "Test mCSGOOOOO",
               created: "2018-01-23 21:38:09"
             },
             {
