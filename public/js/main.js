@@ -1,3 +1,7 @@
+var socket = io.connect(window.location.host );
+
+
+
 
 const { h, app } = hyperapp
 
@@ -158,20 +162,55 @@ const actions = {
           threadList.scrollTop = 0;
         }, 10)
       } else {
-        // Send message and push to DB
+
+        let message = {
+          bubbleName: state.currentBubbleName,
+          threadId: state.currentThreadId,
+          message: {
+            sender: state.username,
+            message: e.target[0].value,
+            created: timestamp
+          }
+        }
+
+        // Append message to list
         let thread = bubble.threads.find(thread => thread.id === state.currentThreadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
-        thread.messages.push({
-          sender: state.username,
-          message: e.target[0].value,
-          created: timestamp,
-        })
-        setTimeout(() => { // Scroll to bottom after the re-render/update cycle has ended (to include the new element's height)
+        thread.messages.push(message.message)
+
+
+        // Send new message to server
+        socket.emit('new message', message);
+
+         // Scroll to bottom after the re-render/update cycle has ended (to include the new element's height)
+        setTimeout(() => { // TODO: do something less sketchy
           var messagesList = document.querySelector(".thread-view .frame");
           messagesList.scrollTop = messagesList.scrollHeight;
-        }, 10)
+        }, 10);
+
       }
       return true
     }
+  },
+  receiveMessage: message => state => {
+    console.log(message);
+
+    // Append received message to message list
+    let bubble = state.bubbles.find(bubble => bubble.name === message.bubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+    let thread = bubble.threads.find(thread => thread.id === message.threadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+    thread.messages.push(message.message);
+
+    setTimeout(() => { // TODO: do something less sketchy
+      var messagesList = document.querySelector(".thread-view .frame");
+      messagesList.scrollTop = messagesList.scrollHeight;
+    }, 10);
+
+    return true
+  },
+  receiveNewThread: thread => state => {
+    console.log(thread);
+    let bubble = state.bubbles.find(bubble => bubble.name === thread.bubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+    bubble.threads.push(thread.thread);
+    return true
   }
 }
 
@@ -202,6 +241,22 @@ window.main = app(state, actions, view, document.querySelector("main"));
 
 
 
+
+
+
+
+
+
+
+
+
+// ======================================================================
+// Received event handlers
+// ======================================================================
+
+socket.on('new message', function(message) {
+  main.receiveMessage(message);
+});
 
 
 
