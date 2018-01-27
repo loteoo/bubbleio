@@ -484,10 +484,8 @@ footer {
 
 
 /* message thread */
-.bubble-view .threads li.message {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+.bubble-view .threads li.message .thread-header {
+	padding-bottom: 0;
 }
 
 

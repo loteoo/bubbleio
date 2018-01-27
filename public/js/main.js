@@ -106,7 +106,7 @@ const state = {
   username: "loteoo",
   bubbles,
   currentView: "bubbleView",
-  currentBubble: "all",
+  currentBubbleName: "all",
   currentThreadId: 0,
   keyboardVal: "",
   keyboardStatus: "closed"
@@ -118,7 +118,7 @@ const actions = {
       currentView: destination,
     }
     if (bubbleName) {
-      state.currentBubble = bubbleName;
+      state.currentBubbleName = bubbleName;
     }
     if (threadId) {
       state.currentThreadId = threadId;
@@ -133,37 +133,51 @@ const actions = {
       return { keyboardStatus: "closed" }
     }
   },
-  keyboardSubmit: e => {
-    e.preventDefault();
+  keyboardSubmit: e => state => {
+    // e.preventDefault();
     if (e.target[0].value) {
-      // let timestamp = new Date().getTime(); // Milliseconds, not seconds, since epoch
+
+      // TODO : Timestamp should be calculated on the server when saving to DB
+      let timestamp = new Date().getTime(); // Milliseconds, not seconds, since epoch
+
+      let bubble = state.bubbles.find(bubble => bubble.name === state.currentBubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+
       if (state.currentView == "bubbleView") {
         // Create thread and push to DB
-        context.threads.push({
+        bubble.threads.unshift({
           id: Math.floor(Math.random()*100),
           title: e.target[0].value,
           score: 1,
           created: timestamp,
-          type: "message"
+          type: "message",
+          author: state.username,
+          messages: []
         })
+        setTimeout(() => { // Scroll to top after the re-render/update cycle has ended (to include the new element's height)
+          var threadList = document.querySelector(".bubble-view .frame");
+          threadList.scrollTop = 0;
+        }, 10)
       } else {
         // Send message and push to DB
-        context.messages.push({
+        let thread = bubble.threads.find(thread => thread.id === state.currentThreadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+        thread.messages.push({
           sender: state.username,
           message: e.target[0].value,
-          created: timestamp
+          created: timestamp,
         })
+        setTimeout(() => { // Scroll to bottom after the re-render/update cycle has ended (to include the new element's height)
+          var messagesList = document.querySelector(".thread-view .frame");
+          messagesList.scrollTop = messagesList.scrollHeight;
+        }, 10)
       }
+      return true
     }
-    return false
   }
 }
 
 const view = (state, actions) => {
-  // console.log(state.currentBubble);
-  // console.log(state.currentThreadId);
-  let bubble = state.bubbles.find(bubble => bubble.name === state.currentBubble);
-  let thread = bubble.threads.find(thread => thread.id === state.currentThreadId);
+  let bubble = state.bubbles.find(bubble => bubble.name === state.currentBubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+  let thread = bubble.threads.find(thread => thread.id === state.currentThreadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
   return h("div", { class: "slider " + state.currentView }, [
     h("div", { class: "global-view" }, [
       h("div", { class: "frame" }, [
