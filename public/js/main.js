@@ -7,33 +7,74 @@ const { h, app } = hyperapp
 // Components
 // ==============
 
-const bubbleItem = ({ id, title, desc }) => h("li", {}, title)
+const bubbleItem = ({ id, title, desc }) => h("li", { onclick: () => main.navigate("bubbleView") }, title)
 
-const threadItem = ({ id, title, score, type, content, created, author }) => {
-  let timeString = new Date(created).toLocaleString()
-  if (type == "message") {
-    contentView = null
-  } else if (type == "text") {
-    contentView = h("div", { class: "text" }, content.text)
-  } else if (type == "image") {
-    contentView = h("div", { class: "img", style: { "background-image": "url('"+content.url+"')" } })
-  } else if (type == "youtube") {
-    contentView = h("div", { class: "thumbnail", style: "background-image: url('"+content.youtubeId+"')" })
-  }
-  return h("li", { class: type, onclick: (e) => { main.navigate("threadView") }, touchstart: (e) => {console.log(e);} }, [
-    h("div", { class: "thread-header" }, [
-      h("h4", {}, title),
-      h("p", {}, "by " + author + " on " + state.bubble.id + " at " + timeString)
-    ]),
-    contentView,
-    h("div", { class: "thread-footer" }, [
-      h("button", { class: "upvote", onclick: (e) => { e.stopPropagation(); main.upvote(id); } }, score)
+
+
+const bubbleViewComponent = (state, actions, bubble) => {
+  return h("div", { class: "bubble-view" }, [
+    h("div", { class: "frame" }, [
+      h("div", { class: "bubble-header" }, [
+        h("div", { class: "back", onclick: () => actions.navigate("globalView") }),
+        h("h2", {}, bubble.title)
+      ]),
+      h("ul", { class: "threads" }, bubble.threads.map(threadItem, bubble)),
+      keyboardComponent(state, actions)
     ])
   ])
 }
 
+
+
+const threadItem = (thread, bubble) => {
+  let timeString = new Date(thread.created).toLocaleString()
+  if (thread.type == "message") {
+    contentView = null
+  } else if (thread.type == "text") {
+    contentView = h("div", { class: "text" }, thread.content.text)
+  } else if (thread.type == "image") {
+    contentView = h("div", { class: "img", style: { "background-image": "url('"+thread.content.url+"')" } })
+  } else if (thread.type == "youtube") {
+    contentView = h("div", { class: "thumbnail", style: "background-image: url('"+thread.content.youtubeId+"')" })
+  }
+  return h("li", { class: thread.type, onclick: (e) => { main.navigate("threadView") }, touchstart: (e) => {console.log(e);} }, [
+    h("div", { class: "thread-header" }, [
+      h("h4", {}, thread.title),
+      h("p", {}, "by " + thread.author + " on " + bubble.name + " at " + timeString)
+    ]),
+    contentView,
+    h("div", { class: "thread-footer" }, [
+      h("button", { class: "upvote", onclick: (e) => { e.stopPropagation(); main.upvote(thread); } }, thread.score)
+    ])
+  ])
+}
+
+
+
+const threadViewComponent = (state, actions, thread) => {
+  if (!thread) {
+    thread =  {
+      title: "No Thread Selected",
+      messages: []
+    }
+  }
+  return h("div", { class: "thread-view" }, [
+    h("div", { class: "frame" }, [
+      h("div", { class: "thread-header" }, [
+        h("div", { class: "back", onclick: () => actions.navigate("bubbleView") }),
+        h("h2", {}, thread.title)
+      ]),
+      h("ul", { class: "messages" }, thread.messages.map(messageItem)),
+      keyboardComponent(state, actions)
+    ])
+  ])
+}
+
+
+
+
 const messageItem = ({ sender, message, created }) => {
-  if (sender == state.user.username) {
+  if (sender == state.username) {
     provenance = "sent"
   } else {
     provenance = "received"
@@ -42,9 +83,10 @@ const messageItem = ({ sender, message, created }) => {
 }
 
 
-const keyboard = (state) => (
-  h("form", { class: "keyboard", onsubmit: (e) => { main.keyboardSubmit(e); return false } }, [
-    h("div", { class: "expander " + state.keyboardStatus, onclick: () => main.expandKeyboard(state.keyboardStatus) }, [
+
+const keyboardComponent = (state, actions) => (
+  h("form", { class: "keyboard", onsubmit: (e) => { actions.keyboardSubmit(e); return false } }, [
+    h("div", { class: "expander " + state.keyboardStatus, onclick: () => actions.expandKeyboard(state.keyboardStatus) }, [
       h("div", { class: "text", onclick: (e) => { e.stopPropagation() } }, "txt"),
       h("div", { class: "link", onclick: (e) => { e.stopPropagation() } }, "url"),
       h("div", { class: "picture", onclick: (e) => { e.stopPropagation() } }, "pic")
@@ -60,34 +102,32 @@ const keyboard = (state) => (
 
 
 const state = {
-  user,
-  allBubbles,
-  bubble,
-  thread,
+  username: "loteoo",
+  bubbles,
   currentView: "bubbleView",
+  currentBubble: "all",
+  currentThreadId: 0,
   keyboardVal: "",
   keyboardStatus: "closed"
 }
 
 const actions = {
-  navigate: destination => state => ({ currentView: destination }),
-  upvote: threadId => state => {
-    state.bubble.threads.find(thread => thread.id === threadId).score++
-    return true
-  },
-  expandKeyboard: status => state => {
+  navigate: destination => ({ currentView: destination }),
+  upvote: thread => ({ score: thread.score++ }),
+  expandKeyboard: status => {
     if (status == "closed") {
       return { keyboardStatus: "opened" }
     } else {
       return { keyboardStatus: "closed" }
     }
   },
-  keyboardSubmit: e => state => {
+  keyboardSubmit: e => {
+    e.preventDefault();
     if (e.target[0].value) {
-      let timestamp = new Date().getTime(); // Milliseconds, not seconds, since epoch
+      // let timestamp = new Date().getTime(); // Milliseconds, not seconds, since epoch
       if (state.currentView == "bubbleView") {
         // Create thread and push to DB
-        state.bubble.threads.push({
+        context.threads.push({
           id: Math.floor(Math.random()*100),
           title: e.target[0].value,
           score: 1,
@@ -96,43 +136,31 @@ const actions = {
         })
       } else {
         // Send message and push to DB
-        state.thread.messages.push({
-          sender: state.user.username,
+        context.messages.push({
+          sender: state.username,
           message: e.target[0].value,
           created: timestamp
         })
       }
     }
-    return true
+    return false
   }
 }
 
-const view = (state, actions) =>
-  h("div", { class: "slider " + state.currentView }, [
+const view = (state, actions) => {
+  let bubble = state.bubbles.find(bubble => bubble.name === state.currentBubble);
+  let thread = bubble.threads.find(thread => thread.id === state.currentThreadId);
+  return h("div", { class: "slider " + state.currentView }, [
     h("div", { class: "global-view" }, [
       h("div", { class: "frame" }, [
-        h("h2", {}, state.user.username),
-        h("ul", { class: "bubbles" }, state.allBubbles.map(bubbleItem))
+        h("h2", {}, state.username),
+        h("ul", { class: "bubbles" }, state.bubbles.map(bubbleItem))
       ])
     ]),
-    h("div", { class: "bubble-view" }, [
-      h("div", { class: "frame" }, [
-        h("h2", {}, state.bubble.title),
-        h("ul", { class: "threads" }, state.bubble.threads.map(threadItem)),
-        keyboard(state)
-      ])
-    ]),
-    h("div", { class: "thread-view" }, [
-      h("div", { class: "frame" }, [
-        h("div", { class: "thread-header" }, [
-          h("div", { class: "back", onclick: () => main.navigate("bubbleView") }),
-          h("h2", {}, state.thread.title)
-        ]),
-        h("ul", { class: "messages" }, state.thread.messages.map(messageItem)),
-        keyboard(state)
-      ])
-    ])
+    bubbleViewComponent(state, actions, bubble),
+    threadViewComponent(state, actions, thread)
   ])
+}
 
 window.main = app(state, actions, view, document.querySelector("main"));
 

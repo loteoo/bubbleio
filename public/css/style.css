@@ -394,8 +394,22 @@ footer {
 	right:  0;
 }
 
-.bubble-view h2 {
+.bubble-view .bubble-header {
 	padding: 1em 2em;
+}
+.bubble-view .bubble-header {
+	padding: 1em;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+.bubble-view .bubble-header .back {
+	width: 2em;
+	height: 2em;
+	margin-right: 1em;
+	background-color: #ccc;
+}
+.bubble-view h2 {
 	margin: 0;
 }
 
@@ -544,7 +558,8 @@ footer {
 \*------------------------------------*/
 
 .keyboard {
-	position: relative;
+	position: sticky;
+	bottom: 0;
 	border-top: 1px solid #e9ecef;
 	display: flex;
 	justify-content: space-between;

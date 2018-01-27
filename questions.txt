@@ -1,0 +1,14 @@
+main.action() or actions.action from inside component
+
+
+actions as function with return true and state.something = value instead of object return
+for example, i want to update the state of a deep (ex 3 levels down in the json) object, how do i do that
+
+
+
+Do actions re-render the whole app and should i minimize rendered elements?
+for example, if im building a socket.io app that updates the state multiple times per seconds,
+is the whole app going to re-render every time?
+
+
+Should i pass state and actions to components or should i use the globally availables Components
