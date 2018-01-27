@@ -375,6 +375,7 @@ footer {
 .global-view .bubbles li {
 	padding: 1em 2em;
   border-bottom: 1px solid #e9ecef;
+	cursor: pointer;
 }
 
 
@@ -411,6 +412,7 @@ footer {
 	height: 2em;
 	margin-right: 1em;
 	background-color: #ccc;
+	cursor: pointer;
 }
 .bubble-view h2 {
 	margin: 0;
@@ -521,6 +523,7 @@ footer {
 	height: 2em;
 	margin-right: 1em;
 	background-color: #ccc;
+	cursor: pointer;
 }
 .thread-view .thread-header h2 {
 	margin: 0;
