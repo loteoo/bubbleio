@@ -6,13 +6,13 @@ var bubbles = [
       name: "all",
       title: "All bubbles",
       desc: "All your bubbles, all mixed together",
-      created: "2018-01-23 21:38:09",
+      created: 1517163077710,
       threads: [
         {
           id: 5234,
           title: "Wow ALL BUUBLE are fun",
           score: 21,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "pkasdasdl",
           type: "image",
           content: {
@@ -22,42 +22,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -65,7 +65,7 @@ var bubbles = [
           id: 2456734,
           title: "Hey watsup guys its the ALL BUUBLE boi here",
           score: 25,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "ahkdklas",
           type: "text",
           content: {
@@ -75,42 +75,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -118,7 +118,7 @@ var bubbles = [
           id: 4567,
           title: "Some ALL BUUBLE youtube video",
           score: 12,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "fulsfojisdf",
           type: "youtube",
           content: {
@@ -128,42 +128,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         }
@@ -174,13 +174,13 @@ var bubbles = [
       name: "csgo",
       title: "CS:GO",
       desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      created: "2018-01-23 21:38:09",
+      created: 1517163077710,
       threads: [
         {
           id: 5234,
           title: "Wow csgo are fun",
           score: 21,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "pkasdasdl",
           type: "image",
           content: {
@@ -190,42 +190,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test mCSGOOOOO",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -233,7 +233,7 @@ var bubbles = [
           id: 2456734,
           title: "Hey watsup guys its the csgo boi here",
           score: 25,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "ahkdklas",
           type: "text",
           content: {
@@ -243,42 +243,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -286,7 +286,7 @@ var bubbles = [
           id: 4567,
           title: "Some csgo youtube video",
           score: 12,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "fulsfojisdf",
           type: "youtube",
           content: {
@@ -296,42 +296,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         }
@@ -342,13 +342,13 @@ var bubbles = [
       name: "testory",
       title: "Test bubble",
       desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      created: "2018-01-23 21:38:09",
+      created: 1517163077710,
       threads: [
         {
           id: 5234,
           title: "Wow testory are fun",
           score: 21,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "pkasdasdl",
           type: "image",
           content: {
@@ -358,42 +358,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -401,7 +401,7 @@ var bubbles = [
           id: 2456734,
           title: "Hey watsup guys its the testory boi here",
           score: 25,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "ahkdklas",
           type: "text",
           content: {
@@ -411,42 +411,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -454,7 +454,7 @@ var bubbles = [
           id: 4567,
           title: "Some testory youtube video",
           score: 12,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "fulsfojisdf",
           type: "youtube",
           content: {
@@ -464,42 +464,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         }
@@ -510,13 +510,13 @@ var bubbles = [
       name: "potatoes",
       title: "Potato group",
       desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      created: "2018-01-23 21:38:09",
+      created: 1517163077710,
       threads: [
         {
           id: 232,
           title: "Wow potatoes are fun",
           score: 21,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "pkasdasdl",
           type: "image",
           content: {
@@ -526,42 +526,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -569,7 +569,7 @@ var bubbles = [
           id: 234,
           title: "Hey watsup guys its the potato boi here",
           score: 25,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "ahkdklas",
           type: "text",
           content: {
@@ -579,42 +579,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -622,7 +622,7 @@ var bubbles = [
           id: 236,
           title: "Some potato youtube video",
           score: 12,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "fulsfojisdf",
           type: "youtube",
           content: {
@@ -632,42 +632,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         }
@@ -678,13 +678,13 @@ var bubbles = [
       name: "webdev",
       title: "Web developpment",
       desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      created: "2018-01-23 21:38:09",
+      created: 1517163077710,
       threads: [
         {
           id: 5234,
           title: "Wow webdev are fun",
           score: 21,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "pkasdasdl",
           type: "image",
           content: {
@@ -694,42 +694,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -737,7 +737,7 @@ var bubbles = [
           id: 2456734,
           title: "Hey watsup guys its the webdev boi here",
           score: 25,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "ahkdklas",
           type: "text",
           content: {
@@ -747,42 +747,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -790,7 +790,7 @@ var bubbles = [
           id: 4567,
           title: "Some webdev youtube video",
           score: 12,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "fulsfojisdf",
           type: "youtube",
           content: {
@@ -800,42 +800,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         }
@@ -846,13 +846,13 @@ var bubbles = [
       name: "testory",
       title: "Test bubble",
       desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      created: "2018-01-23 21:38:09",
+      created: 1517163077710,
       threads: [
         {
           id: 5234,
           title: "Wow testory are fun",
           score: 21,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "pkasdasdl",
           type: "image",
           content: {
@@ -862,42 +862,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -905,7 +905,7 @@ var bubbles = [
           id: 2456734,
           title: "Hey watsup guys its the testory boi here",
           score: 25,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "ahkdklas",
           type: "text",
           content: {
@@ -915,42 +915,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         },
@@ -958,7 +958,7 @@ var bubbles = [
           id: 4567,
           title: "Some testory youtube video",
           score: 12,
-          created: "2018-01-23 21:38:09",
+          created: 1517163077710,
           author: "fulsfojisdf",
           type: "youtube",
           content: {
@@ -968,42 +968,42 @@ var bubbles = [
             {
               sender: "loteoo",
               message: "Test message hello hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "tototo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "asdasd",
               message: "message das das das dasd asd  hello",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             },
             {
               sender: "loteoo",
               message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inc",
-              created: "2018-01-23 21:38:09"
+              created: 1517163077710
             }
           ]
         }

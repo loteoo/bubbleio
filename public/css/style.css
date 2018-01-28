@@ -542,6 +542,10 @@ footer {
   padding: 0.5em 1em;
   max-width: 66%;
 }
+.thread-view .messages li .info {
+	font-size: 0.8em;
+	opacity: 0.5;
+}
 .thread-view .messages li.received {
   background-color: #d9d9d9;
   color: rgba(0, 0, 0, 1);
