@@ -1,4 +1,7 @@
+import {location} from "@hyperapp/router"
+
 export const actions = {
+  location: location.actions,
   navigate: ({destination, bubbleName, threadId}) => {
     let state = {
       currentView: destination,

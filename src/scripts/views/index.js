@@ -1,10 +1,30 @@
 import {h} from 'hyperapp'
+import {Link, Route, Redirect} from "@hyperapp/router"
 import {timeSince} from '../utils/'
 
 
 
 
-const bubbleItem = ({ id, name, title, desc }) => h("li", { onclick: () => main.navigate({destination: "bubbleView", bubbleName: name}) }, title)
+
+
+const globalViewComponent = state => (
+  h("div", { class: "global-view" }, [
+    h("div", { class: "frame" }, [
+      h("h2", {}, state.username),
+      h("ul", { class: "bubbles" }, state.bubbles.map(bubbleItem))
+    ])
+  ])
+)
+
+
+
+
+
+const bubbleItem = ({ id, name, title, desc }) => (
+  h("li", {}, [
+    Link({ to: "/" + name }, title)
+  ])
+)
 
 
 
@@ -105,7 +125,7 @@ export const view = (state, actions) => {
 
 
     if (!state.currentBubbleName) {
-      state.currentBubbleName = "patapoufs"
+      state.currentBubbleName = "patapoufs";
     }
 
     let currentBubble = state.bubbles.find(bubble => bubble.name === state.currentBubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
@@ -114,14 +134,10 @@ export const view = (state, actions) => {
 
 
     return h("div", { class: "slider " + state.currentView }, [
-      h("div", { class: "global-view" }, [
-        h("div", { class: "frame" }, [
-          h("h2", {}, state.username),
-          h("ul", { class: "bubbles" }, state.bubbles.map(bubbleItem))
-        ])
-      ]),
-      bubbleViewComponent(state, actions, currentBubble),
-      threadViewComponent(state, actions, currentThread)
+
+      Route({ path: "/", render: () => globalViewComponent(state) }),
+      Route({ path: "/" + state.currentBubbleName, render: () => bubbleViewComponent(state, actions, currentBubble) }),
+      Route({ path: "/" + state.currentBubbleName + "/" + state.currentThreadId, render: () => threadViewComponent(state, actions, currentThread) })
     ])
 
   } else {
