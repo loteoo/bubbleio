@@ -26,7 +26,6 @@ const bubbleViewComponent = (state, actions, bubble) => {
 
 
 const threadItem = (thread, bubble) => {
-  let timeString = new Date(thread.created).toLocaleString()
   let contentView;
   if (thread.type == "message") {
     contentView = null
@@ -40,7 +39,7 @@ const threadItem = (thread, bubble) => {
   return h("li", { class: thread.type, onclick: (e) => { main.navigate({destination: "threadView", threadId: thread.id}) }, touchstart: (e) => {console.log(e);} }, [
     h("div", { class: "thread-header" }, [
       h("h4", {}, thread.title),
-      h("p", {}, "by " + thread.author + " on " + bubble.name + " at " + timeString)
+      h("p", {}, "by " + thread.author + " on " + bubble.name + " " + timeSince(thread.created))
     ]),
     contentView,
     h("div", { class: "thread-footer" }, [
