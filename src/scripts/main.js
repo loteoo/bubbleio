@@ -1,8 +1,16 @@
 // Websocket connect
-var socket = io.connect(window.location.host );
+window.socket = io.connect(window.location.host);
+
+
+// Load our hyperapp
+import {app} from 'hyperapp'
+import {state} from './state/'
+import {actions} from './actions/'
+import {view} from './views/'
+
+
 
 // Start hyperapp
-const { h, app } = hyperapp
 window.main = app(state, actions, view, document.querySelector("main"));
 
 
@@ -13,7 +21,7 @@ window.main = app(state, actions, view, document.querySelector("main"));
 // Received event handlers
 // ======================================================================
 
-socket.on('new message', function(message) {
+window.socket.on('new message', function(message) {
   main.receiveMessage(message);
 });
 

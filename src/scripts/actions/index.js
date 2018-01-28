@@ -1,4 +1,4 @@
-const actions = {
+export const actions = {
   navigate: ({destination, bubbleName, threadId}) => {
     let state = {
       currentView: destination,

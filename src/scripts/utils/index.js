@@ -1,4 +1,4 @@
-function timeSince(date) {
+export const timeSince = (date) => {
 
   var seconds = Math.floor((new Date() - date) / 1000);
 

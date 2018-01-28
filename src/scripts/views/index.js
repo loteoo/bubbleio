@@ -1,3 +1,8 @@
+import {h} from 'hyperapp'
+import {timeSince} from '../utils/'
+
+
+
 
 const bubbleItem = ({ id, name, title, desc }) => h("li", { onclick: () => main.navigate({destination: "bubbleView", bubbleName: name}) }, title)
 
@@ -20,6 +25,7 @@ const bubbleViewComponent = (state, actions, bubble) => {
 
 const threadItem = (thread, bubble) => {
   let timeString = new Date(thread.created).toLocaleString()
+  let contentView;
   if (thread.type == "message") {
     contentView = null
   } else if (thread.type == "text") {
@@ -57,7 +63,7 @@ const threadViewComponent = (state, actions, thread) => {
         h("div", { class: "back", onclick: () => actions.navigate({destination: "bubbleView"}) }),
         h("h2", {}, thread.title)
       ]),
-      h("ul", { class: "messages" }, thread.messages.map(messageItem)),
+      h("ul", { class: "messages" }, thread.messages.map(message => messageItem(message, state))),
       keyboardComponent(state, actions)
     ])
   ])
@@ -66,7 +72,8 @@ const threadViewComponent = (state, actions, thread) => {
 
 
 
-const messageItem = ({ sender, message, created }) => {
+const messageItem = ({ sender, message, created }, state) => {
+  let provenance;
   if (sender == state.username) {
     provenance = "sent"
   } else {
@@ -94,7 +101,7 @@ const keyboardComponent = (state, actions) => (
 
 
 
-const view = (state, actions) => {
+export const view = (state, actions) => {
   let bubble = state.bubbles.find(bubble => bubble.name === state.currentBubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
   let thread = bubble.threads.find(thread => thread.id === state.currentThreadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
   return h("div", { class: "slider " + state.currentView }, [

@@ -10,9 +10,9 @@ var port = 80;
 
 
 
-app.use(express.static('public'))
+app.use(express.static('build'))
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/public/index.html');
+  res.sendfile(__dirname + '/build/index.html');
 });
 
 io.on('connection', function (socket) {
