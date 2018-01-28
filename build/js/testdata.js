@@ -3,14 +3,14 @@
 var bubbles = [
     {
       id: 8,
-      name: "all",
-      title: "All bubbles",
-      desc: "All your bubbles, all mixed together",
+      name: "patapoufs",
+      title: "Patapous megatouf",
+      desc: "Patapous bubble, yeyeyeyeye",
       created: 1517163077710,
       threads: [
         {
           id: 5234,
-          title: "Wow ALL BUUBLE are fun",
+          title: "Wow patapouf BUUBLE are fun",
           score: 21,
           created: 1517163077710,
           author: "pkasdasdl",
@@ -63,7 +63,7 @@ var bubbles = [
         },
         {
           id: 2456734,
-          title: "Hey watsup guys its the ALL BUUBLE boi here",
+          title: "Hey watsup guys its the patapouf BUUBLE boi here",
           score: 25,
           created: 1517163077710,
           author: "ahkdklas",
@@ -116,7 +116,7 @@ var bubbles = [
         },
         {
           id: 4567,
-          title: "Some ALL BUUBLE youtube video",
+          title: "Some patapouf BUUBLE youtube video",
           score: 12,
           created: 1517163077710,
           author: "fulsfojisdf",
