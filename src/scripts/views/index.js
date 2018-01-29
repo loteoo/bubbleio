@@ -1,5 +1,5 @@
 import {h} from 'hyperapp'
-import {Link, Route, Redirect} from "@hyperapp/router"
+import {Link, Route} from "@hyperapp/router"
 import {timeSince} from '../utils/'
 
 
@@ -7,7 +7,7 @@ import {timeSince} from '../utils/'
 
 
 
-const globalViewComponent = state => (
+const globalView = state => (
   h("div", { class: "global-view" }, [
     h("div", { class: "frame" }, [
       h("h2", {}, state.username),
@@ -28,15 +28,15 @@ const bubbleItem = ({ id, name, title, desc }) => (
 
 
 
-const bubbleViewComponent = (state, actions, bubble) => {
-  if (bubble) {
+const bubbleView = (state, actions) => {
+  if (state.currentBubble) {
     return h("div", { class: "bubble-view" }, [
       h("div", { class: "frame" }, [
         h("div", { class: "bubble-header" }, [
-          h("div", { class: "back", onclick: () => actions.navigate({destination: "globalView"}) }),
-          h("h2", {}, bubble.title)
+          Link({ to: "/" + name, class: "back"  }),
+          h("h2", {}, state.currentBubble.title)
         ]),
-        h("ul", { class: "threads" }, bubble.threads.map(thread => threadItem(thread, bubble))),
+        h("ul", { class: "threads" }, state.currentBubble.threads.map(thread => threadItem(thread, state, actions))),
         keyboardComponent(state, actions)
       ])
     ])
@@ -45,41 +45,41 @@ const bubbleViewComponent = (state, actions, bubble) => {
 
 
 
-const threadItem = (thread, bubble) => {
-  let contentView;
+const threadItem = (thread, state, actions) => {
+  let contentBlock;
   if (thread.type == "message") {
-    contentView = null
+    contentBlock = null
   } else if (thread.type == "text") {
-    contentView = h("div", { class: "text" }, thread.content.text)
+    contentBlock = h("div", { class: "text" }, thread.content.text)
   } else if (thread.type == "image") {
-    contentView = h("div", { class: "img", style: { "background-image": "url('"+thread.content.url+"')" } })
+    contentBlock = h("div", { class: "img", style: { "background-image": "url('"+thread.content.url+"')" } })
   } else if (thread.type == "youtube") {
-    contentView = h("div", { class: "thumbnail", style: "background-image: url('"+thread.content.youtubeId+"')" })
+    contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.content.youtubeId+"')" })
   }
-  return h("li", { class: thread.type, onclick: (e) => { main.navigate({destination: "threadView", threadId: thread.id}) }, touchstart: (e) => {console.log(e);} }, [
+  return h("li", { class: thread.type, onclick: () => actions.location.go("/" + state.currentBubble.name + "/" + thread.id) }, [
     h("div", { class: "thread-header" }, [
       h("h4", {}, thread.title),
-      h("p", {}, "by " + thread.author + " on " + bubble.name + " " + timeSince(thread.created))
+      h("p", {}, "by " + thread.author + " on " + state.currentBubble.name + " " + timeSince(thread.created))
     ]),
-    contentView,
+    contentBlock,
     h("div", { class: "thread-footer" }, [
       h("div", { class: "info" }, 8 + " in this thread"),
-      h("button", { class: "upvote", onclick: (e) => { e.stopPropagation(); main.upvote(thread); } }, thread.score)
+      h("button", { class: "upvote", onclick: (e) => { e.stopPropagation(); actions.upvote(thread); } }, thread.score)
     ])
   ])
 }
 
 
 
-const threadViewComponent = (state, actions, thread) => {
-  if (thread) {
+const threadView = (state, actions) => {
+  if (state.currentThread) {
     return h("div", { class: "thread-view" }, [
       h("div", { class: "frame" }, [
         h("div", { class: "thread-header" }, [
-          h("div", { class: "back", onclick: () => actions.navigate({destination: "bubbleView"}) }),
-          h("h2", {}, thread.title)
+          Link({ to: "/" + state.currentBubble.name, class: "back"  }),
+          h("h2", {}, state.currentThread.title)
         ]),
-        h("ul", { class: "messages" }, thread.messages.map(message => messageItem(message, state))),
+        h("ul", { class: "messages" }, state.currentThread.messages.map(message => messageItem(message, state))),
         keyboardComponent(state, actions)
       ])
     ])
@@ -124,20 +124,37 @@ export const view = (state, actions) => {
   if (state.username) {
 
 
-    if (!state.currentBubbleName) {
-      state.currentBubbleName = "patapoufs";
+    var urlparts = state.location.pathname.split("/");
+
+
+    state.currentView = "globalView"
+
+    if (urlparts[1]) {
+      state.currentView = "bubbleView"
+    } else {
+      urlparts[1] = "patapoufs"
+    }
+    if (urlparts[2]) {
+      state.currentView = "threadView"
+    } else {
+      urlparts[2] = 0
     }
 
-    let currentBubble = state.bubbles.find(bubble => bubble.name === state.currentBubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
-    let currentThread = currentBubble.threads.find(thread => thread.id === state.currentThreadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+
+    state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+    state.currentThread = state.currentBubble.threads.find(thread => thread.id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
 
 
 
     return h("div", { class: "slider " + state.currentView }, [
 
-      Route({ path: "/", render: () => globalViewComponent(state) }),
-      Route({ path: "/" + state.currentBubbleName, render: () => bubbleViewComponent(state, actions, currentBubble) }),
-      Route({ path: "/" + state.currentBubbleName + "/" + state.currentThreadId, render: () => threadViewComponent(state, actions, currentThread) })
+      globalView(state),
+      bubbleView(state, actions),
+      threadView(state, actions)
+
+      // Route({ path: "/", render: () => globalView(state) }),
+      // Route({ path: "/:bubble", render: () => bubbleView(state, actions) }),
+      // Route({ path: "/:bubble/:thread", render: () => threadView(state, actions) })
     ])
 
   } else {

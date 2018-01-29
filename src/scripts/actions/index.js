@@ -2,18 +2,6 @@ import {location} from "@hyperapp/router"
 
 export const actions = {
   location: location.actions,
-  navigate: ({destination, bubbleName, threadId}) => {
-    let state = {
-      currentView: destination,
-    }
-    if (bubbleName) {
-      state.currentBubbleName = bubbleName;
-    }
-    if (threadId) {
-      state.currentThreadId = threadId;
-    }
-    return state;
-   },
   upvote: thread => ({ score: thread.score++ }),
   expandKeyboard: status => {
     if (status == "closed") {
@@ -23,17 +11,16 @@ export const actions = {
     }
   },
   keyboardSubmit: e => state => {
-    // e.preventDefault();
+    e.preventDefault();
     if (e.target[0].value) {
 
       // TODO : Timestamp should be calculated on the server when saving to DB
       let timestamp = new Date().getTime(); // Milliseconds, not seconds, since epoch
 
-      let bubble = state.bubbles.find(bubble => bubble.name === state.currentBubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
 
       if (state.currentView == "bubbleView") {
         // Create thread and push to DB
-        bubble.threads.unshift({
+        state.currentBubble.threads.unshift({
           id: Math.floor(Math.random()*100),
           title: e.target[0].value,
           score: 1,
@@ -49,8 +36,8 @@ export const actions = {
       } else {
 
         let message = {
-          bubbleName: state.currentBubbleName,
-          threadId: state.currentThreadId,
+          bubbleName: state.currentBubble.name,
+          threadId: state.currentThread.id,
           message: {
             sender: state.username,
             message: e.target[0].value,
@@ -59,8 +46,7 @@ export const actions = {
         }
 
         // Append message to list
-        let thread = bubble.threads.find(thread => thread.id === state.currentThreadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
-        thread.messages.push(message.message)
+        state.currentThread.messages.push(message.message)
 
 
         // Send new message to server

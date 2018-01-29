@@ -5,8 +5,8 @@ export const state = {
   username: "loteoo",
   bubbles,
   currentView: "globalView",
-  currentBubbleName: "",
-  currentThreadId: 0,
+  currentBubble: null,
+  currentThread: null,
   keyboardVal: "",
   keyboardStatus: "closed"
 }
