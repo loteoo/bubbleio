@@ -69,6 +69,13 @@ app.get('/:bubbleName', function(req, res) {
 
 
 
+app.get('/:bubbleName/:threadId', function(req, res) {
+   res.redirect('/' + req.params.bubbleName);
+});
+
+
+
+
 
 
 
