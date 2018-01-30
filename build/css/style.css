@@ -528,6 +528,7 @@ footer {
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;
+	cursor: pointer;
 }
 .thread-view .thread-header h2 {
 	margin: 0;

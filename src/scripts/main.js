@@ -23,6 +23,8 @@ const unsubscribe = location.subscribe(main.location)
 // Received event handlers
 // ======================================================================
 
-window.socket.on('new message', function(message) {
-  main.receiveMessage(message);
-});
+window.socket.on('new message', message => main.receiveMessage(message));
+
+window.socket.on('update bubble user count', bubbleData => main.updateBubbleUserCount(bubbleData));
+
+window.socket.on('update thread user count', threadData => main.updateThreadUserCount(threadData));

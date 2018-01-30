@@ -5,7 +5,10 @@ export const state = {
   username: "loteoo",
   bubbles: [],
   currentView: "globalView",
-  currentBubble: null,
+  currentBubble: {
+    name: "all",
+    threads: []
+  },
   currentThread: null,
   keyboardVal: "",
   keyboardStatus: "closed"

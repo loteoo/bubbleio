@@ -4,7 +4,7 @@ import {mergeUniqueId} from '../utils/'
 export const actions = {
   location: location.actions,
   upvote: thread => {
-    socket.emit('thread upvote', thread.id);
+    socket.emit('thread upvote', thread._id);
     return { score: thread.score++ }
   },
   expandKeyboard: status => {
@@ -23,25 +23,34 @@ export const actions = {
 
 
       if (state.currentView == "bubbleView") {
-        // Create thread and push to DB
-        state.currentBubble.threads.unshift({
+
+        // Create the thread object
+        let thread = {
           id: Math.floor(Math.random()*100),
           title: e.target[0].value,
           score: 1,
           created: timestamp,
           type: "message",
-          author: state.username,
-          messages: []
-        })
+          author: state.username
+        }
+
+        // Append thread to list
+        state.currentBubble.threads.unshift(thread)
         setTimeout(() => { // Scroll to top after the re-render/update cycle has ended (to include the new element's height)
           var threadList = document.querySelector(".bubble-view .frame");
           threadList.scrollTop = 0;
         }, 10)
+
+
+        // Send new message to server
+        socket.emit('new thread', message);
+
       } else {
 
+        // Create the message object
         let message = {
           bubbleName: state.currentBubble.name,
-          threadId: state.currentThread.id,
+          threadId: state.currentThread._id,
           message: {
             sender: state.username,
             message: e.target[0].value,
@@ -67,11 +76,10 @@ export const actions = {
     }
   },
   receiveMessage: message => state => {
-    console.log(message);
 
     // Append received message to message list
     let bubble = state.bubbles.find(bubble => bubble.name === message.bubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
-    let thread = bubble.threads.find(thread => thread.id === message.threadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+    let thread = bubble.threads.find(thread => thread._id === message.threadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
     thread.messages.push(message.message);
 
     setTimeout(() => { // TODO: do something less sketchy
@@ -105,5 +113,15 @@ export const actions = {
       .then(data => {
         actions.updateAppData(data)
       });
+  },
+  updateBubbleUserCount: bubbleData => (state, actions) => {
+    state.bubbles.find(bubble => bubble.name === bubbleData.bubbleName).userCount = bubbleData.userCount;
+    state.bubbles.find(bubble => bubble.name === bubbleData.prevBubbleName).userCount = bubbleData.prevBubbleUserCount;
+    return true;
+  },
+  updateThreadUserCount: threadData => (state, actions) => {
+    let bubble = state.bubbles.find(bubble => bubble.name === threadData.bubbleName);
+    bubble.threads.find(thread => thread._id === threadData.threadId).userCount = threadData.userCount;
+    return true;
   }
 }
