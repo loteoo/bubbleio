@@ -97,6 +97,10 @@ const bubbleView = (state, actions) => {
   if (state.currentBubble) {
     return h("div", { class: "bubble-view", bubblename: state.currentBubble.name, onupdate: (el, oldProps) => {
       if (oldProps.bubblename != state.currentBubble.name) {
+        console.log("switched room");
+        if (!oldProps.bubblename) {
+          oldProps.bubblename = null;
+        }
         socket.emit('switch room', {
           prevRoom: oldProps.bubblename,
           nextRoom: state.currentBubble.name

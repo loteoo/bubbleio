@@ -133,15 +133,19 @@ io.on('connection', function (socket) {
   // Handle rooms user counts
   socket.on('switch room', function (navData) {
 
-    // Leaves connection to the previous room
-    this.leave(navData.prevRoom);
+    // If user was in an other room before this
+    if (navData.prevRoom) {
 
-    // Calculate previous room user count
-    if (rooms[navData.prevRoom]) {
-      rooms[navData.prevRoom].userCount--;
-    } else {
-      rooms[navData.prevRoom] = {
-        userCount: 0
+      // Leaves connection to the previous room
+      this.leave(navData.prevRoom);
+
+      // Calculate previous room user count
+      if (rooms[navData.prevRoom]) {
+        rooms[navData.prevRoom].userCount--;
+      } else {
+        rooms[navData.prevRoom] = {
+          userCount: 0
+        }
       }
     }
 
@@ -157,13 +161,15 @@ io.on('connection', function (socket) {
     // Calculate total users in room
     rooms[navData.nextRoom].userCount++;
 
+
     // Tell clients about the new user count in the room
-    io.to(navData.nextRoom).emit("update bubble user count", {
-      bubbleName: navData.nextRoom,
-      userCount: rooms[navData.nextRoom].userCount,
-      prevBubbleName: navData.prevRoom,
-      prevBubbleUserCount: rooms[navData.prevRoom].userCount,
-    });
+
+    // TODO: send to all users who have this bubble or the previous one IN THEIR LIST
+    let newData = {};
+    newData[navData.nextRoom] = rooms[navData.nextRoom];
+    newData[navData.prevRoom] = rooms[navData.prevRoom];
+    socket.broadcast.emit("update bubble user counts", newData);
+    io.to(navData.nextRoom).emit("update bubble user counts", newData);
   });
 
 

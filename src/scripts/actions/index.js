@@ -114,14 +114,24 @@ export const actions = {
         actions.updateAppData(data)
       });
   },
-  updateBubbleUserCount: bubbleData => (state, actions) => {
-    state.bubbles.find(bubble => bubble.name === bubbleData.bubbleName).userCount = bubbleData.userCount;
-    state.bubbles.find(bubble => bubble.name === bubbleData.prevBubbleName).userCount = bubbleData.prevBubbleUserCount;
+  updateBubbleUserCounts: bubblesData => (state, actions) => {
+    console.log("updateBubbleUserCounts");
+    Object.keys(bubblesData).forEach(function(bubbleName) {
+      let bubble = state.bubbles.find(bubble => bubble.name === bubbleName);
+      if (bubble) {
+        bubble.userCount = bubblesData[bubbleName].userCount;
+      }
+    });
     return true;
   },
   updateThreadUserCount: threadData => (state, actions) => {
     let bubble = state.bubbles.find(bubble => bubble.name === threadData.bubbleName);
-    bubble.threads.find(thread => thread._id === threadData.threadId).userCount = threadData.userCount;
+    if (bubble) {
+        let thread = bubble.threads.find(thread => thread._id === threadData.threadId);
+      if (thread) {
+        thread.userCount = threadData.userCount;
+      }
+    }
     return true;
   }
 }
