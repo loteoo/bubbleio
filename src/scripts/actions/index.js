@@ -124,12 +124,20 @@ export const actions = {
     });
     return true;
   },
-  updateThreadUserCount: threadData => (state, actions) => {
+  updateThreadData: threadData => (state, actions) => {
+    console.log(threadData);
     let bubble = state.bubbles.find(bubble => bubble.name === threadData.bubbleName);
     if (bubble) {
-        let thread = bubble.threads.find(thread => thread._id === threadData.threadId);
+      let thread = bubble.threads.find(thread => thread._id === threadData.threadId);
       if (thread) {
-        thread.userCount = threadData.userCount;
+
+        if (threadData.userCount) {
+          thread.userCount = threadData.userCount;
+        }
+
+        if (threadData.score) {
+          thread.score = threadData.score;
+        }
       }
     }
     return true;

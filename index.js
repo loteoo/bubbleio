@@ -190,7 +190,7 @@ io.on('connection', function (socket) {
     rooms[threadData.bubbleName][threadData.threadId].userCount++;
 
     // Tell clients about the new user count in the thread
-    io.to(threadData.bubbleName).emit("update thread user count", {
+    io.to(threadData.bubbleName).emit("update thread data", {
       bubbleName: threadData.bubbleName,
       threadId: threadData.threadId,
       userCount: rooms[threadData.bubbleName][threadData.threadId].userCount
@@ -210,7 +210,7 @@ io.on('connection', function (socket) {
       rooms[threadData.bubbleName][threadData.threadId].userCount--;
 
       // Tell clients about the new user count in the thread
-      io.to(threadData.bubbleName).emit("update thread user count", {
+      io.to(threadData.bubbleName).emit("update thread data", {
         bubbleName: threadData.bubbleName,
         threadId: threadData.threadId,
         userCount: rooms[threadData.bubbleName][threadData.threadId].userCount
@@ -252,11 +252,21 @@ io.on('connection', function (socket) {
 
   // Pass all received message to all clients
   socket.on('thread upvote', function (threadId) {
+    mongo.connect(mongo_url, function(err, db) {
+      if (err) throw err;
 
-    console.log(threadId);
+      var dbo = db.db(mongo_db);
 
 
-    // socket.broadcast.emit('thread score update', data);
+      dbo.collection("threads").findOneAndUpdate({ _id: threadId }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, doc) {
+        if (err) throw err;
+        console.log("thread: " + threadId);
+        console.log(doc);
+        db.close();
+        socket.broadcast.emit('update thread data', doc);
+      });
+
+    });
   });
 
 
