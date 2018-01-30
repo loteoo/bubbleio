@@ -89,22 +89,21 @@ export const actions = {
     // TODO Threads should be re-ordered by our score algorithm
     return true
   },
-  updateAppData: newData => state => {
+  updateAppData: bubbles => state => {
 
     let newState = {
-      bubbles: mergeUniqueId(state.bubbles, newData, "_id")
+      bubbles: mergeUniqueId(state.bubbles, bubbles, "_id")
     }
 
     return newState;
   },
-  loadMoreThreads: e => state => {
+  loadMoreThreads: e => (state, actions) => {
     console.log("load more in "+state.currentBubble.name+" !");
 
-    // fetch(window.location.host + "/get/" + state.currentBubble.name)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //
-    //     console.log(data)
-    //   });
+    fetch("/get/" + state.currentBubble.name)
+      .then(response => response.json())
+      .then(data => {
+        actions.updateAppData(data)
+      });
   }
 }

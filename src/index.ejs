@@ -18,8 +18,8 @@
     <script src="/js/main.min.js"></script>
 
     <script>
-      <% if (typeof(userData) !== 'undefined') { %>
-        main.updateAppData(JSON.parse('<%- userData %>'));
+      <% if (typeof(userBubbles) !== 'undefined') { %>
+        main.updateAppData(JSON.parse('<%- userBubbles %>'));
       <% } %>
     </script>
   </body>

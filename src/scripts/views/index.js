@@ -7,11 +7,11 @@ import {timeSince, isElementInViewport} from '../utils/'
 
 
 
-const globalView = state => (
+const globalView = (state, actions) => (
   h("div", { class: "global-view" }, [
     h("div", { class: "frame" }, [
       h("h2", {}, state.username),
-      h("ul", { class: "bubbles" }, state.bubbles.map(bubbleItem))
+      h("ul", { class: "bubbles" }, state.bubbles.map(bubble => bubbleItem(bubble, state, actions)))
     ])
   ])
 )
@@ -20,9 +20,9 @@ const globalView = state => (
 
 
 
-const bubbleItem = ({ id, name, title, desc }) => (
+const bubbleItem = (bubble, state, actions) => (
   h("li", {}, [
-    Link({ to: "/" + name }, title)
+    Link({ to: "/" + bubble.name }, bubble.title)
   ])
 )
 
@@ -30,11 +30,8 @@ const bubbleItem = ({ id, name, title, desc }) => (
 
 const bubbleView = (state, actions) => {
   if (state.currentBubble) {
-    if (!state.currentBubble.threads) {
-      state.currentBubble.threads = [];
-    }
     return h("div", { class: "bubble-view" }, [
-      h("div", { class: "frame", onscroll: (e) => { if (isElementInViewport(e.target.lastChild)) { actions.loadMoreThreads(e) } } }, [
+      h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.lastChild)) { actions.loadMoreThreads() } } }, [
         h("div", { class: "bubble-header" }, [
           Link({ to: "/" + name, class: "back" }),
           h("h2", {}, state.currentBubble.title)
@@ -68,7 +65,7 @@ const threadItem = (thread, state, actions) => {
     contentBlock,
     h("div", { class: "thread-footer" }, [
       h("div", { class: "info" }, 8 + " in this thread"),
-      h("button", { class: "upvote", onclick: (e) => { e.stopPropagation(); actions.upvote(thread); } }, thread.score)
+      h("button", { class: "upvote", onclick: (ev) => { ev.stopPropagation(); actions.upvote(thread); } }, thread.score)
     ])
   ])
 }
@@ -77,9 +74,6 @@ const threadItem = (thread, state, actions) => {
 
 const threadView = (state, actions) => {
   if (state.currentThread) {
-    if (!state.currentThread.messages) {
-      state.currentThread.messages = [];
-    }
     return h("div", { class: "thread-view" }, [
       h("div", { class: "frame" }, [
         h("div", { class: "thread-header" }, [
@@ -112,11 +106,11 @@ const messageItem = ({ sender, message, created }, state) => {
 
 
 const keyboardComponent = (state, actions) => (
-  h("form", { class: "keyboard", onsubmit: (e) => { actions.keyboardSubmit(e); return false } }, [
+  h("form", { class: "keyboard", onsubmit: ev => { actions.keyboardSubmit(ev); return false } }, [
     h("div", { class: "expander " + state.keyboardStatus, onclick: () => actions.expandKeyboard(state.keyboardStatus) }, [
-      h("div", { class: "text", onclick: (e) => { e.stopPropagation() } }, "txt"),
-      h("div", { class: "link", onclick: (e) => { e.stopPropagation() } }, "url"),
-      h("div", { class: "picture", onclick: (e) => { e.stopPropagation() } }, "pic")
+      h("div", { class: "text", onclick: ev => { ev.stopPropagation() } }, "txt"),
+      h("div", { class: "link", onclick: ev => { ev.stopPropagation() } }, "url"),
+      h("div", { class: "picture", onclick: ev => { ev.stopPropagation() } }, "pic")
     ]),
     h("input", { type: "text", value: state.keyboardVal }),
     h("button", { class: "submit", type: "submit" })
@@ -140,11 +134,22 @@ export const view = (state, actions) => {
       // Update the temp bubble object
       state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
       state.currentView = "bubbleView"
+      if (!state.currentBubble.threads) {
+        state.currentBubble.threads = [];
+      }
+
+      // 2 Threads minimum
+      if(state.currentBubble.threads.length < 2) {
+        actions.loadMoreThreads()
+      }
     }
     if (urlparts[2]) {
       // Update the temp thread object
       state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
       state.currentView = "threadView"
+      if (!state.currentThread.messages) {
+        state.currentThread.messages = [];
+      }
     }
 
 
@@ -153,7 +158,7 @@ export const view = (state, actions) => {
 
     return h("div", { class: "slider " + state.currentView }, [
 
-      globalView(state),
+      globalView(state, actions),
       bubbleView(state, actions),
       threadView(state, actions)
 

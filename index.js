@@ -24,7 +24,7 @@ app.get('/', function (req, res) {
 
       db.close();
 
-      res.render(__dirname + '/src/index', { userData: JSON.stringify(result) });
+      res.render(__dirname + '/src/index', { userBubbles: JSON.stringify(result) });
     });
   });
 });
@@ -52,7 +52,38 @@ app.get('/:bubbleName', function(req, res) {
     ]).toArray(function(err, result) {
       if (err) throw err;
       db.close();
-      res.render(__dirname + '/src/index', { userData: JSON.stringify(result) });
+      res.render(__dirname + '/src/index', { userBubbles: JSON.stringify(result) });
+    });
+  });
+});
+
+
+
+
+
+
+
+
+app.get('/get/:bubbleName', function(req, res) {
+  mongo.connect(mongo_url, function(err, db) {
+    if (err) throw err;
+
+    // TODO: only load 30 posts from only the requested bubble
+
+    var dbo = db.db(mongo_db);
+    dbo.collection("bubbles").aggregate([
+      {
+        $lookup: {
+          from: 'threads',
+          localField: '_id',
+          foreignField: 'bubble_id',
+          as: 'threads'
+        }
+      }
+    ]).toArray(function(err, result) {
+      if (err) throw err;
+      db.close();
+      res.send(JSON.stringify(result));
     });
   });
 });
