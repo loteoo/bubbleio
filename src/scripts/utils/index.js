@@ -37,3 +37,14 @@ export const mergeUniqueId = (a, b, prop) => {
   var reduced =  a.filter( aitem => ! b.find ( bitem => aitem[prop] === bitem[prop]) )
   return reduced.concat(b);
 }
+
+
+export const isElementInViewport = (el) => {
+  var rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+  );
+}

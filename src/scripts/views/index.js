@@ -1,6 +1,6 @@
 import {h} from 'hyperapp'
 import {Link, Route} from "@hyperapp/router"
-import {timeSince} from '../utils/'
+import {timeSince, isElementInViewport} from '../utils/'
 
 
 
@@ -34,13 +34,14 @@ const bubbleView = (state, actions) => {
       state.currentBubble.threads = [];
     }
     return h("div", { class: "bubble-view" }, [
-      h("div", { class: "frame" }, [
+      h("div", { class: "frame", onscroll: (e) => { if (isElementInViewport(e.target.lastChild)) { actions.loadMoreThreads(e) } } }, [
         h("div", { class: "bubble-header" }, [
           Link({ to: "/" + name, class: "back" }),
           h("h2", {}, state.currentBubble.title)
         ]),
         h("ul", { class: "threads" }, state.currentBubble.threads.map(thread => threadItem(thread, state, actions))),
-        keyboardComponent(state, actions)
+        keyboardComponent(state, actions),
+        h("div", { class: "loadMore" })
       ])
     ])
   }
@@ -59,7 +60,7 @@ const threadItem = (thread, state, actions) => {
   } else if (thread.type == "youtube") {
     contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.content.youtubeId+"')" })
   }
-  return h("li", { class: thread.type, onclick: () => actions.location.go("/" + state.currentBubble.name + "/" + thread.id) }, [
+  return h("li", { class: thread.type, onclick: () => actions.location.go("/" + state.currentBubble.name + "/" + thread._id) }, [
     h("div", { class: "thread-header" }, [
       h("h4", {}, thread.title),
       h("p", {}, "by " + thread.author + " on " + state.currentBubble.name + " " + timeSince(thread.created))
@@ -76,6 +77,9 @@ const threadItem = (thread, state, actions) => {
 
 const threadView = (state, actions) => {
   if (state.currentThread) {
+    if (!state.currentThread.messages) {
+      state.currentThread.messages = [];
+    }
     return h("div", { class: "thread-view" }, [
       h("div", { class: "frame" }, [
         h("div", { class: "thread-header" }, [
@@ -139,7 +143,7 @@ export const view = (state, actions) => {
     }
     if (urlparts[2]) {
       // Update the temp thread object
-      state.currentThread = state.currentBubble.threads.find(thread => thread.id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+      state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
       state.currentView = "threadView"
     }
 

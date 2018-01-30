@@ -89,8 +89,22 @@ export const actions = {
     // TODO Threads should be re-ordered by our score algorithm
     return true
   },
-  updateUserData: userData => state => {
-    console.log(userData);
-    return { bubbles: mergeUniqueId(state.bubbles, userData, "_id") }
+  updateAppData: newData => state => {
+
+    let newState = {
+      bubbles: mergeUniqueId(state.bubbles, newData, "_id")
+    }
+
+    return newState;
+  },
+  loadMoreThreads: e => state => {
+    console.log("load more in "+state.currentBubble.name+" !");
+
+    // fetch(window.location.host + "/get/" + state.currentBubble.name)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //
+    //     console.log(data)
+    //   });
   }
 }
