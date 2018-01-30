@@ -5,16 +5,70 @@ var io = require('socket.io')(server);
 
 var mongo = require('mongodb').MongoClient;
 var objectId = require('mongodb').ObjectID;
-var mongo_url = "mongodb://localhost:27017/bubbleio";
+var mongo_url = "mongodb://localhost:27017/";
+var mongo_db = "bubbleio";
 var port = 80;
 
 
 
-app.use(express.static('build'))
+app.set('view engine', 'ejs');
+app.use(express.static('build'));
+
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/build/index.html');
+  mongo.connect(mongo_url, function(err, db) {
+    if (err) throw err;
+
+    var dbo = db.db(mongo_db);
+    dbo.collection("bubbles").find({}).toArray(function(err, result) {
+      if (err) throw err;
+
+      db.close();
+
+      res.render(__dirname + '/src/index', { userData: JSON.stringify(result) });
+    });
+  });
 });
 
+
+
+
+
+app.get('/:bubbleName', function(req, res) {
+  mongo.connect(mongo_url, function(err, db) {
+    if (err) throw err;
+
+    // TODO: only load first 30 posts from only the requested bubble
+
+    var dbo = db.db(mongo_db);
+    dbo.collection("bubbles").aggregate([
+      {
+        $lookup: {
+          from: 'threads',
+          localField: '_id',
+          foreignField: 'bubble_id',
+          as: 'threads'
+        }
+      }
+    ]).toArray(function(err, result) {
+      if (err) throw err;
+      db.close();
+      res.render(__dirname + '/src/index', { userData: JSON.stringify(result) });
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+// Manage socket connections
 io.on('connection', function (socket) {
   // socket.emit('news', { hello: 'world' });
 
@@ -22,28 +76,43 @@ io.on('connection', function (socket) {
 
 
   // Pass all received message to all clients
-  socket.on('new message', function (data) {
+  socket.on('new message', function (message) {
 
-    console.log(data);
+    console.log(message);
 
     // TODO: only emit message to clients that have the thread loaded (in bubble view)
     // SEE: https://socket.io/docs/rooms-and-namespaces/
-    socket.broadcast.emit('new message', data);
+    socket.broadcast.emit('new message', message);
   });
 
 
 
 
   // Pass all received thread to all clients
-  socket.on('new thread', function (data) {
+  socket.on('new thread', function (thread) {
 
 
 
-    console.log(data);
+    console.log(thread);
 
     // TODO: only emit thread to clients that have the bubble opened and visible
-    socket.broadcast.emit('new thread', data);
+    socket.broadcast.emit('new thread', thread);
   });
+
+
+
+
+
+
+  // Pass all received message to all clients
+  socket.on('thread upvote', function (threadId) {
+
+    console.log(threadId);
+
+
+    // socket.broadcast.emit('thread score update', data);
+  });
+
 
 
 
@@ -51,19 +120,6 @@ io.on('connection', function (socket) {
 
 
 
-
-
-// app.get('/get-data', function(req, res) {
-//   mongo.connect(mongo_url, function(err, db) {
-//
-//
-//     res.send('Hello, World!');
-//   });
-// });
-//
-// app.post('/insert', function(req, res){
-//
-// });
 
 
 

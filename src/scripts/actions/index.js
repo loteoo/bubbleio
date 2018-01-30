@@ -1,8 +1,12 @@
 import {location} from "@hyperapp/router"
+import {mergeUniqueId} from '../utils/'
 
 export const actions = {
   location: location.actions,
-  upvote: thread => ({ score: thread.score++ }),
+  upvote: thread => {
+    socket.emit('thread upvote', thread.id);
+    return { score: thread.score++ }
+  },
   expandKeyboard: status => {
     if (status == "closed") {
       return { keyboardStatus: "opened" }
@@ -84,5 +88,9 @@ export const actions = {
 
     // TODO Threads should be re-ordered by our score algorithm
     return true
+  },
+  updateUserData: userData => state => {
+    console.log(userData);
+    return { bubbles: mergeUniqueId(state.bubbles, userData, "_id") }
   }
 }

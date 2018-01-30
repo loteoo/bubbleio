@@ -31,3 +31,9 @@ export const timeSince = (date) => {
   }
 
 }
+
+
+export const mergeUniqueId = (a, b, prop) => {
+  var reduced =  a.filter( aitem => ! b.find ( bitem => aitem[prop] === bitem[prop]) )
+  return reduced.concat(b);
+}

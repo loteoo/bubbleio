@@ -411,7 +411,10 @@ footer {
 	width: 2em;
 	height: 2em;
 	margin-right: 1em;
-	background-color: #ccc;
+	background-image: url(../img/left-arrow.svg);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 .bubble-view h2 {
 	margin: 0;
@@ -521,7 +524,10 @@ footer {
 	width: 2em;
 	height: 2em;
 	margin-right: 1em;
-	background-color: #ccc;
+	background-image: url(../img/left-arrow.svg);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 .thread-view .thread-header h2 {
 	margin: 0;
@@ -600,11 +606,10 @@ footer {
 	left: 0.5rem;
 	width: 4rem;
 	height: 4rem;
-	background-color: #cccccc;
-	/* background-image: url(../img/arrow-right.svg); */
 	cursor: pointer;
-	background-position: 58% 50%;
-	background-size: 50%;
+	background-image: url(../img/plus.svg);
+	background-position: center;
+	background-size: 60%;
 	background-repeat: no-repeat;
 }
 .keyboard .expander .text,

@@ -30,10 +30,13 @@ const bubbleItem = ({ id, name, title, desc }) => (
 
 const bubbleView = (state, actions) => {
   if (state.currentBubble) {
+    if (!state.currentBubble.threads) {
+      state.currentBubble.threads = [];
+    }
     return h("div", { class: "bubble-view" }, [
       h("div", { class: "frame" }, [
         h("div", { class: "bubble-header" }, [
-          Link({ to: "/" + name, class: "back"  }),
+          Link({ to: "/" + name, class: "back" }),
           h("h2", {}, state.currentBubble.title)
         ]),
         h("ul", { class: "threads" }, state.currentBubble.threads.map(thread => threadItem(thread, state, actions))),

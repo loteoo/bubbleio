@@ -3,7 +3,7 @@ import {location} from "@hyperapp/router"
 export const state = {
   location: location.state,
   username: "loteoo",
-  bubbles,
+  bubbles: [],
   currentView: "globalView",
   currentBubble: null,
   currentThread: null,
