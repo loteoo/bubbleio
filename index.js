@@ -69,16 +69,6 @@ app.get('/:bubbleName', function(req, res) {
 
 
 
-app.get('/:bubbleName/:threadId', function(req, res) {
-   res.redirect('/' + req.params.bubbleName);
-});
-
-
-
-
-
-
-
 
 app.get('/get/:bubbleName', function(req, res) {
   mongo.connect(mongo_url, function(err, db) {
@@ -103,6 +93,16 @@ app.get('/get/:bubbleName', function(req, res) {
     });
   });
 });
+
+
+
+
+
+
+app.get('/:bubbleName/:threadId', function(req, res) {
+   res.redirect('/' + req.params.bubbleName);
+});
+
 
 
 
