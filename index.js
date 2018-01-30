@@ -18,12 +18,21 @@ app.get('/', function (req, res) {
   mongo.connect(mongo_url, function(err, db) {
     if (err) throw err;
 
+    // TODO: only load first 6 posts from all bubbles
+
     var dbo = db.db(mongo_db);
-    dbo.collection("bubbles").find({}).toArray(function(err, result) {
+    dbo.collection("bubbles").aggregate([
+      {
+        $lookup: {
+          from: 'threads',
+          localField: '_id',
+          foreignField: 'bubble_id',
+          as: 'threads'
+        }
+      }
+    ]).toArray(function(err, result) {
       if (err) throw err;
-
       db.close();
-
       res.render(__dirname + '/src/index', { userBubbles: JSON.stringify(result) });
     });
   });

@@ -138,10 +138,6 @@ export const view = (state, actions) => {
         state.currentBubble.threads = [];
       }
 
-      // 2 Threads minimum
-      if(state.currentBubble.threads.length < 2) {
-        actions.loadMoreThreads()
-      }
     }
     if (urlparts[2]) {
       // Update the temp thread object

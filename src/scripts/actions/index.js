@@ -97,7 +97,7 @@ export const actions = {
 
     return newState;
   },
-  loadMoreThreads: e => (state, actions) => {
+  loadMoreThreads: () => (state, actions) => {
     console.log("load more in "+state.currentBubble.name+" !");
 
     fetch("/get/" + state.currentBubble.name)
