@@ -11,8 +11,21 @@ var port = 80;
 
 
 
+
 app.set('view engine', 'ejs');
 app.use(express.static('build'));
+
+
+
+
+
+// Each bubble has a room.
+// Rooms help to group revelent sockets together
+// and contain temporary data such as user counts
+var rooms = {};
+
+
+
 
 app.get('/', function (req, res) {
   mongo.connect(mongo_url, function(err, db) {
@@ -24,6 +37,13 @@ app.get('/', function (req, res) {
     dbo.collection("bubbles").find({}).toArray(function(err, bubbles) {
       if (err) throw err;
       db.close();
+
+      // Inject user counts to bubbles
+      for (var i = 0; i < bubbles.length; i++) {
+        if (rooms[bubbles[i].name]) {
+          bubbles[i].userCount = rooms[bubbles[i].name].userCount;
+        }
+      }
       res.render(__dirname + '/src/index', { bubblesData: JSON.stringify(bubbles) });
     });
   });
@@ -58,7 +78,8 @@ app.get('/:bubbleName', function(req, res) {
             }
             res.render(__dirname + '/src/index', {
               bubblesData: JSON.stringify(bubbles),
-              threadsData: JSON.stringify(threadsData)
+              threadsData: JSON.stringify(threadsData),
+              joinBubble: req.params.bubbleName
             });
           });
 
@@ -120,11 +141,6 @@ app.get('/:bubbleName/:threadId', function(req, res) {
 // ================================
 // Manage socket connections
 // ================================
-
-
-var rooms = {}; // Each bubble has a room.
-// Rooms help to group revelent sockets together and contain temporary data such as user counts
-
 
 
 io.on('connection', function (socket) {

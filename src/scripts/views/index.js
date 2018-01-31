@@ -147,7 +147,7 @@ const threadItem = (thread, state, actions) => {
   } else if (thread.type == "youtube") {
     contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.content.youtubeId+"')" })
   }
-  return h("li", { class: thread.type + thread.status, onclick: () => {
+  return h("li", { class: thread.type, onclick: () => {
     socket.emit('join thread', {
       bubbleName: state.currentBubble.name,
       threadId: thread._id
