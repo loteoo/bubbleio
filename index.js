@@ -261,11 +261,10 @@ io.on('connection', function (socket) {
 
 
 
-
         socket.broadcast.to(threadData.bubble.name).emit('new thread', {
           bubbleName: threadData.bubble.name,
           threads: [
-            result
+            result["ops"][0]
           ]
         });
 
