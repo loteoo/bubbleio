@@ -6,7 +6,7 @@ var io = require('socket.io')(server);
 var mongo = require('mongodb').MongoClient;
 var objectId = require('mongodb').ObjectID;
 var mongo_url = "mongodb://localhost:27017/";
-var mongo_db = "bubbleio";
+var db_name = "bubbleio";
 var port = 80;
 
 
@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 
     // TODO: only load first 6 posts from all bubbles
 
-    var dbo = db.db(mongo_db);
+    var dbo = db.db(db_name);
     dbo.collection("bubbles").aggregate([
       {
         $lookup: {
@@ -48,7 +48,7 @@ app.get('/:bubbleName', function(req, res) {
 
     // TODO: only load first 30 posts from only the requested bubble
 
-    var dbo = db.db(mongo_db);
+    var dbo = db.db(db_name);
     dbo.collection("bubbles").aggregate([
       {
         $lookup: {
@@ -76,7 +76,7 @@ app.get('/get/:bubbleName', function(req, res) {
 
     // TODO: only load 30 posts from only the requested bubble
 
-    var dbo = db.db(mongo_db);
+    var dbo = db.db(db_name);
     dbo.collection("bubbles").aggregate([
       {
         $lookup: {
@@ -251,19 +251,22 @@ io.on('connection', function (socket) {
 
 
   // Pass all received message to all clients
-  socket.on('thread upvote', function (threadId) {
+  socket.on('thread upvote', function (upvoteData) {
     mongo.connect(mongo_url, function(err, db) {
       if (err) throw err;
 
-      var dbo = db.db(mongo_db);
+      var dbo = db.db(db_name);
 
 
-      dbo.collection("threads").findOneAndUpdate({ _id: threadId }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, doc) {
+      dbo.collection("threads").findOneAndUpdate({ '_id': objectId(upvoteData.threadId) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
         if (err) throw err;
-        console.log("thread: " + threadId);
-        console.log(doc);
         db.close();
-        socket.broadcast.emit('update thread data', doc);
+        console.log(result.value);
+        socket.broadcast.emit('update thread data', {
+          bubbleName: upvoteData.bubbleName,
+          threadId: upvoteData.threadId,
+          score: result.value.score
+        });
       });
 
     });

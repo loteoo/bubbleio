@@ -3,8 +3,11 @@ import {mergeUniqueId} from '../utils/'
 
 export const actions = {
   location: location.actions,
-  upvote: thread => {
-    socket.emit('thread upvote', thread._id);
+  upvote: thread => (state, actions) => {
+    socket.emit('thread upvote', {
+      bubbleName: state.currentBubble.name,
+      threadId: thread._id
+    });
     return { score: thread.score++ }
   },
   expandKeyboard: status => {
