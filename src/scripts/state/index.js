@@ -11,5 +11,6 @@ export const state = {
   },
   currentThread: null,
   keyboardVal: "",
-  keyboardStatus: "closed"
+  keyboardStatus: "closed",
+  gravity: 1.8
 }

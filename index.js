@@ -21,19 +21,10 @@ app.get('/', function (req, res) {
     // TODO: only load first 6 posts from all bubbles
 
     var dbo = db.db(db_name);
-    dbo.collection("bubbles").aggregate([
-      {
-        $lookup: {
-          from: 'threads',
-          localField: '_id',
-          foreignField: 'bubble_id',
-          as: 'threads'
-        }
-      }
-    ]).toArray(function(err, result) {
+    dbo.collection("bubbles").find({}).toArray(function(err, bubbles) {
       if (err) throw err;
       db.close();
-      res.render(__dirname + '/src/index', { userBubbles: JSON.stringify(result) });
+      res.render(__dirname + '/src/index', { bubblesData: JSON.stringify(bubbles) });
     });
   });
 });
@@ -48,20 +39,32 @@ app.get('/:bubbleName', function(req, res) {
 
     // TODO: only load first 30 posts from only the requested bubble
 
+
     var dbo = db.db(db_name);
-    dbo.collection("bubbles").aggregate([
-      {
-        $lookup: {
-          from: 'threads',
-          localField: '_id',
-          foreignField: 'bubble_id',
-          as: 'threads'
+    dbo.collection("bubbles").find({}).toArray(function(err, bubbles) {
+      if (err) throw err;
+
+      for (var i = 0; i < bubbles.length; i++) {
+        if (bubbles[i].name == req.params.bubbleName) {
+
+          dbo.collection("threads").find({ bubble_id: objectId(bubbles[i]._id) }).toArray(function(err, threads) {
+            if (err) throw err;
+            db.close();
+
+
+            let threadsData = {
+              bubbleName: req.params.bubbleName,
+              threads: threads
+            }
+            res.render(__dirname + '/src/index', {
+              bubblesData: JSON.stringify(bubbles),
+              threadsData: JSON.stringify(threadsData)
+            });
+          });
+
         }
       }
-    ]).toArray(function(err, result) {
-      if (err) throw err;
-      db.close();
-      res.render(__dirname + '/src/index', { userBubbles: JSON.stringify(result) });
+
     });
   });
 });
@@ -77,19 +80,19 @@ app.get('/get/:bubbleName', function(req, res) {
     // TODO: only load 30 posts from only the requested bubble
 
     var dbo = db.db(db_name);
-    dbo.collection("bubbles").aggregate([
-      {
-        $lookup: {
-          from: 'threads',
-          localField: '_id',
-          foreignField: 'bubble_id',
-          as: 'threads'
-        }
-      }
-    ]).toArray(function(err, result) {
+    dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
       if (err) throw err;
-      db.close();
-      res.send(JSON.stringify(result));
+      if (bubble) {
+        dbo.collection("threads").find({ bubble_id: objectId(bubble._id) }).toArray(function(err, threads) {
+          if (err) throw err;
+          db.close();
+          let threadsData = {
+            bubbleName: bubble.name,
+            threads: threads
+          }
+          res.send(JSON.stringify(threadsData));
+        });
+      }
     });
   });
 });
@@ -224,8 +227,6 @@ io.on('connection', function (socket) {
   // Pass all received message to all clients
   socket.on('new message', function (message) {
 
-    console.log(message);
-
     // TODO: only emit message to clients that have the thread loaded (in bubble view)
     // SEE: https://socket.io/docs/rooms-and-namespaces/
     socket.broadcast.emit('new message', message);
@@ -235,14 +236,35 @@ io.on('connection', function (socket) {
 
 
   // Pass all received thread to all clients
-  socket.on('new thread', function (thread) {
+  socket.on('new thread', function (threadData) {
+    mongo.connect(mongo_url, function(err, db) {
+      if (err) throw err;
+
+      var newThread = threadData.thread;
+      delete newThread._id;
+      delete newThread.tempId;
+      newThread.created = new Date().getTime();
+      newThread.score = 0;
+      newThread.bubble_id = objectId(threadData.bubble._id);
+
+      var dbo = db.db(db_name);
+      dbo.collection("threads").insertOne(newThread, function(err, result) {
+        if (err) throw err;
+
+        result.tempId = threadData.tempId;
 
 
+        // TODO: only emit thread to clients that have the bubble opened and visible
+        io.to(threadData.bubble.name).emit('new thread', {
+          bubbleName: threadData.bubble.name,
+          threads: [
+            result
+          ]
+        });
 
-    console.log(thread);
-
-    // TODO: only emit thread to clients that have the bubble opened and visible
-    socket.broadcast.emit('new thread', thread);
+        db.close();
+      });
+    });
   });
 
 
@@ -261,7 +283,7 @@ io.on('connection', function (socket) {
       dbo.collection("threads").findOneAndUpdate({ '_id': objectId(upvoteData.threadId) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
         if (err) throw err;
         db.close();
-        console.log(result.value);
+
         socket.broadcast.emit('update thread data', {
           bubbleName: upvoteData.bubbleName,
           threadId: upvoteData.threadId,

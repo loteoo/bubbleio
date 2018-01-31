@@ -94,10 +94,20 @@ const bubbleItem = (bubble, state, actions) => {
 
 
 const bubbleView = (state, actions) => {
+
+  // Score = (P-1) / (T+2)^G
+  //
+  // where,
+  // P = points of an item (and -1 is to negate submitters vote)
+  // T = time since submission (in hours)
+  // G = Gravity, defaults to 1.8 in news.arc
+
   if (state.currentBubble) {
     return h("div", { class: "bubble-view", bubblename: state.currentBubble.name, onupdate: (el, oldProps) => {
       if (oldProps.bubblename != state.currentBubble.name) {
-        console.log("switched room");
+        // User switched bubbles
+
+        actions.loadMoreThreads();
         if (!oldProps.bubblename) {
           oldProps.bubblename = null;
         }
@@ -126,6 +136,12 @@ const threadItem = (thread, state, actions) => {
   if (!thread.userCount) {
     thread.userCount = 0;
   }
+  if (thread._id == 0) {
+    thread.status = " disabled"
+  } else {
+    thread.status = ""
+  }
+
   let contentBlock;
   if (thread.type == "message") {
     contentBlock = null
@@ -136,7 +152,7 @@ const threadItem = (thread, state, actions) => {
   } else if (thread.type == "youtube") {
     contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.content.youtubeId+"')" })
   }
-  return h("li", { class: thread.type, onclick: () => {
+  return h("li", { class: thread.type + thread.status, onclick: () => {
     socket.emit('join thread', {
       bubbleName: state.currentBubble.name,
       threadId: thread._id

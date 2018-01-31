@@ -1,8 +1,9 @@
 import {location} from "@hyperapp/router"
-import {mergeUniqueId} from '../utils/'
+import {mergeUniqueId, generateUUID} from '../utils/'
 
 export const actions = {
   location: location.actions,
+  setGravity: gravity => ({gravity: gravity}),
   upvote: thread => (state, actions) => {
     socket.emit('thread upvote', {
       bubbleName: state.currentBubble.name,
@@ -21,15 +22,15 @@ export const actions = {
     e.preventDefault();
     if (e.target[0].value) {
 
-      // TODO : Timestamp should be calculated on the server when saving to DB
-      let timestamp = new Date().getTime(); // Milliseconds, not seconds, since epoch
-
+      let timestamp = new Date().getTime();
 
       if (state.currentView == "bubbleView") {
 
+
         // Create the thread object
         let thread = {
-          id: Math.floor(Math.random()*100),
+          tempId: generateUUID(),
+          _id: 0,
           title: e.target[0].value,
           score: 1,
           created: timestamp,
@@ -46,7 +47,10 @@ export const actions = {
 
 
         // Send new message to server
-        socket.emit('new thread', message);
+        socket.emit('new thread', {
+          bubble: state.currentBubble,
+          thread: thread
+        });
 
       } else {
 
@@ -100,13 +104,19 @@ export const actions = {
     // TODO Threads should be re-ordered by our score algorithm
     return true
   },
-  updateAppData: bubbles => state => {
-
-    let newState = {
-      bubbles: mergeUniqueId(state.bubbles, bubbles, "_id")
+  updateUserBubbles: bubblesData => (state, actions) => {
+    state.bubbles = mergeUniqueId(state.bubbles, bubblesData, "_id")
+    return true;
+  },
+  updateBubbleThreads: threadsData => (state, actions) => {
+    let bubble = state.bubbles.find(bubble => bubble.name === threadsData.bubbleName);
+    if (!bubble.threads) {
+      bubble.threads = [];
     }
-
-    return newState;
+    if (bubble) {
+      bubble.threads = mergeUniqueId(bubble.threads, threadsData.threads, "_id")
+    }
+    return true;
   },
   loadMoreThreads: () => (state, actions) => {
     console.log("load more in "+state.currentBubble.name+" !");
@@ -114,11 +124,10 @@ export const actions = {
     fetch("/get/" + state.currentBubble.name)
       .then(response => response.json())
       .then(data => {
-        actions.updateAppData(data)
+        actions.updateBubbleThreads(data)
       });
   },
   updateBubbleUserCounts: bubblesData => (state, actions) => {
-    console.log("updateBubbleUserCounts");
     Object.keys(bubblesData).forEach(function(bubbleName) {
       let bubble = state.bubbles.find(bubble => bubble.name === bubbleName);
       if (bubble) {
@@ -144,5 +153,13 @@ export const actions = {
       }
     }
     return true;
-  }
+  },
+  updateThreadId: threadData => (state, actions) => {
+    let bubble = state.bubbles.find(bubble => bubble.name === threadData.bubbleName);
+    let thread = bubble.threads.find(thread => thread._id === threadData.tempId);
+
+    thread._id = threadData.tempId;
+
+    return true;
+  },
 }
