@@ -136,11 +136,6 @@ const threadItem = (thread, state, actions) => {
   if (!thread.userCount) {
     thread.userCount = 0;
   }
-  if (thread._id == 0) {
-    thread.status = " disabled"
-  } else {
-    thread.status = ""
-  }
 
   let contentBlock;
   if (thread.type == "message") {

@@ -22,7 +22,7 @@
         main.updateUserBubbles(JSON.parse('<%- bubblesData %>'));
       <% } %>
       <% if (typeof(threadsData) !== 'undefined') { %>
-        main.updateBubbleThreads(JSON.parse('<%- threadsData %>'));
+        main.addBubbleThreads(JSON.parse('<%- threadsData %>'));
       <% } %>
     </script>
   </body>

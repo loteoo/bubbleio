@@ -29,4 +29,4 @@ window.socket.on('update bubble user counts', bubblesData => main.updateBubbleUs
 
 window.socket.on('update thread data', threadData => main.updateThreadData(threadData));
 
-window.socket.on('new thread', threadsData => main.updateBubbleThreads(threadsData));
+window.socket.on('new thread', threadsData => main.addBubbleThreads(threadsData));

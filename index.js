@@ -182,7 +182,10 @@ io.on('connection', function (socket) {
   // Handle thread user counts
   socket.on('join thread', function (threadData) {
 
-
+    // Initialize the room if it doesn't exist
+    if (typeof rooms[threadData.bubbleName] === "undefined") rooms[threadData.bubbleName] = {
+      userCount: 0
+    };
     // Initialize the thread if it doesn't exist in the room
     if (typeof rooms[threadData.bubbleName][threadData.threadId] === "undefined") rooms[threadData.bubbleName][threadData.threadId] = {
       userCount: 0
@@ -240,27 +243,33 @@ io.on('connection', function (socket) {
     mongo.connect(mongo_url, function(err, db) {
       if (err) throw err;
 
-      var newThread = threadData.thread;
-      delete newThread._id;
-      delete newThread.tempId;
-      newThread.created = new Date().getTime();
-      newThread.score = 0;
-      newThread.bubble_id = objectId(threadData.bubble._id);
+      console.log(threadData.thread._id);
+
+      var newThread = {
+        _id: objectId(threadData.thread._id),
+        title: threadData.thread.title,
+        score: 0,
+        created: new Date().getTime(),
+        author: threadData.thread.author,
+        type: threadData.thread.type,
+        bubble_id: objectId(threadData.bubble._id)
+      };
 
       var dbo = db.db(db_name);
-      dbo.collection("threads").insertOne(newThread, function(err, result) {
+      dbo.collection("threads").insert(newThread, function(err, result) {
         if (err) throw err;
 
-        result.tempId = threadData.tempId;
 
 
-        // TODO: only emit thread to clients that have the bubble opened and visible
-        io.to(threadData.bubble.name).emit('new thread', {
+
+        socket.broadcast.to(threadData.bubble.name).emit('new thread', {
           bubbleName: threadData.bubble.name,
           threads: [
             result
           ]
         });
+
+
 
         db.close();
       });
