@@ -24,6 +24,8 @@ app.use(express.static('build'));
 // and contain temporary data such as user counts
 var rooms = {};
 
+// TODO: remplacer par le nombre de connections dans la room:
+// var clients = io.sockets.clients('room'); // all users from room `room`
 
 
 
@@ -31,7 +33,6 @@ app.get('/', function (req, res) {
   mongo.connect(mongo_url, function(err, db) {
     if (err) throw err;
 
-    // TODO: only load first 6 posts from all bubbles
 
     var dbo = db.db(db_name);
     dbo.collection("bubbles").find({}).toArray(function(err, bubbles) {
