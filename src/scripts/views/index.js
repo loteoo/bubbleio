@@ -52,9 +52,9 @@ export const view = (state, actions) => {
     ])
 
   } else {
-    return h("form", { class: "loginForm" }, [
+    return h("form", { class: "loginForm", onsubmit: ev => { actions.login(ev); return false; } }, [
       h("h2", {}, "Chose a name"),
-      h("input", { type: "text" })
+      h("input", { type: "text", placeholder: "Type here..." })
     ])
   }
 }
@@ -222,13 +222,13 @@ const messageItem = ({ sender, message, created }, state) => {
 
 
 const keyboardComponent = (state, actions) => (
-  h("form", { class: "keyboard", onsubmit: ev => { actions.keyboardSubmit(ev); return false } }, [
+  h("form", { class: "keyboard", onsubmit: ev => { actions.keyboardSubmit(ev); return false; } }, [
     h("div", { class: "expander " + state.keyboardStatus, onclick: () => actions.expandKeyboard(state.keyboardStatus) }, [
       h("div", { class: "text", onclick: ev => { ev.stopPropagation() } }, "txt"),
       h("div", { class: "link", onclick: ev => { ev.stopPropagation() } }, "url"),
       h("div", { class: "picture", onclick: ev => { ev.stopPropagation() } }, "pic")
     ]),
-    h("input", { type: "text", value: state.keyboardVal }),
+    h("input", { type: "text", placeholder: "Type something...", value: state.keyboardVal }),
     h("button", { class: "submit", type: "submit" })
   ])
 )

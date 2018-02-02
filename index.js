@@ -188,6 +188,7 @@ io.on('connection', function (socket) {
 
 
 
+  // TODO: Refresh thread user counts on load in bubble view (like bubble countds on load)
 
 
   // Handle thread user counts
@@ -203,6 +204,7 @@ io.on('connection', function (socket) {
       threadId: threadData.threadId,
       userCount: getConnectionsInRoom(threadData.threadId)
     });
+    
   });
 
 

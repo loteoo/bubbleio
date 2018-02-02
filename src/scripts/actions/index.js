@@ -4,6 +4,10 @@ import {mergeUniqueId, ObjectId} from '../utils/'
 export const actions = {
   location: location.actions,
   setGravity: gravity => ({gravity: gravity}),
+  login: ev => state => {
+    ev.preventDefault();
+    return { username: ev.target[0].value }
+  },
   upvote: thread => (state, actions) => {
     socket.emit('thread upvote', {
       bubbleName: state.currentBubble.name,
@@ -18,9 +22,8 @@ export const actions = {
       return { keyboardStatus: "closed" }
     }
   },
-  keyboardSubmit: e => state => {
-    e.preventDefault();
-    if (e.target[0].value) {
+  keyboardSubmit: ev => state => {
+    if (ev.target[0].value) {
 
       let timestamp = new Date().getTime();
 
@@ -30,7 +33,7 @@ export const actions = {
         // Create the thread object
         let thread = {
           _id: ObjectId(),
-          title: e.target[0].value,
+          title: ev.target[0].value,
           score: 1,
           created: timestamp,
           type: "message",
@@ -61,7 +64,7 @@ export const actions = {
           threadId: state.currentThread._id,
           message: {
             sender: state.username,
-            message: e.target[0].value,
+            message: ev.target[0].value,
             created: timestamp
           }
         }
