@@ -101,7 +101,7 @@ export const actions = {
     return true
   },
   updateUserBubbles: bubblesData => (state, actions) => {
-    state.bubbles = mergeUniqueId(state.bubbles, bubblesData, "_id")
+    state.bubbles = mergeUniqueId(state.bubbles, bubblesData)
     return true;
   },
   updateBubbleUserCounts: userCounts => (state, actions) => {
@@ -119,7 +119,7 @@ export const actions = {
       bubble.threads = [];
     }
     if (bubble) {
-      bubble.threads = mergeUniqueId(bubble.threads, threadsData.threads, "_id")
+      bubble.threads = mergeUniqueId(bubble.threads, threadsData.threads)
     }
     return true;
   },
