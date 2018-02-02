@@ -1,5 +1,5 @@
 import {location} from "@hyperapp/router"
-import {mergeUniqueId, ObjectId} from '../utils/'
+import {mergeUniqueId, ObjectId, storeStateInStorage} from '../utils/'
 
 export const actions = {
   location: location.actions,
@@ -129,8 +129,14 @@ export const actions = {
     fetch("/get/" + state.currentBubble.name)
       .then(response => response.json())
       .then(data => {
-        actions.addBubbleThreads(data)
+
+        actions.addBubbleThreads(data);
+
+
+        storeStateInStorage(state);
+
       });
+
   },
   updateThreadData: threadData => (state, actions) => {
     console.log(threadData);

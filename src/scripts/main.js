@@ -15,7 +15,8 @@ import {view} from './views/'
 window.main = app(state, actions, view, document.querySelector("main"));
 
 // Activate our router
-const unsubscribe = location.subscribe(main.location)
+const unsubscribe = location.subscribe(main.location);
+
 
 
 

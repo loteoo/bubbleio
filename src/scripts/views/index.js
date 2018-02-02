@@ -14,8 +14,7 @@ export const view = (state, actions) => {
   if (state.username) {
 
 
-    var urlparts = state.location.pathname.split("/");
-
+    let urlparts = window.location.pathname.split("/");
 
     state.currentView = "globalView"
 
@@ -23,8 +22,10 @@ export const view = (state, actions) => {
       // Update the temp bubble object
       state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
       state.currentView = "bubbleView"
+
       if (!state.currentBubble.threads) {
         state.currentBubble.threads = [];
+        actions.loadMoreThreads();
       }
 
     }
@@ -41,14 +42,9 @@ export const view = (state, actions) => {
 
 
     return h("div", { class: "slider " + state.currentView }, [
-
       globalView(state, actions),
       bubbleView(state, actions),
       threadView(state, actions)
-
-      // Route({ path: "/", render: () => globalView(state) }),
-      // Route({ path: "/:bubble", render: () => bubbleView(state, actions) }),
-      // Route({ path: "/:bubble/:thread", render: () => threadView(state, actions) })
     ])
 
   } else {
@@ -101,13 +97,11 @@ const bubbleView = (state, actions) => {
   // P = points of an item (and -1 is to negate submitters vote)
   // T = time since submission (in hours)
   // G = Gravity, defaults to 1.8 in news.arc
-
   if (state.currentBubble) {
     return h("div", { class: "bubble-view", bubblename: state.currentBubble.name, onupdate: (el, oldProps) => {
       if (oldProps.bubblename != state.currentBubble.name) {
         // User switched bubbles
 
-        actions.loadMoreThreads();
         if (!oldProps.bubblename) {
           oldProps.bubblename = null;
         }
@@ -115,6 +109,8 @@ const bubbleView = (state, actions) => {
           prevRoom: oldProps.bubblename,
           nextRoom: state.currentBubble.name
         });
+
+
       }
     } }, [
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.lastChild)) { actions.loadMoreThreads() } } }, [

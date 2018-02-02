@@ -33,10 +33,43 @@ export const timeSince = (date) => {
 }
 
 
-export const mergeUniqueId = (a, b, prop) => {
-  var reduced =  a.filter( aitem => ! b.find ( bitem => aitem[prop] === bitem[prop]) )
-  return reduced.concat(b);
+// Can accept as mush arrays as you want as arguments,
+// Props from arrays on the right take priority over the ones on the left
+const mergeObjectProps = (target) => {
+    var sources = [].slice.call(arguments, 1);
+    sources.forEach(function (source) {
+        for (var prop in source) {
+            target[prop] = source[prop];
+        }
+    });
+    return target;
 }
+
+
+
+export const mergeUniqueId = (a, b) => {
+
+
+  // Merge objects that have the same id
+  // by updating the props of the old one with the ones of the new
+  for (var i = 0; i < a.length; i++) {
+    for (var j = 0; j < b.length; j++) {
+      if (a[i]["_id"] == b[j]["_id"]) {
+        a[i] = mergeObjectProps(a[i], b[j]);
+      }
+    }
+  }
+
+
+  // Create an array of the objects that are new, (not present in the first array)
+  var reduced = b.filter( bitem => ! a.find ( aitem => bitem["_id"] === aitem["_id"]) );
+
+
+  // Merge and return
+  return a.concat(reduced);
+}
+
+
 
 
 export const isElementInViewport = (el) => {
@@ -55,6 +88,6 @@ export const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toStrin
 
 
 
-export const getStateFromStorage = () => JSON.parse(window.localStorage.getItem('todoapp'))
+export const getStateFromStorage = () => JSON.parse(window.localStorage.getItem('bubbleio'))
 
-export const storeStateInStorage = (state) => window.localStorage.setItem('todoapp', JSON.stringify(state))
+export const storeStateInStorage = (state) => window.localStorage.setItem('bubbleio', JSON.stringify(state))
