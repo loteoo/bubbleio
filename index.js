@@ -19,13 +19,25 @@ app.use(express.static('build'));
 
 
 
-// Each bubble has a room.
-// Rooms help to group revelent sockets together
-// and contain temporary data such as user counts
-var rooms = {};
 
-// TODO: remplacer par le nombre de connections dans la room:
-// var clients = io.sockets.clients('room'); // all users from room `room`
+
+
+
+const getConnectionsInRoom = (roomName) => {
+  let room = [];
+  let allSockets = Object.keys(io.sockets.sockets);
+  for (var i = 0; i < allSockets.length; i++) {
+    let roomsOfSocket = Object.keys(io.sockets.adapter.sids[allSockets[i]]);
+    for (var j = 0; j < roomsOfSocket.length; j++) {
+      if (roomsOfSocket[j] == roomName) {
+        room.push(allSockets[i]);
+      }
+    }
+  }
+  return room.length;
+}
+
+
 
 
 
@@ -41,11 +53,11 @@ app.get('/', function (req, res) {
 
       // Inject user counts to bubbles
       for (var i = 0; i < bubbles.length; i++) {
-        if (rooms[bubbles[i].name]) {
-          bubbles[i].userCount = rooms[bubbles[i].name].userCount;
+        if (bubbles[i].name) {
+          bubbles[i].userCount = getConnectionsInRoom(bubbles[i].name);
         }
       }
-      res.render(__dirname + '/src/index', { bubblesData: JSON.stringify(bubbles) });
+      res.render(__dirname + '/src/index', { bubblesData: JSON.stringify(bubbles).replace(/'/g, "\\'") });
     });
   });
 });
@@ -78,8 +90,8 @@ app.get('/:bubbleName', function(req, res) {
               threads: threads
             }
             res.render(__dirname + '/src/index', {
-              bubblesData: JSON.stringify(bubbles),
-              threadsData: JSON.stringify(threadsData),
+              bubblesData: JSON.stringify(bubbles).replace(/'/g, "\\'"),
+              threadsData: JSON.stringify(threadsData).replace(/'/g, "\\'"),
               joinBubble: req.params.bubbleName
             });
           });
@@ -112,7 +124,7 @@ app.get('/get/:bubbleName', function(req, res) {
             bubbleName: bubble.name,
             threads: threads
           }
-          res.send(JSON.stringify(threadsData));
+          res.send(JSON.stringify(threadsData).replace(/'/g, "\\'"));
         });
       }
     });
@@ -134,7 +146,8 @@ app.get('/:bubbleName/:threadId', function(req, res) {
 
 
 
-
+// TODO: Use namespaces for bubbles and rooms for chats
+// namespaces need to be created every time a bubble is created and... complexityyyyyyy
 
 
 
@@ -147,9 +160,6 @@ app.get('/:bubbleName/:threadId', function(req, res) {
 io.on('connection', function (socket) {
 
 
-
-
-
   // Handle rooms user counts
   socket.on('switch room', function (navData) {
 
@@ -157,39 +167,23 @@ io.on('connection', function (socket) {
     if (navData.prevRoom) {
 
       // Leaves connection to the previous room
-      this.leave(navData.prevRoom);
+      socket.leave(navData.prevRoom);
 
-      // Calculate previous room user count
-      if (rooms[navData.prevRoom]) {
-        rooms[navData.prevRoom].userCount--;
-      } else {
-        rooms[navData.prevRoom] = {
-          userCount: 0
-        }
-      }
     }
 
 
     // Join connection to the new room
-    this.join(navData.nextRoom);
-
-    // Initialize the room if it doesn't exist
-    if (typeof rooms[navData.nextRoom] === "undefined") rooms[navData.nextRoom] = {
-      userCount: 0
-    };
-
-    // Calculate total users in room
-    rooms[navData.nextRoom].userCount++;
+    socket.join(navData.nextRoom);
 
 
     // Tell clients about the new user count in the room
 
     // TODO: send to all users who have this bubble or the previous one IN THEIR LIST
-    let newData = {};
-    newData[navData.nextRoom] = rooms[navData.nextRoom];
-    newData[navData.prevRoom] = rooms[navData.prevRoom];
-    socket.broadcast.emit("update bubble user counts", newData);
-    io.to(navData.nextRoom).emit("update bubble user counts", newData);
+    let bubbleUserCounts = {};
+    bubbleUserCounts[navData.nextRoom] = getConnectionsInRoom(navData.nextRoom);
+    bubbleUserCounts[navData.prevRoom] = getConnectionsInRoom(navData.prevRoom);
+    socket.broadcast.emit("update bubble user counts", bubbleUserCounts);
+    io.to(navData.nextRoom).emit("update bubble user counts", bubbleUserCounts);
   });
 
 
@@ -199,24 +193,15 @@ io.on('connection', function (socket) {
   // Handle thread user counts
   socket.on('join thread', function (threadData) {
 
-    // Initialize the room if it doesn't exist
-    if (typeof rooms[threadData.bubbleName] === "undefined") rooms[threadData.bubbleName] = {
-      userCount: 0
-    };
-    // Initialize the thread if it doesn't exist in the room
-    if (typeof rooms[threadData.bubbleName][threadData.threadId] === "undefined") rooms[threadData.bubbleName][threadData.threadId] = {
-      userCount: 0
-    };
+    // Join connection to the new room
+    socket.join(threadData.threadId);
 
-
-    // Calculate user count
-    rooms[threadData.bubbleName][threadData.threadId].userCount++;
 
     // Tell clients about the new user count in the thread
     io.to(threadData.bubbleName).emit("update thread data", {
       bubbleName: threadData.bubbleName,
       threadId: threadData.threadId,
-      userCount: rooms[threadData.bubbleName][threadData.threadId].userCount
+      userCount: getConnectionsInRoom(threadData.threadId)
     });
   });
 
@@ -227,18 +212,18 @@ io.on('connection', function (socket) {
   // Handle thread user counts
   socket.on('left thread', function (threadData) {
 
-    if (rooms[threadData.bubbleName][threadData.threadId]) { // If room exists
 
-      // Calculate user count
-      rooms[threadData.bubbleName][threadData.threadId].userCount--;
+    // Join connection to the new room
+    socket.leave(threadData.threadId);
 
-      // Tell clients about the new user count in the thread
-      io.to(threadData.bubbleName).emit("update thread data", {
-        bubbleName: threadData.bubbleName,
-        threadId: threadData.threadId,
-        userCount: rooms[threadData.bubbleName][threadData.threadId].userCount
-      });
-    }
+    // Tell clients about the new user count in the thread
+    io.to(threadData.bubbleName).emit("update thread data", {
+      bubbleName: threadData.bubbleName,
+      threadId: threadData.threadId,
+      userCount: getConnectionsInRoom(threadData.threadId)
+    });
+
+
   });
 
 

@@ -101,11 +101,11 @@ export const actions = {
     state.bubbles = mergeUniqueId(state.bubbles, bubblesData, "_id")
     return true;
   },
-  updateBubbleUserCounts: bubblesData => (state, actions) => {
-    Object.keys(bubblesData).forEach(function(bubbleName) {
+  updateBubbleUserCounts: userCounts => (state, actions) => {
+    Object.keys(userCounts).forEach(function(bubbleName) {
       let bubble = state.bubbles.find(bubble => bubble.name === bubbleName);
       if (bubble) {
-        bubble.userCount = bubblesData[bubbleName].userCount;
+        bubble.userCount = userCounts[bubbleName];
       }
     });
     return true;
@@ -143,7 +143,7 @@ export const actions = {
         if (threadData.score) {
           thread.score = threadData.score;
         }
-        
+
       }
     }
     return true;
