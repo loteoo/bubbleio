@@ -1,5 +1,6 @@
 import {location} from "@hyperapp/router"
 import {mergeUniqueId, ObjectId, storeStateInStorage} from '../utils/'
+import {deepmerge} from '../utils/deepmerge.js'
 
 export const actions = {
   location: location.actions,
@@ -101,7 +102,7 @@ export const actions = {
     return true
   },
   updateUserBubbles: bubblesData => (state, actions) => {
-    state.bubbles = mergeUniqueId(state.bubbles, bubblesData)
+    state.bubbles = deepmerge(state.bubbles, bubblesData)
     return true;
   },
   updateBubbleUserCounts: userCounts => (state, actions) => {
@@ -119,7 +120,7 @@ export const actions = {
       bubble.threads = [];
     }
     if (bubble) {
-      bubble.threads = mergeUniqueId(bubble.threads, threadsData.threads)
+      bubble.threads = deepmerge(bubble.threads, threadsData.threads)
     }
     return true;
   },

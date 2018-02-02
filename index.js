@@ -85,6 +85,15 @@ app.get('/:bubbleName', function(req, res) {
             db.close();
 
 
+            // Inject user counts to threads
+            for (var i = 0; i < threads.length; i++) {
+              if (threads[i]._id) {
+                threads[i].userCount = getConnectionsInRoom(threads[i]._id);
+              }
+            }
+
+
+
             let threadsData = {
               bubbleName: req.params.bubbleName,
               threads: threads
@@ -204,7 +213,7 @@ io.on('connection', function (socket) {
       threadId: threadData.threadId,
       userCount: getConnectionsInRoom(threadData.threadId)
     });
-    
+
   });
 
 
@@ -236,7 +245,7 @@ io.on('connection', function (socket) {
 
     // TODO: only emit message to clients that have the thread loaded (in bubble view)
     // SEE: https://socket.io/docs/rooms-and-namespaces/
-    socket.broadcast.emit('new message', message);
+    socket.broadcast.to(message.bubbleName).emit('new message', message);
   });
 
 
@@ -296,7 +305,7 @@ io.on('connection', function (socket) {
         if (err) throw err;
         db.close();
 
-        socket.broadcast.emit('update thread data', {
+        socket.broadcast.to(upvoteData.bubbleName).emit('update thread data', {
           bubbleName: upvoteData.bubbleName,
           threadId: upvoteData.threadId,
           score: result.value.score

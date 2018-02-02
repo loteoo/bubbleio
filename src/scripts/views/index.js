@@ -33,9 +33,6 @@ export const view = (state, actions) => {
       // Update the temp thread object
       state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
       state.currentView = "threadView"
-      if (!state.currentThread.messages) {
-        state.currentThread.messages = [];
-      }
     }
 
 
@@ -132,7 +129,10 @@ const threadItem = (thread, state, actions) => {
   if (!thread.userCount) {
     thread.userCount = 0;
   }
-
+  if (!thread.messages) {
+    thread.messages = [];
+  }
+  
   let contentBlock;
   if (thread.type == "message") {
     contentBlock = null
