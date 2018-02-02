@@ -124,7 +124,7 @@ app.get('/get/:bubbleName', function(req, res) {
             bubbleName: bubble.name,
             threads: threads
           }
-          res.send(JSON.stringify(threadsData).replace(/'/g, "\\'"));
+          res.send(JSON.stringify(threadsData));
         });
       }
     });
@@ -210,7 +210,7 @@ io.on('connection', function (socket) {
 
 
   // Handle thread user counts
-  socket.on('left thread', function (threadData) {
+  socket.on('leave thread', function (threadData) {
 
 
     // Join connection to the new room

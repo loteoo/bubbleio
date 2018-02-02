@@ -182,7 +182,7 @@ const threadView = (state, actions) => {
       h("div", { class: "frame" }, [
         h("div", { class: "thread-header" }, [
           h("div", { class: "back", onclick: () => {
-            socket.emit('left thread', {
+            socket.emit('leave thread', {
               bubbleName: state.currentBubble.name,
               threadId: state.currentThread._id
             });

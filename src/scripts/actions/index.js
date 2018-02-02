@@ -136,7 +136,7 @@ export const actions = {
       let thread = bubble.threads.find(thread => thread._id === threadData.threadId);
       if (thread) {
 
-        if (threadData.userCount) {
+        if (typeof threadData.userCount !== 'undefined') {
           thread.userCount = threadData.userCount;
         }
 
