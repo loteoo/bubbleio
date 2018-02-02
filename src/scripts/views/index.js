@@ -107,6 +107,7 @@ const bubbleView = (state, actions) => {
           nextRoom: state.currentBubble.name
         });
 
+        actions.loadMoreThreads();
 
       }
     } }, [
@@ -132,7 +133,7 @@ const threadItem = (thread, state, actions) => {
   if (!thread.messages) {
     thread.messages = [];
   }
-  
+
   let contentBlock;
   if (thread.type == "message") {
     contentBlock = null

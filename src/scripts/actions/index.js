@@ -1,5 +1,5 @@
 import {location} from "@hyperapp/router"
-import {mergeUniqueId, ObjectId, storeStateInStorage} from '../utils/'
+import {ObjectId, storeStateInStorage} from '../utils/'
 import {deepmerge} from '../utils/deepmerge.js'
 
 export const actions = {
@@ -41,7 +41,6 @@ export const actions = {
           author: state.username
         }
 
-        console.log(thread._id);
 
         // Append thread to list
         state.currentBubble.threads.unshift(thread)
@@ -140,7 +139,6 @@ export const actions = {
 
   },
   updateThreadData: threadData => (state, actions) => {
-    console.log(threadData);
     let bubble = state.bubbles.find(bubble => bubble.name === threadData.bubbleName);
     if (bubble) {
       let thread = bubble.threads.find(thread => thread._id === threadData.threadId);
