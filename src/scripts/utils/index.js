@@ -33,45 +33,6 @@ export const timeSince = (date) => {
 }
 
 
-// Can accept as mush arrays as you want as arguments,
-// Props from arrays on the right take priority over the ones on the left
-const mergeObjectProps = (target) => {
-    var sources = [].slice.call(arguments, 1);
-    sources.forEach(function (source) {
-        for (var prop in source) {
-            if (Array.isArray(prop)) {
-            } else {
-              target[prop] = source[prop];
-            }
-        }
-    });
-    return target;
-}
-
-
-
-export const mergeUniqueId = (a, b) => {
-
-
-  // Merge objects that have the same id
-  // by updating the props of the old one with the ones of the new
-  for (var i = 0; i < a.length; i++) {
-    for (var j = 0; j < b.length; j++) {
-      if (a[i]["_id"] == b[j]["_id"]) {
-        a[i] = mergeObjectProps(a[i], b[j]);
-      }
-    }
-  }
-
-
-  // Create an array of the objects that are new, (not present in the first array)
-  var reduced = b.filter( bitem => ! a.find ( aitem => bitem["_id"] === aitem["_id"]) );
-
-
-  // Merge and return
-  return a.concat(reduced);
-}
-
 
 
 
