@@ -21,10 +21,10 @@
       <% if (typeof(state) !== 'undefined') { %>
         main.updateState(JSON.parse('<%- state %>'));
       <% } %>
-      <% if (typeof(joinBubble) !== 'undefined') { %>
+      <% if (typeof(joinRoom) !== 'undefined') { %>
         socket.emit('switch room', {
           prevRoom: null,
-          nextRoom: '<%- joinBubble %>'
+          nextRoom: '<%- joinRoom %>'
         });
       <% } %>
     </script>

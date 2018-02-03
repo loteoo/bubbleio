@@ -107,7 +107,7 @@ app.get('/:bubbleName', function(req, res) {
 
             res.render(__dirname + '/src/index', {
               state: JSON.stringify(newState).replace(/'/g, "\\'"),
-              joinBubble: leId
+              joinRoom: leId
             });
           });
 
