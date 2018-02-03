@@ -46,7 +46,7 @@ export const view = (state, actions) => {
 
   } else {
     return h("form", { class: "loginForm", onsubmit: ev => { actions.login(ev); return false; } }, [
-      h("h2", {}, "Chose a name"),
+      h("h2", {}, "Pick a name"),
       h("input", { type: "text", placeholder: "Type here..." })
     ])
   }

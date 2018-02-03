@@ -239,8 +239,9 @@ input,
 textarea {
 	border: 0;
 	width: 100%;
-	padding: 0.5em 1em;
+	padding: 0.5em 0;
 	line-height:  2;
+  color: inherit;
 }
 
 input:focus,
@@ -669,6 +670,24 @@ footer {
 
 
 
+
+
+/*------------------------------------*\
+    Login form
+\*------------------------------------*/
+
+.loginForm {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	padding: 3em;
+}
+
+.loginForm input {
+	border-bottom: 2px solid #cccccc;
+}
 
 
 /*------------------------------------*\
