@@ -57,7 +57,8 @@ app.get('/', function (req, res) {
           bubbles[i].userCount = getConnectionsInRoom(bubbles[i].name);
         }
       }
-      res.render(__dirname + '/src/index', { bubblesData: JSON.stringify(bubbles).replace(/'/g, "\\'") });
+
+      res.render(__dirname + '/src/index', { state: JSON.stringify({ bubbles: bubbles }).replace(/'/g, "\\'") });
     });
   });
 });
@@ -188,11 +189,21 @@ io.on('connection', function (socket) {
     // Tell clients about the new user count in the room
 
     // TODO: send to all users who have this bubble or the previous one IN THEIR LIST
-    let bubbleUserCounts = {};
-    bubbleUserCounts[navData.nextRoom] = getConnectionsInRoom(navData.nextRoom);
-    bubbleUserCounts[navData.prevRoom] = getConnectionsInRoom(navData.prevRoom);
-    socket.broadcast.emit("update bubble user counts", bubbleUserCounts);
-    io.to(navData.nextRoom).emit("update bubble user counts", bubbleUserCounts);
+    let newState = {
+      bubbles: [
+        {
+          _id: navData.nextRoom,
+          userCount: getConnectionsInRoom(navData.nextRoom)
+        },
+        {
+          _id: navData.prevRoom,
+          userCount: getConnectionsInRoom(navData.prevRoom)
+        }
+      ]
+    };
+
+    socket.broadcast.emit("update bubble user counts", newState);
+    io.to(navData.nextRoom).emit("update bubble user counts", newState);
   });
 
 

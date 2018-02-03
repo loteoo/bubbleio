@@ -5,9 +5,11 @@
   "main": "index.js",
   "dependencies": {
     "@hyperapp/router": "^0.4.1",
+    "deepmerge": "^2.0.1",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "hyperapp": "^1.0.2",
+    "is-mergeable-object": "^1.1.0",
     "mongodb": "^3.0.2",
     "socket.io": "^2.0.4"
   },

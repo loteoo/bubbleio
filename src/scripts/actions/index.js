@@ -2,6 +2,30 @@ import {location} from "@hyperapp/router"
 import {ObjectId, storeStateInStorage} from '../utils/'
 import {deepmerge} from '../utils/deepmerge.js'
 
+
+
+const mergeUniqueId = (a, b, options) =>  {
+
+
+  // Merge objects that have the same id
+  // by updating the props of the old one with the ones of the new
+  for (var i = 0; i < a.length; i++) {
+    for (var j = 0; j < b.length; j++) {
+      if (a[i]["_id"] == b[j]["_id"]) {
+        a[i] = deepmerge(a[i], b[j], options);
+      }
+    }
+  }
+
+
+  // Create an array of the objects that are new, (not present in the first array)
+  var reduced = b.filter( bitem => ! a.find ( aitem => bitem["_id"] === aitem["_id"]) );
+
+
+  // Merge and return
+  return a.concat(reduced);
+}
+
 export const actions = {
   location: location.actions,
   setGravity: gravity => ({gravity: gravity}),
@@ -100,26 +124,14 @@ export const actions = {
 
     return true
   },
-  updateUserBubbles: bubblesData => (state, actions) => {
-    state.bubbles = deepmerge(state.bubbles, bubblesData)
-    return true;
-  },
-  updateBubbleUserCounts: userCounts => (state, actions) => {
-    Object.keys(userCounts).forEach(function(bubbleName) {
-      let bubble = state.bubbles.find(bubble => bubble.name === bubbleName);
-      if (bubble) {
-        bubble.userCount = userCounts[bubbleName];
-      }
-    });
-    return true;
-  },
+  updateState: newState => state => deepmerge(state, newState, { arrayMerge: mergeUniqueId }),
   addBubbleThreads: threadsData => (state, actions) => {
     let bubble = state.bubbles.find(bubble => bubble.name === threadsData.bubbleName);
     if (!bubble.threads) {
       bubble.threads = [];
     }
     if (bubble) {
-      bubble.threads = deepmerge(bubble.threads, threadsData.threads)
+      bubble.threads = deepmerge(bubble.threads, threadsData.threads, { arrayMerge: mergeUniqueId })
     }
     return true;
   },

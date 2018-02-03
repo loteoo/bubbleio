@@ -18,8 +18,8 @@
     <script src="/js/main.min.js"></script>
 
     <script>
-      <% if (typeof(bubblesData) !== 'undefined') { %>
-        main.updateUserBubbles(JSON.parse('<%- bubblesData %>'));
+      <% if (typeof(state) !== 'undefined') { %>
+        main.updateState(JSON.parse('<%- state %>'));
       <% } %>
       <% if (typeof(threadsData) !== 'undefined') { %>
         main.addBubbleThreads(JSON.parse('<%- threadsData %>'));

@@ -95,19 +95,21 @@ const bubbleView = (state, actions) => {
   // T = time since submission (in hours)
   // G = Gravity, defaults to 1.8 in news.arc
   if (state.currentBubble) {
-    return h("div", { class: "bubble-view", bubblename: state.currentBubble.name, onupdate: (el, oldProps) => {
-      if (oldProps.bubblename != state.currentBubble.name) {
+    return h("div", { class: "bubble-view", _id: state.currentBubble._id, onupdate: (el, oldProps) => {
+      if (oldProps._id != state.currentBubble._id) {
         // User switched bubbles
 
-        if (!oldProps.bubblename) {
-          oldProps.bubblename = null;
+        if (!oldProps._id) {
+          oldProps._id = null;
         }
         socket.emit('switch room', {
-          prevRoom: oldProps.bubblename,
-          nextRoom: state.currentBubble.name
+          prevRoom: oldProps._id,
+          nextRoom: state.currentBubble._id
         });
 
         actions.loadMoreThreads();
+
+        console.log(state);
 
       }
     } }, [
