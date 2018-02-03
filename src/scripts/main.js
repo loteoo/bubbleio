@@ -27,8 +27,4 @@ console.log(state);
 
 window.socket.on('new message', message => main.receiveMessage(message));
 
-window.socket.on('update bubble user counts', newState => main.updateState(newState));
-
-window.socket.on('update thread data', newState => main.updateState(newState));
-
-window.socket.on('new thread', newState => main.updateState(newState));
+window.socket.on('update state', newState => main.updateState(newState));

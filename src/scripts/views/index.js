@@ -147,10 +147,7 @@ const threadItem = (thread, state, actions) => {
     contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.content.youtubeId+"')" })
   }
   return h("li", { class: thread.type, onclick: () => {
-    socket.emit('join thread', {
-      bubbleName: state.currentBubble.name,
-      threadId: thread._id
-    });
+    socket.emit('join thread', thread);
     actions.location.go("/" + state.currentBubble.name + "/" + thread._id);
   } }, [
     h("div", { class: "thread-header" }, [
@@ -181,10 +178,7 @@ const threadView = (state, actions) => {
       h("div", { class: "frame" }, [
         h("div", { class: "thread-header" }, [
           h("div", { class: "back", onclick: () => {
-            socket.emit('leave thread', {
-              bubbleName: state.currentBubble.name,
-              threadId: state.currentThread._id
-            });
+            socket.emit('leave thread', state.currentThread);
             actions.location.go("/" + state.currentBubble.name);
           } }),
           h("h2", {}, state.currentThread.title)
@@ -197,16 +191,16 @@ const threadView = (state, actions) => {
 }
 
 
-const messageItem = ({ sender, message, created }, state) => {
+const messageItem = (message, state) => {
   let provenance;
-  if (sender == state.username) {
+  if (message.sender == state.username) {
     provenance = "sent"
   } else {
     provenance = "received"
   }
   return h("li", { class: provenance }, [
-    h("div", { class: "content" }, message),
-    h("div", { class: "info" }, sender + " " + timeSince(created))
+    h("div", { class: "content" }, message.message),
+    h("div", { class: "info" }, message.sender + " " + timeSince(message.created))
   ])
 }
 

@@ -207,8 +207,8 @@ io.on('connection', function (socket) {
       ]
     };
 
-    socket.broadcast.emit("update bubble user counts", newState);
-    io.to(navData.nextRoom).emit("update bubble user counts", newState);
+    socket.broadcast.emit("update state", newState);
+    io.to(navData.nextRoom).emit("update state", newState);
   });
 
 
@@ -217,18 +217,28 @@ io.on('connection', function (socket) {
 
 
   // Handle thread user counts
-  socket.on('join thread', function (threadData) {
+  socket.on('join thread', function (thread) {
 
     // Join connection to the new room
-    socket.join(threadData.threadId);
+    socket.join(thread._id);
 
+
+    let newState = {
+      bubbles: [
+        {
+          _id: thread.bubble_id,
+          threads: [
+            {
+              _id: thread._id,
+              userCount: getConnectionsInRoom(thread._id)
+            }
+          ]
+        },
+      ]
+    };
 
     // Tell clients about the new user count in the thread
-    io.to(threadData.bubbleName).emit("update thread data", {
-      bubbleName: threadData.bubbleName,
-      threadId: threadData.threadId,
-      userCount: getConnectionsInRoom(threadData.threadId)
-    });
+    io.to(thread.bubble_id).emit("update state", newState);
 
   });
 
@@ -237,18 +247,28 @@ io.on('connection', function (socket) {
 
 
   // Handle thread user counts
-  socket.on('leave thread', function (threadData) {
+  socket.on('leave thread', function (thread) {
 
 
     // Join connection to the new room
-    socket.leave(threadData.threadId);
+    socket.leave(thread._id);
 
+
+    let newState = {
+      bubbles: [
+        {
+          _id: thread.bubble_id,
+          threads: [
+            {
+              _id: thread._id,
+              userCount: getConnectionsInRoom(thread._id)
+            }
+          ]
+        },
+      ]
+    };
     // Tell clients about the new user count in the thread
-    io.to(threadData.bubbleName).emit("update thread data", {
-      bubbleName: threadData.bubbleName,
-      threadId: threadData.threadId,
-      userCount: getConnectionsInRoom(threadData.threadId)
-    });
+    io.to(thread.bubble_id).emit("update state", newState);
 
 
   });
@@ -259,9 +279,23 @@ io.on('connection', function (socket) {
   // Pass all received message to all clients
   socket.on('new message', function (message) {
 
-    // TODO: only emit message to clients that have the thread loaded (in bubble view)
-    // SEE: https://socket.io/docs/rooms-and-namespaces/
-    socket.broadcast.to(message.bubbleName).emit('new message', message);
+    let newState = {
+      bubbles: [
+        {
+          _id: message.bubble_id,
+          threads: [
+            {
+              _id: message.thread_id,
+              messages: [
+                message
+              ]
+            }
+          ]
+        },
+      ]
+    };
+
+    socket.broadcast.to(message.bubble_id).emit('update state', newState);
   });
 
 
@@ -295,7 +329,7 @@ io.on('connection', function (socket) {
         ]
       };
 
-      socket.broadcast.to(thread.bubble_id).emit('new thread', newState);
+      socket.broadcast.to(thread.bubble_id).emit('update state', newState);
 
       var dbo = db.db(db_name);
       dbo.collection("threads").insert(newThread, function(err, result) {
@@ -337,7 +371,7 @@ io.on('connection', function (socket) {
           ]
         };
 
-        socket.broadcast.to(thread.bubble_id).emit('update thread data', newState);
+        socket.broadcast.to(thread.bubble_id).emit('update state', newState);
       });
 
     });

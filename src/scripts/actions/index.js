@@ -45,6 +45,7 @@ export const actions = {
     }
   },
   keyboardSubmit: ev => state => {
+    ev.preventDefault();
     if (ev.target[0].value) {
 
       let timestamp = new Date().getTime();
@@ -80,17 +81,16 @@ export const actions = {
 
         // Create the message object
         let message = {
-          bubbleName: state.currentBubble.name,
-          threadId: state.currentThread._id,
-          message: {
-            sender: state.username,
-            message: ev.target[0].value,
-            created: timestamp
-          }
+          _id: ObjectId(),
+          bubble_id: state.currentThread.bubble_id,
+          thread_id: state.currentThread._id,
+          sender: state.username,
+          message: ev.target[0].value,
+          created: timestamp
         }
 
         // Append message to list
-        state.currentThread.messages.push(message.message)
+        state.currentThread.messages.push(message)
 
 
         // Send new message to server
@@ -127,16 +127,6 @@ export const actions = {
     console.log(state);
     return deepmerge(state, newState, { arrayMerge: mergeUniqueId })
   },
-  addBubbleThreads: threadsData => (state, actions) => {
-    let bubble = state.bubbles.find(bubble => bubble.name === threadsData.bubbleName);
-    if (!bubble.threads) {
-      bubble.threads = [];
-    }
-    if (bubble) {
-      bubble.threads = deepmerge(bubble.threads, threadsData.threads, { arrayMerge: mergeUniqueId })
-    }
-    return true;
-  },
   loadMoreThreads: () => (state, actions) => {
     console.log("load more in "+state.currentBubble.name+" !");
 
@@ -152,22 +142,4 @@ export const actions = {
       });
 
   },
-  updateThreadData: threadData => (state, actions) => {
-    let bubble = state.bubbles.find(bubble => bubble.name === threadData.bubbleName);
-    if (bubble) {
-      let thread = bubble.threads.find(thread => thread._id === threadData.threadId);
-      if (thread) {
-
-        if (typeof threadData.userCount !== 'undefined') {
-          thread.userCount = threadData.userCount;
-        }
-
-        if (threadData.score) {
-          thread.score = threadData.score;
-        }
-
-      }
-    }
-    return true;
-  }
 }
