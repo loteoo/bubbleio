@@ -81,28 +81,33 @@ app.get('/:bubbleName', function(req, res) {
       for (var i = 0; i < bubbles.length; i++) {
         if (bubbles[i].name == req.params.bubbleName) {
 
-          dbo.collection("threads").find({ bubble_id: objectId(bubbles[i]._id) }).toArray(function(err, threads) {
+          let leId = bubbles[i]._id;
+
+          dbo.collection("threads").find({ bubble_id: objectId(leId) }).toArray(function(err, threads) {
             if (err) throw err;
             db.close();
 
 
             // Inject user counts to threads
-            for (var i = 0; i < threads.length; i++) {
-              if (threads[i]._id) {
-                threads[i].userCount = getConnectionsInRoom(threads[i]._id);
+            for (var j = 0; j < threads.length; j++) {
+              if (threads[j]._id) {
+                threads[j].userCount = getConnectionsInRoom(threads[j]._id);
               }
             }
 
 
+            let newState = {
+              bubbles: [
+                {
+                  _id: leId,
+                  threads: threads
+                }
+              ]
+            };
 
-            let threadsData = {
-              bubbleName: req.params.bubbleName,
-              threads: threads
-            }
             res.render(__dirname + '/src/index', {
-              bubblesData: JSON.stringify(bubbles).replace(/'/g, "\\'"),
-              threadsData: JSON.stringify(threadsData).replace(/'/g, "\\'"),
-              joinBubble: req.params.bubbleName
+              state: JSON.stringify(newState).replace(/'/g, "\\'"),
+              joinBubble: leId
             });
           });
 
@@ -263,37 +268,38 @@ io.on('connection', function (socket) {
 
 
   // Pass all received thread to all clients
-  socket.on('new thread', function (threadData) {
+  socket.on('new thread', function (thread) {
     mongo.connect(mongo_url, function(err, db) {
       if (err) throw err;
 
-      console.log(threadData.thread._id);
-
       var newThread = {
-        _id: objectId(threadData.thread._id),
-        title: threadData.thread.title,
+        _id: objectId(thread._id),
+        title: thread.title,
         score: 0,
         created: new Date().getTime(),
-        author: threadData.thread.author,
-        type: threadData.thread.type,
-        bubble_id: objectId(threadData.bubble._id)
+        author: thread.author,
+        type: thread.type,
+        bubble_id: objectId(thread.bubble_id)
       };
+
+
+
+      let newState = {
+        bubbles: [
+          {
+            _id: thread.bubble_id,
+            threads: [
+              newThread
+            ]
+          },
+        ]
+      };
+
+      socket.broadcast.to(thread.bubble_id).emit('new thread', newState);
 
       var dbo = db.db(db_name);
       dbo.collection("threads").insert(newThread, function(err, result) {
         if (err) throw err;
-
-
-
-        socket.broadcast.to(threadData.bubble.name).emit('new thread', {
-          bubbleName: threadData.bubble.name,
-          threads: [
-            result["ops"][0]
-          ]
-        });
-
-
-
         db.close();
       });
     });
@@ -305,22 +311,33 @@ io.on('connection', function (socket) {
 
 
   // Pass all received message to all clients
-  socket.on('thread upvote', function (upvoteData) {
+  socket.on('thread upvote', function (thread) {
     mongo.connect(mongo_url, function(err, db) {
       if (err) throw err;
 
       var dbo = db.db(db_name);
 
 
-      dbo.collection("threads").findOneAndUpdate({ '_id': objectId(upvoteData.threadId) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
+      dbo.collection("threads").findOneAndUpdate({ '_id': objectId(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
         if (err) throw err;
         db.close();
 
-        socket.broadcast.to(upvoteData.bubbleName).emit('update thread data', {
-          bubbleName: upvoteData.bubbleName,
-          threadId: upvoteData.threadId,
-          score: result.value.score
-        });
+
+        let newState = {
+          bubbles: [
+            {
+              _id: thread.bubble_id,
+              threads: [
+                {
+                  _id: thread._id,
+                  score: result.value.score
+                }
+              ]
+            },
+          ]
+        };
+
+        socket.broadcast.to(thread.bubble_id).emit('update thread data', newState);
       });
 
     });

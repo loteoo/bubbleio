@@ -34,10 +34,7 @@ export const actions = {
     return { username: ev.target[0].value }
   },
   upvote: thread => (state, actions) => {
-    socket.emit('thread upvote', {
-      bubbleName: state.currentBubble.name,
-      threadId: thread._id
-    });
+    socket.emit('thread upvote', thread);
     return { score: thread.score++ }
   },
   expandKeyboard: status => {
@@ -62,12 +59,14 @@ export const actions = {
           score: 1,
           created: timestamp,
           type: "message",
-          author: state.username
+          author: state.username,
+          bubble_id: state.currentBubble._id
         }
 
 
         // Append thread to list
         state.currentBubble.threads.unshift(thread)
+
         setTimeout(() => { // Scroll to top after the re-render/update cycle has ended (to include the new element's height)
           var threadList = document.querySelector(".bubble-view .frame");
           threadList.scrollTop = 0;
@@ -75,10 +74,7 @@ export const actions = {
 
 
         // Send new message to server
-        socket.emit('new thread', {
-          bubble: state.currentBubble,
-          thread: thread
-        });
+        socket.emit('new thread', thread);
 
       } else {
 
@@ -124,7 +120,13 @@ export const actions = {
 
     return true
   },
-  updateState: newState => state => deepmerge(state, newState, { arrayMerge: mergeUniqueId }),
+  updateState: newState => state => {
+    console.log("State updated");
+    console.log(newState);
+    console.log("Previous state:");
+    console.log(state);
+    return deepmerge(state, newState, { arrayMerge: mergeUniqueId })
+  },
   addBubbleThreads: threadsData => (state, actions) => {
     let bubble = state.bubbles.find(bubble => bubble.name === threadsData.bubbleName);
     if (!bubble.threads) {

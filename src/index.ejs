@@ -22,7 +22,7 @@
         main.updateState(JSON.parse('<%- state %>'));
       <% } %>
       <% if (typeof(threadsData) !== 'undefined') { %>
-        main.addBubbleThreads(JSON.parse('<%- threadsData %>'));
+        // main.addBubbleThreads(JSON.parse('<%- threadsData %>'));
       <% } %>
       <% if (typeof(joinBubble) !== 'undefined') { %>
         socket.emit('switch room', {

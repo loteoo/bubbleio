@@ -17,6 +17,7 @@ window.main = app(state, actions, view, document.querySelector("main"));
 // Activate our router
 const unsubscribe = location.subscribe(main.location);
 
+console.log(state);
 
 
 
@@ -28,6 +29,6 @@ window.socket.on('new message', message => main.receiveMessage(message));
 
 window.socket.on('update bubble user counts', newState => main.updateState(newState));
 
-window.socket.on('update thread data', threadData => main.updateThreadData(threadData));
+window.socket.on('update thread data', newState => main.updateState(newState));
 
-window.socket.on('new thread', threadsData => main.addBubbleThreads(threadsData));
+window.socket.on('new thread', newState => main.updateState(newState));
