@@ -25,6 +25,5 @@ console.log(state);
 // Received event handlers
 // ======================================================================
 
-window.socket.on('new message', message => main.receiveMessage(message));
 
 window.socket.on('update state', newState => main.updateState(newState));

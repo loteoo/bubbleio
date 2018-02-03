@@ -106,20 +106,6 @@ export const actions = {
       return true
     }
   },
-  receiveMessage: message => state => {
-
-    // Append received message to message list
-    let bubble = state.bubbles.find(bubble => bubble.name === message.bubbleName); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
-    let thread = bubble.threads.find(thread => thread._id === message.threadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
-    thread.messages.push(message.message);
-
-    setTimeout(() => { // TODO: do something less sketchy
-      var messagesList = document.querySelector(".thread-view .frame");
-      messagesList.scrollTop = messagesList.scrollHeight;
-    }, 10);
-
-    return true
-  },
   updateState: newState => state => {
     console.log("State updated");
     console.log(newState);
@@ -134,7 +120,7 @@ export const actions = {
       .then(response => response.json())
       .then(data => {
 
-        actions.addBubbleThreads(data);
+        actions.updateState(data);
 
 
         storeStateInStorage(state);

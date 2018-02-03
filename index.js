@@ -135,11 +135,15 @@ app.get('/get/:bubbleName', function(req, res) {
         dbo.collection("threads").find({ bubble_id: objectId(bubble._id) }).toArray(function(err, threads) {
           if (err) throw err;
           db.close();
-          let threadsData = {
-            bubbleName: bubble.name,
-            threads: threads
-          }
-          res.send(JSON.stringify(threadsData));
+
+          bubble["threads"] = threads;
+
+          let newState = {
+            bubbles: [
+              bubble
+            ]
+          };
+          res.send(JSON.stringify(newState));
         });
       }
     });
