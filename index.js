@@ -54,7 +54,7 @@ app.get('/', function (req, res) {
       // Inject user counts to bubbles
       for (var i = 0; i < bubbles.length; i++) {
         if (bubbles[i].name) {
-          bubbles[i].userCount = getConnectionsInRoom(bubbles[i].name);
+          bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
         }
       }
 
