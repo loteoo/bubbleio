@@ -1,3 +1,5 @@
+import {deepmerge} from '../utils/deepmerge.js'
+
 export const timeSince = (date) => {
 
   var seconds = Math.floor((new Date() - date) / 1000);
@@ -55,3 +57,30 @@ export const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toStrin
 export const getStateFromStorage = () => JSON.parse(window.localStorage.getItem('bubbleio'))
 
 export const storeStateInStorage = (state) => window.localStorage.setItem('bubbleio', JSON.stringify(state))
+
+
+
+
+
+
+export const mergeUniqueId = (a, b, options) =>  {
+
+
+  // Merge objects that have the same id
+  // by updating the props of the old one with the ones of the new
+  for (var i = 0; i < a.length; i++) {
+    for (var j = 0; j < b.length; j++) {
+      if (a[i]["_id"] == b[j]["_id"]) {
+        a[i] = deepmerge(a[i], b[j], options);
+      }
+    }
+  }
+
+
+  // Create an array of the objects that are new, (not present in the first array)
+  var reduced = b.filter( bitem => ! a.find ( aitem => bitem["_id"] === aitem["_id"]) );
+
+
+  // Merge and return
+  return a.concat(reduced);
+}

@@ -21,8 +21,6 @@ app.use(express.static('build'));
 
 
 
-
-
 const getConnectionsInRoom = (roomName) => {
   let room = [];
   let allSockets = Object.keys(io.sockets.sockets);
@@ -46,7 +44,7 @@ app.get('/', function (req, res) {
     if (err) throw err;
 
 
-    var dbo = db.db(db_name);
+    let dbo = db.db(db_name);
     dbo.collection("bubbles").find({}).toArray(function(err, bubbles) {
       if (err) throw err;
       db.close();
@@ -72,7 +70,7 @@ app.get('/:bubbleName', function(req, res) {
     // TODO: only load first 30 posts from only the requested bubble
 
 
-    var dbo = db.db(db_name);
+    let dbo = db.db(db_name);
     dbo.collection("bubbles").findOne({}, function(err, bubble) {
       if (err) throw err;
       if (bubble.name == req.params.bubbleName) {
@@ -114,14 +112,15 @@ app.get('/:bubbleName', function(req, res) {
 
 
 
-
+// Acts as a micro API for threads
+// For ajax requests such as "load more"
 app.get('/get/:bubbleName', function(req, res) {
   mongo.connect(mongo_url, function(err, db) {
     if (err) throw err;
 
     // TODO: only load 30 posts from only the requested bubble
 
-    var dbo = db.db(db_name);
+    let dbo = db.db(db_name);
     dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
       if (err) throw err;
       if (bubble) {
@@ -154,6 +153,48 @@ app.get('/get/:bubbleName', function(req, res) {
 
 
 
+
+// Acts as a micro API for messages
+// For ajax requests such as "load more"
+app.get('/get/:bubbleName/:threadId', function(req, res) {
+  mongo.connect(mongo_url, function(err, db) {
+    if (err) throw err;
+
+    // TODO: only load 30 messages from only the requested bubble
+
+    let dbo = db.db(db_name);
+    dbo.collection("threads").findOne({_id: req.params.threadId}, function(err, thread) {
+      if (err) throw err;
+      if (thread) {
+        dbo.collection("messages").find({ thread_id: objectId(thread._id) }).toArray(function(err, messages) {
+          if (err) throw err;
+          db.close();
+
+
+          thread.messages = messages;
+
+          let newState = {
+            bubbles: [
+              {
+                _id: thread.bubble_id,
+                threads: [
+                  thread
+                ]
+              }
+            ]
+          };
+          res.send(JSON.stringify(newState));
+        });
+      }
+    });
+  });
+});
+
+
+
+
+
+
 app.get('/:bubbleName/:threadId', function(req, res) {
    res.redirect('/' + req.params.bubbleName);
 });
@@ -163,9 +204,6 @@ app.get('/:bubbleName/:threadId', function(req, res) {
 
 
 
-
-// TODO: Use namespaces for bubbles and rooms for chats
-// namespaces need to be created every time a bubble is created and... complexityyyyyyy
 
 
 
@@ -178,10 +216,10 @@ app.get('/:bubbleName/:threadId', function(req, res) {
 io.on('connection', function (socket) {
 
 
-  // Handle rooms user counts
+  // Handle rooms user counts from user navigation in the app
   socket.on('switch room', function (navData) {
 
-
+    // Temporary state object to send to the clients
     let newState = {
       bubbles : []
     }
@@ -190,9 +228,10 @@ io.on('connection', function (socket) {
     // If user was in an other room before this
     if (navData.prevRoomId) {
 
-      // Leaves connection to the previous room
+      // Leave connection to the previous room
       socket.leave(navData.prevRoomId);
 
+      // Add the new bubble count to the next state update
       newState.bubbles.push({
           _id: navData.prevRoomId,
           userCount: getConnectionsInRoom(navData.prevRoomId)
@@ -203,23 +242,20 @@ io.on('connection', function (socket) {
     // Join connection to the new room
     socket.join(navData.nextRoomId);
 
+    // Add the new bubble count to the next state update
     newState.bubbles.push({
       _id: navData.nextRoomId,
       userCount: getConnectionsInRoom(navData.nextRoomId)
     });
 
 
-    // Tell clients about the new user count in the room
 
-    // TODO: send to all users who have this bubble or the previous one IN THEIR LIST
-
+    // Update clients
     socket.broadcast.emit("update state", newState);
-    io.to(navData.nextRoomId).emit("update state", newState);
+    io.to(navData.nextRoomId).emit("update state", newState); // TODO: do this better, not twice
   });
 
 
-
-  // TODO: Refresh thread user counts on load in bubble view (like bubble countds on load)
 
 
   // Handle thread user counts
@@ -228,23 +264,20 @@ io.on('connection', function (socket) {
     // Join connection to the new room
     socket.join(thread._id);
 
+    // Update the thread's user count
+    thread.userCount = getConnectionsInRoom(thread._id);
 
-    let newState = {
+    // Update clients
+    io.to(thread.bubble_id).emit("update state", {
       bubbles: [
         {
           _id: thread.bubble_id,
           threads: [
-            {
-              _id: thread._id,
-              userCount: getConnectionsInRoom(thread._id)
-            }
+            thread
           ]
         },
       ]
-    };
-
-    // Tell clients about the new user count in the thread
-    io.to(thread.bubble_id).emit("update state", newState);
+    });
 
   });
 
@@ -256,89 +289,53 @@ io.on('connection', function (socket) {
   socket.on('leave thread', function (thread) {
 
 
-    // Join connection to the new room
+    // Leave connection to the new room
     socket.leave(thread._id);
 
+    // Update the thread's user count
+    thread.userCount = getConnectionsInRoom(thread._id);
 
-    let newState = {
+    // Update clients
+    io.to(thread.bubble_id).emit("update state", {
       bubbles: [
         {
           _id: thread.bubble_id,
           threads: [
-            {
-              _id: thread._id,
-              userCount: getConnectionsInRoom(thread._id)
-            }
+            thread
           ]
         },
       ]
-    };
-    // Tell clients about the new user count in the thread
-    io.to(thread.bubble_id).emit("update state", newState);
+    });
 
 
   });
 
 
 
-
-  // Pass all received message to all clients
-  socket.on('new message', function (message) {
-
-    let newState = {
-      bubbles: [
-        {
-          _id: message.bubble_id,
-          threads: [
-            {
-              _id: message.thread_id,
-              messages: [
-                message
-              ]
-            }
-          ]
-        },
-      ]
-    };
-
-    socket.broadcast.to(message.bubble_id).emit('update state', newState);
-  });
 
 
 
 
   // Pass all received thread to all clients
   socket.on('new thread', function (thread) {
+
+    // Update clients
+    socket.broadcast.to(thread.bubble_id).emit('update state', {
+      bubbles: [
+        {
+          _id: thread.bubble_id,
+          threads: [
+            thread
+          ]
+        },
+      ]
+    });
+
+    // Update DB
     mongo.connect(mongo_url, function(err, db) {
       if (err) throw err;
-
-      var newThread = {
-        _id: objectId(thread._id),
-        title: thread.title,
-        score: 0,
-        created: new Date().getTime(),
-        author: thread.author,
-        type: thread.type,
-        bubble_id: objectId(thread.bubble_id)
-      };
-
-
-
-      let newState = {
-        bubbles: [
-          {
-            _id: thread.bubble_id,
-            threads: [
-              newThread
-            ]
-          },
-        ]
-      };
-
-      socket.broadcast.to(thread.bubble_id).emit('update state', newState);
-
-      var dbo = db.db(db_name);
-      dbo.collection("threads").insert(newThread, function(err, result) {
+      let dbo = db.db(db_name);
+      dbo.collection("threads").insert(thread, function(err, result) {
         if (err) throw err;
         db.close();
       });
@@ -352,34 +349,72 @@ io.on('connection', function (socket) {
 
   // Pass all received message to all clients
   socket.on('thread upvote', function (thread) {
+
+    // Increase score
+    thread.score++;
+
+
+    // Update clients
+    socket.broadcast.to(thread.bubble_id).emit('update state', {
+      bubbles: [
+        {
+          _id: thread.bubble_id,
+          threads: [
+            thread
+          ]
+        },
+      ]
+    });
+
+
+    // Update DB
     mongo.connect(mongo_url, function(err, db) {
       if (err) throw err;
-
-      var dbo = db.db(db_name);
-
-
+      let dbo = db.db(db_name);
       dbo.collection("threads").findOneAndUpdate({ '_id': objectId(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
         if (err) throw err;
         db.close();
-
-
-        let newState = {
-          bubbles: [
-            {
-              _id: thread.bubble_id,
-              threads: [
-                {
-                  _id: thread._id,
-                  score: result.value.score
-                }
-              ]
-            },
-          ]
-        };
-
-        socket.broadcast.to(thread.bubble_id).emit('update state', newState);
       });
+    });
+  });
 
+
+
+
+
+
+
+
+
+
+  // Pass all received message to all clients
+  socket.on('new message', function (message) {
+
+    // Update clients
+    socket.broadcast.to(message.bubble_id).emit('update state', {
+      bubbles: [
+        {
+          _id: message.bubble_id,
+          threads: [
+            {
+              _id: message.thread_id,
+              messages: [
+                message
+              ]
+            }
+          ]
+        }
+      ]
+    });
+
+    // Update DB
+    mongo.connect(mongo_url, function(err, db) {
+      if (err) throw err;
+      let dbo = db.db(db_name);
+      dbo.collection("messages").insert(message, function(err, result) {
+        if (err) throw err;
+        db.close();
+      });
     });
   });
 

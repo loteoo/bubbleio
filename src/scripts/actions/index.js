@@ -1,30 +1,7 @@
 import {location} from "@hyperapp/router"
-import {ObjectId, storeStateInStorage} from '../utils/'
+import {ObjectId, storeStateInStorage, mergeUniqueId} from '../utils/'
 import {deepmerge} from '../utils/deepmerge.js'
 
-
-
-const mergeUniqueId = (a, b, options) =>  {
-
-
-  // Merge objects that have the same id
-  // by updating the props of the old one with the ones of the new
-  for (var i = 0; i < a.length; i++) {
-    for (var j = 0; j < b.length; j++) {
-      if (a[i]["_id"] == b[j]["_id"]) {
-        a[i] = deepmerge(a[i], b[j], options);
-      }
-    }
-  }
-
-
-  // Create an array of the objects that are new, (not present in the first array)
-  var reduced = b.filter( bitem => ! a.find ( aitem => bitem["_id"] === aitem["_id"]) );
-
-
-  // Merge and return
-  return a.concat(reduced);
-}
 
 export const actions = {
   location: location.actions,
@@ -57,7 +34,7 @@ export const actions = {
         let thread = {
           _id: ObjectId(),
           title: ev.target[0].value,
-          score: 1,
+          score: 0,
           created: timestamp,
           type: "message",
           author: state.username,
