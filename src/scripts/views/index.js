@@ -8,8 +8,6 @@ import {timeSince, isElementInViewport} from '../utils/'
 // Application root
 export const view = (state, actions) => {
 
-  // console.log("Rendered");
-
   // If logged in
   if (state.username) {
 
@@ -69,7 +67,6 @@ const globalView = (state, actions) => (
 
 
 const bubbleItem = (bubble, state, actions) => {
-  console.log(bubble);
   let userCount = "";
   if (bubble.userCount) {
     userCount = " (" + bubble.userCount + ")";
@@ -174,8 +171,16 @@ const threadItem = (thread, state, actions) => {
 
 const threadView = (state, actions) => {
   if (state.currentThread) {
-    return h("div", { class: "thread-view" }, [
-      h("div", { class: "frame" }, [
+    return h("div", { class: "thread-view", _id: state.currentThread._id, onupdate: (el, oldProps) => {
+      if (oldProps._id != state.currentThread._id) {
+
+        // User switched thread
+        actions.loadMoreMessages();
+
+      }
+    } }, [
+      h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.firstChild)) { actions.loadMoreMessages() } } }, [
+        h("div", { class: "loadMoreMessages" }),
         h("div", { class: "thread-header" }, [
           h("div", { class: "back", onclick: () => {
             socket.emit('leave thread', state.currentThread);

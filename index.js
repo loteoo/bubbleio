@@ -39,79 +39,6 @@ const getConnectionsInRoom = (roomName) => {
 
 
 
-app.get('/', function (req, res) {
-  mongo.connect(mongo_url, function(err, db) {
-    if (err) throw err;
-
-
-    let dbo = db.db(db_name);
-    dbo.collection("bubbles").find({}).toArray(function(err, bubbles) {
-      if (err) throw err;
-      db.close();
-
-      // Inject user counts to threads
-      for (bubble in bubbles) {
-        bubble.userCount = getConnectionsInRoom(bubble._id);
-      }
-
-      res.render(__dirname + '/src/index', { state: JSON.stringify({ bubbles: bubbles }).replace(/'/g, "\\'") });
-    });
-  });
-});
-
-
-
-
-
-app.get('/:bubbleName', function(req, res) {
-  mongo.connect(mongo_url, function(err, db) {
-    if (err) throw err;
-
-    // TODO: only load first 30 posts from only the requested bubble
-
-
-    let dbo = db.db(db_name);
-    dbo.collection("bubbles").findOne({}, function(err, bubble) {
-      if (err) throw err;
-      if (bubble.name == req.params.bubbleName) {
-
-
-
-        dbo.collection("threads").find({ bubble_id: objectId(bubble._id) }).toArray(function(err, threads) {
-          if (err) throw err;
-          db.close();
-
-
-          // Inject user counts to threads
-          for (thread in threads) {
-            thread.userCount = getConnectionsInRoom(thread._id);
-          }
-
-
-          bubble.threads = threads;
-
-          let newState = {
-            bubbles: [
-              bubble
-            ]
-          };
-
-
-
-          res.render(__dirname + '/src/index', {
-            state: JSON.stringify(newState).replace(/'/g, "\\'"),
-            joinRoom: bubble._id
-          });
-        });
-
-      }
-    });
-  });
-});
-
-
-
-
 // Acts as a micro API for threads
 // For ajax requests such as "load more"
 app.get('/get/:bubbleName', function(req, res) {
@@ -123,7 +50,7 @@ app.get('/get/:bubbleName', function(req, res) {
     let dbo = db.db(db_name);
     dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
       if (err) throw err;
-      if (bubble) {
+      if (bubble) { // If bubble actually exists
         dbo.collection("threads").find({ bubble_id: objectId(bubble._id) }).toArray(function(err, threads) {
           if (err) throw err;
           db.close();
@@ -163,9 +90,9 @@ app.get('/get/:bubbleName/:threadId', function(req, res) {
     // TODO: only load 30 messages from only the requested bubble
 
     let dbo = db.db(db_name);
-    dbo.collection("threads").findOne({_id: req.params.threadId}, function(err, thread) {
+    dbo.collection("threads").findOne({_id: objectId(req.params.threadId)}, function(err, thread) {
       if (err) throw err;
-      if (thread) {
+      if (thread) { // If thread actually exists
         dbo.collection("messages").find({ thread_id: objectId(thread._id) }).toArray(function(err, messages) {
           if (err) throw err;
           db.close();
@@ -194,10 +121,121 @@ app.get('/get/:bubbleName/:threadId', function(req, res) {
 
 
 
+// On browser load
+app.get('/', function (req, res) {
+  mongo.connect(mongo_url, function(err, db) {
+    if (err) throw err;
 
-app.get('/:bubbleName/:threadId', function(req, res) {
-   res.redirect('/' + req.params.bubbleName);
+
+    let dbo = db.db(db_name);
+    dbo.collection("bubbles").find({}).toArray(function(err, bubbles) {
+      if (err) throw err;
+      db.close();
+
+      // Inject user counts to threads
+      for (bubble in bubbles) {
+        bubble.userCount = getConnectionsInRoom(bubble._id);
+      }
+
+      res.render(__dirname + '/src/index', { state: JSON.stringify({ bubbles: bubbles }).replace(/'/g, "\\'") });
+    });
+  });
 });
+
+
+
+
+// On browser load
+app.get('/:bubbleName', function(req, res) {
+  mongo.connect(mongo_url, function(err, db) {
+    if (err) throw err;
+
+    // TODO: only load first 30 posts from only the requested bubble
+
+
+    let dbo = db.db(db_name);
+    dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
+      if (err) throw err;
+      if (bubble) { // If bubble actually exists
+        dbo.collection("threads").find({ bubble_id: objectId(bubble._id) }).toArray(function(err, threads) {
+          if (err) throw err;
+          db.close();
+
+
+          // Inject user counts to threads
+          for (thread in threads) {
+            thread.userCount = getConnectionsInRoom(thread._id);
+          }
+
+
+          bubble.threads = threads;
+
+          let newState = {
+            bubbles: [
+              bubble
+            ]
+          };
+
+
+
+          res.render(__dirname + '/src/index', {
+            state: JSON.stringify(newState).replace(/'/g, "\\'"),
+            joinBubble: bubble._id
+          });
+        });
+      }
+    });
+  });
+});
+
+
+
+
+
+// On browser load
+app.get('/:bubbleName/:threadId', function(req, res) {
+  mongo.connect(mongo_url, function(err, db) {
+    if (err) throw err;
+
+    // TODO: only load 30 messages from only the requested bubble
+
+    let dbo = db.db(db_name);
+    dbo.collection("threads").findOne({_id: objectId(req.params.threadId)}, function(err, thread) {
+      if (err) throw err;
+      if (thread) { // If thread actually exists
+        dbo.collection("messages").find({ thread_id: objectId(thread._id) }).toArray(function(err, messages) {
+          if (err) throw err;
+          db.close();
+
+
+          thread.messages = messages;
+
+          let newState = {
+            bubbles: [
+              {
+                _id: thread.bubble_id,
+                threads: [
+                  thread
+                ]
+              }
+            ]
+          };
+
+          res.render(__dirname + '/src/index', {
+            state: JSON.stringify(newState).replace(/'/g, "\\'"),
+            joinBubble: thread.bubble_id,
+            joinThread: JSON.stringify(thread).replace(/'/g, "\\'")
+          });
+        });
+      }
+    });
+  });
+});
+
+
+
+
+
 
 
 
@@ -391,7 +429,7 @@ io.on('connection', function (socket) {
   socket.on('new message', function (message) {
 
     // Update clients
-    socket.broadcast.to(message.bubble_id).emit('update state', {
+    socket.broadcast.to(message.thread_id).emit('update state', {
       bubbles: [
         {
           _id: message.bubble_id,
@@ -406,6 +444,12 @@ io.on('connection', function (socket) {
         }
       ]
     });
+
+
+    // Proper indexes for mongodb
+    message._id = objectId(message._id);
+    message.bubble_id = objectId(message.bubble_id);
+    message.thread_id = objectId(message.thread_id);
 
     // Update DB
     mongo.connect(mongo_url, function(err, db) {

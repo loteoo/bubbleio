@@ -68,6 +68,8 @@ export const mergeUniqueId = (a, b, options) =>  {
 
   // Merge objects that have the same id
   // by updating the props of the old one with the ones of the new
+
+  // TODO: use Array.map instead
   for (var i = 0; i < a.length; i++) {
     for (var j = 0; j < b.length; j++) {
       if (a[i]["_id"] == b[j]["_id"]) {

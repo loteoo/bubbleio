@@ -8,7 +8,7 @@ export const actions = {
   setGravity: gravity => ({gravity: gravity}),
   login: ev => state => {
     ev.preventDefault();
-    return { username: ev.target[0].value }
+    return { username: ev.target[0].value };
   },
   upvote: thread => (state, actions) => {
     socket.emit('thread upvote', thread);
@@ -51,7 +51,7 @@ export const actions = {
         }, 10)
 
 
-        // Send new message to server
+        // Send new thread to server
         socket.emit('new thread', thread);
 
       } else {
@@ -86,14 +86,27 @@ export const actions = {
   updateState: newState => state => {
     console.log("State updated");
     console.log(newState);
-    console.log("Previous state:");
-    console.log(state);
     return deepmerge(state, newState, { arrayMerge: mergeUniqueId })
   },
   loadMoreThreads: () => (state, actions) => {
     console.log("load more in "+state.currentBubble.name+" !");
 
     fetch("/get/" + state.currentBubble.name)
+      .then(response => response.json())
+      .then(data => {
+
+        actions.updateState(data);
+
+
+        storeStateInStorage(state);
+
+      });
+
+  },
+  loadMoreMessages: () => (state, actions) => {
+    console.log("load messages in "+state.currentThread.title+" !");
+
+    fetch("/get/" + state.currentBubble.name + "/" + state.currentThread._id)
       .then(response => response.json())
       .then(data => {
 
