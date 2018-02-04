@@ -69,6 +69,7 @@ const globalView = (state, actions) => (
 
 
 const bubbleItem = (bubble, state, actions) => {
+  console.log(bubble);
   let userCount = "";
   if (bubble.userCount) {
     userCount = " (" + bubble.userCount + ")";
@@ -103,13 +104,12 @@ const bubbleView = (state, actions) => {
           oldProps._id = null;
         }
         socket.emit('switch room', {
-          prevRoom: oldProps._id,
-          nextRoom: state.currentBubble._id
+          prevRoomId: oldProps._id,
+          nextRoomId: state.currentBubble._id
         });
 
         actions.loadMoreThreads();
 
-        console.log(state);
 
       }
     } }, [

@@ -23,8 +23,8 @@
       <% } %>
       <% if (typeof(joinRoom) !== 'undefined') { %>
         socket.emit('switch room', {
-          prevRoom: null,
-          nextRoom: '<%- joinRoom %>'
+          prevRoomId: null,
+          nextRoomId: '<%- joinRoom %>'
         });
       <% } %>
     </script>

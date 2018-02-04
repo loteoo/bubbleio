@@ -51,11 +51,9 @@ app.get('/', function (req, res) {
       if (err) throw err;
       db.close();
 
-      // Inject user counts to bubbles
-      for (var i = 0; i < bubbles.length; i++) {
-        if (bubbles[i].name) {
-          bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
-        }
+      // Inject user counts to threads
+      for (bubble in bubbles) {
+        bubble.userCount = getConnectionsInRoom(bubble._id);
       }
 
       res.render(__dirname + '/src/index', { state: JSON.stringify({ bubbles: bubbles }).replace(/'/g, "\\'") });
@@ -75,45 +73,40 @@ app.get('/:bubbleName', function(req, res) {
 
 
     var dbo = db.db(db_name);
-    dbo.collection("bubbles").find({}).toArray(function(err, bubbles) {
+    dbo.collection("bubbles").findOne({}, function(err, bubble) {
       if (err) throw err;
-
-      for (var i = 0; i < bubbles.length; i++) {
-        if (bubbles[i].name == req.params.bubbleName) {
-
-          let leId = bubbles[i]._id;
-
-          dbo.collection("threads").find({ bubble_id: objectId(leId) }).toArray(function(err, threads) {
-            if (err) throw err;
-            db.close();
+      if (bubble.name == req.params.bubbleName) {
 
 
-            // Inject user counts to threads
-            for (var j = 0; j < threads.length; j++) {
-              if (threads[j]._id) {
-                threads[j].userCount = getConnectionsInRoom(threads[j]._id);
-              }
-            }
+
+        dbo.collection("threads").find({ bubble_id: objectId(bubble._id) }).toArray(function(err, threads) {
+          if (err) throw err;
+          db.close();
 
 
-            let newState = {
-              bubbles: [
-                {
-                  _id: leId,
-                  threads: threads
-                }
-              ]
-            };
+          // Inject user counts to threads
+          for (thread in threads) {
+            thread.userCount = getConnectionsInRoom(thread._id);
+          }
 
-            res.render(__dirname + '/src/index', {
-              state: JSON.stringify(newState).replace(/'/g, "\\'"),
-              joinRoom: leId
-            });
+
+          bubble.threads = threads;
+
+          let newState = {
+            bubbles: [
+              bubble
+            ]
+          };
+
+
+
+          res.render(__dirname + '/src/index', {
+            state: JSON.stringify(newState).replace(/'/g, "\\'"),
+            joinRoom: bubble._id
           });
+        });
 
-        }
       }
-
     });
   });
 });
@@ -136,7 +129,13 @@ app.get('/get/:bubbleName', function(req, res) {
           if (err) throw err;
           db.close();
 
-          bubble["threads"] = threads;
+
+          // Inject user counts to threads
+          for (thread in threads) {
+            thread.userCount = getConnectionsInRoom(thread._id);
+          }
+
+          bubble.threads = threads;
 
           let newState = {
             bubbles: [
@@ -182,37 +181,40 @@ io.on('connection', function (socket) {
   // Handle rooms user counts
   socket.on('switch room', function (navData) {
 
+
+    let newState = {
+      bubbles : []
+    }
+
+
     // If user was in an other room before this
-    if (navData.prevRoom) {
+    if (navData.prevRoomId) {
 
       // Leaves connection to the previous room
-      socket.leave(navData.prevRoom);
+      socket.leave(navData.prevRoomId);
 
+      newState.bubbles.push({
+          _id: navData.prevRoomId,
+          userCount: getConnectionsInRoom(navData.prevRoomId)
+      });
     }
 
 
     // Join connection to the new room
-    socket.join(navData.nextRoom);
+    socket.join(navData.nextRoomId);
+
+    newState.bubbles.push({
+      _id: navData.nextRoomId,
+      userCount: getConnectionsInRoom(navData.nextRoomId)
+    });
 
 
     // Tell clients about the new user count in the room
 
     // TODO: send to all users who have this bubble or the previous one IN THEIR LIST
-    let newState = {
-      bubbles: [
-        {
-          _id: navData.nextRoom,
-          userCount: getConnectionsInRoom(navData.nextRoom)
-        },
-        {
-          _id: navData.prevRoom,
-          userCount: getConnectionsInRoom(navData.prevRoom)
-        }
-      ]
-    };
 
     socket.broadcast.emit("update state", newState);
-    io.to(navData.nextRoom).emit("update state", newState);
+    io.to(navData.nextRoomId).emit("update state", newState);
   });
 
 

@@ -17,7 +17,7 @@ window.main = app(state, actions, view, document.querySelector("main"));
 // Activate our router
 const unsubscribe = location.subscribe(main.location);
 
-console.log(state);
+
 
 
 
