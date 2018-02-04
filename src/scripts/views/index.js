@@ -153,7 +153,8 @@ const threadItem = (thread, state, actions) => {
     ]),
     contentBlock,
     h("div", { class: "thread-footer" }, [
-      h("div", { class: "info" }, thread.userCount + " in this thread"),
+      h("div", { class: "users" }, thread.userCount + " in this thread"),
+      h("div", { class: "messages" }, thread.messages.length + " replies"),
       h("button", { class: "upvote", onclick: (ev) => { ev.stopPropagation(); actions.upvote(thread); } }, thread.score)
     ])
   ])

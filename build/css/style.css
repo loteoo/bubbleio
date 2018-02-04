@@ -457,8 +457,12 @@ footer {
 	justify-content: space-between;
 	padding: 0 1.5rem;
 }
-.bubble-view .threads li .thread-footer .info {
+.bubble-view .threads li .thread-footer .users {
 	font-size: 0.8em;
+}
+.bubble-view .threads li .thread-footer .messages {
+	font-size: 0.8em;
+	margin: 0 auto 0 1.5rem;
 }
 .bubble-view .threads li .thread-footer .upvote {
 	position: relative;
@@ -466,6 +470,7 @@ footer {
 	align-items: center;
 	justify-content: center;
 	padding: 1rem;
+  width: 4rem;
 }
 
 
