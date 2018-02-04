@@ -438,42 +438,6 @@ footer {
 }
 
 
-.bubble-view .threads li .thread-header {
-	padding: 1.5rem;
-}
-.bubble-view .threads li .thread-header h4 {
-	margin: 0;
-}
-.bubble-view .threads li .thread-header p {
-	opacity: 0.5;
-	margin: 0;
-	font-size: 0.8em;
-}
-
-
-.bubble-view .threads li .thread-footer {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 1.5rem;
-}
-.bubble-view .threads li .thread-footer .users {
-	font-size: 0.8em;
-}
-.bubble-view .threads li .thread-footer .messages {
-	font-size: 0.8em;
-	margin: 0 auto 0 1.5rem;
-}
-.bubble-view .threads li .thread-footer .upvote {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 1rem;
-  width: 4rem;
-}
-
-
 
 
 
@@ -574,6 +538,55 @@ footer {
 	align-self: flex-end;
 }
 
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    Thread
+\*------------------------------------*/
+
+
+
+.thread-header {
+	padding: 1.5rem;
+}
+.thread-header h4 {
+	margin: 0;
+}
+.thread-header p {
+	opacity: 0.5;
+	margin: 0;
+	font-size: 0.8em;
+}
+
+
+.thread-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 1.5rem;
+}
+.thread-footer .users {
+	font-size: 0.8em;
+}
+.thread-footer .messages {
+	font-size: 0.8em;
+	margin: 0 auto 0 1.5rem;
+}
+.thread-footer .upvote {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+  width: 4rem;
+}
 
 
 

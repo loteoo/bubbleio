@@ -84,24 +84,17 @@ export const actions = {
     }
   },
   updateState: newState => state => {
-    console.log("State updated");
-    console.log(newState);
+    // console.log(newState);
     return deepmerge(state, newState, { arrayMerge: mergeUniqueId })
   },
   loadMoreThreads: () => (state, actions) => {
-    console.log("load more in "+state.currentBubble.name+" !");
-
+    console.log("updating bubble "+state.currentBubble.name);
     fetch("/get/" + state.currentBubble.name)
       .then(response => response.json())
       .then(data => {
-
         actions.updateState(data);
-
-
         storeStateInStorage(state);
-
       });
-
   },
   loadMoreMessages: () => (state, actions) => {
     console.log("load messages in "+state.currentThread.title+" !");

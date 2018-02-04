@@ -187,7 +187,12 @@ const threadView = (state, actions) => {
             socket.emit('leave thread', state.currentThread);
             actions.location.go("/" + state.currentBubble.name);
           } }),
-          h("h2", {}, state.currentThread.title)
+          h("h2", {}, state.currentThread.title),
+          h("div", { class: "thread-footer" }, [
+            h("div", { class: "users" }, state.currentThread.userCount + " in this thread"),
+            h("div", { class: "messages" }, state.currentThread.messages.length + " replies"),
+            h("button", { class: "upvote", onclick: (ev) => { ev.stopPropagation(); actions.upvote(thread); } }, state.currentThread.score)
+          ])
         ]),
         h("ul", { class: "messages" }, state.currentThread.messages.map(message => messageItem(message, state))),
         keyboardComponent(state, actions)
