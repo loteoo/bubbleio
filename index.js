@@ -288,9 +288,8 @@ io.on('connection', function (socket) {
 
 
 
-    // Update clients
-    socket.broadcast.emit("update state", newState);
-    io.to(navData.nextRoomId).emit("update state", newState); // TODO: do this better, not twice
+    // Update all clients // TODO: change this to all clients who have the bubble in their list
+    io.emit("update state", newState);
   });
 
 
@@ -305,7 +304,7 @@ io.on('connection', function (socket) {
     // Update the thread's user count
     thread.userCount = getConnectionsInRoom(thread._id);
 
-    // Update clients
+    // Update clients in the bubble
     io.to(thread.bubble_id).emit("update state", {
       bubbles: [
         {
@@ -333,7 +332,7 @@ io.on('connection', function (socket) {
     // Update the thread's user count
     thread.userCount = getConnectionsInRoom(thread._id);
 
-    // Update clients
+    // Update clients in the bubble
     io.to(thread.bubble_id).emit("update state", {
       bubbles: [
         {
@@ -357,7 +356,7 @@ io.on('connection', function (socket) {
   // Pass all received thread to all clients
   socket.on('new thread', function (thread) {
 
-    // Update clients
+    // Update clients in the bubble
     socket.broadcast.to(thread.bubble_id).emit('update state', {
       bubbles: [
         {
@@ -392,7 +391,7 @@ io.on('connection', function (socket) {
     thread.score++;
 
 
-    // Update clients
+    // Update clients in the bubble
     socket.broadcast.to(thread.bubble_id).emit('update state', {
       bubbles: [
         {
@@ -428,8 +427,8 @@ io.on('connection', function (socket) {
   // Pass all received message to all clients
   socket.on('new message', function (message) {
 
-    // Update clients
-    socket.broadcast.to(message.thread_id).emit('update state', {
+    // Update all clients in bubble
+    socket.broadcast.to(message.bubble_id).emit('update state', {
       bubbles: [
         {
           _id: message.bubble_id,
