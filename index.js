@@ -70,6 +70,8 @@ app.get('/get/:bubbleName', function(req, res) {
           };
           res.send(JSON.stringify(newState));
         });
+      } else {
+        res.send("Unknown bubble");
       }
     });
   });
@@ -90,7 +92,7 @@ app.get('/get/:bubbleName/:threadId', function(req, res) {
     // TODO: only load 30 messages from only the requested bubble
 
     let dbo = db.db(db_name);
-    dbo.collection("threads").findOne({_id: req.params.threadId}, function(err, thread) {
+    dbo.collection("threads").findOne({_id: objectId(req.params.threadId)}, function(err, thread) {
       if (err) throw err;
       if (thread) { // If thread actually exists
         dbo.collection("messages").find({ thread_id: objectId(thread._id) }).toArray(function(err, messages) {
@@ -112,6 +114,8 @@ app.get('/get/:bubbleName/:threadId', function(req, res) {
           };
           res.send(JSON.stringify(newState));
         });
+      } else {
+        res.send("Unknown thread");
       }
     });
   });
@@ -202,7 +206,7 @@ app.get('/:bubbleName/:threadId', function(req, res) {
     // TODO: only load 30 messages from only the requested bubble
 
     let dbo = db.db(db_name);
-    dbo.collection("threads").findOne({_id: req.params.threadId}, function(err, thread) {
+    dbo.collection("threads").findOne({_id: objectId(req.params.threadId)}, function(err, thread) {
       if (err) throw err;
       if (thread) { // If thread actually exists
         dbo.collection("messages").find({ thread_id: objectId(thread._id) }).toArray(function(err, messages) {
