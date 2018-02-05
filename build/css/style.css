@@ -422,51 +422,21 @@ footer {
 	margin: 0;
 }
 
-.bubble-view .threads {
+.bubble-view ul.threads {
 
 }
 
-.bubble-view .threads li {
+.bubble-view .thread  {
 	margin: 0 0 1em 0;
 	background-color: #fff;
 	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
 }
 
-.bubble-view .threads li.disabled {
+.bubble-view .thread.disabled {
 	pointer-events: none;
 	opacity: 0.6;
 }
 
-
-
-
-
-/* Image thread */
-.bubble-view .threads li.image .img {
-	height: 24rem;
-	width: 100%;
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
-}
-
-
-
-
-
-/* Text thread */
-.bubble-view .threads li.text .text {
-	padding: 1.5rem;
-}
-
-
-
-
-
-/* message thread */
-.bubble-view .threads li.message .thread-header {
-	padding-bottom: 0;
-}
 
 
 
@@ -490,13 +460,13 @@ footer {
 	right: -100%;
 }
 
-.thread-view .thread-header {
+.thread-view .thread-view-header {
 	padding: 1em;
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
 }
-.thread-view .thread-header .back {
+.thread-view .thread-view-header .back {
 	width: 2em;
 	height: 2em;
 	margin-right: 1em;
@@ -506,9 +476,13 @@ footer {
 	background-repeat: no-repeat;
 	cursor: pointer;
 }
-.thread-view .thread-header h2 {
-	margin: 0;
+.thread-view .thread {
+	border-bottom: 1px solid #e9ecef;
 }
+
+
+
+/* Thread view messages list */
 
 .thread-view .messages {
 	display: flex;
@@ -553,39 +527,64 @@ footer {
 
 
 
-.thread-header {
+.thread .header {
 	padding: 1.5rem;
 }
-.thread-header h4 {
+.thread .header h2,
+.thread .header h4 {
 	margin: 0;
 }
-.thread-header p {
+.thread .header p {
 	opacity: 0.5;
 	margin: 0;
 	font-size: 0.8em;
 }
 
 
-.thread-footer {
+.thread .footer {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 0 1.5rem;
 }
-.thread-footer .users {
+.thread .footer .users {
 	font-size: 0.8em;
 }
-.thread-footer .messages {
+.thread .footer .messages {
 	font-size: 0.8em;
 	margin: 0 auto 0 1.5rem;
 }
-.thread-footer .upvote {
+.thread .footer .upvote {
 	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	padding: 1rem;
   width: 4rem;
+}
+
+
+
+
+/* Image thread */
+.thread[data-type="image"] .img {
+	height: 24rem;
+	width: 100%;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+
+/* Text thread */
+.thread[data-type="text"] .text {
+	padding: 1.5rem;
+}
+
+
+/* message thread */
+.thread[data-type="message"] .header {
+	padding-bottom: 0;
 }
 
 
