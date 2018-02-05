@@ -559,8 +559,16 @@ footer {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 1rem;
   width: 4rem;
+  height: 4rem;
+	border-radius: 100%;
+	background-color: rgba(0, 123, 255, 0);
+	transition: background-color 150ms;
+}
+
+.thread .footer .upvote.upvoted {
+	background-color: rgba(0, 123, 255, 0.75);
+	transition: background-color 0ms;
 }
 
 
