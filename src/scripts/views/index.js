@@ -181,9 +181,33 @@ const threadItem = (thread, state, actions, display = "summary") => {
 
 const threadFooter = (thread, state, actions) => (
   h("div", { class: "footer" }, [
-    h("div", { class: "users" }, thread.userCount + " in this thread"),
-    h("div", { class: "messages" }, thread.messages.length + " replies"),
-    h("button", { class: "upvote", onclick: (ev) => { ev.stopPropagation(); actions.upvote(thread); } }, thread.score)
+    h("div", { class: "users", userCount: thread.userCount, onupdate: (element, oldProps) => {
+      if (oldProps.userCount < thread.userCount) {
+        element.classList.add("countUp");
+        setTimeout(() => {
+          element.classList.remove("countUp");
+        }, 50);
+      } } }, [
+        h("span", { class: "count" }, thread.userCount),
+        h("span", {}, " in this thread")
+      ]),
+    h("div", { class: "replies", messageCount: thread.messages.length, onupdate: (element, oldProps) => {
+      if (oldProps.messageCount < thread.messages.length) {
+        element.classList.add("countUp");
+        setTimeout(() => {
+          element.classList.remove("countUp");
+        }, 50);
+      } } }, [
+        h("span", { class: "count" }, thread.messages.length),
+        h("span", {}, " replies")
+      ]),
+    h("button", { class: "upvote", score: thread.score, onclick: (ev) => { ev.stopPropagation(); actions.upvote(thread); }, onupdate: (element, oldProps) => {
+      if (oldProps.score < thread.score) {
+        element.classList.add("countUp");
+        setTimeout(() => {
+          element.classList.remove("countUp");
+        }, 50);
+      } } }, thread.score)
   ])
 )
 

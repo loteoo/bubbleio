@@ -550,10 +550,33 @@ footer {
 .thread .footer .users {
 	font-size: 0.8em;
 }
-.thread .footer .messages {
+.thread .footer .users .count {
+	color: inherit;
+	transform: scale(1);
+	transition: all 500ms;
+  display: inline-block;
+}
+.thread .footer .users.countUp .count {
+	color: rgba(0, 123, 255, 1);
+	transform: scale(1.5);
+	transition: all 0ms;
+}
+.thread .footer .replies {
 	font-size: 0.8em;
 	margin: 0 auto 0 1.5rem;
 }
+.thread .footer .replies .count {
+	color: inherit;
+	transform: scale(1);
+	transition: all 500ms;
+  display: inline-block;
+}
+.thread .footer .replies.countUp .count {
+	color: rgba(0, 123, 255, 1);
+	transform: scale(1.5);
+	transition: all 0ms;
+}
+
 .thread .footer .upvote {
 	position: relative;
 	display: flex;
@@ -563,12 +586,19 @@ footer {
   height: 4rem;
 	border-radius: 100%;
 	background-color: rgba(0, 123, 255, 0);
-	transition: background-color 150ms;
+	color: inherit;
+	transform: scale(1);
+	transition: all 300ms;
+}
+.thread .footer .upvote:active {
+	-webkit-tap-highlight-color: transparent;
 }
 
-.thread .footer .upvote.upvoted {
-	background-color: rgba(0, 123, 255, 0.75);
-	transition: background-color 0ms;
+.thread .footer .upvote.countUp {
+	background-color: rgba(0, 123, 255, 0.5);
+	color: white;
+	transform: scale(1.2);
+	transition: all 0ms;
 }
 
 
