@@ -376,6 +376,10 @@ io.on('connection', function (socket) {
       ]
     });
 
+
+    // Proper indexes for mongodb
+    thread._id = objectId(thread._id);
+
     // Update DB
     mongo.connect(mongo_url, function(err, db) {
       if (err) throw err;
