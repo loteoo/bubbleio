@@ -21,6 +21,7 @@ export const actions = {
       return { keyboardStatus: "closed" }
     }
   },
+  changeKeyboardMode: mode => ({keyboardMode: mode}),
   keyboardSubmit: ev => state => {
     ev.preventDefault();
     if (ev.target[0].value) {
@@ -80,6 +81,7 @@ export const actions = {
         }, 10);
 
       }
+      ev.target[0].value = "";
       return true
     }
   },

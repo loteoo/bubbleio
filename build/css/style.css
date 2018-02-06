@@ -241,6 +241,7 @@ textarea {
 	padding: 0.5em 0;
 	line-height:  2;
   color: inherit;
+  font-family: inherit;
 }
 
 input:focus,
@@ -587,7 +588,7 @@ footer {
 	border-radius: 100%;
 	background-color: rgba(0, 123, 255, 0);
 	color: inherit;
-	transform: scale(1);
+	font-size: 1em;
 	transition: all 300ms;
 }
 .thread .footer .upvote:active {
@@ -597,10 +598,32 @@ footer {
 .thread .footer .upvote.countUp {
 	background-color: rgba(0, 123, 255, 0.5);
 	color: white;
-	transform: scale(1.2);
+	font-size: 1.4em;
 	transition: all 0ms;
 }
 
+
+
+
+
+/* Message thread */
+.thread[data-type="message"] .header {
+	padding-bottom: 0;
+}
+
+
+
+/* Text thread */
+.thread[data-type="text"] .text {
+	padding: 1.5rem;
+}
+
+
+
+/* Image thread */
+.thread[data-type="link"] {
+
+}
 
 
 
@@ -611,18 +634,6 @@ footer {
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
-}
-
-
-/* Text thread */
-.thread[data-type="text"] .text {
-	padding: 1.5rem;
-}
-
-
-/* message thread */
-.thread[data-type="message"] .header {
-	padding-bottom: 0;
 }
 
 
@@ -643,11 +654,59 @@ footer {
 	border-top: 1px solid #e9ecef;
 	display: flex;
 	justify-content: space-between;
-	height: 5rem;
+	min-height: 5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 }
-.keyboard input {
+
+
+
+.keyboard input.title {
   padding: 0.5em 3em;
 }
+
+
+
+
+.keyboard textarea {
+	display: none;
+  border-top: 1px solid #e9ecef;
+  padding: 0.5em;
+}
+.keyboard.text textarea {
+	display: block;
+}
+
+
+
+
+.keyboard input.link {
+	display: none;
+  border-top: 1px solid #e9ecef;
+  padding: 0.5em;
+}
+.keyboard.link input.link {
+	display: block;
+}
+
+
+
+
+.keyboard .image {
+	display: none;
+  border-top: 1px solid #e9ecef;
+  padding: 0.5em;
+	justify-content: space-between;
+}
+.keyboard.image .image {
+	display: flex;
+}
+
+
+
+
+
 .keyboard .submit {
 	position: absolute;
 	top: 0.5rem;
@@ -675,9 +734,12 @@ footer {
 	background-size: 60%;
 	background-repeat: no-repeat;
 }
+.keyboard .expander:active {
+	-webkit-tap-highlight-color: transparent;
+}
 .keyboard .expander .text,
 .keyboard .expander .link,
-.keyboard .expander .picture {
+.keyboard .expander .image {
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.3s;
@@ -698,7 +760,7 @@ footer {
 	bottom: calc(200% + 2em);
 	transition-delay: 50ms;
 }
-.keyboard .expander .picture {
+.keyboard .expander .image {
 	bottom: calc(300% + 3em);
 	transition-delay: 0ms;
 }
@@ -709,7 +771,7 @@ footer {
 
 .keyboard .expander.opened .text,
 .keyboard .expander.opened .link,
-.keyboard .expander.opened .picture {
+.keyboard .expander.opened .image {
 	opacity: 1;
 	pointer-events: all;
 }
@@ -719,7 +781,7 @@ footer {
 .keyboard .expander.opened .link {
 	transition-delay: 50ms;
 }
-.keyboard .expander.opened .picture {
+.keyboard .expander.opened .image {
 	transition-delay: 100ms;
 }
 
