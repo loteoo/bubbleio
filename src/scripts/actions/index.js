@@ -82,6 +82,7 @@ export const actions = {
 
       }
       ev.target[0].value = "";
+      state.keyboardMode = "default";
       return true
     }
   },
