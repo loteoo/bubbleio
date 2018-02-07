@@ -81,8 +81,9 @@ export const actions = {
         }, 10);
 
       }
-      ev.target[0].value = "";
+
       state.keyboardMode = "default";
+      ev.target.reset();
       return true
     }
   },
@@ -91,26 +92,24 @@ export const actions = {
     return deepmerge(state, newState, { arrayMerge: mergeUniqueId })
   },
   loadMoreThreads: () => (state, actions) => {
-    console.log("updating bubble "+state.currentBubble.name);
+    console.log("Loading bubble " + state.currentBubble.name + "...");
     fetch("/get/" + state.currentBubble.name)
       .then(response => response.json())
       .then(data => {
         actions.updateState(data);
         storeStateInStorage(state);
+        console.log("Loaded");
       });
   },
   loadMoreMessages: () => (state, actions) => {
-    console.log("load messages in "+state.currentThread.title+" !");
+    console.log("Loading messages in "+state.currentThread.title+"...");
 
     fetch("/get/" + state.currentBubble.name + "/" + state.currentThread._id)
       .then(response => response.json())
       .then(data => {
-
         actions.updateState(data);
-
-
         storeStateInStorage(state);
-
+        console.log("Loaded");
       });
 
   },

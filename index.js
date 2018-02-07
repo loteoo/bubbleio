@@ -206,35 +206,43 @@ app.get('/:bubbleName/:threadId', function(req, res) {
     // TODO: only load 30 messages from only the requested bubble
 
     let dbo = db.db(db_name);
-    dbo.collection("threads").findOne({_id: objectId(req.params.threadId)}, function(err, thread) {
+    dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
       if (err) throw err;
-      if (thread) { // If thread actually exists
-        dbo.collection("messages").find({ thread_id: objectId(thread._id) }).toArray(function(err, messages) {
+      if (bubble) { // If bubble actually exists
+        dbo.collection("threads").findOne({ _id: objectId(req.params.threadId) }, function(err, thread) {
           if (err) throw err;
-          db.close();
+          if (thread) { // If thread actually exists
+            dbo.collection("messages").find({ thread_id: objectId(thread._id) }).toArray(function(err, messages) {
+              if (err) throw err;
+              db.close();
 
+              // Append messages to thread
+              thread.messages = messages;
 
-          thread.messages = messages;
+              // Append thread to bubble
+              bubble.threads = [
+                thread
+              ];
 
-          let newState = {
-            bubbles: [
-              {
-                _id: thread.bubble_id,
-                threads: [
-                  thread
+              // Append bubble to state
+              let newState = {
+                bubbles: [
+                  bubble
                 ]
-              }
-            ]
-          };
+              };
 
-          res.render(__dirname + '/src/index', {
-            state: JSON.stringify(newState).replace(/'/g, "\\'"),
-            joinBubble: thread.bubble_id,
-            joinThread: JSON.stringify(thread).replace(/'/g, "\\'")
-          });
+              res.render(__dirname + '/src/index', {
+                state: JSON.stringify(newState).replace(/'/g, "\\'"),
+                joinBubble: thread.bubble_id,
+                joinThread: JSON.stringify(thread).replace(/'/g, "\\'")
+              });
+            });
+          } else {
+            res.send("Unknown thread");
+          }
         });
       } else {
-        res.send("Unknown thread");
+        res.send("Unknown bubble");
       }
     });
   });
