@@ -132,7 +132,10 @@ const threadItem = (thread, state, actions, display = "summary") => {
   if (!thread.messages) {
     thread.messages = [];
   }
-
+  if (!thread.order) {
+    thread.order = 0;
+  }
+  // console.log(thread.order);
 
   let contentBlock;
   if (thread.type == "default") {
