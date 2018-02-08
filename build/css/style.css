@@ -529,7 +529,7 @@ footer {
 
 
 .thread .header {
-	padding: 1.5rem;
+	padding: 1.5rem 1.5rem 0 1.5rem;
 }
 .thread .header h2,
 .thread .header h4 {
@@ -607,30 +607,30 @@ footer {
 
 
 /* Default thread */
-.thread[data-type="default"] .header {
-	padding-bottom: 0;
+.thread[data-type="default"] {
 }
 
 
 
 /* Text thread */
-.thread[data-type="text"] .header {
-	padding-bottom: 0;
-}
 .thread[data-type="text"] .text {
-	padding: 1.5rem;
+	padding: 0.5rem 1.5rem;
 }
 
 
 
 /* Image thread */
-.thread[data-type="link"] {
-
+.thread[data-type="link"] .link {
+	display: block;
+	padding: 0.5rem 1.5rem;
 }
 
 
 
 /* Image thread */
+.thread[data-type="image"] .header {
+	padding-bottom: 1.5rem;
+}
 .thread[data-type="image"] .img {
 	height: 24rem;
 	width: 100%;
