@@ -1,6 +1,5 @@
 import {location} from "@hyperapp/router"
-import {ObjectId, storeStateInStorage, mergeUniqueId} from '../utils/'
-import {deepmerge} from '../utils/deepmerge.js'
+import {ObjectId, storeStateInStorage, mergeStates} from '../utils/'
 
 
 export const actions = {
@@ -99,7 +98,7 @@ export const actions = {
   },
   updateState: newState => state => {
     // console.log(newState);
-    return deepmerge(state, newState, { arrayMerge: mergeUniqueId })
+    return mergeStates(state, newState)
   },
   loadMoreThreads: () => (state, actions) => {
     console.log("Loading bubble " + state.currentBubble.name + "...");

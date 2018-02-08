@@ -1,4 +1,3 @@
-import {deepmerge} from '../utils/deepmerge.js'
 
 export const timeSince = (date) => {
 
@@ -64,47 +63,135 @@ export const storeStateInStorage = (state) => window.localStorage.setItem('bubbl
 // TODO: Dont use deepmerge anymore, custom merging function with custom array merges:
 // One for bubbles(alphabetical), threads(score) and messages(created)
 
-export const mergeUniqueId = (a, b, options) =>  {
 
-  console.log("merging");
-  // Merge objects that have the same id
-  // by updating the props of the old one with the ones of the new
 
-  // TODO: use Array.map/filter/reduce instead
-  for (let i = 0; i < a.length; i++) {
-    for (let j = 0; j < b.length; j++) {
-      if (a[i]["_id"] == b[j]["_id"]) {
-        a[i] = deepmerge(a[i], b[j], options);
+
+
+
+
+
+export const mergeStates = (stateA, stateB) => {
+
+  // Merge the threads array before merging the bubbles
+  for (var i = 0; i < stateB.bubbles.length; i++) { // For each new bubble
+    let matchFound = false;
+    for (var j = 0; j < stateA.bubbles.length; j++) { // find match
+      if (stateB.bubbles[i]._id == stateA.bubbles[j]._id) {
+        matchFound = true;
+        stateA.bubbles[j] = mergeBubbles(stateA.bubbles[j], stateB.bubbles[i]);
       }
+    }
+    if (!matchFound) {
+      stateA.bubbles.push(stateB.bubbles[i]);
     }
   }
 
 
-  // Create an array of the objects that are new, (not present in the first array)
-  let reduced = b.filter( bitem => ! a.find ( aitem => bitem["_id"] === aitem["_id"]) );
+  stateB.bubbles = stateA.bubbles; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
 
-
-  // Merge updated array and new items array
-  return a.concat(reduced).sort(compareScore);
+  // Merge the state
+  return Object.assign(stateA, stateB);
 }
 
 
 
-// Score = (P-1) / (T+2)^G
-//
-// where,
-// P = points of an item (and -1 is to negate submitters vote)
-// T = time since submission (in hours)
-// G = Gravity, defaults to 1.8 in news.arc
-function compareScore(a, b) {
-  let now = new Date();
-  a.order = a.score / Math.pow((Math.floor((now - a.created) / 3600000) + 2), 1.8);
-  b.order = b.score / Math.pow((Math.floor((now - b.created) / 3600000) + 2), 1.8);
 
-  if (a.order < b.order) {
+
+
+
+
+
+
+export const mergeBubbles = (bubbleA, bubbleB) => {
+  // Merge the threads array before merging the bubbles
+  for (var i = 0; i < bubbleB.threads.length; i++) { // For each new bubble
+    let matchFound = false;
+    for (var j = 0; j < bubbleA.threads.length; j++) { // find match
+      if (bubbleB.threads[i]._id == bubbleA.threads[j]._id) {
+        matchFound = true;
+        bubbleA.threads[j] = mergeThreads(bubbleA.threads[j], bubbleB.threads[i]);
+      }
+    }
+    if (!matchFound) {
+      bubbleA.threads.push(bubbleB.threads[i]);
+    }
+  }
+
+  // Sort the threads
+  bubbleA.threads = sortByRelevance(bubbleA.threads);
+
+  bubbleB.threads = bubbleA.threads; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
+
+  // Merge the state
+  return Object.assign(bubbleA, bubbleB);
+}
+
+
+
+
+
+
+
+
+
+
+export const mergeThreads = (threadA, threadB) => {
+
+  // Merge the messages array before merging the threads
+  for (var i = 0; i < threadB.messages.length; i++) { // For each new bubble
+    let matchFound = false;
+    for (var j = 0; j < threadA.messages.length; j++) { // find match
+      if (threadB.messages[i]._id == threadA.messages[j]._id) {
+        matchFound = true;
+        threadA.messages[j] = Object.assign(threadA.messages[j], threadB.messages[i]); // Basic shallow merge
+      }
+    }
+    if (!matchFound) {
+      threadA.messages.push(threadB.messages[i]);
+    }
+  }
+
+  threadB.messages = threadA.messages; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
+
+  // Merge the state
+  return Object.assign(threadA, threadB);
+}
+
+
+
+
+
+
+
+const sortByRelevance = (threads) => {
+
+  // Score = (P-1) / (T+2)^G
+  //
+  // where,
+  // P = points of an item (and -1 is to negate submitters vote)
+  // T = time since submission (in hours)
+  // G = Gravity, defaults to 1.8
+
+  let now = new Date();
+
+  for (thread of threads) {
+
+    // Calculate thread relevance
+    thread.relevance = thread.score / Math.pow((((now - thread.created) / 3600000) + 2), 1.8);
+  }
+
+  // Sort threads by "relevance"
+  return threads.sort(compareScore);
+
+}
+
+
+const compareScore = (a, b) => {
+
+  if (a.relevance < b.relevance) {
     return 1;
   }
-  if (a.order > b.order) {
+  if (a.relevance > b.relevance) {
     return -1;
   }
   // a must be equal to b
