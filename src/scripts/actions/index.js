@@ -10,7 +10,19 @@ export const actions = {
   },
   upvote: thread => (state, actions) => {
     socket.emit('thread upvote', thread);
-    return { score: thread.score++ }
+    thread.upvoted = "once";
+    thread.score++;
+    // Append thread to list
+    actions.updateState({
+      bubbles: [
+        {
+          _id: thread.bubble_id,
+          threads: [
+            thread
+          ]
+        }
+      ]
+    });
   },
   expandKeyboard: status => {
     if (status == "closed") {

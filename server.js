@@ -58,7 +58,7 @@ app.get('/get/:bubbleName', function(req, res) {
 
           // Inject user counts to threads
           for (var i = 0; i < threads.length; i++) {
-            threads[i].userCount = getConnectionsInRoom(thread._id);
+            threads[i].userCount = getConnectionsInRoom(threads[i]._id);
           }
 
 
@@ -139,7 +139,7 @@ app.get('/', function (req, res) {
 
       // Inject user counts to bubbles
       for (let i = 0; i < bubbles.length; i++) {
-        bubbles[i].userCount = getConnectionsInRoom(bubble._id);
+        bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
       }
 
       res.render(__dirname + '/src/index', {
@@ -173,7 +173,7 @@ app.get('/:bubbleName', function(req, res) {
 
           // Inject user counts to threads
           for (var i = 0; i < threads.length; i++) {
-            threads[i].userCount = getConnectionsInRoom(thread._id);
+            threads[i].userCount = getConnectionsInRoom(threads[i]._id);
           }
 
 

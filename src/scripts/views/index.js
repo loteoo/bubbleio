@@ -135,6 +135,9 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
   if (!thread.order) {
     thread.order = 0;
   }
+  if (!thread.upvoted) {
+    thread.upvoted = "";
+  }
   // console.log(thread.order);
 
   let contentBlock;
@@ -152,7 +155,7 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
 
 
   if (display == "summary") {
-    return h("li", { class: "thread", "data-type": thread.type, "data-display": display, onclick: () => {
+    return h("li", { class: "thread", "data-type": thread.type, "data-upvoted": thread.upvoted, "data-display": display, onclick: () => {
       console.log("join thread: " + thread._id);
       socket.emit('join thread', thread);
       actions.location.go("/" + currentBubble.name + "/" + thread._id);
@@ -206,13 +209,17 @@ const threadFooter = (thread, actions) => (
         h("span", { class: "count" }, thread.messages.length),
         h("span", {}, " replies")
       ]),
-    h("button", { class: "upvote", score: thread.score, onclick: (ev) => { ev.stopPropagation(); actions.upvote(thread); }, onupdate: (element, oldProps) => {
+    h("button", { class: "upvote", score: thread.score, onclick: (ev) => {
+      ev.stopPropagation();
+      actions.upvote(thread);
+    }, onupdate: (element, oldProps) => {
       if (oldProps.score < thread.score) {
         element.classList.add("countUp");
         setTimeout(() => {
           element.classList.remove("countUp");
         }, 50);
-      } } }, thread.score)
+      }
+    } }, thread.score)
   ])
 )
 
