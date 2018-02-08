@@ -92,7 +92,7 @@ export const mergeStates = (stateA, stateB) => {
   stateB.bubbles = stateA.bubbles; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
 
   // Merge the state
-  return Object.assign(stateA, stateB);
+  return Object.assign({}, stateA, stateB);
 }
 
 
@@ -130,7 +130,7 @@ export const mergeBubbles = (bubbleA, bubbleB) => {
   bubbleB.threads = bubbleA.threads; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
 
   // Merge the state
-  return Object.assign(bubbleA, bubbleB);
+  return Object.assign({}, bubbleA, bubbleB);
 }
 
 
@@ -163,7 +163,7 @@ export const mergeThreads = (threadA, threadB) => {
   threadB.messages = threadA.messages; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
 
   // Merge the state
-  return Object.assign(threadA, threadB);
+  return Object.assign({}, threadA, threadB);
 }
 
 
