@@ -54,6 +54,9 @@ app.get('/get/:bubbleName', function(req, res) {
         dbo.collection("threads").find({ bubble_id: ObjectId(bubble._id) }).toArray(function(err, threads) {
           if (err) throw err;
           db.close();
+          
+
+          // TODO: Inject messages count efficiently
 
 
           // Inject user counts to threads
