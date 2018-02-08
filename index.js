@@ -4,7 +4,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 var mongo = require('mongodb').MongoClient;
-var objectId = require('mongodb').ObjectID;
+var ObjectId = require('mongodb').ObjectID;
 var mongo_url = "mongodb://localhost:27017/";
 var db_name = "bubbleio";
 var port = 80;
@@ -51,7 +51,7 @@ app.get('/get/:bubbleName', function(req, res) {
     dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
       if (err) throw err;
       if (bubble) { // If bubble actually exists
-        dbo.collection("threads").find({ bubble_id: objectId(bubble._id) }).toArray(function(err, threads) {
+        dbo.collection("threads").find({ bubble_id: ObjectId(bubble._id) }).toArray(function(err, threads) {
           if (err) throw err;
           db.close();
 
@@ -92,10 +92,10 @@ app.get('/get/:bubbleName/:threadId', function(req, res) {
     // TODO: only load 30 messages from only the requested bubble
 
     let dbo = db.db(db_name);
-    dbo.collection("threads").findOne({_id: objectId(req.params.threadId)}, function(err, thread) {
+    dbo.collection("threads").findOne({_id: ObjectId(req.params.threadId)}, function(err, thread) {
       if (err) throw err;
       if (thread) { // If thread actually exists
-        dbo.collection("messages").find({ thread_id: objectId(thread._id) }).toArray(function(err, messages) {
+        dbo.collection("messages").find({ thread_id: ObjectId(thread._id) }).toArray(function(err, messages) {
           if (err) throw err;
           db.close();
 
@@ -161,7 +161,7 @@ app.get('/:bubbleName', function(req, res) {
     dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
       if (err) throw err;
       if (bubble) { // If bubble actually exists
-        dbo.collection("threads").find({ bubble_id: objectId(bubble._id) }).toArray(function(err, threads) {
+        dbo.collection("threads").find({ bubble_id: ObjectId(bubble._id) }).toArray(function(err, threads) {
           if (err) throw err;
           db.close();
 
@@ -208,39 +208,44 @@ app.get('/:bubbleName/:threadId', function(req, res) {
     let dbo = db.db(db_name);
     dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
       if (err) throw err;
+
       if (bubble) { // If bubble actually exists
-        dbo.collection("threads").findOne({ _id: objectId(req.params.threadId) }, function(err, thread) {
-          if (err) throw err;
-          if (thread) { // If thread actually exists
-            dbo.collection("messages").find({ thread_id: objectId(thread._id) }).toArray(function(err, messages) {
-              if (err) throw err;
-              db.close();
+        if (ObjectId.isValid(req.params.threadId)) {
+          dbo.collection("threads").findOne({ _id: ObjectId(req.params.threadId) }, function(err, thread) {
+            if (err) throw err;
+            if (thread) { // If thread actually exists
+              dbo.collection("messages").find({ thread_id: ObjectId(thread._id) }).toArray(function(err, messages) {
+                if (err) throw err;
+                db.close();
 
-              // Append messages to thread
-              thread.messages = messages;
+                // Append messages to thread
+                thread.messages = messages;
 
-              // Append thread to bubble
-              bubble.threads = [
-                thread
-              ];
+                // Append thread to bubble
+                bubble.threads = [
+                  thread
+                ];
 
-              // Append bubble to state
-              let newState = {
-                bubbles: [
-                  bubble
-                ]
-              };
+                // Append bubble to state
+                let newState = {
+                  bubbles: [
+                    bubble
+                  ]
+                };
 
-              res.render(__dirname + '/src/index', {
-                state: JSON.stringify(newState).replace(/'/g, "\\'"),
-                joinBubble: thread.bubble_id,
-                joinThread: JSON.stringify(thread).replace(/'/g, "\\'")
+                res.render(__dirname + '/src/index', {
+                  state: JSON.stringify(newState).replace(/'/g, "\\'"),
+                  joinBubble: thread.bubble_id,
+                  joinThread: JSON.stringify(thread).replace(/'/g, "\\'")
+                });
               });
-            });
-          } else {
-            res.send("Unknown thread");
-          }
-        });
+            } else {
+              res.send("Unknown thread");
+            }
+          });
+        } else {
+          res.send("Invalid thread ID");
+        }
       } else {
         res.send("Unknown bubble");
       }
@@ -386,8 +391,8 @@ io.on('connection', function (socket) {
 
 
     // Proper indexes for mongodb
-    thread._id = objectId(thread._id);
-    thread.bubble_id = objectId(thread.bubble_id);
+    thread._id = ObjectId(thread._id);
+    thread.bubble_id = ObjectId(thread.bubble_id);
 
     // Update DB
     mongo.connect(mongo_url, function(err, db) {
@@ -429,7 +434,7 @@ io.on('connection', function (socket) {
     mongo.connect(mongo_url, function(err, db) {
       if (err) throw err;
       let dbo = db.db(db_name);
-      dbo.collection("threads").findOneAndUpdate({ '_id': objectId(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
+      dbo.collection("threads").findOneAndUpdate({ '_id': ObjectId(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
         if (err) throw err;
         db.close();
       });
@@ -467,9 +472,9 @@ io.on('connection', function (socket) {
 
 
     // Proper indexes for mongodb
-    message._id = objectId(message._id);
-    message.bubble_id = objectId(message.bubble_id);
-    message.thread_id = objectId(message.thread_id);
+    message._id = ObjectId(message._id);
+    message.bubble_id = ObjectId(message.bubble_id);
+    message.thread_id = ObjectId(message.thread_id);
 
     // Update DB
     mongo.connect(mongo_url, function(err, db) {
