@@ -1,5 +1,5 @@
 import {location} from "@hyperapp/router"
-import {ObjectId, storeStateInStorage, mergeStates} from '../utils/'
+import {ObjectId, mergeStates} from '../utils/'
 
 
 export const actions = {
@@ -10,8 +10,8 @@ export const actions = {
   },
   upvote: thread => (state, actions) => {
     socket.emit('thread upvote', thread);
-    thread.upvoted = "once";
     thread.score++;
+    thread.upvoted++;
     // Append thread to list
     actions.updateState({
       bubbles: [
@@ -141,7 +141,6 @@ export const actions = {
       .then(response => response.json())
       .then(data => {
         actions.updateState(data);
-        storeStateInStorage(state);
         console.log("Loaded");
       });
   },
@@ -152,7 +151,6 @@ export const actions = {
       .then(response => response.json())
       .then(data => {
         actions.updateState(data);
-        storeStateInStorage(state);
         console.log("Loaded");
       });
 

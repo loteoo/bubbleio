@@ -21,18 +21,6 @@
       <% if (typeof(state) !== 'undefined') { %>
         main.updateState(<%- JSON.stringify(state) %>);
       <% } %>
-      <% if (typeof(joinBubble) !== 'undefined') { %>
-        socket.emit('switch room', {
-          prevRoomId: null,
-          nextRoomId: '<%- joinBubble %>'
-        });
-
-        console.log("join room: " + '<%- joinBubble %>');
-      <% } %>
-      <% if (typeof(joinThread) !== 'undefined') { %>
-        socket.emit('join thread', <%- JSON.stringify(joinThread) %>);
-        console.log("join thread: " + '<%- joinThread._id %>');
-      <% } %>
     </script>
   </body>
 </html>

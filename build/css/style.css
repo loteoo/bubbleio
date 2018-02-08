@@ -607,8 +607,21 @@ footer {
 
 
 /* Upvoted thread */
-.thread[data-upvoted="once"] .footer .upvote {
+.thread[data-upvoted="1"] .footer .upvote {
 	border: 2px solid rgba(0, 123, 255, 0.5);
+}
+.thread[data-upvoted="2"] .footer .upvote {
+	border: 4px solid rgba(0, 123, 255, 0.5);
+}
+.thread[data-upvoted="3"] .footer .upvote {
+	border: 6px solid rgba(0, 123, 255, 0.5);
+}
+.thread[data-upvoted="4"] .footer .upvote {
+	border: 8px solid rgba(0, 123, 255, 0.5);
+}
+.thread[data-upvoted="5"] .footer .upvote {
+	background-color: rgba(0, 123, 255, 0.5);
+	pointer-events: none;
 }
 
 

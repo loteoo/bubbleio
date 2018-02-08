@@ -188,8 +188,7 @@ app.get('/:bubbleName', function(req, res) {
 
 
           res.render(__dirname + '/src/index', {
-            state: newState,
-            joinBubble: bubble._id
+            state: newState
           });
         });
       } else {
@@ -239,9 +238,7 @@ app.get('/:bubbleName/:threadId', function(req, res) {
                 };
 
                 res.render(__dirname + '/src/index', {
-                  state: newState,
-                  joinBubble: thread.bubble_id,
-                  joinThread: thread
+                  state: newState
                 });
               });
             } else {
@@ -421,6 +418,8 @@ io.on('connection', function (socket) {
     // Increase score
     thread.score++;
 
+    // No idea why this prop gets here in the first place...
+    delete thread.upvoted;
 
     // Update clients in the bubble
     socket.broadcast.to(thread.bubble_id).emit('update state', {

@@ -93,12 +93,12 @@ const bubbleView = (currentBubble, state, actions) => {
   // G = Gravity, defaults to 1.8 in news.arc
   if (currentBubble) {
     return h("div", { class: "bubble-view", _id: currentBubble._id, onupdate: (el, oldProps) => {
+      if (!oldProps._id) {
+        oldProps._id = "NO BUBBLE";
+      }
       if (oldProps._id != currentBubble._id) {
         // User switched bubbles
 
-        if (!oldProps._id) {
-          oldProps._id = null;
-        }
         console.log("join room: " + currentBubble._id);
         socket.emit('switch room', {
           prevRoomId: oldProps._id,
@@ -168,7 +168,7 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
       threadFooter(thread, actions)
     ])
   } else if (display == "full") {
-    return h("li", { class: "thread ", "data-type": thread.type }, [
+    return h("li", { class: "thread ", "data-type": thread.type, "data-upvoted": thread.upvoted }, [
       h("div", { class: "header" }, [
         h("div", { class: "thread-view-header" }, [
           h("div", { class: "back", onclick: () => {

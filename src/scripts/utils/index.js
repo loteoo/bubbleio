@@ -92,7 +92,9 @@ export const mergeStates = (stateA, stateB) => {
   stateB.bubbles = stateA.bubbles; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
 
   // Merge the state
-  return Object.assign({}, stateA, stateB);
+  let newState = Object.assign({}, stateA, stateB);
+  storeStateInStorage(newState);
+  return newState;
 }
 
 
