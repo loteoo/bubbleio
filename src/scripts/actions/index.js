@@ -8,7 +8,7 @@ export const actions = {
   setGravity: gravity => ({gravity: gravity}),
   login: ev => state => {
     ev.preventDefault();
-    return { username: ev.target[0].value };
+    return { username: ev.target.username.value };
   },
   upvote: thread => (state, actions) => {
     socket.emit('thread upvote', thread);
@@ -24,27 +24,37 @@ export const actions = {
   changeKeyboardMode: mode => ({keyboardMode: mode}),
   keyboardSubmit: ev => state => {
     ev.preventDefault();
-    if (ev.target[0].value) {
+    if (ev.target.title.value) {
 
       let timestamp = new Date().getTime();
 
       if (state.currentView == "bubbleView") {
 
 
+
         // Create the thread object
         let thread = {
           _id: ObjectId(),
-          title: ev.target[0].value,
+          title: ev.target.title.value,
           score: 0,
           created: timestamp,
-          type: "message",
+          type: state.keyboardMode,
           author: state.username,
           bubble_id: state.currentBubble._id
         }
 
+        if (state.keyboardMode == "text") {
+          thread.text = ev.target.text.value;
+        } else if (state.keyboardMode == "link") {
+          thread.url = ev.target.link.value;
+        } else if (state.keyboardMode == "image") {
+          thread.src = ev.target.image_link.value;
+        }
+
 
         // Append thread to list
-        state.currentBubble.threads.unshift(thread)
+        state.currentBubble.threads.unshift(thread);
+
 
         setTimeout(() => { // Scroll to top after the re-render/update cycle has ended (to include the new element's height)
           var threadList = document.querySelector(".bubble-view .frame");
@@ -63,12 +73,12 @@ export const actions = {
           bubble_id: state.currentThread.bubble_id,
           thread_id: state.currentThread._id,
           sender: state.username,
-          message: ev.target[0].value,
+          message: ev.target.title.value,
           created: timestamp
         }
 
         // Append message to list
-        state.currentThread.messages.push(message)
+        state.currentThread.messages.push(message);
 
 
         // Send new message to server

@@ -606,14 +606,17 @@ footer {
 
 
 
-/* Message thread */
-.thread[data-type="message"] .header {
+/* Default thread */
+.thread[data-type="default"] .header {
 	padding-bottom: 0;
 }
 
 
 
 /* Text thread */
+.thread[data-type="text"] .header {
+	padding-bottom: 0;
+}
 .thread[data-type="text"] .text {
 	padding: 1.5rem;
 }
@@ -658,6 +661,7 @@ footer {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
+	background-color: white;
 }
 
 
@@ -696,11 +700,27 @@ footer {
 .keyboard .image {
 	display: none;
   border-top: 1px solid #e9ecef;
-  padding: 0.5em;
 	justify-content: space-between;
 }
 .keyboard.image .image {
 	display: flex;
+}
+.keyboard.image .image input[type="file"] {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+	pointer-events: none;
+}
+.keyboard.image .image label[for="image_file"] {
+	width: 6rem;
+	background-color: #cccccc;
+}
+.keyboard.image .image input[type="text"] {
+
+  padding: 0.5em;
 }
 
 

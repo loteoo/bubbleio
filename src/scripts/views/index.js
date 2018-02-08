@@ -14,12 +14,12 @@ export const view = (state, actions) => {
 
     let urlparts = window.location.pathname.split("/");
 
-    state.currentView = "globalView"
+    state.currentView = "globalView";
 
     if (urlparts[1]) {
       // Update the temp bubble object
       state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
-      state.currentView = "bubbleView"
+      state.currentView = "bubbleView";
 
       if (!state.currentBubble.threads) {
         state.currentBubble.threads = [];
@@ -30,7 +30,7 @@ export const view = (state, actions) => {
     if (urlparts[2]) {
       // Update the temp thread object
       state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
-      state.currentView = "threadView"
+      state.currentView = "threadView";
     }
 
 
@@ -45,7 +45,7 @@ export const view = (state, actions) => {
   } else {
     return h("form", { class: "loginForm", onsubmit: ev => { actions.login(ev); return false; } }, [
       h("h2", {}, "Pick a name"),
-      h("input", { type: "text", placeholder: "Type here...", autofocus: "autofocus" })
+      h("input", { type: "text", placeholder: "Type here...", autofocus: "autofocus", name: "username", id: "username" })
     ])
   }
 }
@@ -135,14 +135,16 @@ const threadItem = (thread, state, actions, display = "summary") => {
 
 
   let contentBlock;
-  if (thread.type == "message") {
+  if (thread.type == "default") {
     contentBlock = null
   } else if (thread.type == "text") {
-    contentBlock = h("div", { class: "text" }, thread.content.text)
+    contentBlock = h("div", { class: "text" }, thread.text)
+  } else if (thread.type == "link") {
+    contentBlock = h("div", { class: "link" }, thread.url)
   } else if (thread.type == "image") {
-    contentBlock = h("div", { class: "img", style: { "background-image": "url('"+thread.content.url+"')" } })
+    contentBlock = h("div", { class: "img", style: { "background-image": "url('"+thread.src+"')" } })
   } else if (thread.type == "youtube") {
-    contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.content.youtubeId+"')" })
+    contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.youtubeId+"')" })
   }
 
 
@@ -159,7 +161,7 @@ const threadItem = (thread, state, actions, display = "summary") => {
       threadFooter(thread, state, actions)
     ])
   } else if (display == "full") {
-    return h("li", { class: "thread " + thread.type }, [
+    return h("li", { class: "thread ", "data-type": thread.type }, [
       h("div", { class: "header" }, [
         h("div", { class: "thread-view-header" }, [
           h("div", { class: "back", onclick: () => {
@@ -269,12 +271,13 @@ const keyboardComponent = (state, actions) => (
       h("div", { class: "link", onclick: ev => { actions.changeKeyboardMode("link") } }, "url"),
       h("div", { class: "image", onclick: ev => { actions.changeKeyboardMode("image") } }, "pic")
     ]),
-    h("input", { class: "title", type: "text", placeholder: "Type something..." }),
-    h("textarea", { placeholder: "Text..." }),
-    h("input", { class: "link", type: "text", placeholder: "Paste link here" }),
+    h("input", { class: "title", type: "text", name: "title", placeholder: "Type something..." }),
+    h("textarea", { placeholder: "Text...", name: "text" }),
+    h("input", { class: "link", type: "text", name: "link", placeholder: "Paste link here" }),
     h("div", { class: "image" }, [
-      h("input", { type: "file" }),
-      h("input", { type: "text", placeholder: "Or paste link here" })
+      h("input", { type: "file", name: "image_file", id: "image_file" }),
+      h("label", { for: "image_file" }),
+      h("input", { type: "text", name: "image_link", placeholder: "Or paste link here" })
     ]),
     h("button", { class: "submit", type: "submit" })
   ])
