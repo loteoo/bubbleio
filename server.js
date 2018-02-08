@@ -1,13 +1,13 @@
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
-var mongo = require('mongodb').MongoClient;
-var ObjectId = require('mongodb').ObjectID;
-var mongo_url = "mongodb://localhost:27017/";
-var db_name = "bubbleio";
-var port = 80;
+const mongo = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID;
+const mongo_url = "mongodb://localhost:27017/";
+const db_name = "bubbleio";
+const port = 80;
 
 
 
@@ -24,9 +24,9 @@ app.use(express.static('build'));
 const getConnectionsInRoom = (roomName) => {
   let room = [];
   let allSockets = Object.keys(io.sockets.sockets);
-  for (var i = 0; i < allSockets.length; i++) {
+  for (let i = 0; i < allSockets.length; i++) {
     let roomsOfSocket = Object.keys(io.sockets.adapter.sids[allSockets[i]]);
-    for (var j = 0; j < roomsOfSocket.length; j++) {
+    for (let j = 0; j < roomsOfSocket.length; j++) {
       if (roomsOfSocket[j] == roomName) {
         room.push(allSockets[i]);
       }
@@ -57,9 +57,10 @@ app.get('/get/:bubbleName', function(req, res) {
 
 
           // Inject user counts to threads
-          for (thread in threads) {
-            thread.userCount = getConnectionsInRoom(thread._id);
+          for (var i = 0; i < threads.length; i++) {
+            threads[i].userCount = getConnectionsInRoom(thread._id);
           }
+
 
           bubble.threads = threads;
 
@@ -136,9 +137,9 @@ app.get('/', function (req, res) {
       if (err) throw err;
       db.close();
 
-      // Inject user counts to threads
-      for (bubble in bubbles) {
-        bubble.userCount = getConnectionsInRoom(bubble._id);
+      // Inject user counts to bubbles
+      for (let i = 0; i < bubbles.length; i++) {
+        bubbles[i].userCount = getConnectionsInRoom(bubble._id);
       }
 
       res.render(__dirname + '/src/index', {
@@ -171,8 +172,8 @@ app.get('/:bubbleName', function(req, res) {
 
 
           // Inject user counts to threads
-          for (thread in threads) {
-            thread.userCount = getConnectionsInRoom(thread._id);
+          for (var i = 0; i < threads.length; i++) {
+            threads[i].userCount = getConnectionsInRoom(thread._id);
           }
 
 
@@ -490,10 +491,6 @@ io.on('connection', function (socket) {
       });
     });
   });
-
-
-
-
 });
 
 
