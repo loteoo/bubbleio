@@ -73,16 +73,18 @@ export const storeStateInStorage = (state) => window.localStorage.setItem('bubbl
 export const mergeStates = (stateA, stateB) => {
 
   // Merge the threads array before merging the bubbles
-  for (var i = 0; i < stateB.bubbles.length; i++) { // For each new bubble
-    let matchFound = false;
-    for (var j = 0; j < stateA.bubbles.length; j++) { // find match
-      if (stateB.bubbles[i]._id == stateA.bubbles[j]._id) {
-        matchFound = true;
-        stateA.bubbles[j] = mergeBubbles(stateA.bubbles[j], stateB.bubbles[i]);
+  if (stateB.bubbles) {
+    for (var i = 0; i < stateB.bubbles.length; i++) { // For each new bubble
+      let matchFound = false;
+      for (var j = 0; j < stateA.bubbles.length; j++) { // find match
+        if (stateB.bubbles[i]._id == stateA.bubbles[j]._id) {
+          matchFound = true;
+          stateA.bubbles[j] = mergeBubbles(stateA.bubbles[j], stateB.bubbles[i]);
+        }
       }
-    }
-    if (!matchFound) {
-      stateA.bubbles.push(stateB.bubbles[i]);
+      if (!matchFound) {
+        stateA.bubbles.push(stateB.bubbles[i]);
+      }
     }
   }
 
@@ -103,22 +105,27 @@ export const mergeStates = (stateA, stateB) => {
 
 
 export const mergeBubbles = (bubbleA, bubbleB) => {
+
   // Merge the threads array before merging the bubbles
-  for (var i = 0; i < bubbleB.threads.length; i++) { // For each new bubble
-    let matchFound = false;
-    for (var j = 0; j < bubbleA.threads.length; j++) { // find match
-      if (bubbleB.threads[i]._id == bubbleA.threads[j]._id) {
-        matchFound = true;
-        bubbleA.threads[j] = mergeThreads(bubbleA.threads[j], bubbleB.threads[i]);
+  if (bubbleB.threads) {
+    for (var i = 0; i < bubbleB.threads.length; i++) { // For each new bubble
+      let matchFound = false;
+      for (var j = 0; j < bubbleA.threads.length; j++) { // find match
+        if (bubbleB.threads[i]._id == bubbleA.threads[j]._id) {
+          matchFound = true;
+          bubbleA.threads[j] = mergeThreads(bubbleA.threads[j], bubbleB.threads[i]);
+        }
       }
-    }
-    if (!matchFound) {
-      bubbleA.threads.push(bubbleB.threads[i]);
+      if (!matchFound) {
+        bubbleA.threads.unshift(bubbleB.threads[i]);
+      }
     }
   }
 
   // Sort the threads
-  bubbleA.threads = sortByRelevance(bubbleA.threads);
+  if (bubbleA.threads) {
+    bubbleA.threads = sortByRelevance(bubbleA.threads);
+  }
 
   bubbleB.threads = bubbleA.threads; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
 
@@ -138,16 +145,18 @@ export const mergeBubbles = (bubbleA, bubbleB) => {
 export const mergeThreads = (threadA, threadB) => {
 
   // Merge the messages array before merging the threads
-  for (var i = 0; i < threadB.messages.length; i++) { // For each new bubble
-    let matchFound = false;
-    for (var j = 0; j < threadA.messages.length; j++) { // find match
-      if (threadB.messages[i]._id == threadA.messages[j]._id) {
-        matchFound = true;
-        threadA.messages[j] = Object.assign(threadA.messages[j], threadB.messages[i]); // Basic shallow merge
+  if (threadB.messages) {
+    for (var i = 0; i < threadB.messages.length; i++) { // For each new bubble
+      let matchFound = false;
+      for (var j = 0; j < threadA.messages.length; j++) { // find match
+        if (threadB.messages[i]._id == threadA.messages[j]._id) {
+          matchFound = true;
+          threadA.messages[j] = Object.assign(threadA.messages[j], threadB.messages[i]); // Basic shallow merge
+        }
       }
-    }
-    if (!matchFound) {
-      threadA.messages.push(threadB.messages[i]);
+      if (!matchFound) {
+        threadA.messages.push(threadB.messages[i]);
+      }
     }
   }
 
@@ -174,26 +183,22 @@ const sortByRelevance = (threads) => {
 
   let now = new Date();
 
-  for (thread of threads) {
-
-    // Calculate thread relevance
-    thread.relevance = thread.score / Math.pow((((now - thread.created) / 3600000) + 2), 1.8);
+  // Calculate relevance for each thread
+  for (var i = 0; i < threads.length; i++) {
+    threads[i].relevance = threads[i].score / Math.pow((((now - threads[i].created) / 3600000) + 2), 1.8);
   }
 
   // Sort threads by "relevance"
-  return threads.sort(compareScore);
-
+  return threads.sort(compareRelevance);
 }
 
 
-const compareScore = (a, b) => {
-
+const compareRelevance = (a, b) => {
   if (a.relevance < b.relevance) {
     return 1;
   }
   if (a.relevance > b.relevance) {
     return -1;
   }
-  // a must be equal to b
   return 0;
 }

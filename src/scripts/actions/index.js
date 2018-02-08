@@ -4,7 +4,6 @@ import {ObjectId, storeStateInStorage, mergeStates} from '../utils/'
 
 export const actions = {
   location: location.actions,
-  setGravity: gravity => ({gravity: gravity}),
   login: ev => state => {
     ev.preventDefault();
     return { username: ev.target.username.value };
@@ -21,7 +20,7 @@ export const actions = {
     }
   },
   changeKeyboardMode: mode => ({keyboardMode: mode}),
-  keyboardSubmit: ev => state => {
+  keyboardSubmit: ev => (state, actions) => {
     ev.preventDefault();
     if (ev.target.title.value) {
 
@@ -52,7 +51,16 @@ export const actions = {
 
 
         // Append thread to list
-        state.currentBubble.threads.unshift(thread);
+        actions.updateState({
+          bubbles: [
+            {
+              _id: thread.bubble_id,
+              threads: [
+                thread
+              ]
+            }
+          ]
+        });
 
 
         setTimeout(() => { // Scroll to top after the re-render/update cycle has ended (to include the new element's height)
@@ -77,7 +85,21 @@ export const actions = {
         }
 
         // Append message to list
-        state.currentThread.messages.push(message);
+        actions.updateState({
+          bubbles: [
+            {
+              _id: message.bubble_id,
+              threads: [
+                {
+                  _id: message.thread_id,
+                  messages: [
+                    message
+                  ]
+                }
+              ]
+            }
+          ]
+        });
 
 
         // Send new message to server

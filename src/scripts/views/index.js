@@ -11,10 +11,9 @@ export const view = (state, actions) => {
   // If logged in
   if (state.username) {
 
+    state.currentView = "globalView";
 
     let urlparts = window.location.pathname.split("/");
-
-    state.currentView = "globalView";
 
     if (urlparts[1]) {
       // Update the temp bubble object
@@ -38,8 +37,8 @@ export const view = (state, actions) => {
 
     return h("div", { class: "slider " + state.currentView }, [
       globalView(state, actions),
-      bubbleView(state, actions),
-      threadView(state, actions)
+      bubbleView(state.currentBubble, state, actions),
+      threadView(state.currentThread, state.currentBubble, state, actions)
     ])
 
   } else {
@@ -60,13 +59,13 @@ const globalView = (state, actions) => (
   h("div", { class: "global-view" }, [
     h("div", { class: "frame" }, [
       h("h2", {}, state.username),
-      h("ul", { class: "bubbles" }, state.bubbles.map(bubble => bubbleItem(bubble, state, actions)))
+      h("ul", { class: "bubbles" }, state.bubbles.map(bubbleItem))
     ])
   ])
 )
 
 
-const bubbleItem = (bubble, state, actions) => {
+const bubbleItem = (bubble) => {
   let userCount = "";
   if (bubble.userCount) {
     userCount = " (" + bubble.userCount + ")";
@@ -84,7 +83,7 @@ const bubbleItem = (bubble, state, actions) => {
 
 
 
-const bubbleView = (state, actions) => {
+const bubbleView = (currentBubble, state, actions) => {
 
   // Score = (P-1) / (T+2)^G
   //
@@ -92,17 +91,18 @@ const bubbleView = (state, actions) => {
   // P = points of an item (and -1 is to negate submitters vote)
   // T = time since submission (in hours)
   // G = Gravity, defaults to 1.8 in news.arc
-  if (state.currentBubble) {
-    return h("div", { class: "bubble-view", _id: state.currentBubble._id, onupdate: (el, oldProps) => {
-      if (oldProps._id != state.currentBubble._id) {
+  if (currentBubble) {
+    return h("div", { class: "bubble-view", _id: currentBubble._id, onupdate: (el, oldProps) => {
+      if (oldProps._id != currentBubble._id) {
         // User switched bubbles
 
         if (!oldProps._id) {
           oldProps._id = null;
         }
+        console.log("join room: " + currentBubble._id);
         socket.emit('switch room', {
           prevRoomId: oldProps._id,
-          nextRoomId: state.currentBubble._id
+          nextRoomId: currentBubble._id
         });
 
         actions.loadMoreThreads();
@@ -113,9 +113,9 @@ const bubbleView = (state, actions) => {
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.lastChild)) { actions.loadMoreThreads() } } }, [
         h("div", { class: "bubble-header" }, [
           Link({ to: "/" + name, class: "back" }),
-          h("h2", {}, state.currentBubble.title)
+          h("h2", {}, currentBubble.title)
         ]),
-        h("ul", { class: "threads" }, state.currentBubble.threads.map(thread => threadItem(thread, state, actions))),
+        h("ul", { class: "threads" }, currentBubble.threads.map(thread => threadItem(thread, currentBubble, actions))),
         keyboardComponent(state, actions),
         h("div", { class: "loadMore" })
       ])
@@ -125,7 +125,7 @@ const bubbleView = (state, actions) => {
 
 
 
-const threadItem = (thread, state, actions, display = "summary") => {
+const threadItem = (thread, currentBubble, actions, display = "summary") => {
   if (!thread.userCount) {
     thread.userCount = 0;
   }
@@ -153,38 +153,38 @@ const threadItem = (thread, state, actions, display = "summary") => {
 
   if (display == "summary") {
     return h("li", { class: "thread", "data-type": thread.type, "data-display": display, onclick: () => {
+      console.log("join thread: " + thread._id);
       socket.emit('join thread', thread);
-      actions.location.go("/" + state.currentBubble.name + "/" + thread._id);
+      actions.location.go("/" + currentBubble.name + "/" + thread._id);
     } }, [
       h("div", { class: "header" }, [
         h("h4", {}, thread.title),
-        h("p", {}, "by " + thread.author + " on " + state.currentBubble.name + " " + timeSince(thread.created))
+        h("p", {}, "by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created))
       ]),
       contentBlock,
-      threadFooter(thread, state, actions)
+      threadFooter(thread, actions)
     ])
   } else if (display == "full") {
     return h("li", { class: "thread ", "data-type": thread.type }, [
       h("div", { class: "header" }, [
         h("div", { class: "thread-view-header" }, [
           h("div", { class: "back", onclick: () => {
-            socket.emit('leave thread', state.currentThread);
-            actions.location.go("/" + state.currentBubble.name);
+            socket.emit('leave thread', thread);
+            actions.location.go("/" + currentBubble.name);
           }}),
           h("h2", {}, thread.title)
         ]),
-        h("p", {}, "by " + thread.author + " on " + state.currentBubble.name + " " + timeSince(thread.created))
+        h("p", {}, "by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created))
       ]),
       contentBlock,
-      threadFooter(thread, state, actions)
+      threadFooter(thread, actions)
     ])
   }
-
 }
 
 
 
-const threadFooter = (thread, state, actions) => (
+const threadFooter = (thread, actions) => (
   h("div", { class: "footer" }, [
     h("div", { class: "users", userCount: thread.userCount, onupdate: (element, oldProps) => {
       if (oldProps.userCount < thread.userCount) {
@@ -223,10 +223,10 @@ const threadFooter = (thread, state, actions) => (
 
 
 
-const threadView = (state, actions) => {
-  if (state.currentThread) {
-    return h("div", { class: "thread-view", _id: state.currentThread._id, onupdate: (el, oldProps) => {
-      if (oldProps._id != state.currentThread._id) {
+const threadView = (currentThread, currentBubble, state, actions) => {
+  if (currentThread) {
+    return h("div", { class: "thread-view", _id: currentThread._id, onupdate: (el, oldProps) => {
+      if (oldProps._id != currentThread._id) {
 
         // User switched thread
         actions.loadMoreMessages();
@@ -235,8 +235,8 @@ const threadView = (state, actions) => {
     } }, [
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.firstChild)) { actions.loadMoreMessages() } } }, [
         h("div", { class: "loadMoreMessages" }),
-        threadItem(state.currentThread, state, actions, "full"),
-        h("ul", { class: "messages" }, state.currentThread.messages.map(message => messageItem(message, state))),
+        threadItem(currentThread, currentBubble, actions, "full"),
+        h("ul", { class: "messages" }, currentThread.messages.map(message => messageItem(message, state))),
         keyboardComponent(state, actions)
       ])
     ])

@@ -2,7 +2,7 @@
   "name": "bubbleio",
   "version": "1.0.0",
   "description": "Projet recherche tim",
-  "main": "index.js",
+  "main": "server.js",
   "dependencies": {
     "@hyperapp/router": "^0.4.1",
     "ejs": "^2.5.7",

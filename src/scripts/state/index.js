@@ -8,6 +8,5 @@ export const state = getStateFromStorage() || {
   currentBubble: null,
   currentThread: null,
   keyboardStatus: "closed",
-  keyboardMode: "default",
-  gravity: 1.8
+  keyboardMode: "default"
 }

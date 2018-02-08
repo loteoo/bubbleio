@@ -141,7 +141,11 @@ app.get('/', function (req, res) {
         bubble.userCount = getConnectionsInRoom(bubble._id);
       }
 
-      res.render(__dirname + '/src/index', { state: JSON.stringify({ bubbles: bubbles }).replace(/'/g, "\\'") });
+      res.render(__dirname + '/src/index', {
+        state: {
+          bubbles: bubbles
+        }
+      });
     });
   });
 });
@@ -183,7 +187,7 @@ app.get('/:bubbleName', function(req, res) {
 
 
           res.render(__dirname + '/src/index', {
-            state: JSON.stringify(newState).replace(/'/g, "\\'"),
+            state: newState,
             joinBubble: bubble._id
           });
         });
@@ -234,9 +238,9 @@ app.get('/:bubbleName/:threadId', function(req, res) {
                 };
 
                 res.render(__dirname + '/src/index', {
-                  state: JSON.stringify(newState).replace(/'/g, "\\'"),
+                  state: newState,
                   joinBubble: thread.bubble_id,
-                  joinThread: JSON.stringify(thread).replace(/'/g, "\\'")
+                  joinThread: thread
                 });
               });
             } else {
