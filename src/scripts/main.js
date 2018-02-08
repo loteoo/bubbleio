@@ -25,7 +25,7 @@ if (state.currentBubble) {
   });
   console.log("join room: " + state.currentBubble._id);
 }
-if (state.currentThread) {
+if (state.currentThread && state.currentView == "threadView") {
   main.loadMoreThreads();
   socket.emit('join thread', state.currentThread);
   console.log("join thread: " + state.currentThread._id);

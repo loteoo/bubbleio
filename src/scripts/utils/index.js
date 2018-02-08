@@ -106,7 +106,7 @@ export const mergeStates = (stateA, stateB) => {
 
 
 
-export const mergeBubbles = (bubbleA, bubbleB) => {
+const mergeBubbles = (bubbleA, bubbleB) => {
 
   // Merge the threads array before merging the bubbles
   if (bubbleB.threads) {
@@ -144,7 +144,7 @@ export const mergeBubbles = (bubbleA, bubbleB) => {
 
 
 
-export const mergeThreads = (threadA, threadB) => {
+const mergeThreads = (threadA, threadB) => {
 
   // Merge the messages array before merging the threads
   if (threadB.messages) {
@@ -160,6 +160,12 @@ export const mergeThreads = (threadA, threadB) => {
         threadA.messages.push(threadB.messages[i]);
       }
     }
+  }
+
+
+  // Sort the messages
+  if (threadA.messages) {
+    threadA.messages.sort(compareAge);
   }
 
   threadB.messages = threadA.messages; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
@@ -201,6 +207,17 @@ const compareRelevance = (a, b) => {
   }
   if (a.relevance > b.relevance) {
     return -1;
+  }
+  return 0;
+}
+
+
+const compareAge = (a, b) => {
+  if (a.created < b.created) {
+    return -1;
+  }
+  if (a.created > b.created) {
+    return 1;
   }
   return 0;
 }
