@@ -1,6 +1,6 @@
 import {h} from 'hyperapp'
 import {Link, Route} from "@hyperapp/router"
-import {timeSince, isElementInViewport} from '../utils/'
+import {timeSince, isElementInViewport, shortenText} from '../utils/'
 
 
 
@@ -66,12 +66,12 @@ const globalView = (state, actions) => (
 
 
 const bubbleItem = (bubble) => {
-  let userCount = "";
+  let userCountTxt = "";
   if (bubble.userCount) {
-    userCount = " (" + bubble.userCount + ")";
+    userCountTxt = " (" + bubble.userCount + ")";
   }
   return h("li", {}, [
-    Link({ to: "/" + bubble.name }, bubble.title + userCount)
+    Link({ to: "/" + bubble.name }, bubble.title + userCountTxt)
   ])
 }
 
@@ -84,14 +84,14 @@ const bubbleItem = (bubble) => {
 
 
 const bubbleView = (currentBubble, state, actions) => {
-
-  // Score = (P-1) / (T+2)^G
-  //
-  // where,
-  // P = points of an item (and -1 is to negate submitters vote)
-  // T = time since submission (in hours)
-  // G = Gravity, defaults to 1.8 in news.arc
   if (currentBubble) {
+
+
+    let userCountTxt = "";
+    if (currentBubble.userCount) {
+      userCountTxt = " (" + currentBubble.userCount + ")";
+    }
+
     return h("div", { class: "bubble-view", _id: currentBubble._id, onupdate: (el, oldProps) => {
       if (!oldProps._id) {
         oldProps._id = "NO BUBBLE";
@@ -113,7 +113,7 @@ const bubbleView = (currentBubble, state, actions) => {
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.lastChild)) { actions.loadMoreThreads() } } }, [
         h("div", { class: "bubble-header" }, [
           Link({ to: "/" + name, class: "back" }),
-          h("h2", {}, currentBubble.title)
+          h("h2", {}, currentBubble.title + userCountTxt)
         ]),
         h("ul", { class: "threads" }, currentBubble.threads.map(thread => threadItem(thread, currentBubble, actions))),
         keyboardComponent(state, actions),
@@ -144,7 +144,12 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
   if (thread.type == "default") {
     contentBlock = null
   } else if (thread.type == "text") {
-    contentBlock = h("div", { class: "text" }, thread.text)
+
+    if (display == "summary") {
+      contentBlock = h("div", { class: "text" }, shortenText(thread.text, 250) + "...");
+    } else {
+      contentBlock = h("div", { class: "text" }, thread.text);
+    }
   } else if (thread.type == "link") {
     contentBlock = h("a", { class: "link", href: thread.url, target: "_blank" }, thread.url)
   } else if (thread.type == "image") {
@@ -196,8 +201,9 @@ const threadFooter = (thread, actions) => (
           element.classList.remove("countUp");
         }, 50);
       } } }, [
-        h("span", { class: "count" }, thread.userCount),
-        h("span", {}, " in this thread")
+        h("div", { class: "count" }, [
+          h("span", {}, thread.userCount)
+        ])
       ]),
     h("div", { class: "replies", messageCount: thread.messages.length, onupdate: (element, oldProps) => {
       if (oldProps.messageCount < thread.messages.length) {
@@ -206,8 +212,9 @@ const threadFooter = (thread, actions) => (
           element.classList.remove("countUp");
         }, 50);
       } } }, [
-        h("span", { class: "count" }, thread.messages.length),
-        h("span", {}, " replies")
+        h("div", { class: "count" }, [
+          h("span", {}, thread.messages.length)
+        ])
       ]),
     h("button", { class: "upvote", score: thread.score, onclick: (ev) => {
       ev.stopPropagation();

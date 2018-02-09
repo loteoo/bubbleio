@@ -59,16 +59,11 @@ export const storeStateInStorage = (state) => window.localStorage.setItem('bubbl
 
 
 
-
-// TODO: Dont use deepmerge anymore, custom merging function with custom array merges:
-// One for bubbles(alphabetical), threads(score) and messages(created)
-
-
-
-
-
-
-
+export const shortenText = (s, n) => {
+    var cut= s.indexOf(' ', n);
+    if(cut== -1) return s;
+    return s.substring(0, cut)
+}
 
 export const mergeStates = (stateA, stateB) => {
 

@@ -131,8 +131,8 @@ export const actions = {
     }
   },
   updateState: newState => state => {
-    console.log("Update state");
-    console.log(newState);
+    // console.log("Update state");
+    // console.log(newState);
     return mergeStates(state, newState)
   },
   loadMoreThreads: () => (state, actions) => {

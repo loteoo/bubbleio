@@ -490,7 +490,6 @@ footer {
 	flex-direction: column;
 	align-items: stretch;
 }
-
 .thread-view .messages li {
 	display: block;
   border-radius: 1.5em;
@@ -552,10 +551,30 @@ footer {
 	font-size: 0.8em;
 }
 .thread .footer .users .count {
+	position: relative;
 	color: inherit;
 	transform: scale(1);
 	transition: all 500ms;
   display: inline-block;
+	width: 3rem;
+	height: 3rem;
+	background-image: url(../img/users.svg);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+.thread .footer .users .count span {
+	position: absolute;
+	top: -1rem;
+	right: -1rem;
+	border-radius: 100%;
+	width: 2rem;
+	height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+	background-color: #DD352E;
+	color: white;
 }
 .thread .footer .users.countUp .count {
 	color: rgba(0, 123, 255, 1);
@@ -567,10 +586,30 @@ footer {
 	margin: 0 auto 0 1.5rem;
 }
 .thread .footer .replies .count {
+	position: relative;
 	color: inherit;
 	transform: scale(1);
 	transition: all 500ms;
   display: inline-block;
+	width: 3rem;
+	height: 3rem;
+	background-image: url(../img/chat.svg);
+	background-position: center;
+	background-size: 80%;
+	background-repeat: no-repeat;
+}
+.thread .footer .replies .count span {
+	position: absolute;
+	top: -1rem;
+	right: -1rem;
+	border-radius: 100%;
+	width: 2rem;
+	height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+	background-color: white;
+	border: 1px solid rgba(0, 123, 255, 1);
 }
 .thread .footer .replies.countUp .count {
 	color: rgba(0, 123, 255, 1);
@@ -622,6 +661,7 @@ footer {
 .thread[data-upvoted="5"] .footer .upvote {
 	background-color: rgba(0, 123, 255, 0.5);
 	pointer-events: none;
+	color: white;
 }
 
 
@@ -638,6 +678,7 @@ footer {
 /* Text thread */
 .thread[data-type="text"] .text {
 	padding: 0.5rem 1.5rem;
+	font-size: 0.8em;
 }
 
 
