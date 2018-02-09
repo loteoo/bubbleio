@@ -549,6 +549,9 @@ footer {
 }
 .thread .footer .users {
 	font-size: 0.8em;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
 }
 .thread .footer .users .count {
 	position: relative;
@@ -558,6 +561,7 @@ footer {
   display: inline-block;
 	width: 3rem;
 	height: 3rem;
+	margin-top: 1.2rem;
 	background-image: url(../img/users.svg);
 	background-position: center;
 	background-size: contain;
@@ -584,6 +588,9 @@ footer {
 .thread .footer .replies {
 	font-size: 0.8em;
 	margin: 0 auto 0 1.5rem;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
 }
 .thread .footer .replies .count {
 	position: relative;
@@ -593,6 +600,7 @@ footer {
   display: inline-block;
 	width: 3rem;
 	height: 3rem;
+	margin-top: 1.2rem;
 	background-image: url(../img/chat.svg);
 	background-position: center;
 	background-size: 80%;
