@@ -19,9 +19,14 @@ const unsubscribe = location.subscribe(main.location);
 
 
 
-// ======================================================================
-// Received event handlers
-// ======================================================================
-
-
+// External state update handler
 window.socket.on('update state', newState => main.updateState(newState));
+
+
+
+// Activate service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+  .register('/sw.js')
+  .then(function() { console.log('Service Worker Registered'); });
+}

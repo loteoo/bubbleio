@@ -580,6 +580,11 @@ footer {
 	background-color: #DD352E;
 	color: white;
 }
+.thread .footer .users[usercount="0"] .count span {
+	color: inherit;
+	background-color: white;
+	border: 1px solid rgba(0, 123, 255, 1);
+}
 .thread .footer .users.countUp .count {
 	color: rgba(0, 123, 255, 1);
 	transform: scale(1.5);
