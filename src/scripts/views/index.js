@@ -8,7 +8,7 @@ import {timeSince, isElementInViewport, shortenText} from '../utils/'
 // Application root
 export const view = (state, actions) => {
 
-  console.log(state);
+  // console.log(state);
 
   // If logged in
   if (state.username) {
@@ -61,7 +61,6 @@ export const view = (state, actions) => {
       if (!state.currentThread.messages) {
         state.currentThread.messages = [];
       }
-
     }
 
 
@@ -91,7 +90,10 @@ const globalView = (state, actions) => (
   h("div", { class: "global-view" }, [
     h("div", { class: "frame" }, [
       h("h2", {}, state.username),
-      h("ul", { class: "bubbles" }, state.bubbles.map(bubbleItem))
+      h("ul", { class: "bubbles" }, [
+        state.bubbles.map(bubbleItem),
+        h("li", {}, "Create bubble")
+      ])
     ])
   ])
 )

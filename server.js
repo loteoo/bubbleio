@@ -340,8 +340,7 @@ io.on('connection', function (socket) {
     // No idea why this prop gets here in the first place...
     delete thread.upvoted;
 
-    // Update clients in the bubble
-    socket.broadcast.to(thread.bubble_id).emit('update state', {
+    let newState = {
       bubbles: [
         {
           _id: thread.bubble_id,
@@ -350,7 +349,13 @@ io.on('connection', function (socket) {
           ]
         },
       ]
-    });
+    };
+
+    // Update clients in the bubble
+    socket.broadcast.to(thread.bubble_id).emit('update state', newState);
+
+    // Update clients in the thread
+    socket.broadcast.to(thread.thread_id).emit('update state', newState);
 
 
     // Update DB
@@ -371,8 +376,7 @@ io.on('connection', function (socket) {
   // Pass all received message to all clients
   socket.on('new message', function (message) {
 
-    // Update all clients in bubble
-    socket.broadcast.to(message.bubble_id).emit('update state', {
+    let newState = {
       bubbles: [
         {
           _id: message.bubble_id,
@@ -386,7 +390,13 @@ io.on('connection', function (socket) {
           ]
         }
       ]
-    });
+    };
+
+    // Update all clients in bubble
+    socket.broadcast.to(message.bubble_id).emit('update state', newState);
+
+    // Update all clients in the thread
+    socket.broadcast.to(message.thread_id).emit('update state', newState);
 
 
     // Proper indexes for mongodb
