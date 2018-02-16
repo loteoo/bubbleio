@@ -194,41 +194,55 @@ io.on('connection', function (socket) {
 
 
   // Handle rooms user counts from user navigation in the app
-  socket.on('switch room', function (navData) {
-
-    // Temporary state object to send to the clients
-    let newState = {
-      bubbles : []
-    }
+  socket.on('switch bubble', function (navData) {
 
 
     // If user was in an other room before this
-    if (navData.prevRoomId) {
+    if (navData.prevBubbleName) {
 
-      // Leave connection to the previous room
-      socket.leave(navData.prevRoomId);
 
-      // Add the new bubble count to the next state update
-      newState.bubbles.push({
-          _id: navData.prevRoomId,
-          userCount: getConnectionsInRoom(navData.prevRoomId)
+      // Find ID, leave and update clients
+      dbo.collection("bubbles").findOne({ name: navData.prevBubbleName }, function(err, bubble) {
+        if (err) throw err;
+        if (bubble) {
+
+          // Leave connection to the previous room
+          socket.leave(bubble._id);
+
+          // Inject user counts to bubble
+          bubble.userCount = getConnectionsInRoom(bubble._id);
+
+          // Update clients in the previous bubble
+          io.to(bubble._id).emit("update state", {
+            bubbles: [
+              bubble
+            ]
+          });
+        }
       });
     }
 
+    // Find ID, join and update clients
+    dbo.collection("bubbles").findOne({ name: navData.nextBubbleName }, function(err, bubble) {
+      if (err) throw err;
+      if (bubble) {
 
-    // Join connection to the new room
-    socket.join(navData.nextRoomId);
+        // Join connection to the new room
+        socket.join(bubble._id);
 
-    // Add the new bubble count to the next state update
-    newState.bubbles.push({
-      _id: navData.nextRoomId,
-      userCount: getConnectionsInRoom(navData.nextRoomId)
+        // Inject user counts to bubble
+        bubble.userCount = getConnectionsInRoom(bubble._id);
+
+        // Update clients in the previous bubble
+        io.to(bubble._id).emit("update state", {
+          bubbles: [
+            bubble
+          ]
+        });
+      }
     });
 
 
-
-    // Update all clients // TODO: change this to all clients who have the bubble in their list
-    io.emit("update state", newState);
   });
 
 

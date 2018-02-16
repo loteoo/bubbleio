@@ -8,7 +8,7 @@ import {timeSince, isElementInViewport, shortenText} from '../utils/'
 // Application root
 export const view = (state, actions) => {
 
-console.log(state);
+// console.log(state);
 
   // If logged in
   if (state.username) {
@@ -124,23 +124,23 @@ const bubbleView = (currentBubble, state, actions) => {
       userCountTxt = " (" + currentBubble.userCount + ")";
     }
 
-    return h("div", { class: "bubble-view", _id: currentBubble._id, onupdate: (el, oldProps) => {
-      if (oldProps._id != currentBubble._id) {
+    return h("div", { class: "bubble-view", name: currentBubble.name, onupdate: (el, oldProps) => {
+      if (oldProps.name != currentBubble.name) {
         // User switched bubbles
         actions.loadMoreThreads();
-        socket.emit('switch room', {
-          prevRoomId: oldProps._id,
-          nextRoomId: currentBubble._id
+        socket.emit('switch bubble', {
+          prevBubbleName: oldProps.name,
+          nextBubbleName: currentBubble.name
         });
-        console.log("--> join room: " + currentBubble._id);
+        console.log("--> join bubble: " + currentBubble.name);
       }
     }, oncreate: el => {
       actions.loadMoreThreads();
-      socket.emit('switch room', {
-        prevRoomId: null,
-        nextRoomId: state.currentBubble._id
+      socket.emit('switch bubble', {
+        prevBubbleName: null,
+        nextBubbleName: currentBubble.name
       });
-      console.log("--> join room: " + state.currentBubble._id);
+      console.log("--> join bubble: " + currentBubble.name);
     } }, [
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.lastChild)) { actions.loadMoreThreads() } } }, [
         h("div", { class: "bubble-header" }, [
@@ -289,9 +289,9 @@ const threadView = (currentThread, currentBubble, state, actions) => {
       actions.loadMoreMessages();
       socket.emit('switch thread', {
         prevThread: null,
-        nextThread: state.currentThread
+        nextThread: currentThread
       });
-      console.log("--> join thread: " + state.currentThread._id);
+      console.log("--> join thread: " + currentThread._id);
     } }, [
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.firstChild)) { actions.loadMoreMessages() } } }, [
         h("div", { class: "loadMoreMessages" }),
