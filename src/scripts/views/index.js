@@ -8,7 +8,7 @@ import {timeSince, isElementInViewport, shortenText} from '../utils/'
 // Application root
 export const view = (state, actions) => {
 
-// console.log(state);
+  console.log(state);
 
   // If logged in
   if (state.username) {
@@ -330,6 +330,7 @@ const messageItem = (message, state) => {
 const keyboardComponent = (state, actions) => (
   h("form", { class: "keyboard " + state.keyboardMode, onsubmit: ev => { actions.keyboardSubmit(ev); return false; } }, [
     h("div", { class: "expander " + state.keyboardStatus, onclick: () => actions.expandKeyboard(state.keyboardStatus) }, [
+      h("div", { class: "default", onclick: ev => { actions.changeKeyboardMode("default") } }, "x"),
       h("div", { class: "text", onclick: ev => { actions.changeKeyboardMode("text") } }, "txt"),
       h("div", { class: "link", onclick: ev => { actions.changeKeyboardMode("link") } }, "url"),
       h("div", { class: "image", onclick: ev => { actions.changeKeyboardMode("image") } }, "pic")
