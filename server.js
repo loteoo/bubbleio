@@ -213,6 +213,7 @@ io.on('connection', function (socket) {
           bubble.userCount = getConnectionsInRoom(bubble._id);
 
           // Update clients in the previous bubble
+          // TODO: Update cleint that left!
           io.to(bubble._id).emit("update state", {
             bubbles: [
               bubble
@@ -233,7 +234,7 @@ io.on('connection', function (socket) {
         // Inject user counts to bubble
         bubble.userCount = getConnectionsInRoom(bubble._id);
 
-        // Update clients in the previous bubble
+        // Update clients in the next bubble
         io.to(bubble._id).emit("update state", {
           bubbles: [
             bubble
