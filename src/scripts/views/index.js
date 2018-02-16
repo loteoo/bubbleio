@@ -199,7 +199,7 @@ const threadFooter = (thread, actions) => (
         element.classList.add("countUp");
         setTimeout(() => {
           element.classList.remove("countUp");
-        }, 50);
+        }, 25);
       } } }, [
         h("div", { class: "count" }, [
           h("span", {}, thread.userCount)
@@ -210,7 +210,7 @@ const threadFooter = (thread, actions) => (
         element.classList.add("countUp");
         setTimeout(() => {
           element.classList.remove("countUp");
-        }, 50);
+        }, 25);
       } } }, [
         h("div", { class: "count" }, [
           h("span", {}, thread.messages.length)
@@ -224,7 +224,7 @@ const threadFooter = (thread, actions) => (
         element.classList.add("countUp");
         setTimeout(() => {
           element.classList.remove("countUp");
-        }, 50);
+        }, 25);
       }
     } }, thread.score)
   ])
@@ -239,13 +239,18 @@ const threadFooter = (thread, actions) => (
 
 const threadView = (currentThread, currentBubble, state, actions) => {
   if (currentThread) {
-    return h("div", { class: "thread-view", _id: currentThread._id, onupdate: (el, oldProps) => {
+    return h("div", { class: "thread-view", _id: currentThread._id, messageCount: currentThread.messages.length, onupdate: (el, oldProps) => {
       if (oldProps._id != currentThread._id) {
-
         // User switched thread
         actions.loadMoreMessages();
-
       }
+
+      // If there is a new message
+      if (oldProps.messageCount < currentThread.messages.length) {
+        // Scroll down
+        el.children[0].scrollTop = el.children[0].scrollHeight;
+      }
+
     } }, [
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.firstChild)) { actions.loadMoreMessages() } } }, [
         h("div", { class: "loadMoreMessages" }),
