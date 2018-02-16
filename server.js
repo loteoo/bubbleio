@@ -11,9 +11,6 @@ const port = 80;
 var dbo;
 
 
-
-
-app.set('view engine', 'ejs');
 app.use(express.static('build'));
 
 
@@ -35,6 +32,7 @@ const getConnectionsInRoom = (roomName) => {
   }
   return room.length;
 }
+
 
 
 
@@ -125,7 +123,7 @@ app.get('/get/:bubbleName/:threadId', function(req, res) {
 
 // On browser load
 app.get('/', function (req, res) {
-  res.render(__dirname + '/src/index');
+  res.sendFile(__dirname + '/build/index.html');
 });
 
 
@@ -136,7 +134,7 @@ app.get('/:bubbleName', function(req, res) {
   dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
     if (err) throw err;
     if (bubble) { // If bubble actually exists
-      res.render(__dirname + '/src/index');
+      res.sendFile(__dirname + '/build/index.html');
     } else {
       res.send("Unknown bubble");
     }
@@ -157,7 +155,7 @@ app.get('/:bubbleName/:threadId', function(req, res) {
         dbo.collection("threads").findOne({ _id: ObjectId(req.params.threadId) }, function(err, thread) {
           if (err) throw err;
           if (thread) { // If thread actually exists
-            res.render(__dirname + '/src/index');
+            res.sendFile(__dirname + '/build/index.html');
           } else {
             res.send("Unknown thread");
           }

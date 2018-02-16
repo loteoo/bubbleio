@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var dataCacheName = 'bubbleio-0.1';
-var cacheName = 'bubbleio-pwa-test-0.1';
+var dataCacheName = 'bubbleio-0.1.1';
+var cacheName = 'bubbleio-pwa-test-0.1.1';
 var filesToCache = [
   '/',
+  '/index.html',
   '/css/style.css',
   '/js/main.min.js',
   '/socket.io/socket.io.js',
