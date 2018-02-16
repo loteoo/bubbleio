@@ -210,9 +210,8 @@ io.on('connection', function (socket) {
           // Inject user counts to bubble
           bubble.userCount = getConnectionsInRoom(bubble._id);
 
-          // Update clients in the previous bubble
-          // TODO: Update cleint that left!
-          io.to(bubble._id).emit("update state", {
+          // TODO: Update all clients who have that this bubble in their account's bubble list
+          io.emit("update state", { // Emit to everyone for now
             bubbles: [
               bubble
             ]
@@ -232,8 +231,8 @@ io.on('connection', function (socket) {
         // Inject user counts to bubble
         bubble.userCount = getConnectionsInRoom(bubble._id);
 
-        // Update clients in the next bubble
-        io.to(bubble._id).emit("update state", {
+        // TODO: Update all clients who have that this bubble in their account's bubble list
+        io.emit("update state", { // Emit to everyone for now
           bubbles: [
             bubble
           ]
@@ -260,7 +259,7 @@ io.on('connection', function (socket) {
       // Update the thread's user count
       navData.prevThread.userCount = getConnectionsInRoom(navData.prevThread._id);
 
-      // Update clients in the previous bubble
+      // Update clients in the previous thread
       io.to(navData.prevThread.bubble_id).emit("update state", {
         bubbles: [
           {
@@ -281,7 +280,7 @@ io.on('connection', function (socket) {
     // Update the thread's user count
     navData.nextThread.userCount = getConnectionsInRoom(navData.nextThread._id);
 
-    // Update clients in the bubble
+    // Update clients in the thread
     io.to(navData.nextThread.bubble_id).emit("update state", {
       bubbles: [
         {

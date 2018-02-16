@@ -185,7 +185,9 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
   } else if (thread.type == "link") {
     contentBlock = h("a", { class: "link", href: thread.url, target: "_blank" }, thread.url)
   } else if (thread.type == "image") {
-    contentBlock = h("img", { class: "img", src: thread.src, alt: thread.title })
+    contentBlock = h("div", { class: "img" }, [
+      h("img", { src: thread.src, alt: thread.title })
+    ])
   } else if (thread.type == "youtube") {
     contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.youtubeId+"')" })
   }

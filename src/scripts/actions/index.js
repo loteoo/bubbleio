@@ -46,7 +46,7 @@ export const actions = {
         let thread = {
           _id: ObjectId(),
           title: ev.target.title.value,
-          score: 0,
+          score: 1,
           created: timestamp,
           type: state.keyboardMode,
           author: state.username,
