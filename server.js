@@ -51,8 +51,8 @@ app.get('/get/:bubbleName', function(req, res) {
         if (err) throw err;
 
 
-        // TODO: Inject messages count efficiently
-
+        // Inject user counts to bubble
+        bubble.userCount = getConnectionsInRoom(bubble._id);
 
         // Inject user counts to threads
         for (var i = 0; i < threads.length; i++) {
@@ -61,7 +61,7 @@ app.get('/get/:bubbleName', function(req, res) {
           }
         }
 
-
+        // Inject threads to bubble
         bubble.threads = threads;
 
         let newState = {
@@ -94,7 +94,11 @@ app.get('/get/:bubbleName/:threadId', function(req, res) {
         if (err) throw err;
 
 
+        // Inject messages to thread
         thread.messages = messages;
+
+        // Inject user counts to thread
+        thread.userCount = getConnectionsInRoom(thread._id);
 
         let newState = {
           bubbles: [
@@ -102,7 +106,8 @@ app.get('/get/:bubbleName/:threadId', function(req, res) {
               _id: thread.bubble_id,
               threads: [
                 thread
-              ]
+              ],
+              userCount: getConnectionsInRoom(thread.bubble_id)
             }
           ]
         };
@@ -237,18 +242,18 @@ io.on('connection', function (socket) {
     if (navData.prevThread) {
 
       // Leave connection to the new room
-      socket.leave(prevThread._id);
+      socket.leave(navData.prevThread._id);
 
       // Update the thread's user count
-      prevThread.userCount = getConnectionsInRoom(prevThread._id);
+      navData.prevThread.userCount = getConnectionsInRoom(navData.prevThread._id);
 
       // Update clients in the previous bubble
-      io.to(prevThread.bubble_id).emit("update state", {
+      io.to(navData.prevThread.bubble_id).emit("update state", {
         bubbles: [
           {
-            _id: prevThread.bubble_id,
+            _id: navData.prevThread.bubble_id,
             threads: [
-              prevThread
+              navData.prevThread
             ]
           },
         ]

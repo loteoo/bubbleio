@@ -8,6 +8,7 @@ import {timeSince, isElementInViewport, shortenText} from '../utils/'
 // Application root
 export const view = (state, actions) => {
 
+console.log(state);
 
   // If logged in
   if (state.username) {
@@ -34,9 +35,8 @@ export const view = (state, actions) => {
       }
 
       // If no threads are in this bubble
-      if (!state.currentBubble.threads || state.currentBubble.threads.length < 1) {
+      if (!state.currentBubble.threads) {
         state.currentBubble.threads = [];
-        actions.loadMoreThreads();
       }
     }
 
@@ -58,9 +58,8 @@ export const view = (state, actions) => {
 
 
       // If no messages are in this thread
-      if (!state.currentThread.messages || state.currentThread.messages.length < 1) {
+      if (!state.currentThread.messages) {
         state.currentThread.messages = [];
-        actions.loadMoreMessages();
       }
 
     }
@@ -128,17 +127,20 @@ const bubbleView = (currentBubble, state, actions) => {
     return h("div", { class: "bubble-view", _id: currentBubble._id, onupdate: (el, oldProps) => {
       if (oldProps._id != currentBubble._id) {
         // User switched bubbles
-
-        console.log("join room: " + currentBubble._id);
+        actions.loadMoreThreads();
         socket.emit('switch room', {
           prevRoomId: oldProps._id,
           nextRoomId: currentBubble._id
         });
-
-        actions.loadMoreThreads();
-
-
+        console.log("--> join room: " + currentBubble._id);
       }
+    }, oncreate: el => {
+      actions.loadMoreThreads();
+      socket.emit('switch room', {
+        prevRoomId: null,
+        nextRoomId: state.currentBubble._id
+      });
+      console.log("--> join room: " + state.currentBubble._id);
     } }, [
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.lastChild)) { actions.loadMoreThreads() } } }, [
         h("div", { class: "bubble-header" }, [
@@ -270,12 +272,11 @@ const threadView = (currentThread, currentBubble, state, actions) => {
       if (oldProps._id != currentThread._id) {
         // User switched thread
         actions.loadMoreMessages();
-
-        socket.emit('switch room', {
+        socket.emit('switch thread', {
           prevThread: oldProps,
           nextThread: state.currentThread
         });
-        console.log("join thread: " + state.currentThread._id);
+        console.log("--> join thread: " + state.currentThread._id);
       }
 
       // If there is a new message
@@ -284,6 +285,13 @@ const threadView = (currentThread, currentBubble, state, actions) => {
         el.children[0].scrollTop = el.children[0].scrollHeight;
       }
 
+    }, oncreate: el => {
+      actions.loadMoreMessages();
+      socket.emit('switch thread', {
+        prevThread: null,
+        nextThread: state.currentThread
+      });
+      console.log("--> join thread: " + state.currentThread._id);
     } }, [
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.firstChild)) { actions.loadMoreMessages() } } }, [
         h("div", { class: "loadMoreMessages" }),
