@@ -16,11 +16,5 @@
     <!-- TODO: use slim socket io -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/main.min.js"></script>
-
-    <script>
-      <% if (typeof(state) !== 'undefined') { %>
-        main.updateState(<%- JSON.stringify(state) %>);
-      <% } %>
-    </script>
   </body>
 </html>

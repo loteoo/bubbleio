@@ -8,6 +8,7 @@ import {timeSince, isElementInViewport, shortenText} from '../utils/'
 // Application root
 export const view = (state, actions) => {
 
+
   // If logged in
   if (state.username) {
 
@@ -15,21 +16,53 @@ export const view = (state, actions) => {
 
     let urlparts = window.location.pathname.split("/");
 
+
+    // If there is a bubble in the URL
     if (urlparts[1]) {
-      // Update the temp bubble object
-      state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
       state.currentView = "bubbleView";
 
-      if (!state.currentBubble.threads) {
+      // Check if bubble exists in cache
+      state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+
+      // If there was nothing in cache
+      if (!state.currentBubble) {
+
+        // Create a temporary bubble object
+        state.currentBubble = {
+          name: urlparts[1],
+        }
+      }
+
+      // If no threads are in this bubble
+      if (!state.currentBubble.threads || state.currentBubble.threads.length < 1) {
         state.currentBubble.threads = [];
         actions.loadMoreThreads();
       }
-
     }
+
+    // If there is a thread in the URL
     if (urlparts[2]) {
-      // Update the temp thread object
-      state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
       state.currentView = "threadView";
+
+      // Check if thread exists in cache
+      state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+
+      // If there was nothing in cache
+      if (!state.currentThread) {
+
+        // Create a temporary thread object
+        state.currentThread = {
+          _id: urlparts[2],
+        }
+      }
+
+
+      // If no messages are in this thread
+      if (!state.currentThread.messages || state.currentThread.messages.length < 1) {
+        state.currentThread.messages = [];
+        actions.loadMoreMessages();
+      }
+
     }
 
 
@@ -93,9 +126,6 @@ const bubbleView = (currentBubble, state, actions) => {
     }
 
     return h("div", { class: "bubble-view", _id: currentBubble._id, onupdate: (el, oldProps) => {
-      if (!oldProps._id) {
-        oldProps._id = "NO BUBBLE";
-      }
       if (oldProps._id != currentBubble._id) {
         // User switched bubbles
 
@@ -161,8 +191,6 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
 
   if (display == "summary") {
     return h("li", { class: "thread", "data-type": thread.type, "data-upvoted": thread.upvoted, "data-display": display, onclick: () => {
-      console.log("join thread: " + thread._id);
-      socket.emit('join thread', thread);
       actions.location.go("/" + currentBubble.name + "/" + thread._id);
     } }, [
       h("div", { class: "header" }, [
@@ -177,7 +205,6 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
       h("div", { class: "header" }, [
         h("div", { class: "thread-view-header" }, [
           h("div", { class: "back", onclick: () => {
-            socket.emit('leave thread', thread);
             actions.location.go("/" + currentBubble.name);
           }}),
           h("h2", {}, thread.title)
@@ -239,10 +266,16 @@ const threadFooter = (thread, actions) => (
 
 const threadView = (currentThread, currentBubble, state, actions) => {
   if (currentThread) {
-    return h("div", { class: "thread-view", _id: currentThread._id, messageCount: currentThread.messages.length, onupdate: (el, oldProps) => {
+    return h("div", { class: "thread-view", _id: currentThread._id, bubble_id: currentThread.bubble_id, messageCount: currentThread.messages.length, onupdate: (el, oldProps) => {
       if (oldProps._id != currentThread._id) {
         // User switched thread
         actions.loadMoreMessages();
+
+        socket.emit('switch room', {
+          prevThread: oldProps,
+          nextThread: state.currentThread
+        });
+        console.log("join thread: " + state.currentThread._id);
       }
 
       // If there is a new message

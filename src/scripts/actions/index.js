@@ -140,7 +140,7 @@ export const actions = {
     });
   },
   loadMoreMessages: () => (state, actions) => {
-    console.log("Loading messages in "+state.currentThread.title+"...");
+    console.log("Loading messages in " + state.currentThread.title + "...");
     fetch("/get/" + state.currentBubble.name + "/" + state.currentThread._id)
     .then(response => response.json())
     .then(data => {

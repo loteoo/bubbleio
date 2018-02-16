@@ -19,15 +19,19 @@ const unsubscribe = location.subscribe(main.location);
 
 // Join appropriate socket rooms on load
 if (state.currentBubble) {
+  main.loadMoreThreads();
   socket.emit('switch room', {
     prevRoomId: null,
     nextRoomId: state.currentBubble._id
   });
   console.log("join room: " + state.currentBubble._id);
 }
-if (state.currentThread && state.currentView == "threadView") {
-  main.loadMoreThreads();
-  socket.emit('join thread', state.currentThread);
+if (state.currentThread) {
+  main.loadMoreMessages();
+  socket.emit('switch room', {
+    prevThread: null,
+    nextThread: state.currentThread
+  });
   console.log("join thread: " + state.currentThread._id);
 }
 

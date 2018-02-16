@@ -71,11 +71,15 @@ export const mergeStates = (stateA, stateB) => {
   if (stateB.bubbles) {
     for (var i = 0; i < stateB.bubbles.length; i++) { // For each new bubble
       let matchFound = false;
-      for (var j = 0; j < stateA.bubbles.length; j++) { // find match
-        if (stateB.bubbles[i]._id == stateA.bubbles[j]._id) {
-          matchFound = true;
-          stateA.bubbles[j] = mergeBubbles(stateA.bubbles[j], stateB.bubbles[i]);
+      if (stateA.bubbles) {
+        for (var j = 0; j < stateA.bubbles.length; j++) { // find match
+          if (stateB.bubbles[i]._id == stateA.bubbles[j]._id) {
+            matchFound = true;
+            stateA.bubbles[j] = mergeBubbles(stateA.bubbles[j], stateB.bubbles[i]);
+          }
         }
+      } else {
+        stateA.bubbles = [];
       }
       if (!matchFound) {
         stateA.bubbles.push(stateB.bubbles[i]);
@@ -103,15 +107,21 @@ export const mergeStates = (stateA, stateB) => {
 
 const mergeBubbles = (bubbleA, bubbleB) => {
 
+  // TODO: User forEach
+
   // Merge the threads array before merging the bubbles
   if (bubbleB.threads) {
     for (var i = 0; i < bubbleB.threads.length; i++) { // For each new bubble
       let matchFound = false;
-      for (var j = 0; j < bubbleA.threads.length; j++) { // find match
-        if (bubbleB.threads[i]._id == bubbleA.threads[j]._id) {
-          matchFound = true;
-          bubbleA.threads[j] = mergeThreads(bubbleA.threads[j], bubbleB.threads[i]);
+      if (bubbleA.threads) {
+        for (var j = 0; j < bubbleA.threads.length; j++) { // find match
+          if (bubbleB.threads[i]._id == bubbleA.threads[j]._id) {
+            matchFound = true;
+            bubbleA.threads[j] = mergeThreads(bubbleA.threads[j], bubbleB.threads[i]);
+          }
         }
+      } else {
+        bubbleA.threads = [];
       }
       if (!matchFound) {
         bubbleA.threads.unshift(bubbleB.threads[i]);
@@ -141,15 +151,21 @@ const mergeBubbles = (bubbleA, bubbleB) => {
 
 const mergeThreads = (threadA, threadB) => {
 
+  // TODO: User forEach
+
   // Merge the messages array before merging the threads
   if (threadB.messages) {
     for (var i = 0; i < threadB.messages.length; i++) { // For each new bubble
       let matchFound = false;
-      for (var j = 0; j < threadA.messages.length; j++) { // find match
-        if (threadB.messages[i]._id == threadA.messages[j]._id) {
-          matchFound = true;
-          threadA.messages[j] = Object.assign(threadA.messages[j], threadB.messages[i]); // Basic shallow merge
+      if (threadA.messages) {
+        for (var j = 0; j < threadA.messages.length; j++) { // find match
+          if (threadB.messages[i]._id == threadA.messages[j]._id) {
+            matchFound = true;
+            threadA.messages[j] = Object.assign(threadA.messages[j], threadB.messages[i]); // Basic shallow merge
+          }
         }
+      } else {
+        threadA.messages = [];
       }
       if (!matchFound) {
         threadA.messages.push(threadB.messages[i]);
