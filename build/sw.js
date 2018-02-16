@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var dataCacheName = 'bubbleio-0.1.1';
-var cacheName = 'bubbleio-pwa-test-0.1.1';
+var dataCacheName = 'bubbleio-0.1.2';
+var cacheName = 'bubbleio-pwa-test-0.1.2';
 var filesToCache = [
   '/',
-  '/index.html',
   '/css/style.css',
   '/js/main.min.js',
   '/socket.io/socket.io.js',
@@ -64,15 +63,18 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
-  console.log('[Service Worker] Fetch', e.request.url);
-  /*
-   * The app is asking for app shell files. In this scenario the app uses the
-   * "Cache, falling back to the network" offline strategy:
-   * https://jakearchibald.com/2014/offline-cookbook/#cache-falling-back-to-network
-   */
-  e.respondWith(
-    caches.match(e.request).then(function(response) {
-      return response || fetch(e.request);
-    })
-  );
+  if (false) { // TODO:  If is get request on a bubble or what ev
+  } else {
+    // console.log('[Service Worker] Fetch', e.request.url);
+    /*
+    * The app is asking for app shell files. In this scenario the app uses the
+    * "Cache, falling back to the network" offline strategy:
+    * https://jakearchibald.com/2014/offline-cookbook/#cache-falling-back-to-network
+    */
+    e.respondWith(
+      caches.match(e.request).then(function(response) {
+        return response || fetch(e.request);
+      })
+    );
+  }
 });
