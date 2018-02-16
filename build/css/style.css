@@ -329,10 +329,11 @@ footer {
 	bottom: 0;
 	left: 0;
 	right: 0;
+	overflow: hidden;
 }
 
 .slider {
-	transition: transform 0.3s;
+	transition: transform 250ms;
 }
 
 .slider.globalView {
@@ -427,7 +428,7 @@ footer {
 }
 
 .bubble-view ul.threads {
-	padding: 9rem 0;
+	padding: 9rem 0 16rem 0;
 }
 
 .bubble-view .thread  {
@@ -492,6 +493,7 @@ footer {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
+	padding-bottom: 16rem;
 }
 .thread-view .messages li {
 	display: block;
@@ -745,8 +747,19 @@ footer {
 	flex-direction: column;
 	align-items: stretch;
 	background-color: white;
+	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
+	transform: translateY(100%);
+	transition: transform 250ms;
 }
 
+
+
+.slider.bubbleView .bubble-view .keyboard {
+	transform: translateY(0%);
+}
+.slider.threadView .thread-view .keyboard {
+	transform: translateY(0%);
+}
 
 
 .keyboard input.title {
@@ -846,7 +859,7 @@ footer {
 .keyboard .expander .image {
 	opacity: 0;
 	pointer-events: none;
-	transition: opacity 0.3s;
+	transition: opacity 250ms;
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -978,6 +991,9 @@ footer {
 	.slider.bubbleView,
 	.slider.threadView {
     transform: translateX(0%) !important;
+	}
+	.bubble-view .bubble-header .back {
+		display: none;
 	}
 }
 
