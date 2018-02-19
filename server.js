@@ -36,7 +36,7 @@ const getConnectionsInRoom = (roomName) => {
 
 
 
-
+// TODO: USE socket.io for laod more actions
 
 // Acts as a micro API for threads
 // For ajax requests such as "load more"
