@@ -11,7 +11,7 @@ export const view = (state, actions) => {
   // console.log(state);
 
   // If logged in
-  if (state.username) {
+  if (state.user.username) {
 
     state.currentView = "globalView";
 
@@ -73,7 +73,11 @@ export const view = (state, actions) => {
     ])
 
   } else {
-    return h("form", { class: "loginForm", onsubmit: ev => { actions.login(ev); return false; } }, [
+    return h("form", { class: "loginForm", onsubmit: ev => {
+        ev.preventDefault();
+        socket.emit('login', ev.target.username.value);
+        return false;
+      } }, [
       h("h2", {}, "Pick a name"),
       h("input", { type: "text", placeholder: "Type here...", autofocus: "autofocus", name: "username", id: "username" })
     ])
@@ -89,7 +93,7 @@ export const view = (state, actions) => {
 const globalView = (state, actions) => (
   h("div", { class: "global-view" }, [
     h("div", { class: "frame" }, [
-      h("h2", {}, state.username),
+      h("h2", {}, state.user.username),
       h("ul", { class: "bubbles" }, [
         state.bubbles.map(bubbleItem),
         h("li", {}, [
@@ -326,7 +330,7 @@ const threadView = (currentThread, currentBubble, state, actions) => {
 
 const messageItem = (message, state) => {
   let provenance;
-  if (message.sender == state.username) {
+  if (message.sender == state.user.username) {
     provenance = "sent"
   } else {
     provenance = "received"

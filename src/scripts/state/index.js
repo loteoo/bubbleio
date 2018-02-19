@@ -2,7 +2,9 @@ import {location} from "@hyperapp/router"
 import {getStateFromStorage} from '../utils/'
 
 export const state = getStateFromStorage() || {
-  username: "",
+  user: {
+    username: ""
+  },
   bubbles: [],
   currentView: "globalView",
   currentBubble: null,

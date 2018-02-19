@@ -4,10 +4,6 @@ import {ObjectId, mergeStates} from '../utils/'
 
 export const actions = {
   location: location.actions,
-  login: ev => state => {
-    ev.preventDefault();
-    return { username: ev.target.username.value };
-  },
   upvote: thread => (state, actions) => {
     socket.emit('thread upvote', thread);
     thread.score++;
@@ -49,7 +45,7 @@ export const actions = {
           score: 0,
           created: timestamp,
           type: state.keyboardMode,
-          author: state.username,
+          author: state.user.username,
           bubble_id: state.currentBubble._id
         }
 
@@ -91,7 +87,7 @@ export const actions = {
           _id: ObjectId(),
           bubble_id: state.currentThread.bubble_id,
           thread_id: state.currentThread._id,
-          sender: state.username,
+          sender: state.user.username,
           message: ev.target.title.value,
           created: timestamp
         }

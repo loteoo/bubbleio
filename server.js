@@ -394,6 +394,29 @@ io.on('connection', function (socket) {
       if (err) throw err;
     });
   });
+
+
+
+
+
+
+
+
+
+  // Pass all received message to all clients
+  socket.on('login', function (username) {
+    dbo.collection("bubbles").find().toArray(function(err, bubbles) {
+      if (err) throw err;
+
+      // Update user bubbles
+      socket.emit("update state", {
+        user: {
+          username
+        },
+        bubbles
+      });
+    });
+  });
 });
 
 
