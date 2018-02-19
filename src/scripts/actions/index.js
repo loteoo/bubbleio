@@ -129,23 +129,5 @@ export const actions = {
     // console.log("Update state");
     // console.log(newState);
     return mergeStates(state, newState)
-  },
-  loadMoreThreads: () => (state, actions) => {
-    console.log("Loading bubble " + state.currentBubble.name + "...");
-    fetch("/get/" + state.currentBubble.name)
-    .then(response => response.json())
-    .then(data => {
-      actions.updateState(data);
-      console.log("Loaded");
-    });
-  },
-  loadMoreMessages: () => (state, actions) => {
-    console.log("Loading messages in " + state.currentThread.title + "...");
-    fetch("/get/" + state.currentBubble.name + "/" + state.currentThread._id)
-    .then(response => response.json())
-    .then(data => {
-      actions.updateState(data);
-      console.log("Loaded");
-    });
-  },
+  }
 }

@@ -8,7 +8,7 @@ import {timeSince, isElementInViewport, shortenText} from '../utils/'
 // Application root
 export const view = (state, actions) => {
 
-  // console.log(state);
+  console.log(state);
 
   // If logged in
   if (state.username) {
@@ -30,7 +30,7 @@ export const view = (state, actions) => {
 
         // Create a temporary bubble object
         state.currentBubble = {
-          name: urlparts[1],
+          name: urlparts[1]
         }
       }
 
@@ -52,7 +52,7 @@ export const view = (state, actions) => {
 
         // Create a temporary thread object
         state.currentThread = {
-          _id: urlparts[2],
+          _id: urlparts[2]
         }
       }
 
@@ -134,7 +134,6 @@ const bubbleView = (currentBubble, state, actions) => {
     return h("div", { class: "bubble-view", name: currentBubble.name, onupdate: (el, oldProps) => {
       if (oldProps.name != currentBubble.name) {
         // User switched bubbles
-        actions.loadMoreThreads();
         socket.emit('switch bubble', {
           prevBubbleName: oldProps.name,
           nextBubbleName: currentBubble.name
@@ -142,14 +141,12 @@ const bubbleView = (currentBubble, state, actions) => {
         console.log("--> join bubble: " + currentBubble.name);
       }
     }, oncreate: el => {
-      actions.loadMoreThreads();
       socket.emit('switch bubble', {
-        prevBubbleName: null,
         nextBubbleName: currentBubble.name
       });
       console.log("--> join bubble: " + currentBubble.name);
     } }, [
-      h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.lastChild)) { actions.loadMoreThreads() } } }, [
+      h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.lastChild)) {  console.log("Load more not working yet"); } } }, [
         h("div", { class: "bubble-header" }, [
           Link({ to: "/" + name, class: "back" }),
           h("h2", {}, currentBubble.title + userCountTxt),
@@ -292,18 +289,16 @@ const threadFooter = (thread, actions) => (
 
 
 
-
 const threadView = (currentThread, currentBubble, state, actions) => {
   if (currentThread) {
     return h("div", { class: "thread-view", _id: currentThread._id, bubble_id: currentThread.bubble_id, messageCount: currentThread.messages.length, onupdate: (el, oldProps) => {
       if (oldProps._id != currentThread._id) {
         // User switched thread
-        actions.loadMoreMessages();
         socket.emit('switch thread', {
           prevThread: oldProps,
-          nextThread: state.currentThread
+          nextThread: currentThread
         });
-        console.log("--> join thread: " + state.currentThread._id);
+        console.log("--> join thread: " + currentThread._id);
       }
 
       // If there is a new message
@@ -313,14 +308,12 @@ const threadView = (currentThread, currentBubble, state, actions) => {
       }
 
     }, oncreate: el => {
-      actions.loadMoreMessages();
       socket.emit('switch thread', {
-        prevThread: null,
         nextThread: currentThread
       });
       console.log("--> join thread: " + currentThread._id);
     } }, [
-      h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.firstChild)) { actions.loadMoreMessages() } } }, [
+      h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.firstChild)) { console.log("Load more not working yet"); } } }, [
         h("div", { class: "loadMoreMessages" }),
         threadItem(currentThread, currentBubble, actions, "full"),
         h("ul", { class: "messages" }, currentThread.messages.map(message => messageItem(message, state))),
