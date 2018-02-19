@@ -92,7 +92,9 @@ const globalView = (state, actions) => (
       h("h2", {}, state.username),
       h("ul", { class: "bubbles" }, [
         state.bubbles.map(bubbleItem),
-        h("li", {}, "Create bubble")
+        h("li", {}, [
+          Link({ to: "/create" }, "Create bubble")
+        ])
       ])
     ])
   ])
