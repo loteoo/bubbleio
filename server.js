@@ -164,10 +164,11 @@ io.on('connection', function (socket) {
           bubble.userCount = getConnectionsInRoom(bubble._id);
 
 
-          // Inject user counts to threads
+          // Inject user counts and message counts to threads
           for (var i = 0; i < threads.length; i++) {
             if (threads[i]._id) {
               threads[i].userCount = getConnectionsInRoom(threads[i]._id);
+              threads[i].messageCount = threads[i].messages.length;
             }
           }
 
