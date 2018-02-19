@@ -122,6 +122,9 @@ const bubbleItem = (bubble) => {
 const bubbleView = (currentBubble, state, actions) => {
   if (currentBubble) {
 
+    if (!currentBubble.title) {
+      currentBubble.title = "Loading...";
+    }
 
     let userCountTxt = "";
     if (currentBubble.userCount) {
@@ -149,7 +152,19 @@ const bubbleView = (currentBubble, state, actions) => {
       h("div", { class: "frame", onscroll: (ev) => { if (isElementInViewport(ev.target.lastChild)) { actions.loadMoreThreads() } } }, [
         h("div", { class: "bubble-header" }, [
           Link({ to: "/" + name, class: "back" }),
-          h("h2", {}, currentBubble.title + userCountTxt)
+          h("h2", {}, currentBubble.title + userCountTxt),
+          h("div", { class: "options" }, [
+            h("button", { onclick: ev => {
+              if (ev.target.nextSibling.classList.contains("opened")) {
+                ev.target.nextSibling.classList.remove("opened")
+              } else {
+                ev.target.nextSibling.classList.add("opened")
+              }
+            } }),
+            h("ul", {}, [
+              h("li", {}, h("span", {}, "Leave bubble"))
+            ])
+          ])
         ]),
         h("ul", { class: "threads" }, currentBubble.threads.map(thread => threadItem(thread, currentBubble, actions))),
         keyboardComponent(state, actions),
@@ -229,23 +244,27 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
 
 const threadFooter = (thread, actions) => (
   h("div", { class: "footer" }, [
-    h("div", { class: "users", userCount: thread.userCount, onupdate: (element, oldProps) => {
-      if (oldProps.userCount < thread.userCount) {
-        element.classList.add("countUp");
-        setTimeout(() => {
-          element.classList.remove("countUp");
-        }, 25);
+    h("div", { class: "users", userCount: thread.userCount, _id: thread._id, onupdate: (element, oldProps) => {
+      if (oldProps._id == thread._id) {
+        if (oldProps.userCount < thread.userCount) {
+          element.classList.add("countUp");
+          setTimeout(() => {
+            element.classList.remove("countUp");
+          }, 25);
+        }
       } } }, [
         h("div", { class: "count" }, [
           h("span", {}, thread.userCount)
         ])
       ]),
-    h("div", { class: "replies", messageCount: thread.messages.length, onupdate: (element, oldProps) => {
-      if (oldProps.messageCount < thread.messages.length) {
-        element.classList.add("countUp");
-        setTimeout(() => {
-          element.classList.remove("countUp");
-        }, 25);
+    h("div", { class: "replies", messageCount: thread.messages.length, _id: thread._id, onupdate: (element, oldProps) => {
+      if (oldProps._id == thread._id) {
+        if (oldProps.messageCount < thread.messages.length) {
+          element.classList.add("countUp");
+          setTimeout(() => {
+            element.classList.remove("countUp");
+          }, 25);
+        }
       } } }, [
         h("div", { class: "count" }, [
           h("span", {}, thread.messages.length)
@@ -254,12 +273,14 @@ const threadFooter = (thread, actions) => (
     h("button", { class: "upvote", score: thread.score, onclick: (ev) => {
       ev.stopPropagation();
       actions.upvote(thread);
-    }, onupdate: (element, oldProps) => {
-      if (oldProps.score < thread.score) {
-        element.classList.add("countUp");
-        setTimeout(() => {
-          element.classList.remove("countUp");
-        }, 25);
+    }, _id: thread._id, onupdate: (element, oldProps) => {
+      if (oldProps._id == thread._id) {
+        if (oldProps.score < thread.score) {
+          element.classList.add("countUp");
+          setTimeout(() => {
+            element.classList.remove("countUp");
+          }, 25);
+        }
       }
     } }, thread.score)
   ])

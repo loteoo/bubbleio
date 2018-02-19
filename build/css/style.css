@@ -400,9 +400,6 @@ footer {
 }
 
 .bubble-view .bubble-header {
-	padding: 1rem 1.5rem;
-}
-.bubble-view .bubble-header {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -413,16 +410,55 @@ footer {
 	justify-content: flex-start;
 	background-color: white;
 	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
+	padding: 0 1rem;
 }
 .bubble-view .bubble-header .back {
-	width: 2em;
-	height: 2em;
+	width: 3em;
+	height: 3em;
 	margin-right: 1em;
 	background-image: url(../img/left-arrow.svg);
 	background-position: center;
-	background-size: contain;
+	background-size: 50%;
 	background-repeat: no-repeat;
 }
+
+.bubble-view .bubble-header .options {
+	position: relative;
+	margin-left: auto;
+}
+
+.bubble-view .bubble-header .options button {
+	display: block;
+	width: 3em;
+	height: 3em;
+	background-image: url(../img/options.svg);
+	background-position: center;
+	background-size: 50%;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+.bubble-view .bubble-header .options ul {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	width: 180px;
+	background-color: white;
+	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 250ms;
+}
+.bubble-view .bubble-header .options ul.opened {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.bubble-view .bubble-header .options ul li>*{
+	padding: 1rem;
+	display: block;
+}
+
 .bubble-view h2 {
 	margin: 0;
 }
@@ -945,19 +981,16 @@ footer {
 
 }
 @media (min-width:768px) {
-
-}
-@media (min-width:1024px) {
 	.slider>.global-view {
     left: -50%;
     right: 100%;
 	}
 	.slider>.bubble-view {
     left: 0;
-    right: 33.3333333%;
+    right: 40%;
 	}
 	.slider>.thread-view {
-    left: 66.66666666%;
+    left: 60%;
     right: 0;
 		border-left: 1px solid #e9ecef;
 	}
@@ -970,14 +1003,15 @@ footer {
 	}
 
 	.bubble-view .bubble-header {
-		padding: 1.5rem 3rem;
+		padding: 1rem 1rem 1rem 2rem;
 	}
 	.thread-view .thread-view-header .back {
 		display: none;
 	}
 }
+@media (min-width:1024px) {
+}
 @media (min-width:1140px) {
-
 }
 @media (min-width:1280px) {
 	.slider>.global-view {

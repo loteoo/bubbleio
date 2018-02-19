@@ -14,6 +14,7 @@ const PRECACHE_URLS = [
   '/fonts/CircularStd/CircularStd-Book.otf',
   '/img/arrow-right.svg',
   '/img/left-arrow.svg',
+  '/img/options.svg',
   '/img/users.svg',
   '/img/chat.svg',
   '/img/plus.svg'
