@@ -141,7 +141,20 @@ io.on('connection', function (socket) {
     dbo.collection("bubbles").findOne({ name: navData.nextBubbleName }, function(err, bubble) {
       if (err) throw err;
       if (bubble) {
-        dbo.collection("threads").find({ bubble_id: ObjectId(bubble._id) }).toArray(function(err, threads) {
+        // TODO: Only load user messages count, not the entire message list
+        dbo.collection("threads").aggregate([
+          {
+            $match: { bubble_id: ObjectId(bubble._id) }
+          },
+          {
+            $lookup: {
+              from: 'messages',
+              localField: '_id',
+              foreignField: 'thread_id',
+              as: 'messages'
+            }
+          }
+        ]).toArray(function(err, threads) {
           if (err) throw err;
 
           // Join connection to the new room
