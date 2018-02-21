@@ -521,11 +521,6 @@ footer {
 .thread-view .thread {
 	background-color: white;
 	border-bottom: 1px solid #e9ecef;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-  z-index: 10;
 }
 
 
@@ -736,6 +731,7 @@ footer {
 .thread[data-display="desktop"] {
 	display: flex;
 	align-items: stretch;
+	margin: 1em;
 }
 .thread[data-display="desktop"] .thumbnail {
 	background-color: #e9ecef;
@@ -1045,6 +1041,15 @@ footer {
 	}
 	.thread-view .thread-view-header .back {
 		display: none;
+	}
+	.thread-view .thread {
+		background-color: white;
+		border-bottom: 1px solid #e9ecef;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	  z-index: 10;
 	}
 }
 @media (min-width:1024px) {
