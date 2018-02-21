@@ -1,4 +1,3 @@
-
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
 

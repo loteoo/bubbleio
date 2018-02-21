@@ -1,5 +1,4 @@
 import {h} from 'hyperapp'
-import {Link} from "@hyperapp/router"
 import {Keyboard} from '../Keyboard/'
 
 import {Thread} from '../CurrentBubble/Thread/'

@@ -1,5 +1,4 @@
 import {h} from 'hyperapp'
-import {Link} from "@hyperapp/router"
 import {timeSince, isElementInViewport, shortenText} from '../utils/'
 
 import {UserView} from './UserView/'
@@ -72,19 +71,23 @@ export const view = (state, actions) => {
 
 
 
-    return <div class="slider {state.currentView}">
-      <UserView state={state} actions={actions} />
-      <CurrentBubble currentBubble={state.currentBubble} state={state} actions={actions} />
-      <CurrentThread currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
-    </div>
+    return (
+      <div class={ "slider " + state.currentView}>
+        <UserView state={state} actions={actions} />
+        <CurrentBubble currentBubble={state.currentBubble} state={state} actions={actions} />
+        <CurrentThread currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
+      </div>
+    )
   } else {
-    return <form class="loginForm" onsubmit={ev => {
-        ev.preventDefault();
-        socket.emit('login', ev.target.username.value);
-        return false;
-      }}>
-      <h2>Pick a name</h2>
-      <input type="text" placeholder="Type here..." name="username" autofocus />
-    </form>
+    return (
+      <form class="loginForm" onsubmit={ev => {
+          ev.preventDefault();
+          socket.emit('login', ev.target.username.value);
+          return false;
+        }}>
+        <h2>Pick a name</h2>
+        <input type="text" placeholder="Type here..." name="username" autofocus />
+      </form>
+    )
   }
 }
