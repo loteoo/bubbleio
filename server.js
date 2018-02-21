@@ -8,7 +8,7 @@ const ObjectId = require('mongodb').ObjectID;
 const mongo_url = "mongodb://localhost:27017/";
 const db_name = "bubbleio";
 const port = 80;
-var dbo;
+let dbo;
 
 
 app.use(express.static('build'));
