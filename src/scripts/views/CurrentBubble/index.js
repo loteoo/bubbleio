@@ -5,7 +5,7 @@ import {Keyboard} from '../Keyboard/'
 import {Thread} from './Thread/'
 
 
-export const CurrentBubble = (currentBubble, state, actions) => {
+export const CurrentBubble = ({currentBubble, state, actions}) => {
   if (currentBubble) {
 
     if (!currentBubble.title) {

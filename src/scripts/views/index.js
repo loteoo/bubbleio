@@ -72,20 +72,19 @@ export const view = (state, actions) => {
 
 
 
-    return h("div", { class: "slider " + state.currentView }, [
-      UserView(state, actions),
-      CurrentBubble(state.currentBubble, state, actions),
-      CurrentThread(state.currentThread, state.currentBubble, state, actions)
-    ])
-
+    return <div class="slider {state.currentView}">
+      <UserView state={state} actions={actions} />
+      <CurrentBubble currentBubble={state.currentBubble} state={state} actions={actions} />
+      <CurrentThread currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
+    </div>
   } else {
-    return h("form", { class: "loginForm", onsubmit: ev => {
+    return <form class="loginForm" onsubmit={ev => {
         ev.preventDefault();
         socket.emit('login', ev.target.username.value);
         return false;
-      } }, [
-      h("h2", {}, "Pick a name"),
-      h("input", { type: "text", placeholder: "Type here...", autofocus: "autofocus", name: "username", id: "username" })
-    ])
+      }}>
+      <h2>Pick a name</h2>
+      <input type="text" placeholder="Type here..." name="username" autofocus />
+    </form>
   }
 }
