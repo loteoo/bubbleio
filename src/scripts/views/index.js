@@ -192,6 +192,12 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
   }
   // console.log(thread.order);
 
+  if (display == "summary") {
+    if (window.innerWidth >= 768) {
+      display = "desktop";
+    }
+  }
+
   let contentBlock;
   if (thread.type == "default") {
     contentBlock = null
@@ -212,6 +218,9 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
     contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.youtubeId+"')" })
   }
 
+  if (!thread.src) {
+    thread.src = "/img/thread_types/" + thread.type + ".svg";
+  }
 
   if (display == "summary") {
     return h("li", { class: "thread", "data-type": thread.type, "data-upvoted": thread.upvoted, "data-display": display, onclick: () => {
@@ -225,7 +234,7 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
       threadFooter(thread, actions)
     ])
   } else if (display == "full") {
-    return h("li", { class: "thread ", "data-type": thread.type, "data-upvoted": thread.upvoted }, [
+    return h("li", { class: "thread ", "data-type": thread.type, "data-upvoted": thread.upvoted, "data-display": display }, [
       h("div", { class: "header" }, [
         h("div", { class: "thread-view-header" }, [
           h("div", { class: "back", onclick: () => {
@@ -237,6 +246,19 @@ const threadItem = (thread, currentBubble, actions, display = "summary") => {
       ]),
       contentBlock,
       threadFooter(thread, actions)
+    ])
+  } else if (display == "desktop") {
+    return h("li", { class: "thread ", "data-type": thread.type, "data-upvoted": thread.upvoted, "data-display": display, onclick: () => {
+      actions.location.go("/" + currentBubble.name + "/" + thread._id);
+    } }, [
+      h("div", { class: "thumbnail", Style: "background-image: url('"+thread.src+"')" }),
+      h("div", { class: "content" }, [
+        h("h2", {}, thread.title),
+        h("div", { class: "info" }, [
+          h("p", {}, "by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)),
+          threadFooter(thread, actions)
+        ])
+      ])
     ])
   }
 }

@@ -724,6 +724,37 @@ footer {
 
 
 
+/* Thread displays */
+
+
+.thread[data-display="desktop"] {
+	display: flex;
+	align-items: stretch;
+}
+.thread[data-display="desktop"] .thumbnail {
+	background-color: #e9ecef;
+	position: relative;
+	width: 14rem;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.thread[data-display="desktop"] .thumbnail::after {
+	display: block;
+	content: "";
+	padding-top: 100%;
+}
+.thread[data-display="desktop"] .content {
+	width: 100%;
+	padding: 1rem;
+}
+
+
+
+
+
+
+
 /* Default thread */
 .thread[data-type="default"] {
 }
