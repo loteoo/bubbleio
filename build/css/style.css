@@ -544,6 +544,18 @@ footer {
   margin: 0.5em;
   padding: 0.5em 1em;
   max-width: 66%;
+	opacity: 1;
+	transition: opacity 300ms, transform 250ms;
+	transform: translateX(0);
+}
+.thread-view .messages li.newmessage {
+	opacity: 0;
+}
+.thread-view .messages li.received.newmessage {
+	transform: translateX(-100%);
+}
+.thread-view .messages li.sent.newmessage {
+	transform: translateX(100%);
 }
 .thread-view .messages li .info {
 	font-size: 0.8em;
