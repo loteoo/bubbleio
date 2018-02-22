@@ -2,6 +2,8 @@ import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
 import {Keyboard} from '../Keyboard/'
 
+import {timeSince, isElementInViewport, shortenText} from '../../utils/'
+
 import {Thread} from './Thread/'
 
 
