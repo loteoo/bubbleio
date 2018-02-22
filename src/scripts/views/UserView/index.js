@@ -4,7 +4,7 @@ import {Link} from "@hyperapp/router"
 
 
 export const UserView = ({state, actions}) => (
-  <div class="global-view">
+  <div class="user-view">
     <div class="frame">
       <h2>{state.user.username}</h2>
       <ul class="bubbles">

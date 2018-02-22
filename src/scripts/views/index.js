@@ -18,7 +18,7 @@ export const view = (state, actions) => {
   // If logged in
   if (state.user.username) {
 
-    state.currentView = "globalView";
+    state.currentView = "userView";
 
     let urlparts = window.location.pathname.split("/");
 

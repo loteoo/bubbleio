@@ -6,7 +6,7 @@ export const state = getStateFromStorage() || {
     username: ""
   },
   bubbles: [],
-  currentView: "globalView",
+  currentView: "userView",
   currentBubble: null,
   currentThread: null,
   keyboardStatus: "closed",
