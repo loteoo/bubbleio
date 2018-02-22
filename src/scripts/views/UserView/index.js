@@ -3,7 +3,7 @@ import {Link} from "@hyperapp/router"
 
 
 
-export const UserView = ({state, actions}) => (
+export const UserView = ({state, actions}) =>
   <div class="user-view">
     <div class="frame">
       <h2>{state.user.username}</h2>
@@ -13,11 +13,9 @@ export const UserView = ({state, actions}) => (
       </ul>
     </div>
   </div>
-)
 
 
-const BubbleItem = (bubble) => (
+const BubbleItem = (bubble) =>
   <li>
     <Link to={"/" + bubble.name}>{bubble.title + " (" + bubble.userCount + ")"}</Link>
   </li>
-)

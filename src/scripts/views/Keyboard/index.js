@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 
 
-export const Keyboard = (state, actions) => (
+export const Keyboard = (state, actions) =>
   <form class={"keyboard " + state.keyboardMode} onsubmit={ev => { actions.keyboardSubmit(ev); return false; }}>
     <div class={"expander " + state.keyboardStatus} onclick={ev => actions.expandKeyboard(state.keyboardStatus)}>
       <div class="default" onclick={ev => { actions.changeKeyboardMode("default") }}>x</div>
@@ -19,4 +19,3 @@ export const Keyboard = (state, actions) => (
     </div>
     <button type="submit" class="submit"></button>
   </form>
-)
