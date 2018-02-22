@@ -409,6 +409,13 @@ io.on('connection', function (socket) {
     dbo.collection("bubbles").find().toArray(function(err, bubbles) {
       if (err) throw err;
 
+      // Inject user counts to bubbles
+      for (var i = 0; i < bubbles.length; i++) {
+        if (bubbles[i]._id) {
+          bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
+        }
+      }
+
       // Update user bubbles
       socket.emit("update state", {
         user: {
