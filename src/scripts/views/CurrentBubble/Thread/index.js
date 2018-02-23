@@ -2,7 +2,7 @@ import {h} from 'hyperapp'
 import {timeSince, isElementInViewport, shortenText, getYoutubeId} from '../../../utils/'
 
 
-export const Thread = (thread, currentBubble, actions, display = "summary") => {
+export const Thread = (thread, index, currentBubble, actions, display = "summary") => {
   if (!thread.userCount) {
     thread.userCount = 0;
   }
@@ -49,6 +49,12 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
     return (
       <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} onclick={() => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
+      }} oncreate={el => {
+        el.style.transitionDelay = index * 50 + "ms";
+        el.classList.add("slidein");
+        setTimeout(() => {
+          el.classList.remove("slidein");
+        }, 25);
       }}>
         <div class="header">
           <h4>{thread.title}</h4>
@@ -60,10 +66,16 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
     )
   } else if (display == "full") {
     return (
-      <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display}>
+      <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} oncreate={el => {
+        el.style.transitionDelay = index * 50 + "ms";
+        el.classList.add("slidein");
+        setTimeout(() => {
+          el.classList.remove("slidein");
+        }, 25);
+      }}>
         <div class="header">
           <div class="thread-view-header">
-            <div class="back" onclick={() => {
+            <div class="back" onclick={ev => {
               actions.location.go("/" + currentBubble.name);
             }}></div>
             <h2>{thread.title}</h2>
@@ -76,8 +88,14 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
     )
   } else if (display == "desktop") {
     return (
-      <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} onclick={() => {
+      <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} onclick={ev => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
+      }} oncreate={el => {
+        el.style.transitionDelay = index * 50 + "ms";
+        el.classList.add("slidein");
+        setTimeout(() => {
+          el.classList.remove("slidein");
+        }, 25);
       }}>
         <div class="thumbnail" Style={"background-image: url('"+thread.src+"')"}></div>
         <div class="content">
@@ -108,22 +126,22 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
 
 const threadFooter = (thread, actions) => (
   h("div", { class: "footer" }, [
-    h("div", { class: "users", userCount: thread.userCount, onupdate: (element, oldProps) => {
+    h("div", { class: "users", userCount: thread.userCount, onupdate: (el, oldProps) => {
       if (oldProps.userCount < thread.userCount) {
-        element.classList.add("countUp");
+        el.classList.add("countUp");
         setTimeout(() => {
-          element.classList.remove("countUp");
+          el.classList.remove("countUp");
         }, 25);
       } } }, [
         h("div", { class: "count" }, [
           h("span", {}, thread.userCount)
         ])
       ]),
-    h("div", { class: "replies", messageCount: thread.messages.length, onupdate: (element, oldProps) => {
+    h("div", { class: "replies", messageCount: thread.messages.length, onupdate: (el, oldProps) => {
       if (oldProps.messageCount < thread.messages.length) {
-        element.classList.add("countUp");
+        el.classList.add("countUp");
         setTimeout(() => {
-          element.classList.remove("countUp");
+          el.classList.remove("countUp");
         }, 25);
       } } }, [
         h("div", { class: "count" }, [
@@ -133,11 +151,11 @@ const threadFooter = (thread, actions) => (
     h("button", { class: "upvote", score: thread.score, onclick: (ev) => {
       ev.stopPropagation();
       actions.upvote(thread);
-    }, onupdate: (element, oldProps) => {
+    }, onupdate: (el, oldProps) => {
       if (oldProps.score < thread.score) {
-        element.classList.add("countUp");
+        el.classList.add("countUp");
         setTimeout(() => {
-          element.classList.remove("countUp");
+          el.classList.remove("countUp");
         }, 25);
       }
     } }, thread.score)

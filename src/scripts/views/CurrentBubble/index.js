@@ -54,7 +54,7 @@ export const CurrentBubble = ({currentBubble, state, actions}) => {
             </div>
           </div>
           <ul class="threads">
-            {currentBubble.threads.map(thread => Thread(thread, currentBubble, actions))}
+            {currentBubble.threads.map((thread, index) => Thread(thread, index, currentBubble, actions))}
           </ul>
           {Keyboard(state, actions)}
           <div class="loadMore"></div>
