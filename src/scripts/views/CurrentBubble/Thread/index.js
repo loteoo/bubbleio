@@ -27,20 +27,17 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
   if (thread.type == "default") {
     contentBlock = null
   } else if (thread.type == "text") {
-
     if (display == "summary") {
-      contentBlock = h("div", { class: "text" }, shortenText(thread.text, 250) + "...");
+      contentBlock = <div class="text">{shortenText(thread.text, 250) + "..."}</div>;
     } else {
-      contentBlock = h("div", { class: "text" }, thread.text);
+      contentBlock = <div class="text">{thread.text}</div>;
     }
   } else if (thread.type == "link") {
-    contentBlock = h("a", { class: "link", href: thread.url, target: "_blank" }, thread.url)
+    contentBlock = <a href={thread.url} target="_blank" class="link">{thread.url}</a>
   } else if (thread.type == "image") {
-    contentBlock = h("div", { class: "img" }, [
-      h("img", { src: thread.src, alt: thread.title })
-    ])
+    contentBlock = <div class="img"><img src={thread.src} alt={thread.title} /></div>
   } else if (thread.type == "youtube") {
-    contentBlock = h("div", { class: "thumbnail", style: "background-image: url('"+thread.youtubeId+"')" })
+    contentBlock = <div class="thumbnail" style={"background-image: url('"+thread.youtubeId+"')"}></div>
   }
 
   if (!thread.src) {
@@ -48,43 +45,49 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
   }
 
   if (display == "summary") {
-    return h("li", { key: thread._id, class: "thread", "data-type": thread.type, "data-upvoted": thread.upvoted, "data-display": display, onclick: () => {
-      actions.location.go("/" + currentBubble.name + "/" + thread._id);
-    } }, [
-      h("div", { class: "header" }, [
-        h("h4", {}, thread.title),
-        h("p", {}, "by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created))
-      ]),
-      contentBlock,
-      threadFooter(thread, actions)
-    ])
+    return (
+      <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} onclick={() => {
+        actions.location.go("/" + currentBubble.name + "/" + thread._id);
+      }}>
+        <div class="header">
+          <h4>{thread.title}</h4>
+          <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
+        </div>
+        {contentBlock}
+        {threadFooter(thread, actions)}
+      </li>
+    )
   } else if (display == "full") {
-    return h("li", { key: thread._id, class: "thread ", "data-type": thread.type, "data-upvoted": thread.upvoted, "data-display": display }, [
-      h("div", { class: "header" }, [
-        h("div", { class: "thread-view-header" }, [
-          h("div", { class: "back", onclick: () => {
-            actions.location.go("/" + currentBubble.name);
-          }}),
-          h("h2", {}, thread.title)
-        ]),
-        h("p", {}, "by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created))
-      ]),
-      contentBlock,
-      threadFooter(thread, actions)
-    ])
+    return (
+      <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display}>
+        <div class="header">
+          <div class="thread-view-header">
+            <div class="back" onclick={() => {
+              actions.location.go("/" + currentBubble.name);
+            }}></div>
+            <h2>{thread.title}</h2>
+          </div>
+          <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
+        </div>
+        {contentBlock}
+        {threadFooter(thread, actions)}
+      </li>
+    )
   } else if (display == "desktop") {
-    return h("li", { key: thread._id, class: "thread ", "data-type": thread.type, "data-upvoted": thread.upvoted, "data-display": display, onclick: () => {
-      actions.location.go("/" + currentBubble.name + "/" + thread._id);
-    } }, [
-      h("div", { class: "thumbnail", Style: "background-image: url('"+thread.src+"')" }),
-      h("div", { class: "content" }, [
-        h("h2", {}, thread.title),
-        h("div", { class: "info" }, [
-          h("p", {}, "by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)),
-          threadFooter(thread, actions)
-        ])
-      ])
-    ])
+    return (
+      <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} onclick={() => {
+        actions.location.go("/" + currentBubble.name + "/" + thread._id);
+      }}>
+        <div class="thumbnail" style={"background-image: url('"+thread.src+"')"}></div>
+        <div class="content">
+          <h2>{thread.title}</h2>
+          <div class="info">
+            <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
+            {threadFooter(thread, actions)}
+          </div>
+        </div>
+      </li>
+    )
   }
 }
 

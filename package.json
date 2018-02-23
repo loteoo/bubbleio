@@ -9,10 +9,10 @@
     "express": "^4.16.2",
     "hyperapp": "^1.0.2",
     "mongodb": "^3.0.2",
-    "rollup": "^0.55.3",
     "socket.io": "^2.0.4"
   },
   "devDependencies": {
+    "rollup": "^0.55.5",
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-jsx": "^1.0.3",
     "rollup-plugin-node-resolve": "^3.0.2",
