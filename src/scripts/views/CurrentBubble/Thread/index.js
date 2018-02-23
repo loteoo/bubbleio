@@ -1,5 +1,5 @@
 import {h} from 'hyperapp'
-import {timeSince, isElementInViewport, shortenText} from '../../../utils/'
+import {timeSince, isElementInViewport, shortenText, getYoutubeId} from '../../../utils/'
 
 
 export const Thread = (thread, currentBubble, actions, display = "summary") => {
@@ -33,11 +33,12 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
       contentBlock = <div class="text">{thread.text}</div>;
     }
   } else if (thread.type == "link") {
+    if (thread.url.match('^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$')) { // If is youtube
+      thread.src = "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
+    }
     contentBlock = <a href={thread.url} target="_blank" class="link">{thread.url}</a>
   } else if (thread.type == "image") {
     contentBlock = <div class="img"><img src={thread.src} alt={thread.title} /></div>
-  } else if (thread.type == "youtube") {
-    contentBlock = <div class="thumbnail" style={"background-image: url('"+thread.youtubeId+"')"}></div>
   }
 
   if (!thread.src) {

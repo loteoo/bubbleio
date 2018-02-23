@@ -168,7 +168,7 @@ io.on('connection', function (socket) {
           for (var i = 0; i < threads.length; i++) {
             if (threads[i]._id) {
               threads[i].userCount = getConnectionsInRoom(threads[i]._id);
-              threads[i].messageCount = threads[i].messages.length;
+              // threads[i].messageCount = threads[i].messages.length;
             }
           }
 

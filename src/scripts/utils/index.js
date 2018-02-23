@@ -69,6 +69,33 @@ export const shortenText = (s, n) => {
     }
 }
 
+
+
+
+
+
+
+
+
+export const getYoutubeId = url => {
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    return (match&&match[7].length==11)? match[7] : false;
+}
+
+
+
+
+
+
+
+
+
+
+
+// State merging algorithm
+
+
 export const mergeStates = (stateA, stateB) => {
 
   // Merge the threads array before merging the bubbles
@@ -207,6 +234,11 @@ const sortByRelevance = (threads) => {
 
   // Calculate relevance for each thread
   for (var i = 0; i < threads.length; i++) {
+    
+    if (!threads[i].messages) {
+      threads[i].messages = [];
+    }
+
     threads[i].relevance = (threads[i].score + (threads[i].messages.length/2) + 1) / Math.pow(((new Date() - threads[i].created) / 3600000), 1.8);
   }
 
