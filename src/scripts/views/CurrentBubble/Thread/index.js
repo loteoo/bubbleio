@@ -78,7 +78,7 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
       <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} onclick={() => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }}>
-        <div class="thumbnail" style={"background-image: url('"+thread.src+"')"}></div>
+        <div class="thumbnail" Style={"background-image: url('"+thread.src+"')"}></div>
         <div class="content">
           <h2>{shortenText(thread.title, 32)}</h2>
           <div class="info">
