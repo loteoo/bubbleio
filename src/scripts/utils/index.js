@@ -207,7 +207,7 @@ const sortByRelevance = (threads) => {
 
   // Calculate relevance for each thread
   for (var i = 0; i < threads.length; i++) {
-    threads[i].relevance = (threads[i].score + (threads[i].messageCount/2) + 1) / Math.pow(((new Date() - threads[i].created) / 3600000), 1.8);
+    threads[i].relevance = (threads[i].score + (threads[i].messages.length/2) + 1) / Math.pow(((new Date() - threads[i].created) / 3600000), 1.8);
   }
 
   // Sort threads by "relevance"

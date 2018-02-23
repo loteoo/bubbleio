@@ -368,21 +368,36 @@ footer {
 	right: 100%;
 }
 
-.user-view h2 {
+.user-view {
+	color: #bbbbbb;
+	background-color: #35363b;
+}
+.user-view .header {
 	padding: 2em;
+	background-color: #4e525a;
+	color: white;
+}
+.user-view .header h2 {
 	margin: 0;
 }
 
-.user-view .bubbles {
-  border-top: 1px solid #e9ecef;
+.user-view .menu>li {
+	margin: 3rem 0;
 }
-.user-view .bubbles li>* {
+.user-view .menu>li>a,
+.user-view .menu>li>span {
+	opacity: 0.5;
 	display: block;
-	padding: 1em 2em;
-  border-bottom: 1px solid #e9ecef;
+	padding: 1em;
 	cursor: pointer;
 }
 
+.user-view .menu>li>ul>li>a,
+.user-view .menu>li>ul>li>span {
+	display: block;
+	padding: 1em 2em;
+	cursor: pointer;
+}
 
 
 
@@ -430,8 +445,8 @@ footer {
 
 .bubble-view .bubble-header .options button {
 	display: block;
-	width: 3em;
-	height: 3em;
+	width: 2em;
+	height: 2em;
 	background-image: url(../img/options.svg);
 	background-position: center;
 	background-size: 50%;
@@ -619,8 +634,8 @@ footer {
 	transform: scale(1);
 	transition: all 500ms;
   display: inline-block;
-	width: 3rem;
-	height: 3rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	margin-top: 1.2rem;
 	background-image: url(../img/users.svg);
 	background-position: center;
@@ -663,8 +678,8 @@ footer {
 	transform: scale(1);
 	transition: all 500ms;
   display: inline-block;
-	width: 3rem;
-	height: 3rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	margin-top: 1.2rem;
 	background-image: url(../img/chat.svg);
 	background-position: center;
@@ -749,6 +764,11 @@ footer {
 	display: flex;
 	align-items: stretch;
 	margin: 1em;
+}
+.thread[data-display="desktop"] .info>p {
+	opacity: 0.5;
+	margin: 0;
+	font-size: 0.8em;
 }
 .thread[data-display="desktop"] .thumbnail {
 	background-color: #e9ecef;
@@ -1067,11 +1087,11 @@ footer {
 @media (min-width:1280px) {
 	.slider>.user-view {
     left: 0;
-    right: 75%;
+    right: calc(100% - 280px);
 		border-right: 1px solid #e9ecef;
 	}
 	.slider>.bubble-view {
-    left: 25%;
+    left: 280px;
     right: 25%;
 	}
 	.slider>.thread-view {
@@ -1085,6 +1105,12 @@ footer {
 	}
 	.bubble-view .bubble-header .back {
 		display: none;
+	}
+	.bubble-view .bubble-header {
+		position: relative;
+	}
+	.bubble-view ul.threads {
+		padding: 0;
 	}
 }
 

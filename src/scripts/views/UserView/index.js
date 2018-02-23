@@ -6,10 +6,23 @@ import {Link} from "@hyperapp/router"
 export const UserView = ({state, actions}) =>
   <div class="user-view">
     <div class="frame">
-      <h2>{state.user.username}</h2>
-      <ul class="bubbles">
-        {state.bubbles.map(BubbleItem)}
-        <li><span>Create bubble</span></li>
+      <div class="header">
+        <h2>{state.user.username}</h2>
+      </div>
+      <ul class="menu">
+        <li>
+          <span>My bubbles</span>
+          <ul class="bubbles">
+            {state.bubbles.map(BubbleItem)}
+            <li><span>Create bubble</span></li>
+          </ul>
+        </li>
+        <li>
+          <span>Multibubbles</span>
+          <ul>
+            <li><span>Create Multibubble</span></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
