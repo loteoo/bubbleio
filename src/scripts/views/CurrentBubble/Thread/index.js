@@ -92,7 +92,7 @@ export const Thread = (thread, index, currentBubble, actions, display = "summary
         el.classList.add("slidein");
         setTimeout(() => {
           el.classList.remove("slidein");
-        }, index * 50);
+        }, index * 50 + 50);
       }}>
         <div class="thumbnail" Style={"background-image: url('"+thread.src+"')"}></div>
         <div class="content">
