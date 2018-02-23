@@ -50,11 +50,10 @@ export const Thread = (thread, index, currentBubble, actions, display = "summary
       <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} onclick={() => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }} oncreate={el => {
-        el.style.transitionDelay = index * 50 + "ms";
         el.classList.add("slidein");
         setTimeout(() => {
           el.classList.remove("slidein");
-        }, 25);
+        }, index * 50);
       }}>
         <div class="header">
           <h4>{thread.title}</h4>
@@ -67,11 +66,10 @@ export const Thread = (thread, index, currentBubble, actions, display = "summary
   } else if (display == "full") {
     return (
       <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} oncreate={el => {
-        el.style.transitionDelay = index * 50 + "ms";
         el.classList.add("slidein");
         setTimeout(() => {
           el.classList.remove("slidein");
-        }, 25);
+        }, index * 50);
       }}>
         <div class="header">
           <div class="thread-view-header">
@@ -91,11 +89,10 @@ export const Thread = (thread, index, currentBubble, actions, display = "summary
       <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} data-display={display} onclick={ev => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }} oncreate={el => {
-        el.style.transitionDelay = index * 50 + "ms";
         el.classList.add("slidein");
         setTimeout(() => {
           el.classList.remove("slidein");
-        }, 25);
+        }, index * 50);
       }}>
         <div class="thumbnail" Style={"background-image: url('"+thread.src+"')"}></div>
         <div class="content">
