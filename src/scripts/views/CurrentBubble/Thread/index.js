@@ -28,7 +28,7 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
     contentBlock = null
   } else if (thread.type == "text") {
     if (display == "summary") {
-      contentBlock = <div class="text">{shortenText(thread.text, 250) + "..."}</div>;
+      contentBlock = <div class="text">{shortenText(thread.text, 250)}</div>;
     } else {
       contentBlock = <div class="text">{thread.text}</div>;
     }
@@ -80,7 +80,7 @@ export const Thread = (thread, currentBubble, actions, display = "summary") => {
       }}>
         <div class="thumbnail" style={"background-image: url('"+thread.src+"')"}></div>
         <div class="content">
-          <h2>{thread.title}</h2>
+          <h2>{shortenText(thread.title, 32)}</h2>
           <div class="info">
             <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
             {threadFooter(thread, actions)}
