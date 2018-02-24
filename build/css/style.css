@@ -369,13 +369,12 @@ footer {
 }
 
 .user-view {
-	color: #bbbbbb;
+	color: white;
 	background-color: #35363b;
 }
 .user-view .header {
 	padding: 2em;
 	background-color: #4e525a;
-	color: white;
 }
 .user-view .header h2 {
 	margin: 0;
@@ -386,7 +385,7 @@ footer {
 }
 .user-view .menu>li>a,
 .user-view .menu>li>span {
-	opacity: 0.5;
+	opacity: 0.4;
 	display: block;
 	padding: 1em;
 	cursor: pointer;
@@ -394,7 +393,10 @@ footer {
 
 .user-view .menu>li>ul>li>a,
 .user-view .menu>li>ul>li>span {
-	display: block;
+	opacity: 0.66;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	padding: 1em 2em;
 	cursor: pointer;
 }
@@ -404,6 +406,38 @@ footer {
 .user-view .menu>li>ul>li.current>a,
 .user-view .menu>li>ul>li.current>span {
 	background-color: #4e525a;
+}
+
+
+.user-view .bubbles>li .users {
+	position: relative;
+	color: inherit;
+	transform: scale(1);
+	transition: all 500ms;
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	font-size: 0.8em;
+}
+.user-view .bubbles>li .users .icon {
+	opacity: 0.5;
+	width: 100%;
+	height: 100%;
+	background-image: url(../img/users-white.svg);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+.user-view .bubbles>li .users .count {
+  position: absolute;
+  top: -1rem;
+  right: -1.5rem;
+  border-radius: 100%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
