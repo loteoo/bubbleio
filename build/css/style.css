@@ -497,14 +497,6 @@ footer {
 	transform: translateX(0);
 	opacity: 1;
 }
-.bubble-view .thread.slidein  {
-	transform: translateX(-100%);
-	opacity: 0;
-}
-
-.bubble-view .thread.current {
-	transform: translateX(1em);
-}
 
 .bubble-view .thread.disabled {
 	pointer-events: none;
@@ -1120,6 +1112,11 @@ footer {
 	.slider.bubbleView,
 	.slider.threadView {
     transform: translateX(0%);
+	}
+
+
+	.bubble-view .thread.current {
+		transform: translateX(1em);
 	}
 
 	.bubble-view .bubble-header {

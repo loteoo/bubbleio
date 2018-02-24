@@ -28,12 +28,7 @@ export const Thread = (thread, index, currentBubble, actions) => {
 
 
   return (
-    <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} oncreate={el => {
-      el.classList.add("slidein");
-      setTimeout(() => {
-        el.classList.remove("slidein");
-      }, index * 50);
-    }}>
+    <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted}>
       <div class="header">
         <div class="thread-view-header">
           <div class="back" onclick={ev => {

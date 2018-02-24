@@ -39,9 +39,10 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
       <li key={thread._id} class={"thread desktop" + currentClass} index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={ev => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }} oncreate={el => {
-        el.classList.add("slidein");
+        el.style.transform = "translateX(-100%)";
+        el.style.opacity = "0";
         setTimeout(() => {
-          el.classList.remove("slidein");
+          el.removeAttribute("style");
         }, index * 50 + 50);
       }} onupdate={(el, oldProps) => {
         if (index != oldProps.index) { // If order in list changed
@@ -49,10 +50,8 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
           el.style.zIndex = "1";
           el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
           setTimeout(() => {
-            el.style.transitionDuration = "200ms";
-            el.style.zIndex = "0";
-            el.style.transform = "translateY(0%)";
-          }, 250);
+            el.removeAttribute("style");
+          }, 50);
         }
       }}>
         <div class="thumbnail" Style={"background-image: url('"+thread.src+"')"}></div>
@@ -70,10 +69,11 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
       <li key={thread._id} class={"thread" + currentClass} index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={() => {
           actions.location.go("/" + currentBubble.name + "/" + thread._id);
         }} oncreate={el => {
-          el.classList.add("slidein");
+          el.style.transform = "translateX(-100%)";
+          el.style.opacity = "0";
           setTimeout(() => {
-            el.classList.remove("slidein");
-          }, index * 50);
+            el.removeAttribute("style");
+          }, index * 50 + 50);
         }} onupdate={(el, oldProps) => {
           if (index != oldProps.index) { // If order in list changed
             el.style.transitionDuration = "0ms";
