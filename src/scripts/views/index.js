@@ -75,7 +75,7 @@ export const view = (state, actions) => {
 
     return (
       <div class={"slider " + state.currentView}>
-        <UserView currentBubble={state.currentBubble} state={state} />
+        <UserView currentBubble={state.currentBubble} state={state} actions={actions} />
         <CurrentBubble currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
         <CurrentThread currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
       </div>

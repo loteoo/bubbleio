@@ -1,7 +1,8 @@
 import {h} from 'hyperapp'
+import {ObjectId} from '../../../utils/'
 
 
-export const BubbleForm = () =>
+export const BubbleForm = ({actions}) =>
   <form class="bubbleForm" onsubmit={ev => {
     ev.preventDefault();
 

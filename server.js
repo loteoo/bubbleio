@@ -424,6 +424,31 @@ io.on('connection', function (socket) {
       });
     });
   });
+
+
+
+
+
+
+  // Create bubble
+  socket.on('new bubble', function (bubble) {
+
+    // Proper indexes for mongodb
+    bubble._id = ObjectId(bubble._id);
+
+    // Update DB
+    dbo.collection("bubbles").insert(bubble, function(err, result) {
+      if (err) throw err;
+    });
+  });
+
+
+
+
+
+
+
+
 });
 
 
