@@ -135,9 +135,28 @@ const threadFooter = (thread, actions) => (
           h("span", {}, thread.messages.length)
         ])
       ]),
-    h("button", { class: "upvote", score: thread.score, onclick: (ev) => {
+    h("button", { class: "upvote", score: thread.score, onclick: ev => {
       ev.stopPropagation();
-      actions.upvote(thread);
+
+      // Increase score and local upvoted count
+      thread.score++;
+      thread.upvoted++;
+
+      // Update immediately on this client
+      actions.updateState({
+        bubbles: [
+          {
+            _id: thread.bubble_id,
+            threads: [
+              thread
+            ]
+          }
+        ]
+      });
+
+      // Send to server
+      socket.emit('thread upvote', thread);
+
     }, onupdate: (el, oldProps) => {
       if (oldProps.score < thread.score) {
         el.classList.add("countUp");

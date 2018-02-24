@@ -33,7 +33,7 @@ export const CurrentThread = ({currentThread, currentBubble, state, actions}) =>
         });
         console.log("--> join thread: " + currentThread._id);
       }}>
-        <div class="frame" onscroll={(ev) => { if (isElementInViewport(ev.target.firstChild)) { console.log("Load more not working yet"); } }}>
+        <div class="frame" onscroll={ev => { if (isElementInViewport(ev.target.firstChild)) { console.log("Load more not working yet"); } }}>
           <div class="loadMoreMessages"></div>
           {Thread(currentThread, null, currentBubble, actions)}
           <ul class="messages">

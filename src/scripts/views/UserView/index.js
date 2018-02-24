@@ -24,6 +24,7 @@ export const UserView = ({currentBubble, state}) =>
           </ul>
         </li>
       </ul>
+      <footer></footer>
     </div>
   </div>
 
