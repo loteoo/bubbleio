@@ -1,9 +1,10 @@
 import {h} from 'hyperapp'
-import {MessageKeyboard} from './MessageKeyboard/'
+import {timeSince, isElementInViewport, shortenText} from '../../utils/'
 
 import {Thread} from './Thread/'
+import {MessageKeyboard} from './MessageKeyboard/'
 
-import {timeSince, isElementInViewport, shortenText} from '../../utils/'
+
 
 
 

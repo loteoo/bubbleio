@@ -1,10 +1,9 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
-import {ThreadKeyboard} from './ThreadKeyboard/'
-
-import {timeSince, isElementInViewport, shortenText} from '../../utils/'
+import {isElementInViewport, shortenText} from '../../utils/'
 
 import {ThreadItem} from './ThreadItem/'
+import {ThreadKeyboard} from './ThreadKeyboard/'
 
 
 export const CurrentBubble = ({currentBubble, currentThread, state, actions}) => {

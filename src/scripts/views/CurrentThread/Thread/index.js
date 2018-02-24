@@ -1,6 +1,6 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
-import {timeSince, isElementInViewport, shortenText, getYoutubeId} from '../../../utils/'
+import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
 
 
 export const Thread = (thread, index, currentBubble, actions) => {
