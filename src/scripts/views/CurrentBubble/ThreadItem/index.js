@@ -41,11 +41,11 @@ export const ThreadItem = (thread, index, currentBubble, actions) => {
         if (index != oldProps.index) { // If order in list changed
           console.log("changed order: prev: " + oldProps.index + " - now " + index);
 
-          el.style.transitionDelay = "0ms";
+          el.style.transitionDuration = "0ms";
           el.style.zIndex = "1";
-          el.style.transform = "translateY("+(oldProps.index - index)*100+"%)";
+          el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
           setTimeout(() => {
-            el.style.transitionDelay = "200ms";
+            el.style.transitionDuration = "200ms";
             el.style.zIndex = "0";
             el.style.transform = "translateY(0%)";
           }, 250);
