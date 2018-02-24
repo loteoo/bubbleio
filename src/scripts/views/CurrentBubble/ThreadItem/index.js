@@ -30,13 +30,26 @@ export const ThreadItem = (thread, index, currentBubble, actions) => {
 
   if (window.innerWidth >= 768) { // If desktop
     return (
-      <li key={thread._id} class="thread desktop" data-type={thread.type} data-upvoted={thread.upvoted} onclick={ev => {
+      <li key={thread._id} class="thread desktop" index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={ev => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }} oncreate={el => {
         el.classList.add("slidein");
         setTimeout(() => {
           el.classList.remove("slidein");
         }, index * 50 + 50);
+      }} onupdate={(el, oldProps) => {
+        if (index != oldProps.index) { // If order in list changed
+          console.log("changed order: prev: " + oldProps.index + " - now " + index);
+
+          el.style.transitionDelay = "0ms";
+          el.style.zIndex = "1";
+          el.style.transform = "translateY("+(oldProps.index - index)*100+"%)";
+          setTimeout(() => {
+            el.style.transitionDelay = "200ms";
+            el.style.zIndex = "0";
+            el.style.transform = "translateY(0%)";
+          }, 250);
+        }
       }}>
         <div class="thumbnail" Style={"background-image: url('"+thread.src+"')"}></div>
         <div class="content">
