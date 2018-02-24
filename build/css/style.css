@@ -789,7 +789,7 @@ footer {
 /* Thread displays */
 
 
-.thread[data-display="desktop"] {
+.thread.desktop {
 	display: flex;
 	align-items: stretch;
 	margin: 1em;
@@ -797,12 +797,12 @@ footer {
   overflow: hidden;
 	cursor: pointer;
 }
-.thread[data-display="desktop"] .info>p {
+.thread.desktop .info>p {
 	opacity: 0.5;
 	margin: 0;
 	font-size: 0.8em;
 }
-.thread[data-display="desktop"] .thumbnail {
+.thread.desktop .thumbnail {
 	background-color: #e9ecef;
 	position: relative;
 	width: 12rem;
@@ -810,12 +810,12 @@ footer {
 	background-size: cover;
 	background-repeat: no-repeat;
 }
-.thread[data-display="desktop"] .thumbnail::after {
+.thread.desktop .thumbnail::after {
 	display: block;
 	content: "";
 	padding-top: 100%;
 }
-.thread[data-display="desktop"] .content {
+.thread.desktop .content {
 	width: 100%;
 	padding: 1rem;
 }
