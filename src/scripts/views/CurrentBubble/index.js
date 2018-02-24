@@ -13,11 +13,6 @@ export const CurrentBubble = ({currentBubble, currentThread, state, actions}) =>
       currentBubble.title = "Loading...";
     }
 
-    let userCountTxt = "";
-    if (currentBubble.userCount) {
-      userCountTxt = " (" + currentBubble.userCount + ")";
-    }
-
     return (
       <div class="bubble-view" name={currentBubble.name} onupdate={(el, oldProps) => {
         if (oldProps.name != currentBubble.name) {
@@ -37,7 +32,7 @@ export const CurrentBubble = ({currentBubble, currentThread, state, actions}) =>
         <div class="frame" onscroll={ev => { if (isElementInViewport(ev.target.lastChild)) {  console.log("Load more not working yet"); } }}>
           <div class="bubble-header">
             <Link class="back" to={"/" + name}></Link>
-            <h2>{currentBubble.title + userCountTxt}</h2>
+            <h2>{currentBubble.title}</h2>
             <div class="options">
               <button onclick={ev => {
                 if (ev.target.nextSibling.classList.contains("opened")) {

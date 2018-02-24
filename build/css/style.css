@@ -266,6 +266,17 @@ textarea:focus {
 }
 
 
+.radio {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+.radio input[type="radio"] {
+	display: block;
+	width: auto;
+}
+
+
 .field {
 	position: relative;
 	padding-bottom: 1em;
@@ -330,6 +341,7 @@ footer {
 	left: 0;
 	right: 0;
 	overflow: hidden;
+	transition: all 200ms;
 }
 
 .slider {
@@ -388,7 +400,6 @@ footer {
 	opacity: 0.4;
 	display: block;
 	padding: 1em;
-	cursor: pointer;
 }
 
 .user-view .menu>li>ul>li>a,
@@ -440,8 +451,57 @@ footer {
   justify-content: center;
 }
 
-
-
+.bubbleForm {
+	position: fixed;
+	top: 3rem;
+	bottom: 3rem;
+	left: 3rem;
+	right: 3rem;
+	z-index: 20;
+	background-color: white;
+	color: #757575;
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(100%);
+	transition: opacity 300ms, transform 200ms;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.bubbleForm.opened {
+	pointer-events: all;
+	opacity: 1;
+	transform: translateY(0%);
+}
+.bubbleForm .close {
+	position: absolute;
+	top: 2rem;
+	right: 2rem;
+  width: 4rem;
+  height: 4rem;
+  background-image: url(../img/close.svg);
+  background-position: center;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+.bubbleForm fieldset {
+	width: 100%;
+	max-width: 1024px;
+	padding: 3rem;
+}
+.bubbleForm input,
+.bubbleForm textarea {
+	border-bottom: 2px solid #cccccc;
+	background-color: transparent;
+}
+.bubbleForm .row {
+	display: flex;
+}
+.bubbleForm .row .radio {
+	margin-right: 3rem;
+}
 
 
 

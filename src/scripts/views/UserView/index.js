@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
 
-
+import {BubbleForm} from './BubbleForm/'
 
 export const UserView = ({currentBubble, state}) =>
   <div class="user-view">
@@ -14,13 +14,20 @@ export const UserView = ({currentBubble, state}) =>
           <span>My bubbles</span>
           <ul class="bubbles">
             {state.bubbles.map(bubble => <BubbleItem bubble={bubble} currentBubble={currentBubble} />)}
-            <li><span>Create bubble</span></li>
+            <li>
+              <span onclick={ev => {
+                ev.target.nextSibling.classList.add("opened");
+              }}>Create bubble</span>
+              <BubbleForm />
+            </li>
           </ul>
         </li>
         <li>
           <span>Multibubbles</span>
           <ul>
-            <li><span>Create Multibubble</span></li>
+            <li>
+              <span>Create Multibubble</span>
+            </li>
           </ul>
         </li>
       </ul>
