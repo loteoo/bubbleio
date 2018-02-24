@@ -7,7 +7,7 @@ import {timeSince, isElementInViewport, shortenText} from '../../utils/'
 import {ThreadItem} from './ThreadItem/'
 
 
-export const CurrentBubble = ({currentBubble, state, actions}) => {
+export const CurrentBubble = ({currentBubble, currentThread, state, actions}) => {
   if (currentBubble) {
 
     if (!currentBubble.title) {
@@ -54,7 +54,7 @@ export const CurrentBubble = ({currentBubble, state, actions}) => {
             </div>
           </div>
           <ul class="threads">
-            {currentBubble.threads.map((thread, index) => ThreadItem(thread, index, currentBubble, actions))}
+            {currentBubble.threads.map((thread, index) => ThreadItem(thread, index, currentBubble, currentThread, actions))}
           </ul>
           {ThreadKeyboard(currentBubble, state, actions)}
           <div class="loadMore"></div>

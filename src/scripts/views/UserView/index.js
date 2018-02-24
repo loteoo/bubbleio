@@ -3,7 +3,7 @@ import {Link} from "@hyperapp/router"
 
 
 
-export const UserView = ({state}) =>
+export const UserView = ({currentBubble, state}) =>
   <div class="user-view">
     <div class="frame">
       <div class="header">
@@ -13,7 +13,7 @@ export const UserView = ({state}) =>
         <li>
           <span>My bubbles</span>
           <ul class="bubbles">
-            {state.bubbles.map(BubbleItem)}
+            {state.bubbles.map(bubble => <BubbleItem bubble={bubble} currentBubble={currentBubble} />)}
             <li><span>Create bubble</span></li>
           </ul>
         </li>
@@ -28,7 +28,16 @@ export const UserView = ({state}) =>
   </div>
 
 
-const BubbleItem = (bubble) =>
-  <li>
-    <Link to={"/" + bubble.name}>{bubble.title + " (" + bubble.userCount + ")"}</Link>
-  </li>
+const BubbleItem = ({bubble, currentBubble}) => {
+
+  let currentClass = "";
+  if (bubble._id == currentBubble._id) {
+    currentClass = "current";
+  }
+
+  return (
+    <li class={currentClass}>
+      <Link to={"/" + bubble.name}>{bubble.title + " (" + bubble.userCount + ")"}</Link>
+    </li>
+  )
+}

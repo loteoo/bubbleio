@@ -3,7 +3,7 @@ import {Link} from "@hyperapp/router"
 import {timeSince, isElementInViewport, shortenText, getYoutubeId} from '../../../utils/'
 
 
-export const ThreadItem = (thread, index, currentBubble, actions) => {
+export const ThreadItem = (thread, index, currentBubble, currentThread, actions) => {
 
   let threadTitle = <h2>{shortenText(thread.title, 32)}</h2>;
   let contentBlock;
@@ -25,12 +25,16 @@ export const ThreadItem = (thread, index, currentBubble, actions) => {
     thread.src = "/img/thread_types/" + thread.type + ".svg";
   }
 
+  let currentClass = "";
+  if (thread._id == currentThread._id) {
+    currentClass = " current";
+  }
 
 
 
   if (window.innerWidth >= 768) { // If desktop
     return (
-      <li key={thread._id} class="thread desktop" index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={ev => {
+      <li key={thread._id} class={"thread desktop" + currentClass} index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={ev => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }} oncreate={el => {
         el.classList.add("slidein");
@@ -39,8 +43,6 @@ export const ThreadItem = (thread, index, currentBubble, actions) => {
         }, index * 50 + 50);
       }} onupdate={(el, oldProps) => {
         if (index != oldProps.index) { // If order in list changed
-          console.log("changed order: prev: " + oldProps.index + " - now " + index);
-
           el.style.transitionDuration = "0ms";
           el.style.zIndex = "1";
           el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
@@ -63,13 +65,24 @@ export const ThreadItem = (thread, index, currentBubble, actions) => {
     )
   } else { // if mobile
     return (
-      <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted} onclick={() => {
+      <li key={thread._id} class={"thread" + currentClass} index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={() => {
           actions.location.go("/" + currentBubble.name + "/" + thread._id);
         }} oncreate={el => {
           el.classList.add("slidein");
           setTimeout(() => {
             el.classList.remove("slidein");
           }, index * 50);
+        }} onupdate={(el, oldProps) => {
+          if (index != oldProps.index) { // If order in list changed
+            el.style.transitionDuration = "0ms";
+            el.style.zIndex = "1";
+            el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
+            setTimeout(() => {
+              el.style.transitionDuration = "200ms";
+              el.style.zIndex = "0";
+              el.style.transform = "translateY(0%)";
+            }, 250);
+          }
         }}>
         <div class="header">
           <h4>{thread.title}</h4>

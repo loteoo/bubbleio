@@ -399,7 +399,12 @@ footer {
 	cursor: pointer;
 }
 
-
+.user-view .menu>li>ul>li:hover>a,
+.user-view .menu>li>ul>li:hover>span,
+.user-view .menu>li>ul>li.current>a,
+.user-view .menu>li>ul>li.current>span {
+	background-color: #4e525a;
+}
 
 
 
@@ -495,6 +500,10 @@ footer {
 .bubble-view .thread.slidein  {
 	transform: translateX(-100%);
 	opacity: 0;
+}
+
+.bubble-view .thread.current {
+	transform: translateX(1em);
 }
 
 .bubble-view .thread.disabled {
