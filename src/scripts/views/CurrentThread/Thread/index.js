@@ -4,19 +4,6 @@ import {timeSince, isElementInViewport, shortenText, getYoutubeId} from '../../.
 
 
 export const Thread = (thread, index, currentBubble, actions) => {
-  if (!thread.userCount) {
-    thread.userCount = 0;
-  }
-  if (!thread.order) {
-    thread.order = 0;
-  }
-  if (!thread.upvoted) {
-    thread.upvoted = "";
-  }
-  // console.log(thread.order);
-
-
-
 
   let contentBlock;
   if (thread.type == "default") {

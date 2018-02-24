@@ -4,17 +4,6 @@ import {timeSince, isElementInViewport, shortenText, getYoutubeId} from '../../.
 
 
 export const ThreadItem = (thread, index, currentBubble, actions) => {
-  if (!thread.userCount) {
-    thread.userCount = 0;
-  }
-  if (!thread.order) {
-    thread.order = 0;
-  }
-  if (!thread.upvoted) {
-    thread.upvoted = "";
-  }
-  // console.log(thread.order);
-
 
   let threadTitle = <h2>{shortenText(thread.title, 32)}</h2>;
   let contentBlock;

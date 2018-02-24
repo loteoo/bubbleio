@@ -15,7 +15,6 @@ export const view = (state, actions) => {
   // If logged in
   if (state.user.username) {
 
-    let render = [];
 
     let urlparts = window.location.pathname.split("/");
 
@@ -68,17 +67,14 @@ export const view = (state, actions) => {
         if (!state.currentThread.messages) {
           state.currentThread.messages = [];
         }
-
       }
-
-
     }
 
 
 
 
     return (
-      <div class={ "slider " + state.currentView}>
+      <div class={"slider " + state.currentView}>
         <UserView state={state} />
         <CurrentBubble currentBubble={state.currentBubble} state={state} actions={actions} />
         <CurrentThread currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />

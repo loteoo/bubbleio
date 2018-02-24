@@ -138,7 +138,7 @@ export const mergeStates = (stateA, stateB) => {
 
 const mergeBubbles = (bubbleA, bubbleB) => {
 
-  // TODO: User forEach
+  // TODO: Use forEach
 
   // Merge the threads array before merging the bubbles
   if (bubbleB.threads) {
@@ -155,7 +155,7 @@ const mergeBubbles = (bubbleA, bubbleB) => {
         bubbleA.threads = [];
       }
       if (!matchFound) {
-        bubbleA.threads.unshift(bubbleB.threads[i]);
+        bubbleA.threads.unshift(bubbleB.threads[i]); // Insert in first place
       }
     }
   }
@@ -182,7 +182,7 @@ const mergeBubbles = (bubbleA, bubbleB) => {
 
 const mergeThreads = (threadA, threadB) => {
 
-  // TODO: User forEach
+  // TODO: Use forEach
 
   // Merge the messages array before merging the threads
   if (threadB.messages) {
@@ -199,7 +199,7 @@ const mergeThreads = (threadA, threadB) => {
         threadA.messages = [];
       }
       if (!matchFound) {
-        threadA.messages.push(threadB.messages[i]);
+        threadA.messages.push(threadB.messages[i]); // Add at end
       }
     }
   }
@@ -234,9 +234,15 @@ const sortByRelevance = (threads) => {
 
   // Calculate relevance for each thread
   for (var i = 0; i < threads.length; i++) {
-    
+
     if (!threads[i].messages) {
       threads[i].messages = [];
+    }
+    if (!threads[i].userCount) {
+      threads[i].userCount = 0;
+    }
+    if (!threads[i].upvoted) {
+      threads[i].upvoted = 0;
     }
 
     threads[i].relevance = (threads[i].score + (threads[i].messages.length/2) + 1) / Math.pow(((new Date() - threads[i].created) / 3600000), 1.8);
