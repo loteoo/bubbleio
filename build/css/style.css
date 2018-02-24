@@ -582,6 +582,7 @@ footer {
 .thread-view .messages li .info {
 	font-size: 0.8em;
 	opacity: 0.5;
+	line-height: 1;
 }
 .thread-view .messages li.received {
   background-color: #d9d9d9;
@@ -616,10 +617,31 @@ footer {
 .thread .header h4 {
 	margin: 0;
 }
+
 .thread .header p {
 	opacity: 0.5;
 	margin: 0;
 	font-size: 0.8em;
+}
+
+.thread h2 a {
+	position: relative;
+}
+.thread h2 a::after {
+	content: "";
+	display: block;
+	position: absolute;
+	top: -0.5rem;
+	right: -3rem;
+	width: 2rem;
+	height: 2rem;
+	background-image: url(../img/external.svg);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+.thread h2 a:hover {
+	text-decoration: underline;
 }
 
 
@@ -771,6 +793,9 @@ footer {
 	display: flex;
 	align-items: stretch;
 	margin: 1em;
+  border-radius: 0.3rem;
+  overflow: hidden;
+	cursor: pointer;
 }
 .thread[data-display="desktop"] .info>p {
 	opacity: 0.5;
@@ -780,7 +805,7 @@ footer {
 .thread[data-display="desktop"] .thumbnail {
 	background-color: #e9ecef;
 	position: relative;
-	width: 14rem;
+	width: 12rem;
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -1060,17 +1085,18 @@ footer {
 }
 @media (min-width:768px) {
 	.slider>.user-view {
-    left: -50%;
+    left: calc(-100% - 280px);
     right: 100%;
 	}
 	.slider>.bubble-view {
     left: 0;
-    right: 40%;
+    right: 420px;
 	}
 	.slider>.thread-view {
-    left: 60%;
+		left: calc(100% - 420px);
     right: 0;
 		border-left: 1px solid #e9ecef;
+		background-color: white;
 	}
 	.slider.userView {
     transform: translateX(50%);
@@ -1095,15 +1121,10 @@ footer {
 	.slider>.user-view {
     left: 0;
     right: calc(100% - 280px);
-		border-right: 1px solid #e9ecef;
+		/* border-right: 1px solid #e9ecef; */
 	}
 	.slider>.bubble-view {
     left: 280px;
-    right: 25%;
-	}
-	.slider>.thread-view {
-    left: 75%;
-    right: 0;
 	}
 	.slider.userView,
 	.slider.bubbleView,

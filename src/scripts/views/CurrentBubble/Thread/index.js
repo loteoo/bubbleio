@@ -1,13 +1,11 @@
 import {h} from 'hyperapp'
+import {Link} from "@hyperapp/router"
 import {timeSince, isElementInViewport, shortenText, getYoutubeId} from '../../../utils/'
 
 
 export const Thread = (thread, index, currentBubble, actions, display = "summary") => {
   if (!thread.userCount) {
     thread.userCount = 0;
-  }
-  if (!thread.messages) {
-    thread.messages = [];
   }
   if (!thread.order) {
     thread.order = 0;
@@ -23,6 +21,8 @@ export const Thread = (thread, index, currentBubble, actions, display = "summary
     }
   }
 
+
+  let threadTitle = <h2>{shortenText(thread.title, 32)}</h2>;
   let contentBlock;
   if (thread.type == "default") {
     contentBlock = null
@@ -36,6 +36,7 @@ export const Thread = (thread, index, currentBubble, actions, display = "summary
     if (thread.url.match('^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$')) { // If is youtube
       thread.src = "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
     }
+    threadTitle = <h2><a href={thread.url} target="_blank">{shortenText(thread.title, 32)}</a></h2>
     contentBlock = <a href={thread.url} target="_blank" class="link">{thread.url}</a>
   } else if (thread.type == "image") {
     contentBlock = <div class="img"><img src={thread.src} alt={thread.title} /></div>
@@ -44,6 +45,9 @@ export const Thread = (thread, index, currentBubble, actions, display = "summary
   if (!thread.src) {
     thread.src = "/img/thread_types/" + thread.type + ".svg";
   }
+
+
+
 
   if (display == "summary") {
     return (
@@ -96,7 +100,7 @@ export const Thread = (thread, index, currentBubble, actions, display = "summary
       }}>
         <div class="thumbnail" Style={"background-image: url('"+thread.src+"')"}></div>
         <div class="content">
-          <h2>{shortenText(thread.title, 32)}</h2>
+          {threadTitle}
           <div class="info">
             <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
             {threadFooter(thread, actions)}

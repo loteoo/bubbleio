@@ -43,29 +43,37 @@ export const view = (state, actions) => {
       if (!state.currentBubble.threads) {
         state.currentBubble.threads = [];
       }
-    }
 
-    // If there is a thread in the URL
-    if (urlparts[2]) {
-      state.currentView = "threadView";
 
-      // Check if thread exists in cache
-      state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
 
-      // If there was nothing in cache
-      if (!state.currentThread) {
 
-        // Create a temporary thread object
-        state.currentThread = {
-          _id: urlparts[2]
+
+
+      // If there is a thread in the URL
+      if (urlparts[2]) {
+        state.currentView = "threadView";
+
+        // Check if thread exists in cache
+        state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+
+        // If there was nothing in cache
+        if (!state.currentThread) {
+
+          // Create a temporary thread object
+          state.currentThread = {
+            _id: urlparts[2]
+          }
         }
+
+
+        // If no messages are in this thread
+        if (!state.currentThread.messages) {
+          state.currentThread.messages = [];
+        }
+
       }
 
 
-      // If no messages are in this thread
-      if (!state.currentThread.messages) {
-        state.currentThread.messages = [];
-      }
     }
 
 
