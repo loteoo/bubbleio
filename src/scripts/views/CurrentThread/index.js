@@ -1,5 +1,5 @@
 import {h} from 'hyperapp'
-import {Keyboard} from '../Keyboard/'
+import {MessageKeyboard} from './MessageKeyboard/'
 
 import {Thread} from './Thread/'
 
@@ -38,7 +38,7 @@ export const CurrentThread = ({currentThread, currentBubble, state, actions}) =>
           <ul class="messages">
             {currentThread.messages.map(message => MessageItem(message, state))}
           </ul>
-          {Keyboard(state, actions)}
+          {MessageKeyboard(state, actions)}
         </div>
       </div>
     )

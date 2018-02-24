@@ -691,7 +691,7 @@ footer {
 }
 .thread .footer .users.countUp .count {
 	color: rgba(0, 123, 255, 1);
-	transform: scale(1.5);
+	transform: scale(1.2);
 	transition: all 0ms;
 }
 .thread .footer .replies {
@@ -913,7 +913,7 @@ footer {
   border-top: 1px solid #e9ecef;
   padding: 0.5em;
 }
-.keyboard.text textarea {
+.keyboard[data-mode="text"] textarea {
 	display: block;
 }
 
@@ -925,7 +925,7 @@ footer {
   border-top: 1px solid #e9ecef;
   padding: 0.5em;
 }
-.keyboard.link input.link {
+.keyboard[data-mode="link"] input.link {
 	display: block;
 }
 
@@ -937,10 +937,10 @@ footer {
   border-top: 1px solid #e9ecef;
 	justify-content: space-between;
 }
-.keyboard.image .image {
+.keyboard[data-mode="image"] .image {
 	display: flex;
 }
-.keyboard.image .image input[type="file"] {
+.keyboard[data-mode="image"] .image input[type="file"] {
 	width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
@@ -949,11 +949,11 @@ footer {
 	z-index: -1;
 	pointer-events: none;
 }
-.keyboard.image .image label[for="image_file"] {
+.keyboard[data-mode="image"] .image label[for="image_file"] {
 	width: 6rem;
 	background-color: #cccccc;
 }
-.keyboard.image .image input[type="text"] {
+.keyboard[data-mode="image"] .image input[type="text"] {
 
   padding: 0.5em;
 }

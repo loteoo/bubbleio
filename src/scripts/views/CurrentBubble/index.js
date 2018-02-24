@@ -1,6 +1,6 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
-import {Keyboard} from '../Keyboard/'
+import {ThreadKeyboard} from './ThreadKeyboard/'
 
 import {timeSince, isElementInViewport, shortenText} from '../../utils/'
 
@@ -56,7 +56,7 @@ export const CurrentBubble = ({currentBubble, state, actions}) => {
           <ul class="threads">
             {currentBubble.threads.map((thread, index) => ThreadItem(thread, index, currentBubble, actions))}
           </ul>
-          {Keyboard(state, actions)}
+          {ThreadKeyboard(state, actions)}
           <div class="loadMore"></div>
         </div>
       </div>

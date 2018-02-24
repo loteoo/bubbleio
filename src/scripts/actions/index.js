@@ -20,14 +20,6 @@ export const actions = {
       ]
     });
   },
-  expandKeyboard: status => {
-    if (status == "closed") {
-      return { keyboardStatus: "opened" }
-    } else {
-      return { keyboardStatus: "closed" }
-    }
-  },
-  changeKeyboardMode: mode => ({keyboardMode: mode}),
   keyboardSubmit: ev => (state, actions) => {
     ev.preventDefault();
     if (ev.target.title.value) {

@@ -1,11 +1,8 @@
 import {h} from 'hyperapp'
-import {timeSince, isElementInViewport, shortenText} from '../utils/'
 
 import {UserView} from './UserView/'
 import {CurrentBubble} from './CurrentBubble/'
 import {CurrentThread} from './CurrentThread/'
-import {Keyboard} from './Keyboard/'
-import {Thread} from './CurrentBubble/Thread/'
 
 
 
