@@ -1006,33 +1006,39 @@ footer {
 .keyboard .expander .text,
 .keyboard .expander .link,
 .keyboard .expander .image {
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity 250ms;
+	display: block;
 	position: absolute;
 	left: 0;
 	right: 0;
-	background-color: #cccccc;
+	opacity: 0;
 	height: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	pointer-events: none;
+	transition: opacity 250ms;
+	background-color: #cccccc;
+	background-position: center;
+	background-size: 50%;
+	background-repeat: no-repeat;
+	border-radius: 100%;
 }
 .keyboard .expander .default {
 	bottom: calc(100% + 1em);
 	transition-delay: 150ms;
+	background-image: url(../img/thread_types/small/default.svg);
 }
 .keyboard .expander .text {
 	bottom: calc(200% + 2em);
 	transition-delay: 100ms;
+	background-image: url(../img/thread_types/small/text.svg);
 }
 .keyboard .expander .link {
 	bottom: calc(300% + 3em);
 	transition-delay: 50ms;
+	background-image: url(../img/thread_types/small/link.svg);
 }
 .keyboard .expander .image {
 	bottom: calc(400% + 4em);
 	transition-delay: 0ms;
+	background-image: url(../img/thread_types/small/image.svg);
 }
 
 
