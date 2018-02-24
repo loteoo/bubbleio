@@ -3,7 +3,7 @@ import {Link} from "@hyperapp/router"
 
 
 
-export const UserView = ({state, actions}) =>
+export const UserView = ({state}) =>
   <div class="user-view">
     <div class="frame">
       <div class="header">

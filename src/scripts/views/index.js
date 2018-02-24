@@ -15,10 +15,11 @@ export const view = (state, actions) => {
   // If logged in
   if (state.user.username) {
 
-    state.currentView = "userView";
+    let render = [];
 
     let urlparts = window.location.pathname.split("/");
 
+    state.currentView = "userView";
 
     // If there is a bubble in the URL
     if (urlparts[1]) {
@@ -78,7 +79,7 @@ export const view = (state, actions) => {
 
     return (
       <div class={ "slider " + state.currentView}>
-        <UserView state={state} actions={actions} />
+        <UserView state={state} />
         <CurrentBubble currentBubble={state.currentBubble} state={state} actions={actions} />
         <CurrentThread currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
       </div>

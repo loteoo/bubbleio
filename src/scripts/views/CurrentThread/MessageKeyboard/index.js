@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 import {ObjectId} from '../../../utils/'
 
-export const MessageKeyboard = (state, actions) =>
+export const MessageKeyboard = (currentThread, state, actions) =>
   <form class="keyboard" data-mode="default" onsubmit={ev => {
       ev.preventDefault();
 
@@ -11,8 +11,8 @@ export const MessageKeyboard = (state, actions) =>
         // Create the message object
         let message = {
           _id: ObjectId(),
-          bubble_id: state.currentThread.bubble_id,
-          thread_id: state.currentThread._id,
+          bubble_id: currentThread.bubble_id,
+          thread_id: currentThread._id,
           sender: state.user.username,
           message: ev.target.title.value,
           created: new Date().getTime()

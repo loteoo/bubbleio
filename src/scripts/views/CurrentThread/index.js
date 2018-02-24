@@ -38,7 +38,7 @@ export const CurrentThread = ({currentThread, currentBubble, state, actions}) =>
           <ul class="messages">
             {currentThread.messages.map(message => MessageItem(message, state))}
           </ul>
-          {MessageKeyboard(state, actions)}
+          {MessageKeyboard(currentThread, state, actions)}
         </div>
       </div>
     )

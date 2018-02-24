@@ -2,7 +2,7 @@ import {h} from 'hyperapp'
 import {ObjectId} from '../../../utils/'
 
 
-export const ThreadKeyboard = (state, actions) =>
+export const ThreadKeyboard = (currentBubble, state, actions) =>
   <form class="keyboard" data-mode="default" onsubmit={ev => {
     ev.preventDefault();
 
@@ -17,7 +17,7 @@ export const ThreadKeyboard = (state, actions) =>
         created: new Date().getTime(),
         type: ev.target.dataset.mode,
         author: state.user.username,
-        bubble_id: state.currentBubble._id
+        bubble_id: currentBubble._id
       }
 
       if (ev.target.dataset.mode == "text") {
