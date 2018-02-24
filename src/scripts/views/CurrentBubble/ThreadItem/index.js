@@ -22,12 +22,14 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
   }
 
   if (!thread.src) {
-    thread.src = "/img/thread_types/" + thread.type + ".svg";
+    thread.src = "/img/thread_types/large/" + thread.type + ".svg";
   }
 
   let currentClass = "";
-  if (thread._id == currentThread._id) {
-    currentClass = " current";
+  if (currentThread) {
+    if (thread._id == currentThread._id) {
+      currentClass = " current";
+    }
   }
 
 

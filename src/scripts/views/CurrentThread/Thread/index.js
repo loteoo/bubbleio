@@ -20,7 +20,7 @@ export const Thread = (thread, index, currentBubble, actions) => {
   }
 
   if (!thread.src) {
-    thread.src = "/img/thread_types/" + thread.type + ".svg";
+    thread.src = "/img/thread_types/large/" + thread.type + ".svg";
   }
 
 

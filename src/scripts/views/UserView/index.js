@@ -31,8 +31,10 @@ export const UserView = ({currentBubble, state}) =>
 const BubbleItem = ({bubble, currentBubble}) => {
 
   let currentClass = "";
-  if (bubble._id == currentBubble._id) {
-    currentClass = "current";
+  if (currentBubble) {
+    if (bubble._id == currentBubble._id) {
+      currentClass = "current";
+    }
   }
 
   return (
