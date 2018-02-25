@@ -43,7 +43,9 @@ export const CurrentBubble = ({currentBubble, currentThread, state, actions}) =>
               }}>
               </button>
               <ul>
-                <li><span>Leave bubble</span></li>
+                <li onclick={ev => {
+                  console.log("not working yet...");
+                }}><span>Leave bubble</span></li>
               </ul>
             </div>
           </div>

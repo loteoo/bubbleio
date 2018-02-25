@@ -250,7 +250,7 @@ const sortByRelevance = (threads) => {
 
 
     // Remove archived threads from the scored list
-    if (threads[i].archived) {
+    if (threads[i].archived) { // TODO: move this to an action and tests
       threads.splice(i, 1);
       i--; // Adjust the index (otherwise a thread will be skipped)
     }
