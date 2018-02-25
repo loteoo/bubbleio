@@ -51,8 +51,7 @@ self.addEventListener('fetch', event => {
   // Skip cross-origin requests, like those for Google Analytics.
   // Also skip socket.io requests
   if (event.request.url.startsWith(self.location.origin) && !event.request.url.match(/\/socket\.io\/\?/)) {
-    if (false) {
-      // event.request.url.replace(location.pathname, "").match(/^\/[a-z]*$/)
+    if (event.request.url.match(/\/[a-z]*$/) || event.request.url.match(/\/[a-z]*\/[a-z0-9]*$/)) { // if this is a bubble OR thread GET
       event.respondWith(
         caches.match("/index.html")
       );
