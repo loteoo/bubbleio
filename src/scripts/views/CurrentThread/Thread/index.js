@@ -3,7 +3,7 @@ import {Link} from "@hyperapp/router"
 import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
 
 
-export const Thread = (thread, currentBubble, actions) => {
+export const Thread = (thread, currentBubble, state, actions) => {
 
   let contentBlock;
   if (thread.type == "default") {
@@ -16,14 +16,18 @@ export const Thread = (thread, currentBubble, actions) => {
     }
     contentBlock = <a href={thread.url} target="_blank" class="link">{thread.url}</a>
   } else if (thread.type == "image") {
-    contentBlock = <div class="img"><img src={thread.src} alt={thread.title} /></div>
+    contentBlock = <a href={thread.src} target="_blank" class="img"><img src={thread.src} alt={thread.title} /></a>
   }
 
   if (!thread.src) {
     thread.src = "/img/thread_types/large/" + thread.type + ".svg";
   }
 
+  let canDelete;
 
+  if (thread.author == state.user.username) { // If user owns this thread
+    canDelete = <li><span>Delete</span></li>;
+  }
 
 
 
@@ -45,6 +49,7 @@ export const Thread = (thread, currentBubble, actions) => {
             }}>
             </button>
             <ul>
+              {canDelete}
               <li><span>Downvote</span></li>
               <li><span>Save</span></li>
             </ul>
