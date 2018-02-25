@@ -433,6 +433,16 @@ io.on('connection', function (socket) {
   // Create bubble
   socket.on('new bubble', function (bubble) {
 
+    // TODO: check if bubble name is already taken 
+
+
+    // Update user bubbles
+    socket.emit("update state", {
+      bubbles: [
+        bubble
+      ]
+    });
+
     // Proper indexes for mongodb
     bubble._id = ObjectId(bubble._id);
 

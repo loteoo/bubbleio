@@ -2,7 +2,7 @@ import {h} from 'hyperapp'
 import {ObjectId} from '../../../utils/'
 
 
-export const BubbleForm = ({actions}) =>
+export const BubbleForm = () =>
   <form class="bubbleForm" onsubmit={ev => {
     ev.preventDefault();
 
@@ -19,15 +19,7 @@ export const BubbleForm = ({actions}) =>
         created: new Date().getTime()
       }
 
-      // Append bubble to list immediately
-      actions.updateState({
-        bubbles: [
-          bubble
-        ]
-      });
-
-
-      // Send new bubble to server
+      // Send new bubble to server for validation
       socket.emit('new bubble', bubble);
 
       ev.target.reset();
