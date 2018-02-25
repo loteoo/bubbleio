@@ -294,6 +294,55 @@ textarea:focus {
 
 
 /*------------------------------------*\
+    Misc repeating elements
+\*------------------------------------*/
+
+
+.options button {
+	display: block;
+	width: 2em;
+	height: 2em;
+	background-image: url(../img/options.svg);
+	background-position: center;
+	background-size: 50%;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+.options ul {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	z-index: 1;
+	width: 180px;
+	background-color: white;
+	/* border: 1px solid #e9ecef; */
+	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 250ms;
+}
+.options ul.opened {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.options ul li:not(:last-child) {
+	border-bottom: 1px solid #e9ecef;
+}
+.options ul li>*{
+	padding: 1rem;
+	display: block;
+  align-items: center;
+}
+
+
+
+
+
+
+
+/*------------------------------------*\
     Header
 \*------------------------------------*/
 
@@ -528,8 +577,8 @@ footer {
 	padding: 0 1rem;
 }
 .bubble-view .bubble-header .back {
-	width: 3em;
-	height: 3em;
+	width: 5rem;
+	height: 5rem;
 	margin-right: 1em;
 	background-image: url(../img/left-arrow.svg);
 	background-position: center;
@@ -542,37 +591,6 @@ footer {
 	margin-left: auto;
 }
 
-.bubble-view .bubble-header .options button {
-	display: block;
-	width: 2em;
-	height: 2em;
-	background-image: url(../img/options.svg);
-	background-position: center;
-	background-size: 50%;
-	background-repeat: no-repeat;
-	cursor: pointer;
-}
-
-.bubble-view .bubble-header .options ul {
-	position: absolute;
-	top: 100%;
-	right: 0;
-	width: 180px;
-	background-color: white;
-	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
-	pointer-events: none;
-	opacity: 0;
-	transition: opacity 250ms;
-}
-.bubble-view .bubble-header .options ul.opened {
-	opacity: 1;
-	pointer-events: all;
-}
-
-.bubble-view .bubble-header .options ul li>*{
-	padding: 1rem;
-	display: block;
-}
 
 .bubble-view h2 {
 	margin: 0;
@@ -620,30 +638,29 @@ footer {
 	right: -100%;
 }
 
-.thread-view .thread-view-header {
-	padding: 1em;
+.thread-view .thread-header {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
 }
-.thread-view .thread-view-header .back {
-	width: 2em;
-	height: 2em;
+.thread-view .thread-header .options {
+	position: relative;
+	margin-left: auto;
+}
+
+.thread-view .thread-header .back {
+	width: 5rem;
+	height: 5rem;
 	margin-right: 1em;
 	background-image: url(../img/left-arrow.svg);
 	background-position: center;
-	background-size: contain;
+	background-size: 50%;
 	background-repeat: no-repeat;
 	cursor: pointer;
 }
 .thread-view .thread {
 	background-color: white;
 	border-bottom: 1px solid #e9ecef;
-	/* position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-  z-index: 10; */
 }
 
 
@@ -923,7 +940,8 @@ footer {
 
 
 /* Default thread */
-.thread[data-type="default"] {
+.thread[data-type="default"] .header {
+	padding-bottom: 1.5rem;
 }
 
 
@@ -1216,7 +1234,7 @@ footer {
 	.bubble-view .bubble-header {
 		padding: 1rem 1rem 1rem 2rem;
 	}
-	.thread-view .thread-view-header .back {
+	.thread-view .thread-header .back {
 		display: none;
 	}
 }
@@ -1245,7 +1263,7 @@ footer {
 		position: relative;
 	}
 	.bubble-view ul.threads {
-		padding: 0;
+		padding: 0 0 8rem 0;
 	}
 }
 

@@ -3,7 +3,7 @@ import {Link} from "@hyperapp/router"
 import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
 
 
-export const Thread = (thread, index, currentBubble, actions) => {
+export const Thread = (thread, currentBubble, actions) => {
 
   let contentBlock;
   if (thread.type == "default") {
@@ -30,16 +30,29 @@ export const Thread = (thread, index, currentBubble, actions) => {
   return (
     <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted}>
       <div class="header">
-        <div class="thread-view-header">
+        <div class="thread-header">
           <div class="back" onclick={ev => {
             actions.location.go("/" + currentBubble.name);
           }}></div>
           <h2>{thread.title}</h2>
+          <div class="options">
+            <button onclick={ev => {
+              if (ev.target.nextSibling.classList.contains("opened")) {
+                ev.target.nextSibling.classList.remove("opened")
+              } else {
+                ev.target.nextSibling.classList.add("opened")
+              }
+            }}>
+            </button>
+            <ul>
+              <li><span>Downvote</span></li>
+              <li><span>Save</span></li>
+            </ul>
+          </div>
         </div>
         <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
       </div>
       {contentBlock}
-      {threadFooter(thread, actions)}
     </li>
   )
 }
@@ -47,70 +60,4 @@ export const Thread = (thread, index, currentBubble, actions) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-const threadFooter = (thread, actions) => (
-  h("div", { class: "footer" }, [
-    h("div", { class: "users", userCount: thread.userCount, onupdate: (el, oldProps) => {
-      if (oldProps.userCount < thread.userCount) {
-        el.classList.add("countUp");
-        setTimeout(() => {
-          el.classList.remove("countUp");
-        }, 25);
-      } } }, [
-        h("div", { class: "count" }, [
-          h("span", {}, thread.userCount)
-        ])
-      ]),
-    h("div", { class: "replies", messageCount: thread.messages.length, onupdate: (el, oldProps) => {
-      if (oldProps.messageCount < thread.messages.length) {
-        el.classList.add("countUp");
-        setTimeout(() => {
-          el.classList.remove("countUp");
-        }, 25);
-      } } }, [
-        h("div", { class: "count" }, [
-          h("span", {}, thread.messages.length)
-        ])
-      ]),
-    h("button", { class: "upvote", score: thread.score, onclick: ev => {
-      ev.stopPropagation();
-
-      // Increase score and local upvoted count
-      thread.score++;
-      thread.upvoted++;
-
-      // Update immediately on this client
-      actions.updateState({
-        bubbles: [
-          {
-            _id: thread.bubble_id,
-            threads: [
-              thread
-            ]
-          }
-        ]
-      });
-
-      // Send to server
-      socket.emit('thread upvote', thread);
-      
-    }, onupdate: (el, oldProps) => {
-      if (oldProps.score < thread.score) {
-        el.classList.add("countUp");
-        setTimeout(() => {
-          el.classList.remove("countUp");
-        }, 25);
-      }
-    } }, thread.score)
-  ])
-)
+// TODO: Add thread footer to the thread
