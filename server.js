@@ -144,7 +144,10 @@ io.on('connection', function (socket) {
         // TODO: Only load user messages count, not the entire message list
         dbo.collection("threads").aggregate([
           {
-            $match: { bubble_id: ObjectId(bubble._id) }
+            $match: {
+              bubble_id: ObjectId(bubble._id),
+              archived: { $exists: false }
+            }
           },
           {
             $lookup: {
@@ -312,7 +315,7 @@ io.on('connection', function (socket) {
   });
 
 
-  // Delete thread
+  // Archive thread
   socket.on('archive thread', function (thread) {
 
     let newState = {
@@ -333,7 +336,7 @@ io.on('connection', function (socket) {
     // Update clients in the thread
     socket.broadcast.to(thread.thread_id).emit('update state', newState);
 
-
+    // Update DB
     dbo.collection("threads").findOneAndUpdate({ '_id': ObjectId(thread._id) }, { $set: {
       archived: true
     }}, { returnOriginal: false }, function(err, thread) {
@@ -372,7 +375,6 @@ io.on('connection', function (socket) {
 
     // Update clients in the thread
     socket.broadcast.to(thread.thread_id).emit('update state', newState);
-
 
     // Update DB
     dbo.collection("threads").findOneAndUpdate({ '_id': ObjectId(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {

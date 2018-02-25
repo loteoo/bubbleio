@@ -42,7 +42,7 @@ export const Thread = (thread, currentBubble, state, actions) => {
       });
 
       socket.emit('archive thread', thread);
-      
+
     }}>Delete</span></li>;
   }
 
@@ -66,9 +66,9 @@ export const Thread = (thread, currentBubble, state, actions) => {
             }}>
             </button>
             <ul>
-              {canDelete}
               <li><span>Downvote</span></li>
               <li><span>Save</span></li>
+              {canDelete}
             </ul>
           </div>
         </div>
