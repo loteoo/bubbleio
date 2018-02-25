@@ -298,6 +298,10 @@ textarea:focus {
 \*------------------------------------*/
 
 
+.options {
+	position: relative;
+	color: #757575;
+}
 .options button {
 	display: block;
 	width: 2em;
@@ -434,8 +438,11 @@ footer {
 	background-color: #35363b;
 }
 .user-view .header {
-	padding: 2em;
+	padding: 3rem 1.5rem 3rem 3rem;
 	background-color: #4e525a;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 .user-view .header h2 {
 	margin: 0;
@@ -587,7 +594,6 @@ footer {
 }
 
 .bubble-view .bubble-header .options {
-	position: relative;
 	margin-left: auto;
 }
 
@@ -644,7 +650,6 @@ footer {
 	justify-content: flex-start;
 }
 .thread-view .thread-header .options {
-	position: relative;
 	margin-left: auto;
 }
 
@@ -1205,7 +1210,7 @@ footer {
 }
 @media (min-width:768px) {
 	.slider>.user-view {
-    left: calc(-100% - 280px);
+    left: -280px;
     right: 100%;
 	}
 	.slider>.bubble-view {
@@ -1219,7 +1224,7 @@ footer {
 		background-color: white;
 	}
 	.slider.userView {
-    transform: translateX(50%);
+    transform: translateX(280px);
 	}
 	.slider.bubbleView,
 	.slider.threadView {

@@ -8,6 +8,23 @@ export const UserView = ({currentBubble, state}) =>
     <div class="frame">
       <div class="header">
         <h2>{state.user.username}</h2>
+        <div class="options">
+          <button onclick={ev => {
+            if (ev.target.nextSibling.classList.contains("opened")) {
+              ev.target.nextSibling.classList.remove("opened")
+            } else {
+              ev.target.nextSibling.classList.add("opened")
+            }
+          }}>
+          </button>
+          <ul>
+            <li onclick={ev => {
+              console.log("logout");
+              localStorage.clear();
+              location.reload();
+            }}><span>Log out</span></li>
+          </ul>
+        </div>
       </div>
       <ul class="menu">
         <li>
