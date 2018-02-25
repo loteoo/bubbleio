@@ -296,7 +296,7 @@ io.on('connection', function (socket) {
           threads: [
             thread
           ]
-        },
+        }
       ]
     });
 
@@ -309,6 +309,37 @@ io.on('connection', function (socket) {
     dbo.collection("threads").insert(thread, function(err, result) {
       if (err) throw err;
     });
+  });
+
+
+  // Delete thread
+  socket.on('archive thread', function (thread) {
+
+    let newState = {
+      bubbles: [
+        {
+          _id: thread.bubble_id,
+          threads: [
+            thread
+          ]
+        }
+      ]
+    };
+
+
+    // Update clients in the bubble
+    socket.broadcast.to(thread.bubble_id).emit('update state', newState);
+
+    // Update clients in the thread
+    socket.broadcast.to(thread.thread_id).emit('update state', newState);
+
+
+    dbo.collection("threads").findOneAndUpdate({ '_id': ObjectId(thread._id) }, { $set: {
+      archived: true
+    }}, { returnOriginal: false }, function(err, thread) {
+      if (err) throw err;
+    });
+
   });
 
 
@@ -332,7 +363,7 @@ io.on('connection', function (socket) {
           threads: [
             thread
           ]
-        },
+        }
       ]
     };
 
@@ -433,7 +464,7 @@ io.on('connection', function (socket) {
   // Create bubble
   socket.on('new bubble', function (bubble) {
 
-    // TODO: check if bubble name is already taken 
+    // TODO: check if bubble name is already taken
 
 
     // Update user bubbles

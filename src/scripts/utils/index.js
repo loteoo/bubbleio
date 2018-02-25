@@ -245,7 +245,15 @@ const sortByRelevance = (threads) => {
       threads[i].upvoted = 0;
     }
 
+
     threads[i].relevance = (threads[i].score + (threads[i].messages.length/2) + 1) / Math.pow(((new Date() - threads[i].created) / 3600000), 1.8);
+
+
+    // Remove archived threads from the scored list
+    if (threads[i].archived) {
+      threads.splice(i, 1);
+      i--;
+    }
   }
 
   // Sort threads by "relevance"

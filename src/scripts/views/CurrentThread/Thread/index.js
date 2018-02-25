@@ -26,7 +26,24 @@ export const Thread = (thread, currentBubble, state, actions) => {
   let canDelete;
 
   if (thread.author == state.user.username) { // If user owns this thread
-    canDelete = <li><span>Delete</span></li>;
+    canDelete = <li><span onclick={ev => {
+
+      thread.archived = true;
+
+      actions.updateState({
+        bubbles: [
+          {
+            _id: thread.bubble_id,
+            threads: [
+              thread
+            ]
+          }
+        ]
+      });
+
+      socket.emit('archive thread', thread);
+      
+    }}>Delete</span></li>;
   }
 
 
