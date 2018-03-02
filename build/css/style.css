@@ -688,9 +688,9 @@ footer {
 }
 .thread-view .messages li {
 	display: block;
-  border-radius: 1.5em;
-  margin: 0.5em;
-  padding: 0.5em 1em;
+	border-radius: 2rem;
+	margin: 0.5rem 1rem;
+	padding: 0.75rem 1.25rem;
   max-width: 66%;
 	opacity: 1;
 	transition: opacity 300ms, transform 200ms;
