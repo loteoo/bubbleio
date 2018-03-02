@@ -8,7 +8,6 @@ const RUNTIME = 'runtime';
 // A list of local resources we always want to be cached.
 const PRECACHE_URLS = [
   '/',
-  '/index.html',
   '/css/style.css',
   '/js/main.min.js',
   '/socket.io/socket.io.js',
@@ -53,7 +52,7 @@ self.addEventListener('fetch', event => {
   if (event.request.url.startsWith(self.location.origin) && !event.request.url.match(/\/socket\.io\/\?/)) {
     if (event.request.url.match(/\/[a-z]*$/) || event.request.url.match(/\/[a-z]*\/[a-z0-9]*$/)) { // if this is a bubble OR thread GET
       event.respondWith(
-        caches.match("/index.html")
+        caches.match("/")
       );
       console.log("replaced: " + event.request.url.replace(location.pathname, ""));
     } else {

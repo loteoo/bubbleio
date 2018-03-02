@@ -438,7 +438,7 @@ io.on('connection', function (socket) {
 
   // Pass all received message to all clients
   socket.on('login', function (username) {
-    dbo.collection("bubbles").find().toArray(function(err, bubbles) {
+    dbo.collection("bubbles").find({default: true}).toArray(function(err, bubbles) {
       if (err) throw err;
 
       // Inject user counts to bubbles
