@@ -23,8 +23,8 @@ export const CurrentThread = ({currentThread, currentBubble, state, actions}) =>
 
         // If there is a new message
         if (oldProps.messageCount < currentThread.messages.length) {
-          // Scroll down
-          el.children[0].scrollTop = el.children[0].scrollHeight;
+          // Scroll down message list
+          el.children[0].children[2].scrollTop = el.children[0].children[2].scrollHeight;
         }
 
       }} oncreate={el => {
