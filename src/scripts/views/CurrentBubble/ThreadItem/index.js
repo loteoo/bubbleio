@@ -22,7 +22,7 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
   }
 
   if (!thread.src) {
-    thread.src = "/img/thread_types/large/" + thread.type + ".svg";
+    // TODO: ADD CLASS FOR DEFAULT IMAGE WITH THREAD TYPE
   }
 
   let currentClass = "";

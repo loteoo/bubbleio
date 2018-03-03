@@ -11,13 +11,7 @@ const PRECACHE_URLS = [
   '/css/style.css',
   '/js/main.min.js',
   '/socket.io/socket.io.js',
-  '/fonts/CircularStd/CircularStd-Book.otf',
-  '/img/arrow-right.svg',
-  '/img/left-arrow.svg',
-  '/img/options.svg',
-  '/img/users.svg',
-  '/img/chat.svg',
-  '/img/plus.svg'
+  '/fonts/CircularStd/CircularStd-Book.otf'
 ];
 
 // The install handler takes care of precaching the resources we always need.

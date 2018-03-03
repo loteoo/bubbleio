@@ -20,7 +20,7 @@ export const Thread = (thread, currentBubble, state, actions) => {
   }
 
   if (!thread.src) {
-    thread.src = "/img/thread_types/large/" + thread.type + ".svg";
+    // TODO: ADD CLASS FOR DEFAULT IMAGE WITH THREAD TYPE
   }
 
   let canDelete;

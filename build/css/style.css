@@ -306,7 +306,7 @@ textarea:focus {
 	display: block;
 	width: 2em;
 	height: 2em;
-	background-image: url(../img/options.svg);
+	background-image: url(../img/more-vertical.svg);
 	background-position: center;
 	background-size: 50%;
 	background-repeat: no-repeat;
@@ -536,7 +536,7 @@ footer {
 	right: 2rem;
   width: 4rem;
   height: 4rem;
-  background-image: url(../img/close.svg);
+  background-image: url(../img/x.svg);
   background-position: center;
   background-size: 50%;
   background-repeat: no-repeat;
@@ -587,7 +587,7 @@ footer {
 	width: 5rem;
 	height: 5rem;
 	margin-right: 1em;
-	background-image: url(../img/left-arrow.svg);
+	background-image: url(../img/arrow-left.svg);
 	background-position: center;
 	background-size: 50%;
 	background-repeat: no-repeat;
@@ -662,7 +662,7 @@ footer {
 	width: 5rem;
 	height: 5rem;
 	margin-right: 1em;
-	background-image: url(../img/left-arrow.svg);
+	background-image: url(../img/arrow-left.svg);
 	background-position: center;
 	background-size: 50%;
 	background-repeat: no-repeat;
@@ -761,7 +761,7 @@ footer {
 	right: -3rem;
 	width: 2rem;
 	height: 2rem;
-	background-image: url(../img/external.svg);
+	background-image: url(../img/external-link.svg);
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -836,7 +836,7 @@ footer {
 	width: 2.5rem;
 	height: 2.5rem;
 	margin-top: 1.2rem;
-	background-image: url(../img/chat.svg);
+	background-image: url(../img/message-square.svg);
 	background-position: center;
 	background-size: 80%;
 	background-repeat: no-repeat;
@@ -1098,7 +1098,7 @@ footer {
 	height: 4rem;
 	border-radius: 100%;
 	background-color: #007bff;
-	background-image: url(../img/arrow-right.svg);
+	background-image: url(../img/chevron-right-white.svg);
 	background-position: 58% 50%;
 	background-size: 50%;
 	background-repeat: no-repeat;
@@ -1140,22 +1140,22 @@ footer {
 .keyboard .expander .default {
 	bottom: calc(100% + 1em);
 	transition-delay: 150ms;
-	background-image: url(../img/thread_types/small/default.svg);
+	background-image: url(../img/message-circle.svg);
 }
 .keyboard .expander .text {
 	bottom: calc(200% + 2em);
 	transition-delay: 100ms;
-	background-image: url(../img/thread_types/small/text.svg);
+	background-image: url(../img/align-left.svg);
 }
 .keyboard .expander .link {
 	bottom: calc(300% + 3em);
 	transition-delay: 50ms;
-	background-image: url(../img/thread_types/small/link.svg);
+	background-image: url(../img/link.svg);
 }
 .keyboard .expander .image {
 	bottom: calc(400% + 4em);
 	transition-delay: 0ms;
-	background-image: url(../img/thread_types/small/image.svg);
+	background-image: url(../img/image.svg);
 }
 
 
