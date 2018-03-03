@@ -872,6 +872,10 @@ footer {
 	color: inherit;
 	font-size: 1em;
 	transition: all 300ms;
+	background-image: url(../img/thumbs-up.svg);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 .thread .footer .upvote:active {
 	-webkit-tap-highlight-color: transparent;
