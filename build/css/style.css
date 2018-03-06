@@ -76,6 +76,18 @@ acronym {
     Global
 \*------------------------------------*/
 
+
+:root {
+
+	--main-color: #666666;
+	--main-background-color: #f5f7fa;
+
+	--main-accent-color: #7967ff;
+	--secondary-accent-color: #ff6369;
+	--tertiary-accent-color: #428ce1;
+
+}
+
 /* html element 62.5% font-size for REM use */
 html {
 	font-size: 62.5%;
@@ -83,11 +95,11 @@ html {
 body {
 	font-family: 'CircularStd-Book', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 1.8rem;
-	color: #757575;
+	color: var(--main-color);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-	background-color: #f7f7f7;
+	background-color: var(--main-background-color);
 }
 
 img {
@@ -300,7 +312,7 @@ textarea:focus {
 
 .options {
 	position: relative;
-	color: #757575;
+	color: var(--main-color);
 }
 .options button {
 	display: block;
@@ -515,7 +527,7 @@ footer {
 	right: 3rem;
 	z-index: 20;
 	background-color: white;
-	color: #757575;
+	color: var(--main-color);
 	opacity: 0;
 	pointer-events: none;
 	transform: translateY(100%);
@@ -609,7 +621,7 @@ footer {
 .bubble-view .thread  {
 	position: relative;
 	margin: 0 0 1em 0;
-	background-color: #fff;
+	background-color: white;
 	box-shadow: 0 0.46875rem 2.1875rem rgba(90,97,105,.1), 0 0.9375rem 1.40625rem rgba(90,97,105,.1), 0 0.25rem 0.53125rem rgba(90,97,105,.12), 0 0.125rem 0.1875rem rgba(90,97,105,.1);
 	transition: opacity 300ms, transform 200ms;
 	transform: translateX(0);
@@ -716,7 +728,7 @@ footer {
 	align-self: flex-start;
 }
 .thread-view .messages li.sent {
-  background-color: #007bff;
+  background-color: var(--secondary-accent-color);
   color: rgba(255, 255, 255, 1);
 	align-self: flex-end;
 }
@@ -807,16 +819,16 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-	background-color: #DD352E;
+	background-color: var(--secondary-accent-color);
 	color: white;
 }
 .thread .footer .users[usercount="0"] .count span {
 	color: inherit;
 	background-color: white;
-	border: 1px solid rgba(0, 123, 255, 1);
+	border: 1px solid var(--main-accent-color);
 }
 .thread .footer .users.countUp .count {
-	color: rgba(0, 123, 255, 1);
+	color: var(--main-accent-color);
 	transform: scale(1.2);
 	transition: all 0ms;
 }
@@ -852,10 +864,10 @@ footer {
   align-items: center;
   justify-content: center;
 	background-color: white;
-	border: 1px solid rgba(0, 123, 255, 1);
+	border: 1px solid var(--main-accent-color);
 }
 .thread .footer .replies.countUp .count {
-	color: rgba(0, 123, 255, 1);
+	color: var(--main-accent-color);
 	transform: scale(1.5);
 	transition: all 0ms;
 }
@@ -975,7 +987,7 @@ footer {
 .thread[data-type="link"] .link {
 	display: inline-block;
 	padding: 0.5rem 1.5rem;
-	color: #007bff;
+	color: var(--secondary-accent-color);
 }
 
 
@@ -1101,7 +1113,7 @@ footer {
 	width: 4rem;
 	height: 4rem;
 	border-radius: 100%;
-	background-color: #007bff;
+	background-color: var(--secondary-accent-color);
 	background-image: url(../img/chevron-right-white.svg);
 	background-position: 58% 50%;
 	background-size: 50%;
@@ -1299,16 +1311,16 @@ footer {
 
 ::selection {
 	background: #04A4CC;
-	color: #FFF;
+	color: white;
 	text-shadow:none;
 }
 ::-webkit-selection {
 	background: #04A4CC;
-	color: #FFF;
+	color: white;
 	text-shadow:none;
 }
 ::-moz-selection {
 	background: #04A4CC;
-	color: #FFF;
+	color: white;
 	text-shadow:none;
 }
