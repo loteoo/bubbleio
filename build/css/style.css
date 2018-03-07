@@ -319,11 +319,11 @@ textarea:focus {
 }
 .options button {
 	display: block;
-	width: 2em;
-	height: 2em;
+	width: 4rem;
+	height: 4rem;
 	background-image: url(../img/more-vertical.svg);
 	background-position: center;
-	background-size: 50%;
+	background-size: 80%;
 	background-repeat: no-repeat;
 	cursor: pointer;
 }
@@ -461,6 +461,9 @@ footer {
 }
 .user-view .header h2 {
 	margin: 0;
+}
+.user-view .header .options button {
+	background-image: url(../img/more-vertical-white.svg);
 }
 
 .user-view .menu>li {
@@ -828,7 +831,7 @@ footer {
 .thread .footer .users[usercount="0"] .count span {
 	color: inherit;
 	background-color: white;
-	border: 1px solid var(--main-accent-color);
+	border: 2px solid var(--main-color);
 }
 .thread .footer .users.countUp .count {
 	color: var(--main-accent-color);
@@ -853,7 +856,7 @@ footer {
 	margin-top: 1.2rem;
 	background-image: url(../img/message-square.svg);
 	background-position: center;
-	background-size: 80%;
+	background-size: contain;
 	background-repeat: no-repeat;
 }
 .thread .footer .replies .count span {
@@ -867,7 +870,7 @@ footer {
   align-items: center;
   justify-content: center;
 	background-color: white;
-	border: 1px solid var(--main-accent-color);
+	border: 2px solid var(--main-color);
 }
 .thread .footer .replies.countUp .count {
 	color: var(--main-accent-color);
@@ -1332,17 +1335,17 @@ footer {
 \*------------------------------------*/
 
 ::selection {
-	background: #04A4CC;
+	background: var(--secondary-accent-color);
 	color: white;
 	text-shadow:none;
 }
 ::-webkit-selection {
-	background: #04A4CC;
+	background: var(--secondary-accent-color);
 	color: white;
 	text-shadow:none;
 }
 ::-moz-selection {
-	background: #04A4CC;
+	background: var(--secondary-accent-color);
 	color: white;
 	text-shadow:none;
 }

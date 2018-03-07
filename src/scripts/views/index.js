@@ -25,7 +25,7 @@ export const view = (state, actions) => {
       state.currentView = "bubbleView";
 
       // Check if bubble exists in cache
-      state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+      state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]); // TODO: Only have current bubble / thread IDs in the state, then currentBubble and currentThread are 'let' vars not state fragments
 
       // If there was nothing in cache
       if (!state.currentBubble) {
