@@ -164,6 +164,10 @@ const threadFooter = (thread, actions) => (
           el.classList.remove("countUp");
         }, 25);
       }
-    } }, thread.score)
+    } }, [
+      h("div", { class: "count" }, [
+        h("span", {}, thread.score)
+      ])
+    ])
   ])
 )

@@ -291,6 +291,10 @@ io.on('connection', function (socket) {
   // Pass all received thread to all clients
   socket.on('new thread', function (thread) {
 
+    // Just making sure...
+    delete thread.upvoted;
+    delete thread.relevance;
+
     // Update clients in the bubble
     socket.broadcast.to(thread.bubble_id).emit('update state', {
       bubbles: [
