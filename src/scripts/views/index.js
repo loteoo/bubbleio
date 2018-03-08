@@ -23,36 +23,47 @@ export const view = (state, actions) => {
 
     // Manage mobile nav and last bubble / thread from url
     state.currentView = "userView";
+
+
     if (urlparts[1]) {
-      state.currentBubbleName = urlparts[1];
+
+      // Load bubble from state
+      state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]);
+
+
+      // Switch mobile view
       state.currentView = "bubbleView";
+
+      // If the bubble doesn't exist in the state yet
+      if (!state.currentBubble) {
+        // Create a temporary bubble while it loads
+        state.currentBubble = {
+          name: urlparts[1],
+          threads: []
+        }
+      }
+
+
+
       if (urlparts[2]) {
-        state.currentThreadId = urlparts[2];
+
+        // Load thread from state
+        state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]);
+
+        // Switch mobile view
         state.currentView = "threadView";
       }
     }
 
-
-    // Load bubble from state
-    let currentBubble = state.bubbles.find(bubble => bubble.name == state.currentBubbleName); // TODO: Only have current bubble / thread IDs in the state, then currentBubble and currentThread are 'let' vars not state fragments
-    let currentThread;
-
-    // If bubble exists in state and has threads
-    if (currentBubble && currentBubble.threads) {
-
-      // Load thread from state
-      currentThread = currentBubble.threads.find(thread => thread._id == state.currentThreadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
-
-    }
 
 
 
 
     return (
       <div class={"slider " + state.currentView}>
-        <UserView currentBubble={currentBubble} state={state} />
-        <CurrentBubble currentBubble={currentBubble} currentThread={currentThread} state={state} actions={actions} />
-        <CurrentThread currentBubble={currentBubble} currentThread={currentThread} state={state} actions={actions} />
+        <UserView currentBubble={state.currentBubble} state={state} />
+        <CurrentBubble currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
+        <CurrentThread currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
       </div>
     )
   } else {

@@ -111,10 +111,12 @@ export const mergeStates = (stateA, stateB) => {
         }
       }
       if (!matchFound) {
-
         if (!stateB.bubbles[i].threads) {
           stateB.bubbles[i].threads = [];
         }
+        // Sort this bubble's threads before merging
+        stateB.bubbles[i].threads = sortByRelevance(stateB.bubbles[i].threads);
+        
         stateA.bubbles.push(stateB.bubbles[i]);
       }
     }

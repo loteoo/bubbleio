@@ -156,6 +156,11 @@ io.on('connection', function (socket) {
               foreignField: 'thread_id',
               as: 'messages'
             }
+          },
+          {
+            $sort: {
+              created: -1
+            }
           }
         ]).toArray(function(err, threads) {
           if (err) throw err;
