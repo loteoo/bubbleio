@@ -21,22 +21,24 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
     contentBlock = <div class="img"><img src={thread.src} alt={thread.title} /></div>
   }
 
-  if (!thread.src) {
-    // TODO: ADD CLASS FOR DEFAULT IMAGE WITH THREAD TYPE
-  }
 
-  let currentClass = "";
-  if (currentThread) {
-    if (thread._id == currentThread._id) {
-      currentClass = " current";
+
+  let extraClass = " ";
+  if (currentThread) { // If there is thread opened in the app
+    if (thread._id == currentThread._id) { // If this is the one that is opened
+      extraClass += "current";
     }
   }
 
 
+  if (!thread.src) {
+    extraClass += " noimage";
+  }
+
 
   if (window.innerWidth >= 768) { // If desktop
     return (
-      <li key={thread._id} class={"thread desktop" + currentClass} index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={ev => {
+      <li key={thread._id} class={"thread desktop" + extraClass} index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={ev => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }} oncreate={el => {
         el.style.transform = "translateX(-100%)";
@@ -66,7 +68,7 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
     )
   } else { // if mobile
     return (
-      <li key={thread._id} class={"thread" + currentClass} index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={() => {
+      <li key={thread._id} class={"thread" + extraClass} index={index} data-type={thread.type} data-upvoted={thread.upvoted} onclick={() => {
           actions.location.go("/" + currentBubble.name + "/" + thread._id);
         }} oncreate={el => {
           el.style.transform = "translateX(-100%)";

@@ -19,9 +19,6 @@ export const Thread = (thread, currentBubble, state, actions) => {
     contentBlock = <a href={thread.src} target="_blank" class="img"><img src={thread.src} alt={thread.title} /></a>
   }
 
-  if (!thread.src) {
-    // TODO: ADD CLASS FOR DEFAULT IMAGE WITH THREAD TYPE
-  }
 
   let canDelete;
 

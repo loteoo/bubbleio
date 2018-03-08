@@ -997,6 +997,10 @@ footer {
 .thread[data-type="default"] .header {
 	padding-bottom: 1.5rem;
 }
+.thread[data-type="default"].noimage .thumbnail {
+	background-image: url(../img/message-circle.svg) !important;
+	background-size: 45%;
+}
 
 
 
@@ -1005,7 +1009,10 @@ footer {
 	padding: 0.5rem 1.5rem;
 	font-size: 0.8em;
 }
-
+.thread[data-type="text"].noimage .thumbnail {
+	background-image: url(../img/align-left.svg) !important;
+	background-size: 45%;
+}
 
 
 /* Image thread */
@@ -1014,12 +1021,20 @@ footer {
 	padding: 0.5rem 1.5rem;
 	color: var(--secondary-accent-color);
 }
+.thread[data-type="link"].noimage .thumbnail {
+	background-image: url(../img/link.svg) !important;
+	background-size: 45%;
+}
 
 
 
 /* Image thread */
 .thread[data-type="image"] .header {
 	padding-bottom: 1.5rem;
+}
+.thread[data-type="image"].noimage .thumbnail {
+	background-image: url(../img/image.svg) !important;
+	background-size: 45%;
 }
 .thread[data-type="image"] .img img {
 	width: 100%;
