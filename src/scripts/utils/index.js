@@ -102,17 +102,19 @@ export const mergeStates = (stateA, stateB) => {
   if (stateB.bubbles) {
     for (var i = 0; i < stateB.bubbles.length; i++) { // For each new bubble
       let matchFound = false;
-      if (stateA.bubbles) {
-        for (var j = 0; j < stateA.bubbles.length; j++) { // find match
+      if (stateA.bubbles) { // Find match if possible
+        for (var j = 0; j < stateA.bubbles.length; j++) {
           if (stateB.bubbles[i]._id == stateA.bubbles[j]._id) {
             matchFound = true;
             stateA.bubbles[j] = mergeBubbles(stateA.bubbles[j], stateB.bubbles[i]);
           }
         }
-      } else {
-        stateA.bubbles = [];
       }
       if (!matchFound) {
+
+        if (!stateB.bubbles[i].threads) {
+          stateB.bubbles[i].threads = [];
+        }
         stateA.bubbles.push(stateB.bubbles[i]);
       }
     }
@@ -144,17 +146,20 @@ const mergeBubbles = (bubbleA, bubbleB) => {
   if (bubbleB.threads) {
     for (var i = 0; i < bubbleB.threads.length; i++) { // For each new bubble
       let matchFound = false;
-      if (bubbleA.threads) {
-        for (var j = 0; j < bubbleA.threads.length; j++) { // find match
+
+      if (bubbleA.threads) { // Find match if possible
+        for (var j = 0; j < bubbleA.threads.length; j++) {
           if (bubbleB.threads[i]._id == bubbleA.threads[j]._id) {
             matchFound = true;
             bubbleA.threads[j] = mergeThreads(bubbleA.threads[j], bubbleB.threads[i]);
           }
         }
-      } else {
-        bubbleA.threads = [];
       }
+
       if (!matchFound) {
+        if (!bubbleB.threads[i].messages) {
+          bubbleB.threads[i].messages = [];
+        }
         bubbleA.threads.unshift(bubbleB.threads[i]); // Insert in first place
       }
     }

@@ -21,7 +21,7 @@ export const view = (state, actions) => {
 
 
 
-    // Manage mobile nav and last bubble / thread from navigation
+    // Manage mobile nav and last bubble / thread from url
     state.currentView = "userView";
     if (urlparts[1]) {
       state.currentBubbleName = urlparts[1];
@@ -43,25 +43,6 @@ export const view = (state, actions) => {
       // Load thread from state
       currentThread = currentBubble.threads.find(thread => thread._id == state.currentThreadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
 
-      // If thread exists
-      if (currentThread && currentThread.messages) {
-
-
-      } else {
-
-        // If thread wasn't in state, create a temporary thread object while one gets loaded
-        currentThread = {
-          _id: state.currentThreadId,
-          messages: []
-        }
-      }
-    } else {
-
-      // If bubble wasn't in state, create a temporary bubble object while one gets loaded
-      currentBubble = {
-        name: state.currentBubbleName,
-        threads: []
-      }
     }
 
 

@@ -8,11 +8,6 @@ import {ThreadKeyboard} from './ThreadKeyboard/'
 
 export const CurrentBubble = ({currentBubble, currentThread, state, actions}) => {
   if (currentBubble) {
-
-    if (!currentBubble.title) {
-      currentBubble.title = "Loading...";
-    }
-
     return (
       <div class="bubble-view" name={currentBubble.name} onupdate={(el, oldProps) => {
         if (oldProps.name != currentBubble.name) {
@@ -55,6 +50,12 @@ export const CurrentBubble = ({currentBubble, currentThread, state, actions}) =>
           {ThreadKeyboard(currentBubble, state, actions)}
           <div class="loadMore"></div>
         </div>
+      </div>
+    )
+  } else {
+    return (
+      <div class="bubble-view no-bubble">
+        <h2>Pick a bubble!</h2>
       </div>
     )
   }
