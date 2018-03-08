@@ -18,55 +18,49 @@ export const view = (state, actions) => {
 
     let urlparts = window.location.pathname.split("/");
 
+
+
+
+    // Manage mobile nav and last bubble / thread from navigation
     state.currentView = "userView";
-
-    // If there is a bubble in the URL
     if (urlparts[1]) {
+      state.currentBubbleName = urlparts[1];
       state.currentView = "bubbleView";
-
-      // Check if bubble exists in cache
-      state.currentBubble = state.bubbles.find(bubble => bubble.name == urlparts[1]); // TODO: Only have current bubble / thread IDs in the state, then currentBubble and currentThread are 'let' vars not state fragments
-
-      // If there was nothing in cache
-      if (!state.currentBubble) {
-
-        // Create a temporary bubble object
-        state.currentBubble = {
-          name: urlparts[1]
-        }
-      }
-
-      // If no threads are in this bubble
-      if (!state.currentBubble.threads) {
-        state.currentBubble.threads = [];
-      }
-
-
-
-
-
-
-      // If there is a thread in the URL
       if (urlparts[2]) {
+        state.currentThreadId = urlparts[2];
         state.currentView = "threadView";
+      }
+    }
 
-        // Check if thread exists in cache
-        state.currentThread = state.currentBubble.threads.find(thread => thread._id == urlparts[2]); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
 
-        // If there was nothing in cache
-        if (!state.currentThread) {
+    // Load bubble from state
+    let currentBubble = state.bubbles.find(bubble => bubble.name == state.currentBubbleName); // TODO: Only have current bubble / thread IDs in the state, then currentBubble and currentThread are 'let' vars not state fragments
+    let currentThread;
 
-          // Create a temporary thread object
-          state.currentThread = {
-            _id: urlparts[2]
-          }
+    // If bubble exists in state and has threads
+    if (currentBubble && currentBubble.threads) {
+
+      // Load thread from state
+      currentThread = currentBubble.threads.find(thread => thread._id == state.currentThreadId); // TODO: DO THIS BETTER MORE OPTIMISATIONATION
+
+      // If thread exists
+      if (currentThread && currentThread.messages) {
+
+
+      } else {
+
+        // If thread wasn't in state, create a temporary thread object while one gets loaded
+        currentThread = {
+          _id: state.currentThreadId,
+          messages: []
         }
+      }
+    } else {
 
-
-        // If no messages are in this thread
-        if (!state.currentThread.messages) {
-          state.currentThread.messages = [];
-        }
+      // If bubble wasn't in state, create a temporary bubble object while one gets loaded
+      currentBubble = {
+        name: state.currentBubbleName,
+        threads: []
       }
     }
 
@@ -75,9 +69,9 @@ export const view = (state, actions) => {
 
     return (
       <div class={"slider " + state.currentView}>
-        <UserView currentBubble={state.currentBubble} state={state} />
-        <CurrentBubble currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
-        <CurrentThread currentBubble={state.currentBubble} currentThread={state.currentThread} state={state} actions={actions} />
+        <UserView currentBubble={currentBubble} state={state} />
+        <CurrentBubble currentBubble={currentBubble} currentThread={currentThread} state={state} actions={actions} />
+        <CurrentThread currentBubble={currentBubble} currentThread={currentThread} state={state} actions={actions} />
       </div>
     )
   } else {

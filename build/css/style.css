@@ -323,7 +323,7 @@ textarea:focus {
 	height: 4rem;
 	background-image: url(../img/more-vertical.svg);
 	background-position: center;
-	background-size: 80%;
+	background-size: 60%;
 	background-repeat: no-repeat;
 	cursor: pointer;
 }
@@ -666,6 +666,7 @@ footer {
 	background-color: white;
   position: sticky;
   top: 0;
+	z-index: 1;
 }
 .thread-view .thread-header {
 	display: flex;
