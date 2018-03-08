@@ -646,7 +646,7 @@ footer {
 	align-items: center;
 	background-image: url(../img/info.svg);
 	background-position: center;
-	background-size: 80%;
+	background-size: 60%;
 	background-repeat: no-repeat;
 }
 .bubble-view.no-bubble h2 {
@@ -751,6 +751,21 @@ footer {
   background-color: var(--main-accent-color);
   color: rgba(255, 255, 255, 1);
 	align-self: flex-end;
+}
+
+.thread-view.no-thread {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-image: url(../img/info.svg);
+	background-position: center;
+	background-size: 60%;
+	background-repeat: no-repeat;
+}
+.thread-view.no-thread h2 {
+	font-size: 3.2rem;
+  margin-top: 33%;
 }
 
 
@@ -1324,6 +1339,9 @@ footer {
 
 	.thread-view .thread-header .back {
 		display: none;
+	}
+	.thread-view.no-thread {
+		background-size: 200px;
 	}
 
 }

@@ -43,6 +43,12 @@ export const CurrentThread = ({currentThread, currentBubble, state, actions}) =>
         </div>
       </div>
     )
+  } else if (currentBubble) {
+    return (
+      <div class="thread-view no-thread">
+        <h2>Now pick a thread!</h2>
+      </div>
+    )
   }
 }
 
