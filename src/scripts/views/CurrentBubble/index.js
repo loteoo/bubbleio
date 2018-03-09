@@ -13,6 +13,7 @@ export const CurrentBubble = ({currentBubble, currentThread, state, actions}) =>
         if (oldProps.name != currentBubble.name) {
           // User switched bubbles
           socket.emit('switch bubble', {
+            user: state.user,
             prevBubbleName: oldProps.name,
             nextBubbleName: currentBubble.name
           });
@@ -20,6 +21,7 @@ export const CurrentBubble = ({currentBubble, currentThread, state, actions}) =>
         }
       }} oncreate={el => {
         socket.emit('switch bubble', {
+          user: state.user,
           nextBubbleName: currentBubble.name
         });
         console.log("--> join bubble: " + currentBubble.name);

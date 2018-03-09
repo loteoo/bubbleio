@@ -137,7 +137,7 @@ io.on('connection', function (socket) {
       });
     }
 
-    // Fet, join and update clients
+    // Fetch, join and update clients
     dbo.collection("bubbles").findOne({ name: navData.nextBubbleName }, function(err, bubble) {
       if (err) throw err;
       if (bubble) {
@@ -164,6 +164,16 @@ io.on('connection', function (socket) {
           }
         ]).toArray(function(err, threads) {
           if (err) throw err;
+
+          // Add this bubble to the user's bubble list
+          dbo.collection("users").findOneAndUpdate({ '_id': ObjectId(navData.user._id) },
+            {
+              $addToSet: {
+                bubble_ids: ObjectId(bubble._id)
+              }
+            }, { returnOriginal: false }, function(err, thread) {
+            if (err) throw err;
+          });
 
           // Join connection to the new room
           socket.join(bubble._id);
@@ -318,7 +328,7 @@ io.on('connection', function (socket) {
     thread.bubble_id = ObjectId(thread.bubble_id);
 
     // Update DB
-    dbo.collection("threads").insert(thread, function(err, result) {
+    dbo.collection("threads").insertOne(thread, function(err, result) {
       if (err) throw err;
     });
   });
@@ -420,7 +430,7 @@ io.on('connection', function (socket) {
     message.thread_id = ObjectId(message.thread_id);
 
     // Update DB
-    dbo.collection("messages").insert(message, function(err, result) {
+    dbo.collection("messages").insertOne(message, function(err, result) {
       if (err) throw err;
     });
   });
@@ -440,6 +450,8 @@ io.on('connection', function (socket) {
 
       // If this is a new user
       if (!result) {
+
+        user.bubble_ids = [];
 
         // Insert in DB
         dbo.collection("users").insertOne(user, function(err, result) {
@@ -508,7 +520,7 @@ io.on('connection', function (socket) {
     bubble._id = ObjectId(bubble._id);
 
     // Update DB
-    dbo.collection("bubbles").insert(bubble, function(err, result) {
+    dbo.collection("bubbles").insertOne(bubble, function(err, result) {
       if (err) throw err;
     });
   });
