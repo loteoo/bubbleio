@@ -111,8 +111,6 @@ io.on('connection', function (socket) {
   // Handle rooms user counts from user navigation in the app
   socket.on('switch bubble', function (navData) {
 
-    // Add a user ID to the socket connection
-    socket.userID = navData.user._id;
 
     // If user was in an other room before this
     if (navData.prevBubbleName) {
@@ -136,7 +134,7 @@ io.on('connection', function (socket) {
             // Update clients who have that this bubble in their user's bubble list
             for (socketId in io.sockets.sockets) {
               users.forEach(user => {
-                if (io.sockets.sockets[socketId].userID == user._id) {
+                if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
                   io.sockets.sockets[socketId].emit("update state", {
                     bubbles: [
                       bubble
@@ -181,12 +179,11 @@ io.on('connection', function (socket) {
           if (err) throw err;
 
           // Add this bubble to the user's bubble list
-          dbo.collection("users").findOneAndUpdate({ '_id': ObjectId(navData.user._id) },
-            {
+          dbo.collection("users").findOneAndUpdate({ _id: ObjectId(socket.userID) }, {
               $addToSet: {
                 bubble_ids: ObjectId(bubble._id)
               }
-            }, { returnOriginal: false }, function(err, thread) {
+          }, { returnOriginal: false }, function(err, result) {
             if (err) throw err;
 
 
@@ -197,6 +194,7 @@ io.on('connection', function (socket) {
             // List of all users who have this bubble in their list
             dbo.collection("users").find({ bubble_ids: ObjectId(bubble._id) }).toArray(function(err, users) {
               if (err) throw err;
+
 
               // Inject user counts to bubble
               bubble.userCount = getConnectionsInRoom(bubble._id);
@@ -215,7 +213,7 @@ io.on('connection', function (socket) {
               // Update clients who have that this bubble in their user's bubble list
               for (socketId in io.sockets.sockets) {
                 users.forEach(user => {
-                  if (io.sockets.sockets[socketId].userID == user._id) {
+                  if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
                     io.sockets.sockets[socketId].emit("update state", {
                       bubbles: [
                         bubble
@@ -228,6 +226,20 @@ io.on('connection', function (socket) {
           });
         });
       }
+    });
+  });
+
+
+
+
+  // Handle user thread rooms
+  socket.on('leave bubble', function (bubble) {
+    dbo.collection("users").findOneAndUpdate({ _id: ObjectId(socket.userID) }, {
+        $pull: {
+          bubble_ids: ObjectId(bubble._id)
+        }
+    }, { returnOriginal: false }, function(err, result) {
+      if (err) throw err;
     });
   });
 
@@ -360,9 +372,9 @@ io.on('connection', function (socket) {
     socket.broadcast.to(thread.thread_id).emit('delete thread', thread);
 
     // Update DB
-    dbo.collection("threads").findOneAndUpdate({ '_id': ObjectId(thread._id) }, { $set: {
+    dbo.collection("threads").findOneAndUpdate({ _id: ObjectId(thread._id) }, { $set: {
       archived: true
-    }}, { returnOriginal: false }, function(err, thread) {
+    }}, { returnOriginal: false }, function(err, result) {
       if (err) throw err;
     });
 
@@ -400,7 +412,7 @@ io.on('connection', function (socket) {
     socket.broadcast.to(thread.thread_id).emit('update state', newState);
 
     // Update DB
-    dbo.collection("threads").findOneAndUpdate({ '_id': ObjectId(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
+    dbo.collection("threads").findOneAndUpdate({ _id: ObjectId(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
       if (err) throw err;
     });
   });
@@ -473,6 +485,9 @@ io.on('connection', function (socket) {
         dbo.collection("users").insertOne(user, function(err, result) {
           if (err) throw err;
 
+          // Add the user ID to the socket connection
+          socket.userID = result.ops[0]._id;
+
           // Give him the default bubbles
           dbo.collection("bubbles").find({default: true}).toArray(function(err, bubbles) {
             if (err) throw err;
@@ -492,6 +507,10 @@ io.on('connection', function (socket) {
           });
         });
       } else {
+
+        // Add the user ID to the socket connection
+        socket.userID = result._id;
+
 
         // Send him his bubbles
         dbo.collection("bubbles").find({ _id: { $in: result.bubble_ids }}).toArray(function(err, bubbles) {

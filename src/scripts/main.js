@@ -18,6 +18,13 @@ window.main = app(state, actions, view, document.querySelector("main"));
 const unsubscribe = location.subscribe(main.location);
 
 
+// Login on load (sets a username on our socket connection)
+if (state.user._id) {
+  socket.emit('login', {
+    username: state.user.username
+  });
+}
+
 
 // Manage socket.io events
 window.socket.on('update state', newState => main.updateState(newState));
