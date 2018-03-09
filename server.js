@@ -388,32 +388,27 @@ io.on('connection', function (socket) {
   // Pass all received message to all clients
   socket.on('thread upvote', function (thread) {
 
-    // Increase score
-    thread.score++;
-
-    // No idea why this prop gets here in the first place...
-    delete thread.upvoted;
-
-    let newState = {
-      bubbles: [
-        {
-          _id: thread.bubble_id,
-          threads: [
-            thread
-          ]
-        }
-      ]
-    };
-
-    // Update clients in the bubble
-    socket.broadcast.to(thread.bubble_id).emit('update state', newState);
-
-    // Update clients in the thread
-    socket.broadcast.to(thread.thread_id).emit('update state', newState);
-
     // Update DB
     dbo.collection("threads").findOneAndUpdate({ _id: ObjectId(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
       if (err) throw err;
+
+      let newState = {
+        bubbles: [
+          {
+            _id: thread.bubble_id,
+            threads: [
+              result.value
+            ]
+          }
+        ]
+      };
+
+      // Update clients in the bubble
+      socket.broadcast.to(thread.bubble_id).emit('update state', newState);
+
+      // Update clients in the thread
+      socket.broadcast.to(thread.thread_id).emit('update state', newState);
+
     });
   });
 
