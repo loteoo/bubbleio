@@ -353,6 +353,7 @@ textarea:focus {
 	padding: 1rem;
 	display: block;
   align-items: center;
+	cursor: pointer;
 }
 
 

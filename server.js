@@ -174,6 +174,9 @@ io.on('connection', function (socket) {
             $sort: {
               created: -1
             }
+          },
+          {
+            $limit : 20
           }
         ]).toArray(function(err, threads) {
           if (err) throw err;
@@ -200,17 +203,8 @@ io.on('connection', function (socket) {
               bubble.userCount = getConnectionsInRoom(bubble._id);
 
 
-              // Inject user counts and message counts to threads
-              for (var i = 0; i < threads.length; i++) {
-                if (threads[i]._id) {
-                  threads[i].userCount = getConnectionsInRoom(threads[i]._id);
-                }
-              }
-
-              // Inject threads to bubble
-              bubble.threads = threads;
-
               // Update clients who have that this bubble in their user's bubble list
+              // (User counts only)
               for (socketId in io.sockets.sockets) {
                 users.forEach(user => {
                   if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
@@ -222,6 +216,27 @@ io.on('connection', function (socket) {
                   }
                 });
               }
+
+
+              // Use this ocasion to send threads to the user
+
+              // Inject user counts and message counts to threads
+              for (var i = 0; i < threads.length; i++) {
+                if (threads[i]._id) {
+                  threads[i].userCount = getConnectionsInRoom(threads[i]._id);
+                }
+              }
+
+              // Inject threads to bubble
+              bubble.threads = threads;
+
+              // Send the threads
+              socket.emit("update state", {
+                bubbles: [
+                  bubble
+                ]
+              });
+
             });
           });
         });
