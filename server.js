@@ -494,7 +494,7 @@ io.on('connection', function (socket) {
       } else {
 
         // Send him his bubbles
-        dbo.collection("bubbles").find({default: true}).toArray(function(err, bubbles) {
+        dbo.collection("bubbles").find({ _id: { $in: result.bubble_ids }}).toArray(function(err, bubbles) {
           if (err) throw err;
 
           // Inject user counts to bubbles
