@@ -24,7 +24,16 @@ export const CurrentBubble = ({currentBubble, currentThread, state, actions}) =>
         });
         console.log("--> join bubble: " + currentBubble.name);
       }}>
-        <div class="frame" onscroll={ev => { if (isElementInViewport(ev.target.lastChild)) {  console.log("Load more not working yet"); } }}>
+        <div class="frame" onscroll={ev => {
+            if (isElementInViewport(ev.target.lastChild)) {
+              console.log("load more: " + currentBubble.threads.length + " to " + currentBubble.threads.length+10);
+              socket.emit('get bubble', {
+                bubble_id: currentBubble._id,
+                skip: currentBubble.threads.length,
+                limit: 10
+              });
+            }
+          }}>
           <div class="bubble-header">
             <Link class="back" to={"/" + name}></Link>
             <h2>{currentBubble.title}</h2>
