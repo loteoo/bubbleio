@@ -111,10 +111,11 @@ io.on('connection', function (socket) {
   // Handle rooms user counts from user navigation in the app
   socket.on('switch bubble', function (navData) {
 
+    // Add a user ID to the socket connection
+    socket.userID = navData.user._id;
 
     // If user was in an other room before this
     if (navData.prevBubbleName) {
-
 
       // Find ID, leave and update clients
       dbo.collection("bubbles").findOne({ name: navData.prevBubbleName }, function(err, bubble) {
@@ -124,18 +125,32 @@ io.on('connection', function (socket) {
           // Leave connection to the previous room
           socket.leave(bubble._id);
 
-          // Inject user counts to bubble
-          bubble.userCount = getConnectionsInRoom(bubble._id);
+          // List of all users who have this bubble in their list
+          dbo.collection("users").find({ bubble_ids: ObjectId(bubble._id) }).toArray(function(err, users) {
+            if (err) throw err;
 
-          // TODO: Update all clients who have that this bubble in their account's bubble list
-          io.emit("update state", { // Emit to everyone for now
-            bubbles: [
-              bubble
-            ]
+            // Inject user counts to bubble
+            bubble.userCount = getConnectionsInRoom(bubble._id);
+
+
+            // Update clients who have that this bubble in their user's bubble list
+            for (socketId in io.sockets.sockets) {
+              users.forEach(user => {
+                if (io.sockets.sockets[socketId].userID == user._id) {
+                  io.sockets.sockets[socketId].emit("update state", {
+                    bubbles: [
+                      bubble
+                    ]
+                  });
+                }
+              });
+            }
           });
         }
       });
     }
+
+
 
     // Fetch, join and update clients
     dbo.collection("bubbles").findOne({ name: navData.nextBubbleName }, function(err, bubble) {
@@ -173,46 +188,47 @@ io.on('connection', function (socket) {
               }
             }, { returnOriginal: false }, function(err, thread) {
             if (err) throw err;
-          });
-
-          // Join connection to the new room
-          socket.join(bubble._id);
-
-          // Inject user counts to bubble
-          bubble.userCount = getConnectionsInRoom(bubble._id);
 
 
-          // Inject user counts and message counts to threads
-          for (var i = 0; i < threads.length; i++) {
-            if (threads[i]._id) {
-              threads[i].userCount = getConnectionsInRoom(threads[i]._id);
-            }
-          }
+            // Join connection to the new room
+            socket.join(bubble._id);
 
 
-          // TODO: Update all clients who have that this bubble in their account's bubble list
-          // This updates the user counts only
-          socket.broadcast.emit("update state", { // Emit to everyone for now
-            bubbles: [
-              bubble
-            ]
-          });
+            // List of all users who have this bubble in their list
+            dbo.collection("users").find({ bubble_ids: ObjectId(bubble._id) }).toArray(function(err, users) {
+              if (err) throw err;
+
+              // Inject user counts to bubble
+              bubble.userCount = getConnectionsInRoom(bubble._id);
 
 
-          // Inject threads to bubble
-          bubble.threads = threads;
+              // Inject user counts and message counts to threads
+              for (var i = 0; i < threads.length; i++) {
+                if (threads[i]._id) {
+                  threads[i].userCount = getConnectionsInRoom(threads[i]._id);
+                }
+              }
 
-          // Update user count and new threads from the DB for the switching client
-          socket.emit("update state", { // Emit to everyone for now
-            bubbles: [
-              bubble
-            ]
+              // Inject threads to bubble
+              bubble.threads = threads;
+
+              // Update clients who have that this bubble in their user's bubble list
+              for (socketId in io.sockets.sockets) {
+                users.forEach(user => {
+                  if (io.sockets.sockets[socketId].userID == user._id) {
+                    io.sockets.sockets[socketId].emit("update state", {
+                      bubbles: [
+                        bubble
+                      ]
+                    });
+                  }
+                });
+              }
+            });
           });
         });
       }
     });
-
-
   });
 
 
