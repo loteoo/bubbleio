@@ -9,7 +9,7 @@ export const actions = {
     // console.log(newState);
     return mergeStates(state, newState)
   },
-  removeBubble: bubbleToRemove => state => {
+  deleteBubble: bubbleToRemove => state => {
 
     state.bubbles = state.bubbles.filter(bubble => bubble._id != bubbleToRemove._id);
 
@@ -19,7 +19,7 @@ export const actions = {
       bubbles: state.bubbles
     }
   },
-  removeThread: threadToRemove => state => {
+  deleteThread: threadToRemove => state => {
 
     for (var i = 0; i < state.bubbles.length; i++) {
       if (state.bubbles[i]._id == threadToRemove.bubble_id) {

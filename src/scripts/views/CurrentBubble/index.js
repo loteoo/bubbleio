@@ -39,7 +39,7 @@ export const CurrentBubble = ({currentBubble, currentThread, state, actions}) =>
               </button>
               <ul>
                 <li onclick={ev => {
-                  actions.removeBubble(currentBubble);
+                  actions.deleteBubble(currentBubble);
                   socket.emit('leave bubble', currentBubble);
                 }}><span>Leave bubble</span></li>
               </ul>
