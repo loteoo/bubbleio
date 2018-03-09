@@ -12,8 +12,10 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
   } else if (thread.type == "text") {
     contentBlock = <div class="text">{shortenText(thread.text, 250)}</div>;
   } else if (thread.type == "link") {
-    if (thread.url.match('^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$')) { // If is youtube
+    if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) { // If is youtube
       thread.src = "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
+    } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
+      // this is a vimeo link
     }
     threadTitle = <h2><a href={thread.url} target="_blank">{shortenText(thread.title, 32)}</a></h2>
     contentBlock = <a href={thread.url} target="_blank" class="link">{thread.url}</a>

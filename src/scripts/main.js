@@ -19,8 +19,10 @@ const unsubscribe = location.subscribe(main.location);
 
 
 
-// External state update handler
+// Manage socket.io events
 window.socket.on('update state', newState => main.updateState(newState));
+
+window.socket.on('remove thread', thread => main.removeThread(thread));
 
 
 

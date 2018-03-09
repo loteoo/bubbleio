@@ -116,7 +116,7 @@ export const mergeStates = (stateA, stateB) => {
         }
         // Sort this bubble's threads before merging
         stateB.bubbles[i].threads = sortByRelevance(stateB.bubbles[i].threads);
-        
+
         stateA.bubbles.push(stateB.bubbles[i]);
       }
     }
@@ -255,12 +255,6 @@ const sortByRelevance = (threads) => {
 
     threads[i].relevance = (threads[i].score + (threads[i].messages.length/2) + 1) / Math.pow(((new Date() - threads[i].created) / 3600000), 1.8);
 
-
-    // Remove archived threads from the scored list
-    if (threads[i].archived) { // TODO: move this to an action and tests
-      threads.splice(i, 1);
-      i--; // Adjust the index (otherwise a thread will be skipped)
-    }
   }
 
   // Sort threads by "relevance"

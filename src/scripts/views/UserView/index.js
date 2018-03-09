@@ -57,7 +57,7 @@ const BubbleItem = ({bubble, currentBubble}) => {
 
   let currentClass = "";
   if (currentBubble) {
-    if (bubble._id == currentBubble._id) {
+    if (bubble.name == currentBubble.name) {
       currentClass = "current";
     }
   }

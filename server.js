@@ -327,23 +327,11 @@ io.on('connection', function (socket) {
   // Archive thread
   socket.on('archive thread', function (thread) {
 
-    let newState = {
-      bubbles: [
-        {
-          _id: thread.bubble_id,
-          threads: [
-            thread
-          ]
-        }
-      ]
-    };
-
-
     // Update clients in the bubble
-    socket.broadcast.to(thread.bubble_id).emit('update state', newState);
+    socket.broadcast.to(thread.bubble_id).emit('delete thread', thread);
 
     // Update clients in the thread
-    socket.broadcast.to(thread.thread_id).emit('update state', newState);
+    socket.broadcast.to(thread.thread_id).emit('delete thread', thread);
 
     // Update DB
     dbo.collection("threads").findOneAndUpdate({ '_id': ObjectId(thread._id) }, { $set: {
