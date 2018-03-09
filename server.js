@@ -64,7 +64,6 @@ app.get('/:bubbleName', function(req, res) {
 
 // On browser load
 app.get('/:bubbleName/:threadId', function(req, res) {
-  // TODO: only load 30 messages from only the requested bubble
   dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
     if (err) throw err;
     if (bubble) { // If bubble actually exists

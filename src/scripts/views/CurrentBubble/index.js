@@ -26,7 +26,7 @@ export const CurrentBubble = ({currentBubble, currentThread, state, actions}) =>
       }}>
         <div class="frame" onscroll={ev => {
             if (isElementInViewport(ev.target.lastChild)) {
-              console.log("load more: " + currentBubble.threads.length + " to " + currentBubble.threads.length+10);
+              console.log("load more...");
               socket.emit('get bubble', {
                 bubble_id: currentBubble._id,
                 skip: currentBubble.threads.length,
