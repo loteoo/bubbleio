@@ -9,16 +9,26 @@ export const actions = {
     // console.log(newState);
     return mergeStates(state, newState)
   },
-  removeThread: archivedThread => state => {
+  removeBubble: bubbleToRemove => state => {
 
-
-    for (var i = 0; i < state.bubbles.length; i++) {
-      if (state.bubbles[i]._id == archivedThread.bubble_id) {
-        state.bubbles[i].threads = state.bubbles[i].threads.filter(thread => thread._id != archivedThread._id);
-      }
-    }
+    state.bubbles = state.bubbles.filter(bubble => bubble._id != bubbleToRemove._id);
 
     storeStateInStorage(state);
-    return true;
+
+    return {
+      bubbles: state.bubbles
+    }
+  },
+  removeThread: threadToRemove => state => {
+
+    for (var i = 0; i < state.bubbles.length; i++) {
+      if (state.bubbles[i]._id == threadToRemove.bubble_id) {
+        state.bubbles[i].threads = state.bubbles[i].threads.filter(thread => thread._id != threadToRemove._id);
+      }
+    }
+    storeStateInStorage(state);
+    return {
+      bubbles: state.bubbles
+    }
   }
 }

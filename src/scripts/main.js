@@ -22,6 +22,8 @@ const unsubscribe = location.subscribe(main.location);
 // Manage socket.io events
 window.socket.on('update state', newState => main.updateState(newState));
 
+window.socket.on('remove bubble', bubble => main.removeBubble(bubble));
+
 window.socket.on('remove thread', thread => main.removeThread(thread));
 
 

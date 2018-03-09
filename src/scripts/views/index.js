@@ -13,7 +13,7 @@ export const view = (state, actions) => {
   // console.log(state);
 
   // If logged in
-  if (state.user.username) {
+  if (state.user._id) {
 
 
     let urlparts = window.location.pathname.split("/");
@@ -70,7 +70,9 @@ export const view = (state, actions) => {
     return (
       <form class="loginForm" onsubmit={ev => {
           ev.preventDefault();
-          socket.emit('login', ev.target.username.value);
+          socket.emit('login', {
+            username: ev.target.username.value
+          });
           return false;
         }}>
         <h2>Pick a name</h2>

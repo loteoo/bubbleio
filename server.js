@@ -434,24 +434,55 @@ io.on('connection', function (socket) {
 
 
   // Pass all received message to all clients
-  socket.on('login', function (username) {
-    dbo.collection("bubbles").find({default: true}).toArray(function(err, bubbles) {
+  socket.on('login', function (user) {
+    dbo.collection("users").findOne(user, function(err, result) {
       if (err) throw err;
 
-      // Inject user counts to bubbles
-      for (var i = 0; i < bubbles.length; i++) {
-        if (bubbles[i]._id) {
-          bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
-        }
-      }
+      // If this is a new user
+      if (!result) {
 
-      // Update user bubbles
-      socket.emit("update state", {
-        user: {
-          username
-        },
-        bubbles
-      });
+        // Insert in DB
+        dbo.collection("users").insertOne(user, function(err, result) {
+          if (err) throw err;
+
+          // Give him the default bubbles
+          dbo.collection("bubbles").find({default: true}).toArray(function(err, bubbles) {
+            if (err) throw err;
+
+            // Inject user counts to bubbles
+            for (var i = 0; i < bubbles.length; i++) {
+              if (bubbles[i]._id) {
+                bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
+              }
+            }
+
+            // Update user bubbles
+            socket.emit("update state", {
+              user: result.ops[0],
+              bubbles
+            });
+          });
+        });
+      } else {
+
+        // Send him his bubbles
+        dbo.collection("bubbles").find({default: true}).toArray(function(err, bubbles) {
+          if (err) throw err;
+
+          // Inject user counts to bubbles
+          for (var i = 0; i < bubbles.length; i++) {
+            if (bubbles[i]._id) {
+              bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
+            }
+          }
+
+          // Update user bubbles
+          socket.emit("update state", {
+            user: result,
+            bubbles
+          });
+        });
+      }
     });
   });
 
