@@ -1,4 +1,3 @@
-import {location} from "@hyperapp/router"
 import {getStateFromStorage} from '../utils/'
 
 export const state = getStateFromStorage() || {
@@ -6,5 +5,6 @@ export const state = getStateFromStorage() || {
   bubbles: [],
   currentView: "userView",
   currentBubble: null,
-  currentThread: null
+  currentThread: null,
+  bubbleForm: {}
 }

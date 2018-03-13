@@ -35,7 +35,7 @@ export const UserView = ({currentBubble, state}) =>
               <span onclick={ev => {
                 ev.target.nextSibling.classList.add("opened");
               }}>Create bubble</span>
-              <BubbleForm />
+            <BubbleForm state={state} />
             </li>
           </ul>
         </li>

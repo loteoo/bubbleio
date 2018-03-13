@@ -25,10 +25,10 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
 
 
 
-  let extraClass = " ";
+  let extraClass = "";
   if (currentThread) { // If there is thread opened in the app
     if (thread._id == currentThread._id) { // If this is the one that is opened
-      extraClass += "current";
+      extraClass += " current";
     }
   }
 

@@ -4,7 +4,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const mongo = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectID;
+const ObjectID = require('mongodb').ObjectID;
 const mongo_url = "mongodb://localhost:27017/";
 const db_name = "bubbleio";
 const port = 80;
@@ -67,8 +67,8 @@ app.get('/:bubbleName/:threadId', function(req, res) {
   dbo.collection("bubbles").findOne({name: req.params.bubbleName}, function(err, bubble) {
     if (err) throw err;
     if (bubble) { // If bubble actually exists
-      if (ObjectId.isValid(req.params.threadId)) {
-        dbo.collection("threads").findOne({ _id: ObjectId(req.params.threadId) }, function(err, thread) {
+      if (ObjectID.isValid(req.params.threadId)) {
+        dbo.collection("threads").findOne({ _id: ObjectID(req.params.threadId) }, function(err, thread) {
           if (err) throw err;
           if (thread) { // If thread actually exists
             res.sendFile(__dirname + '/build/index.html');
@@ -123,7 +123,7 @@ io.on('connection', function (socket) {
           socket.leave(bubble._id);
 
           // List of all users who have this bubble in their list
-          dbo.collection("users").find({ bubble_ids: ObjectId(bubble._id) }).toArray(function(err, users) {
+          dbo.collection("users").find({ bubble_ids: ObjectID(bubble._id) }).toArray(function(err, users) {
             if (err) throw err;
 
             // Inject user counts to bubble
@@ -159,7 +159,7 @@ io.on('connection', function (socket) {
         dbo.collection("threads").aggregate([
           {
             $match: {
-              bubble_id: ObjectId(bubble._id),
+              bubble_id: ObjectID(bubble._id),
               archived: { $exists: false }
             }
           },
@@ -183,9 +183,9 @@ io.on('connection', function (socket) {
           if (err) throw err;
 
           // Add this bubble to the user's bubble list
-          dbo.collection("users").findOneAndUpdate({ _id: ObjectId(socket.userID) }, {
+          dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
               $addToSet: {
-                bubble_ids: ObjectId(bubble._id)
+                bubble_ids: ObjectID(bubble._id)
               }
           }, { returnOriginal: false }, function(err, result) {
             if (err) throw err;
@@ -196,7 +196,7 @@ io.on('connection', function (socket) {
 
 
             // List of all users who have this bubble in their list
-            dbo.collection("users").find({ bubble_ids: ObjectId(bubble._id) }).toArray(function(err, users) {
+            dbo.collection("users").find({ bubble_ids: ObjectID(bubble._id) }).toArray(function(err, users) {
               if (err) throw err;
 
 
@@ -252,9 +252,9 @@ io.on('connection', function (socket) {
 
   // Handle user thread rooms
   socket.on('leave bubble', function (bubble) {
-    dbo.collection("users").findOneAndUpdate({ _id: ObjectId(socket.userID) }, {
+    dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
         $pull: {
-          bubble_ids: ObjectId(bubble._id)
+          bubble_ids: ObjectID(bubble._id)
         }
     }, { returnOriginal: false }, function(err, result) {
       if (err) throw err;
@@ -268,7 +268,7 @@ io.on('connection', function (socket) {
     dbo.collection("threads").aggregate([
       {
         $match: {
-          bubble_id: ObjectId(data.bubble_id),
+          bubble_id: ObjectID(data.bubble_id),
           archived: { $exists: false }
         }
       },
@@ -345,10 +345,10 @@ io.on('connection', function (socket) {
     }
 
 
-    dbo.collection("threads").findOne({ _id: ObjectId(navData.nextThread._id) }, function(err, thread) {
+    dbo.collection("threads").findOne({ _id: ObjectID(navData.nextThread._id) }, function(err, thread) {
       if (err) throw err;
       if (thread) { // If thread actually exists
-        dbo.collection("messages").find({ thread_id: ObjectId(thread._id) }).toArray(function(err, messages) {
+        dbo.collection("messages").find({ thread_id: ObjectID(thread._id) }).toArray(function(err, messages) {
           if (err) throw err;
 
 
@@ -424,8 +424,8 @@ io.on('connection', function (socket) {
 
 
     // Proper indexes for mongodb
-    thread._id = ObjectId(thread._id);
-    thread.bubble_id = ObjectId(thread.bubble_id);
+    thread._id = ObjectID(thread._id);
+    thread.bubble_id = ObjectID(thread.bubble_id);
 
     // Update DB
     dbo.collection("threads").insertOne(thread, function(err, result) {
@@ -444,7 +444,7 @@ io.on('connection', function (socket) {
     socket.broadcast.to(thread.thread_id).emit('delete thread', thread);
 
     // Update DB
-    dbo.collection("threads").findOneAndUpdate({ _id: ObjectId(thread._id) }, { $set: {
+    dbo.collection("threads").findOneAndUpdate({ _id: ObjectID(thread._id) }, { $set: {
       archived: true
     }}, { returnOriginal: false }, function(err, result) {
       if (err) throw err;
@@ -461,7 +461,7 @@ io.on('connection', function (socket) {
   socket.on('thread upvote', function (thread) {
 
     // Update DB
-    dbo.collection("threads").findOneAndUpdate({ _id: ObjectId(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
+    dbo.collection("threads").findOneAndUpdate({ _id: ObjectID(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
       if (err) throw err;
 
       let newState = {
@@ -520,9 +520,9 @@ io.on('connection', function (socket) {
 
 
     // Proper indexes for mongodb
-    message._id = ObjectId(message._id);
-    message.bubble_id = ObjectId(message.bubble_id);
-    message.thread_id = ObjectId(message.thread_id);
+    message._id = ObjectID(message._id);
+    message.bubble_id = ObjectID(message.bubble_id);
+    message.thread_id = ObjectID(message.thread_id);
 
     // Update DB
     dbo.collection("messages").insertOne(message, function(err, result) {
@@ -606,25 +606,33 @@ io.on('connection', function (socket) {
 
 
   // Create bubble
-  socket.on('new bubble', function (bubble) {
+  socket.on('new bubble', function (newBubble) {
 
-    // TODO: check if bubble name is already taken
-
-
-    // Update user bubbles
-    socket.emit("update state", {
-      bubbles: [
-        bubble
-      ]
-    });
-
-    // Proper indexes for mongodb
-    bubble._id = ObjectId(bubble._id);
-
-    // Update DB
-    dbo.collection("bubbles").insertOne(bubble, function(err, result) {
+    // Check if bubble name is already taken
+    dbo.collection("bubbles").findOne({name: newBubble.name}, function(err, bubble) {
       if (err) throw err;
+      if (bubble) { // If bubble already exists
+        socket.emit("update state", {
+          bubbleForm: {
+            nameTaken: true
+          }
+        });
+      } else {
+
+        // Update DB
+        dbo.collection("bubbles").insertOne(newBubble, function(err, result) {
+          if (err) throw err;
+
+          // Update user bubbles
+          socket.emit("update state", {
+            bubbles: [
+              result.ops[0]
+            ]
+          });
+        });
+      }
     });
+
   });
 
 
