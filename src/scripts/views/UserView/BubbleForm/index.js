@@ -43,7 +43,7 @@ export const BubbleForm = ({state}) => {
           </fieldset>
           <fieldset>
             <label>Unique name alias</label>
-            <input type="text" name="name" placeholder="Lowercase letters and numbers only" pattern="[a-z0-9]+" minlength="3" required />
+            <input type="text" name="name" placeholder="Lowercase letters and numbers only" pattern="[a-z0-9]+" minlength="3" minlength="50" required />
           </fieldset>
           <fieldset>
             <label>Describe this bubble and what should be posted here.</label>
