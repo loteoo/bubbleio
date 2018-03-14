@@ -254,6 +254,7 @@ input,
 textarea {
 	border: 0;
 	width: 100%;
+	max-width: 100%;
 	padding: 0.5em 0;
 	line-height: 2;
   color: inherit;
@@ -269,15 +270,19 @@ textarea:focus {
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: inherit;
+	opacity: 0.5;
 }
 ::-moz-placeholder { /* Firefox 19+ */
   color: inherit;
+	opacity: 0.5;
 }
 :-ms-input-placeholder { /* IE 10+ */
   color: inherit;
+	opacity: 0.5;
 }
 :-moz-placeholder { /* Firefox 18- */
   color: inherit;
+	opacity: 0.5;
 }
 
 
@@ -292,10 +297,9 @@ textarea:focus {
 }
 
 
-.field {
+fieldset {
 	position: relative;
-	padding-bottom: 1em;
-	margin-bottom: 1em;
+	margin: 3rem 0;
 }
 
 .error {
@@ -356,6 +360,58 @@ textarea:focus {
 	cursor: pointer;
 }
 
+
+
+
+.overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 20;
+	background-color: rgba(0, 0, 0, 0.2);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+	transition: opacity 250ms;
+	opacity: 0;
+}
+.overlay.opened {
+	pointer-events: all;
+	opacity: 1;
+}
+.overlay .close {
+	position: absolute;
+	top: 2rem;
+	right: 2rem;
+  width: 4rem;
+  height: 4rem;
+  background-image: url(../img/x.svg);
+  background-position: center;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+
+.overlay .inner {
+	position: relative;
+	width: 100%;
+	max-width: 1024px;
+	padding: 3rem;
+	background-color: white;
+	color: var(--main-color);
+	transition: opacity 250ms, transform 250ms;
+	opacity: 0;
+	transform: translateY(100%);
+}
+.overlay.opened .inner {
+	opacity: 1;
+	transform: translateY(0%);
+}
 
 
 
@@ -526,46 +582,9 @@ footer {
   justify-content: center;
 }
 
-.bubbleForm {
-	position: fixed;
-	top: 3rem;
-	bottom: 3rem;
-	left: 3rem;
-	right: 3rem;
-	z-index: 20;
-	background-color: white;
-	color: var(--main-color);
-	opacity: 0;
-	pointer-events: none;
-	transform: translateY(100%);
-	transition: opacity 300ms, transform 200ms;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-.bubbleForm.opened {
-	pointer-events: all;
-	opacity: 1;
-	transform: translateY(0%);
-}
-.bubbleForm .close {
-	position: absolute;
-	top: 2rem;
-	right: 2rem;
-  width: 4rem;
-  height: 4rem;
-  background-image: url(../img/x.svg);
-  background-position: center;
-  background-size: 50%;
-  background-repeat: no-repeat;
-  cursor: pointer;
-}
-.bubbleForm fieldset {
-	width: 100%;
-	max-width: 1024px;
-	padding: 3rem;
-}
+
+
+
 .bubbleForm input,
 .bubbleForm textarea {
 	border-bottom: 2px solid #cccccc;
@@ -576,6 +595,10 @@ footer {
 }
 .bubbleForm .row .radio {
 	margin-right: 3rem;
+}
+.bubbleForm.nameTaken>fieldset:nth-of-type(2)::after {
+	content: "This name is already taken!";
+	color: red;
 }
 
 

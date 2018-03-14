@@ -614,7 +614,7 @@ io.on('connection', function (socket) {
       if (bubble) { // If bubble already exists
         socket.emit("update state", {
           bubbleForm: {
-            nameTaken: true
+            error: "nameTaken"
           }
         });
       } else {
@@ -627,7 +627,8 @@ io.on('connection', function (socket) {
           socket.emit("update state", {
             bubbles: [
               result.ops[0]
-            ]
+            ],
+            bubbleForm: {}
           });
         });
       }
