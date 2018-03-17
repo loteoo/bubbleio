@@ -50,9 +50,11 @@ export const Thread = (thread, currentBubble, state, actions) => {
             </button>
             <ul>
               <li onclick={ev => {
-
+                  console.log("Saving comming soon...");
               }}><span>Save</span></li>
-              <li><span>Downvote</span></li>
+              <li onclick={ev => {
+                  console.log("Downvote comming soon...");
+              }}><span>Downvote</span></li>
               {canDelete}
             </ul>
           </div>
