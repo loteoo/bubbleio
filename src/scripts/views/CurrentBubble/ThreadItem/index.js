@@ -113,7 +113,7 @@ export const ThreadItem = (thread, index, currentBubble, currentThread, actions)
 
 
 
-
+// TODO: convert to jsx
 
 const threadFooter = (thread, actions) => (
   h("div", { class: "footer" }, [

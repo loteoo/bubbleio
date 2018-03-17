@@ -224,7 +224,7 @@ io.on('connection', function (socket) {
               // Use this ocasion to send threads to the user
 
               // Inject user counts to threads
-              for (var i = 0; i < threads.length; i++) {
+              for (let i = 0; i < threads.length; i++) {
                 if (threads[i]._id) {
                   threads[i].userCount = getConnectionsInRoom(threads[i]._id);
                 }
@@ -295,7 +295,7 @@ io.on('connection', function (socket) {
       if (err) throw err;
 
         // Inject user counts to threads
-        for (var i = 0; i < threads.length; i++) {
+        for (let i = 0; i < threads.length; i++) {
           if (threads[i]._id) {
             threads[i].userCount = getConnectionsInRoom(threads[i]._id);
           }
@@ -560,7 +560,7 @@ io.on('connection', function (socket) {
             if (err) throw err;
 
             // Inject user counts to bubbles
-            for (var i = 0; i < bubbles.length; i++) {
+            for (let i = 0; i < bubbles.length; i++) {
               if (bubbles[i]._id) {
                 bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
               }
@@ -584,7 +584,7 @@ io.on('connection', function (socket) {
           if (err) throw err;
 
           // Inject user counts to bubbles
-          for (var i = 0; i < bubbles.length; i++) {
+          for (let i = 0; i < bubbles.length; i++) {
             if (bubbles[i]._id) {
               bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
             }
@@ -634,6 +634,25 @@ io.on('connection', function (socket) {
       }
     });
 
+  });
+
+
+
+
+
+
+
+
+  // Redirect to random public bubble
+  socket.on('random bubble', function () {
+
+    dbo.collection("bubbles").count({}, function(err, total) {
+      if (err) throw err;
+      dbo.collection("bubbles").find({}).skip(Math.floor(Math.random()*total)).limit(1).toArray(function(err, bubbles) {
+        if (err) throw err;
+        socket.emit("redirect", "/" + bubbles[0].name);
+      });
+    });
   });
 
 

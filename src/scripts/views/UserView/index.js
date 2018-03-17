@@ -31,11 +31,11 @@ export const UserView = ({currentBubble, state}) =>
           <span>My bubbles</span>
           <ul class="bubbles">
             {state.bubbles.map(bubble => <BubbleItem bubble={bubble} currentBubble={currentBubble} />)}
-            <li>
-              <span onclick={ev => {
-                ev.target.nextSibling.classList.add("opened");
-              }}>Create bubble</span>
-            <BubbleForm state={state} />
+            <li onclick={ev => {
+              ev.target.nextSibling.classList.add("opened");
+            }}>
+              <span>Create bubble</span>
+              <BubbleForm state={state} />
             </li>
           </ul>
         </li>
@@ -44,6 +44,16 @@ export const UserView = ({currentBubble, state}) =>
           <ul>
             <li>
               <span>Create Multibubble</span>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <span>Other</span>
+          <ul>
+            <li onclick={ev => {
+              socket.emit("random bubble");
+            }}>
+              <span>Random</span>
             </li>
           </ul>
         </li>

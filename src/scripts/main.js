@@ -33,6 +33,8 @@ window.socket.on('delete bubble', bubble => main.deleteBubble(bubble));
 
 window.socket.on('delete thread', thread => main.deleteThread(thread));
 
+window.socket.on('redirect', pathname => main.location.go(pathname));
+
 
 
 // // Activate the service worker
