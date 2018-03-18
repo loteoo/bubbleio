@@ -668,11 +668,33 @@ io.on('connection', function (socket) {
 
 
 
-// Create a DB connection
+// Create a DB connection and start listening http
 mongo.connect(mongo_url, function(err, db) {
   if (err) throw err;
   dbo = db.db(db_name);
   server.listen(port, function() {
    console.log('Server listening on http://localhost:' + port);
   });
+});
+
+
+
+
+// When the server gets launched with a brand new data base,
+// we create the first bubble.
+// Check if bubble "general" exists
+dbo.collection("bubbles").findOne({name: "general"}, function(err, bubble) {
+  if (err) throw err;
+  if (!bubble) {
+    // Update DB
+    dbo.collection("bubbles").insertOne({
+      name: "general",
+      title: "General",
+      desc: "A bubble for everyone!",
+      visibility: "public",
+      created: new Date().getTime()
+    }, function(err, result) {
+      if (err) throw err;
+    });
+  }
 });
