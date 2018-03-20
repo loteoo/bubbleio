@@ -8,7 +8,7 @@ import {MessageKeyboard} from './MessageKeyboard/'
 
 
 
-export const CurrentThread = ({currentThread, currentBubble, state, actions}) => {
+export const CurrentThread = ({currentThread, currentBubble}) => (state, actions) => {
   if (currentThread) {
     return (
       <div class="thread-view" _id={currentThread._id} bubble_id={currentThread.bubble_id} messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {

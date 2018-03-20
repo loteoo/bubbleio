@@ -3,7 +3,7 @@ import {Link} from "@hyperapp/router"
 
 import {BubbleForm} from './BubbleForm/'
 
-export const UserView = ({currentBubble, state}) =>
+export const UserView = ({currentBubble}) => (state, actions) =>
   <div class="user-view">
     <div class="frame">
       <div class="header">
@@ -35,7 +35,7 @@ export const UserView = ({currentBubble, state}) =>
               ev.target.nextSibling.classList.add("opened");
             }}>
               <span>Create bubble</span>
-              <BubbleForm state={state} />
+              <BubbleForm />
             </li>
           </ul>
         </li>

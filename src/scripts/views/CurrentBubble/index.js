@@ -6,7 +6,7 @@ import {ThreadItem} from './ThreadItem/'
 import {ThreadKeyboard} from './ThreadKeyboard/'
 
 
-export const CurrentBubble = ({currentBubble, currentThread, state, actions}) => {
+export const CurrentBubble = ({currentBubble, currentThread}) => (state, actions) => {
   if (currentBubble) {
     return (
       <div class="bubble-view" name={currentBubble.name} onupdate={(el, oldProps) => {

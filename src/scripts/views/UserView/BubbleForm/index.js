@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 
 
-export const BubbleForm = ({state}) => {
+export const BubbleForm = () => (state, actions) => {
 
   let extraClass = "";
   if (state.bubbleForm.error) { // If there is thread opened in the app

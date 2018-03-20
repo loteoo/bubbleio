@@ -6,8 +6,8 @@
   "dependencies": {
     "@hyperapp/router": "^0.4.1",
     "ejs": "^2.5.7",
-    "express": "^4.16.2",
-    "hyperapp": "^1.0.2",
+    "express": "^4.16.3",
+    "hyperapp": "^1.2.0",
     "mongodb": "^3.0.2",
     "npm": "^5.7.1",
     "socket.io": "^2.0.4"
@@ -16,7 +16,7 @@
     "rollup": "^0.55.5",
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-jsx": "^1.0.3",
-    "rollup-plugin-node-resolve": "^3.0.2",
+    "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-watch": "^4.3.1"
   },
   "scripts": {
