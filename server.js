@@ -2,22 +2,11 @@ const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-
 const mongo = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const mongo_url = "mongodb://localhost:27017/";
 const db_name = "bubbleio";
 const port = 80;
-let dbo;
-
-
-app.use(express.static('build'));
-
-
-
-
-
-
 
 const getConnectionsInRoom = (roomName) => {
   let room = [];
@@ -33,8 +22,10 @@ const getConnectionsInRoom = (roomName) => {
   return room.length;
 }
 
+let dbo;
 
 
+app.use(express.static('build'));
 
 
 
@@ -42,9 +33,6 @@ const getConnectionsInRoom = (roomName) => {
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/build/index.html');
 });
-
-
-
 
 // On browser load
 app.get('/:bubbleName', function(req, res) {
@@ -57,10 +45,6 @@ app.get('/:bubbleName', function(req, res) {
     }
   });
 });
-
-
-
-
 
 // On browser load
 app.get('/:bubbleName/:threadId', function(req, res) {
@@ -100,7 +84,7 @@ app.get('/:bubbleName/:threadId', function(req, res) {
 
 
 // ================================
-// Manage socket connections
+// Manage socket.io events
 // ================================
 
 
@@ -676,11 +660,10 @@ mongo.connect(mongo_url, function(err, db) {
    console.log('Server listening on http://localhost:' + port);
   });
 
-
-
   // When the server gets launched with a brand new data base,
   // we create the first bubble.
-  // Check if bubble "general" exists
+  // Check if bubble "general" exists.
+  // If not, create it.
   dbo.collection("bubbles").findOne({name: "general"}, function(err, bubble) {
     if (err) throw err;
     if (!bubble) {
