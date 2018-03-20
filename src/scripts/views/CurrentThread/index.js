@@ -35,11 +35,11 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
       }}>
         <div class="frame" onscroll={ev => { if (isElementInViewport(ev.target.firstChild)) { console.log("Load more not working yet"); } }}>
           <div class="loadMoreMessages"></div>
-          {Thread(currentThread, currentBubble, state, actions)}
+          <Thread currentThread={currentThread} currentBubble={currentBubble} />
           <ul class="messages">
             {currentThread.messages.map(message => MessageItem(message, state))}
           </ul>
-          {MessageKeyboard(currentThread, state, actions)}
+          <MessageKeyboard currentThread={currentThread} />
         </div>
       </div>
     )

@@ -3,7 +3,7 @@ import {Link} from "@hyperapp/router"
 import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
 
 
-export const ThreadItem = (thread, index, currentBubble, currentThread) => (state, actions) =>
+export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (state, actions) =>
     <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} opened={(thread._id == currentThread._id).toString()} onclick={ev => {
       actions.location.go("/" + currentBubble.name + "/" + thread._id);
     }} oncreate={el => {

@@ -3,26 +3,26 @@ import {Link} from "@hyperapp/router"
 import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
 
 
-export const Thread = (thread, currentBubble, state, actions) => {
+export const Thread = ({currentThread, currentBubble}) => (state, actions) => {
 
   let contentBlock;
-  if (thread.type == "default") {
+  if (currentThread.type == "default") {
     contentBlock = null
-  } else if (thread.type == "text") {
-    contentBlock = <div class="text">{thread.text}</div>;
-  } else if (thread.type == "link") {
-    if (thread.url.match('^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$')) { // If is youtube
-      thread.src = "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
+  } else if (currentThread.type == "text") {
+    contentBlock = <div class="text">{currentThread.text}</div>;
+  } else if (currentThread.type == "link") {
+    if (currentThread.url.match('^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$')) { // If is youtube
+      currentThread.src = "https://img.youtube.com/vi/"+getYoutubeId(currentThread.url)+"/hqdefault.jpg";
     }
-    contentBlock = <a href={thread.url} target="_blank" class="link">{thread.url}</a>
-  } else if (thread.type == "image") {
-    contentBlock = <a href={thread.src} target="_blank" class="img"><img src={thread.src} alt={thread.title} /></a>
+    contentBlock = <a href={currentThread.url} target="_blank" class="link">{currentThread.url}</a>
+  } else if (currentThread.type == "image") {
+    contentBlock = <a href={currentThread.src} target="_blank" class="img"><img src={currentThread.src} alt={currentThread.title} /></a>
   }
 
 
   let canDelete;
 
-  if (thread.author == state.user.username) { // If user owns this thread
+  if (currentThread.author == state.user.username) { // If user owns this thread
     canDelete = <li onclick={ev => {
       actions.deleteThread(thread);
       socket.emit('archive thread', thread);
@@ -32,13 +32,13 @@ export const Thread = (thread, currentBubble, state, actions) => {
 
 
   return (
-    <li key={thread._id} class="thread" data-type={thread.type} data-upvoted={thread.upvoted}>
+    <li key={currentThread._id} class="thread" data-type={currentThread.type} data-upvoted={currentThread.upvoted}>
       <div class="header">
         <div class="thread-header">
           <div class="back" onclick={ev => {
             actions.location.go("/" + currentBubble.name);
           }}></div>
-          <h2>{thread.title}</h2>
+          <h2>{currentThread.title}</h2>
           <div class="options">
             <button onclick={ev => {
               if (ev.target.nextSibling.classList.contains("opened")) {
@@ -59,7 +59,7 @@ export const Thread = (thread, currentBubble, state, actions) => {
             </ul>
           </div>
         </div>
-        <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
+        <p>{"by " + currentThread.author + " on " + currentBubble.name + " " + timeSince(currentThread.created)}</p>
       </div>
       {contentBlock}
     </li>

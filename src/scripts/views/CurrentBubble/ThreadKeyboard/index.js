@@ -2,7 +2,7 @@ import {h} from 'hyperapp'
 import {ObjectId} from '../../../utils/'
 
 
-export const ThreadKeyboard = (currentBubble, state, actions) =>
+export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
   <form class="keyboard" data-mode="default" onsubmit={ev => {
     ev.preventDefault();
 
