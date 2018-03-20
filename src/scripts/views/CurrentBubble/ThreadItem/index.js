@@ -33,7 +33,7 @@ export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (st
 const ThreadInner = ({thread, currentBubble}) => {
   if (window.innerWidth >= 768) { // If desktop
     return (
-      <div class="desktop">
+      <div class="inner desktop">
         <div class="thumbnail" Style={"background-image: url('"+thread.src+"')"}></div>
         <div class="info">
           <ThreadHeader thread={thread} currentBubble={currentBubble} />
@@ -43,7 +43,7 @@ const ThreadInner = ({thread, currentBubble}) => {
     )
   } else { // if mobile
     return (
-      <div class="mobile">
+      <div class="inner mobile">
         <ThreadHeader thread={thread} currentBubble={currentBubble} />
         <ThreadContent thread={thread} currentBubble={currentBubble} />
         <ThreadFooter thread={thread} />
