@@ -3,7 +3,7 @@ import {ObjectId} from '../../../utils/'
 
 
 export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
-  <form class="keyboard" data-mode="default" onsubmit={ev => {
+  <form class="keyboard threadKeyboard" data-mode="default" onsubmit={ev => {
     ev.preventDefault();
 
     if (ev.target.title.value) {

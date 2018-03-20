@@ -318,6 +318,17 @@ fieldset {
 \*------------------------------------*/
 
 
+.back {
+	width: 5rem;
+	height: 5rem;
+	background-image: url(../img/arrow-left.svg);
+	background-position: center;
+	background-size: 50%;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+
 .options {
 	position: relative;
 	color: var(--main-color);
@@ -488,6 +499,9 @@ footer {
 	height: 100vh;
 	overflow-x: hidden;
 	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 }
 
 ::-webkit-scrollbar {
@@ -632,13 +646,7 @@ footer {
 	padding: 0 1rem;
 }
 .bubble-view .bubble-header .back {
-	width: 5rem;
-	height: 5rem;
 	margin-right: 1em;
-	background-image: url(../img/arrow-left.svg);
-	background-position: center;
-	background-size: 50%;
-	background-repeat: no-repeat;
 }
 
 .bubble-view .bubble-header .options {
@@ -685,9 +693,10 @@ footer {
 }
 .thread .inner {
 	position: relative;
-	margin: 1em;
+	margin: 0 0 1em 0;
 	background-color: white;
-  border: 1px solid var(--main-border-color);
+  border-top: 1px solid var(--main-border-color);
+  border-bottom: 1px solid var(--main-border-color);
 	cursor: pointer;
 	border-radius: 0.5rem;
 	overflow: hidden;
@@ -898,6 +907,8 @@ footer {
 .thread .desktop {
 	display: flex;
 	align-items: stretch;
+  border: 1px solid var(--main-border-color);
+	margin: 1em;
 }
 .thread .desktop .thumbnail {
 	background-color: var(--main-border-color);
@@ -987,13 +998,6 @@ footer {
 	left: 100%;
 	right: -100%;
 }
-
-.thread-view .header {
-	background-color: white;
-  position: sticky;
-  top: 0;
-	z-index: 1;
-}
 .thread-view .thread-header {
 	display: flex;
 	align-items: center;
@@ -1004,14 +1008,7 @@ footer {
 }
 
 .thread-view .thread-header .back {
-	width: 5rem;
-	height: 5rem;
 	margin-right: 1em;
-	background-image: url(../img/arrow-left.svg);
-	background-position: center;
-	background-size: 50%;
-	background-repeat: no-repeat;
-	cursor: pointer;
 }
 .thread-view .thread {
 	background-color: white;
@@ -1021,15 +1018,17 @@ footer {
 
 
 
+
+
 /* Thread view messages list */
 
 .thread-view .messages {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
-	padding: 0 0 8rem 0;
-	max-height: calc(100vh - 84px);
+	padding: 0 0 6rem 0;
 	overflow: auto;
+  margin-top: auto;
 }
 .thread-view .messages li {
 	display: block;
@@ -1044,10 +1043,10 @@ footer {
 .thread-view .messages li.newmessage {
 	opacity: 0;
 }
-.thread-view .messages li.received.newmessage {
+.thread-view .messages li[sent="false"].newmessage {
 	transform: translateX(-100%);
 }
-.thread-view .messages li.sent.newmessage {
+.thread-view .messages li[sent="true"].newmessage {
 	transform: translateX(100%);
 }
 .thread-view .messages li .info {
@@ -1055,12 +1054,12 @@ footer {
 	opacity: 0.5;
 	line-height: 1;
 }
-.thread-view .messages li.received {
+.thread-view .messages li[sent="false"] {
   background-color: #d9d9d9;
   color: rgba(0, 0, 0, 1);
 	align-self: flex-start;
 }
-.thread-view .messages li.sent {
+.thread-view .messages li[sent="true"] {
   background-color: var(--primary-accent-color);
   color: rgba(255, 255, 255, 1);
 	align-self: flex-end;
@@ -1100,7 +1099,7 @@ footer {
 
 
 /*------------------------------------*\
-    Keyboard
+    Thread Keyboard
 \*------------------------------------*/
 
 .keyboard {
@@ -1116,19 +1115,15 @@ footer {
 	flex-direction: column;
 	align-items: stretch;
 	background-color: white;
-	transform: translateY(100%);
+	transform: translateY(0%);
 	transition: transform 250ms;
 }
 
 
 
-.slider.bubbleView .bubble-view .keyboard {
+.slider .keyboard.opened {
 	transform: translateY(0%);
 }
-.slider.threadView .thread-view .keyboard {
-	transform: translateY(0%);
-}
-
 
 .keyboard input.title {
   padding: 0.5em 3em;
@@ -1184,7 +1179,6 @@ footer {
 	background-color: #cccccc;
 }
 .keyboard[data-mode="image"] .image input[type="text"] {
-
   padding: 0.5em;
 }
 
@@ -1351,7 +1345,7 @@ footer {
 		border-color: var(--primary-accent-color);
 	}
 	.bubble-view .bubble-header {
-		padding: 1rem 1rem 1rem 2rem;
+		height: 6rem;
 	}
 
 
@@ -1391,6 +1385,7 @@ footer {
 		position: relative;
 	}
 	.bubble-view ul.threads {
+		max-height: calc(100vh - 6rem);
 		padding: 0 0 8rem 0;
 	}
 	.bubble-view.no-bubble {

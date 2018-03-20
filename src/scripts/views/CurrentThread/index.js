@@ -27,6 +27,7 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
       }}>
         <div class="frame" onscroll={ev => { if (isElementInViewport(ev.target.firstChild)) { console.log("Load more not working yet"); } }}>
           <div class="loadMoreMessages"></div>
+
           <Thread currentThread={currentThread} currentBubble={currentBubble} />
 
           <ul class="messages" messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
@@ -54,14 +55,8 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
 
 
 const MessageItem = ({message, state}) => {
-  let provenance;
-  if (message.sender == state.user.username) {
-    provenance = "sent"
-  } else {
-    provenance = "received"
-  }
   return (
-    <li key={message._id} class={provenance} oncreate={el => {
+    <li key={message._id} sent={(message.sender == state.user.username).toString()} oncreate={el => {
       el.classList.add("newmessage");
       setTimeout(() => {
         el.classList.remove("newmessage");

@@ -3,34 +3,41 @@ import {Link} from "@hyperapp/router"
 import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
 
 
-export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (state, actions) =>
-    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} opened={(thread._id == currentThread._id).toString()} hasthumbnail={(typeof thread.src != "undefined").toString()} onclick={ev => {
-      actions.location.go("/" + currentBubble.name + "/" + thread._id);
-    }} oncreate={el => {
-      el.style.transform = "translateX(-100%)";
-      el.style.opacity = "0";
-      setTimeout(() => {
-        el.removeAttribute("style");
-      }, index * 50 + 50);
-    }} onupdate={(el, oldProps) => {
-      if (index != oldProps.index) { // If order in list changed
-        el.style.transitionDuration = "0ms";
-        el.style.zIndex = "1";
-        el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
+export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (state, actions) => {
+  let currentThreadId = "";
+  if (currentThread) {
+    currentThreadId = currentThread._id;
+  }
+  return (
+    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} hasthumbnail={(typeof thread.src != "undefined").toString()} opened={(thread._id == currentThreadId).toString()} onclick={ev => {
+        actions.location.go("/" + currentBubble.name + "/" + thread._id);
+      }} oncreate={el => {
+        el.style.transform = "translateX(-100%)";
+        el.style.opacity = "0";
         setTimeout(() => {
           el.removeAttribute("style");
-        }, 50);
-      }
-    }}>
+        }, index * 50 + 50);
+      }} onupdate={(el, oldProps) => {
+        if (index != oldProps.index) { // If order in list changed
+          el.style.transitionDuration = "0ms";
+          el.style.zIndex = "1";
+          el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
+          setTimeout(() => {
+            el.removeAttribute("style");
+          }, 50);
+        }
+      }}>
       <ThreadInner thread={thread} currentBubble={currentBubble} />
     </li>
+  )
+}
 
 
 
 
 
 
-const ThreadInner = ({thread, currentBubble}) => {
+export const ThreadInner = ({thread, currentBubble}) => {
   if (window.innerWidth >= 768) { // If desktop
     return (
       <div class="inner desktop">
@@ -53,7 +60,7 @@ const ThreadInner = ({thread, currentBubble}) => {
 }
 
 
-const ThreadHeader = ({thread, currentBubble}) =>
+export const ThreadHeader = ({thread, currentBubble}) =>
   <div class="header">
     <h2>{shortenText(thread.title, 32)}</h2>
     <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
@@ -61,7 +68,7 @@ const ThreadHeader = ({thread, currentBubble}) =>
 
 
 
-const ThreadContent = ({thread, currentBubble}) => {
+export const ThreadContent = ({thread, currentBubble}) => {
   if (thread.type == "default") {
     return
   } else if (thread.type == "text") {
@@ -83,7 +90,7 @@ const ThreadContent = ({thread, currentBubble}) => {
 
 
 
-const ThreadFooter = ({thread}) => (state, actions) => (
+export const ThreadFooter = ({thread}) => (state, actions) => (
   <div class="footer">
     <div class="users" userCount={thread.userCount} onupdate={(el, oldProps) => {
       if (oldProps.userCount < thread.userCount) {
