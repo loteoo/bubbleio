@@ -73,7 +73,7 @@ const BubbleItem = ({bubble, currentBubble}) => {
   }
 
   return (
-    <li class={currentClass} data-userCount={bubble.userCount}>
+    <li class={currentClass} userCount={bubble.userCount}>
       <Link to={"/" + bubble.name}>
         {bubble.title}
         <div class="users">

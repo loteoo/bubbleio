@@ -32,7 +32,7 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) => {
 
 
   return (
-    <li key={currentThread._id} class="thread" data-type={currentThread.type} data-upvoted={currentThread.upvoted}>
+    <li key={currentThread._id} class="thread" type={currentThread.type} upvoted={currentThread.upvoted}>
       <div class="header">
         <div class="thread-header">
           <div class="back" onclick={ev => {

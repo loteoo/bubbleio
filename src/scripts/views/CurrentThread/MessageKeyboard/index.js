@@ -58,7 +58,7 @@ export const MessageKeyboard = (currentThread) => (state, actions) =>
     <div class="image">
       <label for="image_file"></label>
       <input type="file" name="image_file" id="image_file" />
-      <input type="text" name="image_link" placeholder="Or paste link here" />
+      <input type="text" name="image_link" placeholder="Paste link here" />
     </div>
     <button type="submit" class="submit"></button>
   </form>

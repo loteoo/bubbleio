@@ -4,7 +4,7 @@ import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
 
 
 export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (state, actions) =>
-    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} opened={(thread._id == currentThread._id).toString()} onclick={ev => {
+    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} opened={(thread._id == currentThread._id).toString()} hasthumbnail={(typeof thread.src != "undefined").toString()} onclick={ev => {
       actions.location.go("/" + currentBubble.name + "/" + thread._id);
     }} oncreate={el => {
       el.style.transform = "translateX(-100%)";
