@@ -351,10 +351,11 @@ fieldset {
 	z-index: 1;
 	width: 180px;
 	background-color: white;
-	/* border: 1px solid var(--main-border-color); */
+	border-radius: 5px;
+	border: 1px solid var(--main-border-color);
 	pointer-events: none;
 	opacity: 0;
-	transition: opacity 250ms;
+	transition: opacity 200ms;
 }
 .options ul.opened {
 	opacity: 1;
@@ -387,7 +388,7 @@ fieldset {
 	align-items: center;
 	justify-content: center;
 	pointer-events: none;
-	transition: opacity 250ms;
+	transition: opacity 200ms;
 	opacity: 0;
 }
 .overlay.opened {
@@ -415,7 +416,7 @@ fieldset {
 	padding: 3rem;
 	background-color: white;
 	color: var(--main-color);
-	transition: opacity 250ms, transform 250ms;
+	transition: opacity 200ms, transform 200ms;
 	opacity: 0;
 	transform: translateY(100%);
 }
@@ -481,7 +482,7 @@ footer {
 }
 
 .slider {
-	transition: transform 250ms;
+	transition: transform 200ms;
 }
 
 .slider.userView {
@@ -559,8 +560,8 @@ footer {
 
 .user-view .menu>li>ul>li:hover>a,
 .user-view .menu>li>ul>li:hover>span,
-.user-view .menu>li>ul>li.current>a,
-.user-view .menu>li>ul>li.current>span {
+.user-view .menu>li>ul>li[current="true"]>a,
+.user-view .menu>li>ul>li[current="true"]>span {
 	background-color: #4e525a;
 }
 
@@ -610,7 +611,7 @@ footer {
 .bubbleForm .row .radio {
 	margin-right: 3rem;
 }
-.bubbleForm.nameTaken>fieldset:nth-of-type(2)::after {
+.bubbleForm[error="nameTaken"]>fieldset:nth-of-type(2)::after {
 	content: "This name is already taken!";
 	color: red;
 }
@@ -643,10 +644,7 @@ footer {
 	justify-content: flex-start;
 	background-color: white;
 	border-bottom: 1px solid var(--main-border-color);
-	padding: 0 1rem;
-}
-.bubble-view .bubble-header .back {
-	margin-right: 1em;
+	padding: 0 1.5rem;
 }
 
 .bubble-view .bubble-header .options {
@@ -687,7 +685,7 @@ footer {
 
 
 .thread {
-	transition: opacity 300ms, transform 200ms;
+	transition: all 200ms;
 	transform: translateX(0);
 	opacity: 1;
 }
@@ -698,12 +696,11 @@ footer {
   border-top: 1px solid var(--main-border-color);
   border-bottom: 1px solid var(--main-border-color);
 	cursor: pointer;
-	border-radius: 0.5rem;
 	overflow: hidden;
 }
 
 .thread .header {
-	padding: 1.5rem;
+	padding: 1.5rem 1.5rem 0 1.5rem;
 }
 .thread .header h2 {
 	margin: 0;
@@ -739,75 +736,29 @@ footer {
 
 .thread .footer {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  align-items: flex-end;
+	justify-content: flex-start;
 	padding: 0.75rem 1.5rem;
 }
-.thread .footer .users {
-	font-size: 0.8em;
+.thread .footer>* {
+  font-size: 1.2rem;
 	display: flex;
 	align-items: flex-end;
 	justify-content: center;
 }
-.thread .footer .users .count {
+.thread .footer>*>.count {
 	position: relative;
 	color: inherit;
 	transform: scale(1);
-	transition: all 500ms;
   display: inline-block;
 	width: 2.5rem;
 	height: 2.5rem;
-	margin-top: 1.2rem;
 	background-image: url(../img/users.svg);
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;
 }
-.thread .footer .users .count span {
-	position: absolute;
-	top: -1rem;
-	right: -1rem;
-	border-radius: 100%;
-	width: 2rem;
-	height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-	background-color: var(--secondary-accent-color);
-	color: white;
-}
-.thread .footer .users[usercount="0"] .count span {
-	color: inherit;
-	background-color: white;
-	border: 2px solid var(--main-color);
-}
-.thread .footer .users.countUp .count {
-	color: var(--primary-accent-color);
-	transform: scale(1.2);
-	transition: all 0ms;
-}
-.thread .footer .replies {
-	font-size: 0.8em;
-	margin: 0 auto 0 1.5rem;
-	display: flex;
-	align-items: flex-end;
-	justify-content: center;
-}
-.thread .footer .replies .count {
-	position: relative;
-	color: inherit;
-	transform: scale(1);
-	transition: all 500ms;
-  display: inline-block;
-	width: 2.5rem;
-	height: 2.5rem;
-	margin-top: 1.2rem;
-	background-image: url(../img/message-square.svg);
-	background-position: center;
-	background-size: contain;
-	background-repeat: no-repeat;
-}
-.thread .footer .replies .count span {
+.thread .footer>*>.count>span {
 	position: absolute;
 	top: -1rem;
 	right: -1rem;
@@ -819,77 +770,87 @@ footer {
   justify-content: center;
 	background-color: white;
 	border: 2px solid var(--main-color);
+	transition: all 200ms;
 }
-.thread .footer .replies.countUp .count {
-	color: var(--primary-accent-color);
+.thread .footer>*>.count.countUp>span {
 	transform: scale(1.5);
 	transition: all 0ms;
 }
 
-.thread .footer .upvote {
-	border: 4px solid transparent;
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-  width: 4rem;
-  height: 4rem;
-	border-radius: 100%;
-	background-color: rgba(0, 123, 255, 0);
+
+
+
+
+.thread .footer .users .count {
+	background-image: url(../img/users.svg);
+}
+.thread .footer .users .count span {
+	border-color: var(--secondary-accent-color);
+	background-color: var(--secondary-accent-color);
+	color: white;
+}
+.thread .footer .users .count[usercount="0"] span {
 	color: inherit;
-	font-size: 1em;
-	transition: all 300ms;
-	background-image: url(../img/thumbs-up.svg);
-	background-position: center;
-	background-size: 80%;
-	background-repeat: no-repeat;
+	background-color: white;
+	border: 2px solid var(--main-color);
+}
+
+
+
+
+
+.thread .footer .replies {
+	margin: 0 1.5rem;
+}
+.thread .footer .replies .count {
+	background-image: url(../img/message-square.svg);
+}
+
+
+
+
+.thread .footer .upvote {
+	margin: 0 0 0 auto;
 }
 .thread .footer .upvote .count {
-	position: absolute;
-	top: -1rem;
-	right: -1rem;
+	width: 4rem;
+	height: 4rem;
 	border-radius: 100%;
-	width: 2.5rem;
-	height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-	background-color: var(--primary-accent-color);
-	color: white;
-	font-size: 0.8em;
+	background-image: url(../img/thumbs-up.svg);
+	border: 4px solid transparent;
+	background-size: 80%;
 }
-.thread .footer .upvote:active {
+.thread .footer .upvote .count:active {
 	-webkit-tap-highlight-color: transparent;
 }
-
-.thread .footer .upvote.countUp {
-	background-color: var(--primary-accent-color);
+.thread .footer .upvote .count span {
 	color: white;
-	font-size: 1.4em;
-	transition: all 0ms;
+	background-color: var(--primary-accent-color);
+	border-color: var(--primary-accent-color);
+  width: 2.4rem;
+  height: 2.4rem;
 }
-
 
 
 
 
 /* Upvoted thread */
-.thread[upvoted="1"] .footer .upvote {
+.thread[upvoted="1"] .footer .upvote .count {
 	border-top-color: var(--primary-accent-color);
 }
-.thread[upvoted="2"] .footer .upvote {
+.thread[upvoted="2"] .footer .upvote .count {
 	border-top-color: var(--primary-accent-color);
 	border-right-color: var(--primary-accent-color);
 }
-.thread[upvoted="3"] .footer .upvote {
+.thread[upvoted="3"] .footer .upvote .count {
 	border-top-color: var(--primary-accent-color);
 	border-right-color: var(--primary-accent-color);
 	border-bottom-color: var(--primary-accent-color);
 }
-.thread[upvoted="4"] .footer .upvote {
+.thread[upvoted="4"] .footer .upvote .count {
 	border-color: var(--primary-accent-color);
 }
-.thread[upvoted="5"] .footer .upvote {
+.thread[upvoted="5"] .footer .upvote .count {
 	background-color: var(--primary-accent-color);
   background-image: url(../img/thumbs-up-white.svg);
 	pointer-events: none;
@@ -908,6 +869,7 @@ footer {
 	display: flex;
 	align-items: stretch;
   border: 1px solid var(--main-border-color);
+	border-radius: 0.5rem;
 	margin: 1em;
 }
 .thread .desktop .thumbnail {
@@ -920,9 +882,6 @@ footer {
 }
 .thread .desktop .info {
 	width: calc(100% - 12rem);
-}
-.thread .desktop .header {
-	padding-bottom: 0;
 }
 
 
@@ -939,8 +898,11 @@ footer {
 
 
 /* Text thread */
+.thread[type="text"] .header {
+	padding-bottom: 1rem;
+}
 .thread[type="text"] .text {
-	padding: 0.5rem 1.5rem;
+	padding: 0 1.5rem;
 	font-size: 0.8em;
 }
 .thread[type="text"][hasthumbnail="false"] .thumbnail {
@@ -949,7 +911,7 @@ footer {
 }
 
 
-/* Image thread */
+/* Link thread */
 .thread[type="link"] .link {
 	display: inline-block;
 	padding: 0.5rem 1.5rem;
@@ -963,6 +925,9 @@ footer {
 
 
 /* Image thread */
+.thread[type="image"] .header {
+	padding-bottom: 1rem;
+}
 .thread[type="image"][hasthumbnail="false"] .thumbnail {
 	background-image: url(../img/image.svg) !important;
 	background-size: 45%;
@@ -1006,14 +971,13 @@ footer {
 .thread-view .thread-header .options {
 	margin-left: auto;
 }
-
-.thread-view .thread-header .back {
-	margin-right: 1em;
-}
 .thread-view .thread {
 	background-color: white;
 	border-bottom: 1px solid var(--main-border-color);
   position: relative;
+}
+.thread-view .thread .header {
+  padding: 1rem 0;
 }
 
 
@@ -1116,7 +1080,7 @@ footer {
 	align-items: stretch;
 	background-color: white;
 	transform: translateY(0%);
-	transition: transform 250ms;
+	transition: transform 200ms;
 }
 
 
@@ -1227,7 +1191,7 @@ footer {
 	opacity: 0;
 	height: 100%;
 	pointer-events: none;
-	transition: opacity 250ms;
+	transition: opacity 200ms;
 	background-color: #cccccc;
 	background-position: center;
 	background-size: 50%;
@@ -1341,7 +1305,7 @@ footer {
 		right: 280px;
 		background-size: 200px;
 	}
-	.bubble-view .thread[opened="true"] .inner {
+	.bubble-view .thread[current="true"] .inner {
 		border-color: var(--primary-accent-color);
 	}
 	.bubble-view .bubble-header {
@@ -1351,6 +1315,9 @@ footer {
 
 	.thread-view .thread-header .back {
 		display: none;
+	}
+	.thread-view .thread .header {
+	  padding: 1rem 1.5rem;
 	}
 	.thread-view.no-thread {
 		background-size: 200px;
@@ -1382,11 +1349,10 @@ footer {
 		display: none;
 	}
 	.bubble-view .bubble-header {
-		position: relative;
+		/* position: relative; */
 	}
 	.bubble-view ul.threads {
-		max-height: calc(100vh - 6rem);
-		padding: 0 0 8rem 0;
+		padding: 6rem 0;
 	}
 	.bubble-view.no-bubble {
 		right: 0;

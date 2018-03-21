@@ -19,8 +19,6 @@ export const view = (state, actions) => {
     let urlparts = window.location.pathname.split("/");
 
 
-
-
     // Manage mobile nav and last bubble / thread from url
     state.currentView = "userView";
 

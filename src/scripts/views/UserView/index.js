@@ -63,24 +63,13 @@ export const UserView = ({currentBubble}) => (state, actions) =>
   </div>
 
 
-const BubbleItem = ({bubble, currentBubble}) => {
-
-  let currentClass = "";
-  if (currentBubble) {
-    if (bubble.name == currentBubble.name) {
-      currentClass = "current";
-    }
-  }
-
-  return (
-    <li class={currentClass} userCount={bubble.userCount}>
-      <Link to={"/" + bubble.name}>
-        {bubble.title}
-        <div class="users">
-          <div class="icon"></div>
-          <span class="count">{bubble.userCount}</span>
-        </div>
-      </Link>
-    </li>
-  )
-}
+const BubbleItem = ({bubble, currentBubble}) =>
+  <li current={(bubble.name == currentBubble.name).toString()} userCount={bubble.userCount}>
+    <Link to={"/" + bubble.name}>
+      {bubble.title}
+      <div class="users">
+        <div class="icon"></div>
+        <span class="count">{bubble.userCount}</span>
+      </div>
+    </Link>
+  </li>

@@ -5,14 +5,14 @@ import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
 
 export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (state, actions) => {
   return (
-    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} hasthumbnail={(typeof thread.src != "undefined").toString()} opened={(thread._id == Object.assign({'_id': ""}, currentThread)._id).toString()} onclick={ev => {
+    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} hasthumbnail={(typeof thread.src != "undefined").toString()} current={(thread._id == Object.assign({'_id': ""}, currentThread)._id).toString()} onclick={ev => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }} oncreate={el => {
         el.style.transform = "translateX(-100%)";
         el.style.opacity = "0";
         setTimeout(() => {
           el.removeAttribute("style");
-        }, index * 50 + 50);
+        }, index * 40 + 40);
       }} onupdate={(el, oldProps) => {
         if (index != oldProps.index) { // If order in list changed
           el.style.transitionDuration = "0ms";
@@ -20,7 +20,7 @@ export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (st
           el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
           setTimeout(() => {
             el.removeAttribute("style");
-          }, 50);
+          }, 10);
         }
       }}>
       <ThreadInner thread={thread} currentBubble={currentBubble} />
@@ -88,63 +88,63 @@ export const ThreadContent = ({thread, currentBubble}) => {
 
 export const ThreadFooter = ({thread}) => (state, actions) => (
   <div class="footer">
-    <div class="users" userCount={thread.userCount} onupdate={(el, oldProps) => {
-      if (oldProps.userCount < thread.userCount) {
-        el.classList.add("countUp");
-        setTimeout(() => {
-          el.classList.remove("countUp");
-        }, 25);
-      }
-    }}>
-      <div class="count">
+    <div class="users">
+      <div class="count" userCount={thread.userCount} onupdate={(el, oldProps) => {
+        if (oldProps.userCount < thread.userCount) {
+          el.classList.add("countUp");
+          setTimeout(() => {
+            el.classList.remove("countUp");
+          }, 25);
+        }
+      }}>
         <span>{thread.userCount}</span>
       </div>
     </div>
-    <div class="replies" messageCount={thread.messages.length} onupdate={(el, oldProps) => {
-      if (oldProps.messageCount < thread.messages.length) {
-        el.classList.add("countUp");
-        setTimeout(() => {
-          el.classList.remove("countUp");
-        }, 25);
-      }
-    }}>
-      <div class="count">
+    <div class="replies">
+      <div class="count" messageCount={thread.messages.length} onupdate={(el, oldProps) => {
+        if (oldProps.messageCount < thread.messages.length) {
+          el.classList.add("countUp");
+          setTimeout(() => {
+            el.classList.remove("countUp");
+          }, 25);
+        }
+      }}>
         <span>{thread.messages.length}</span>
       </div>
     </div>
-    <button class="upvote" score={thread.score} onclick={ev => {
-      ev.stopPropagation();
+    <div class="upvote">
+      <button class="count" score={thread.score} onclick={ev => {
+        ev.stopPropagation();
 
-      // Increase score and local upvoted count
-      thread.score++;
-      thread.upvoted++;
+        // Increase score and local upvoted count
+        thread.score++;
+        thread.upvoted++;
 
-      // Update immediately on this client
-      actions.updateState({
-        bubbles: [
-          {
-            _id: thread.bubble_id,
-            threads: [
-              thread
-            ]
-          }
-        ]
-      });
+        // Update immediately on this client
+        actions.updateState({
+          bubbles: [
+            {
+              _id: thread.bubble_id,
+              threads: [
+                thread
+              ]
+            }
+          ]
+        });
 
-      // Send to server
-      socket.emit('thread upvote', thread);
+        // Send to server
+        socket.emit('thread upvote', thread);
 
-    }} onupdate={(el, oldProps) => {
-      if (oldProps.score < thread.score) {
-        el.classList.add("countUp");
-        setTimeout(() => {
-          el.classList.remove("countUp");
-        }, 25);
-      }
-    }}>
-      <div class="count">
+      }} onupdate={(el, oldProps) => {
+        if (oldProps.score < thread.score) {
+          el.classList.add("countUp");
+          setTimeout(() => {
+            el.classList.remove("countUp");
+          }, 25);
+        }
+      }}>
         <span>{thread.score}</span>
-      </div>
-    </button>
+      </button>
+    </div>
   </div>
 )

@@ -393,6 +393,7 @@ io.on('connection', function (socket) {
     // Just making sure...
     delete thread.upvoted;
     delete thread.relevance;
+    delete thread.userCount;
 
     // Update clients in the bubble
     socket.broadcast.to(thread.bubble_id).emit('update state', {
@@ -421,6 +422,11 @@ io.on('connection', function (socket) {
   // Archive thread
   socket.on('archive thread', function (thread) {
 
+    // Just making sure...
+    delete thread.upvoted;
+    delete thread.relevance;
+    delete thread.userCount;
+
     // Update clients in the bubble
     socket.broadcast.to(thread.bubble_id).emit('delete thread', thread);
 
@@ -443,6 +449,11 @@ io.on('connection', function (socket) {
 
   // Pass all received message to all clients
   socket.on('thread upvote', function (thread) {
+
+    // Just making sure...
+    delete thread.upvoted;
+    delete thread.relevance;
+    delete thread.userCount;
 
     // Update DB
     dbo.collection("threads").findOneAndUpdate({ _id: ObjectID(thread._id) }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
