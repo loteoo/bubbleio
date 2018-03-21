@@ -30,15 +30,15 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
           <Thread currentThread={currentThread} currentBubble={currentBubble} />
 
           <div class="scrollSpacer">
-            <div class="conversation">
+            <div class="conversation" messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
+              // If there is a new message
+              if (oldProps.messageCount < currentThread.messages.length) {
+                // Scroll down message list
+                el.scrollTop = el.scrollHeight;
+              }
+            }}>
               <li class="loadMoreMessages"></li>
-              <ul class="messages" messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
-                  // If there is a new message
-                  if (oldProps.messageCount < currentThread.messages.length) {
-                    // Scroll down message list
-                    el.scrollTop = el.scrollHeight;
-                  }
-                }}>
+              <ul class="messages">
                 {currentThread.messages.map(message => MessageItem({message, state}))}
               </ul>
             </div>
