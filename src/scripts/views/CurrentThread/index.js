@@ -25,20 +25,24 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
         });
         console.log("--> join thread: " + currentThread._id);
       }}>
-        <div class="frame" onscroll={ev => { if (isElementInViewport(ev.target.firstChild)) { console.log("Load more not working yet"); } }}>
-          <div class="loadMoreMessages"></div>
+        <div class="frame" onscroll={ev => { if (isElementInViewport(ev.target.children[1].firstChild)) { console.log("Load more not working yet"); } }}>
 
           <Thread currentThread={currentThread} currentBubble={currentBubble} />
 
-          <ul class="messages" messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
-            // If there is a new message
-            if (oldProps.messageCount < currentThread.messages.length) {
-              // Scroll down message list
-              el.scrollTop = el.scrollHeight;
-            }
-          }}>
-            {currentThread.messages.map(message => MessageItem({message, state}))}
-          </ul>
+          <div class="scrollSpacer">
+            <div class="conversation">
+              <li class="loadMoreMessages"></li>
+              <ul class="messages" messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
+                  // If there is a new message
+                  if (oldProps.messageCount < currentThread.messages.length) {
+                    // Scroll down message list
+                    el.scrollTop = el.scrollHeight;
+                  }
+                }}>
+                {currentThread.messages.map(message => MessageItem({message, state}))}
+              </ul>
+            </div>
+          </div>
 
           <MessageKeyboard currentThread={currentThread} />
         </div>

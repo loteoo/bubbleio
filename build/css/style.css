@@ -708,7 +708,8 @@ footer {
 .thread .header p {
 	opacity: 0.5;
 	margin: 0;
-	font-size: 0.8em;
+	font-size: 1.4rem;
+	line-height: 1;
 }
 .thread .header h2 a {
 	position: relative;
@@ -898,7 +899,7 @@ footer {
 
 
 /* Text thread */
-.thread[type="text"] .header {
+.thread[type="text"] .mobile .header {
 	padding-bottom: 1rem;
 }
 .thread[type="text"] .text {
@@ -925,7 +926,7 @@ footer {
 
 
 /* Image thread */
-.thread[type="image"] .header {
+.thread[type="image"] .mobile .header {
 	padding-bottom: 1rem;
 }
 .thread[type="image"][hasthumbnail="false"] .thumbnail {
@@ -967,6 +968,12 @@ footer {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
+  height: 5.9rem;
+	/* border-bottom: 1px solid var(--main-border-color); */
+	position: sticky;
+	top: 0;
+	background-color: white;
+	z-index: 1;
 }
 .thread-view .thread-header .options {
 	margin-left: auto;
@@ -975,6 +982,7 @@ footer {
 	background-color: white;
 	border-bottom: 1px solid var(--main-border-color);
   position: relative;
+	z-index: 10;
 }
 .thread-view .thread .header {
   padding: 1rem 0;
@@ -986,13 +994,21 @@ footer {
 
 /* Thread view messages list */
 
-.thread-view .messages {
+.thread-view .scrollSpacer {
+	position: relative;
+  min-height: calc(100vh - 6rem);
 	display: flex;
 	flex-direction: column;
-	align-items: stretch;
+	justify-content: flex-end;
+}
+
+.thread-view .scrollSpacer .conversation {
 	padding: 0 0 6rem 0;
 	overflow: auto;
-  margin-top: auto;
+}
+.thread-view .messages {
+	display: flex;
+  flex-direction: column-reverse;
 }
 .thread-view .messages li {
 	display: block;

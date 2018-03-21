@@ -43,6 +43,9 @@ export const UserView = ({currentBubble}) => (state, actions) =>
           <span>Multibubbles</span>
           <ul>
             <li>
+              <span>All my bubbles</span>
+            </li>
+            <li>
               <span>Create Multibubble</span>
             </li>
           </ul>
