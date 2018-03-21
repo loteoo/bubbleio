@@ -23,8 +23,12 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
         <ThreadOptions currentThread={currentThread} />
       </div>
     </div>
-    <ThreadContent thread={currentThread} currentBubble={currentBubble} />
-    <ThreadFooter thread={currentThread} />
+    <div class="panelScroll">
+      <div class="panel">
+        <ThreadContent thread={currentThread} currentBubble={currentBubble} />
+        <ThreadFooter thread={currentThread} />
+      </div>
+    </div>
   </article>
 
 
@@ -34,8 +38,8 @@ export const ThreadOptions = ({currentThread}) => (state, actions) => {
     return (
       <ul>
         <li onclick={ev => {
-          actions.deleteThread(thread)
-          socket.emit('archive thread', thread)
+          actions.deleteThread(currentThread)
+          socket.emit('archive thread', currentThread)
         }}><span>Delete</span></li>
       </ul>
     )

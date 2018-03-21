@@ -29,7 +29,7 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
 
           <Thread currentThread={currentThread} currentBubble={currentBubble} />
 
-          <div class="scrollSpacer">
+          <div class="scroller">
             <div class="conversation" messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
               // If there is a new message
               if (oldProps.messageCount < currentThread.messages.length) {
