@@ -965,11 +965,23 @@ footer {
 	right: -100%;
 }
 .thread-view .thread-header {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
+	background: white;
+	z-index: 1;
+	pointer-events: none;
+}
+.thread-view .thread-header .back {
+	pointer-events: all;
 }
 .thread-view .thread-header .options {
+	pointer-events: all;
 	margin-left: auto;
 }
 .thread-view .thread {
@@ -982,8 +994,9 @@ footer {
 	background-color: white;
 }
 .thread-view .thread .panelScroll {
-	padding-bottom: 100%;
-	max-height: 100%;
+	padding-top: 6rem;
+	padding-bottom: 100vh;
+	max-height: 100vh;
 	overflow: auto;
 	pointer-events: none;
 }
