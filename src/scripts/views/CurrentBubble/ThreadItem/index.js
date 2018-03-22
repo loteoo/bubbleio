@@ -94,7 +94,7 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
           el.classList.add("countUp");
           setTimeout(() => {
             el.classList.remove("countUp");
-          }, 25);
+          }, 1);
         }
       }}>
         <span>{thread.userCount}</span>
@@ -106,7 +106,7 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
           el.classList.add("countUp");
           setTimeout(() => {
             el.classList.remove("countUp");
-          }, 25);
+          }, 1);
         }
       }}>
         <span>{thread.messages.length}</span>
@@ -140,7 +140,7 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
           el.classList.add("countUp");
           setTimeout(() => {
             el.classList.remove("countUp");
-          }, 25);
+          }, 1);
         }
       }}>
         <span>{thread.score}</span>

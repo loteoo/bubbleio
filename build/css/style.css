@@ -1010,6 +1010,42 @@ footer {
 	max-height: calc(100vh - 18rem);
 	overflow: scroll;
 }
+.thread-view .thread .panelScroll .panel .footer {
+	position: relative;
+}
+
+.thread-view .thread .panelScroll .panel .footer::before {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	transform: translateY(50%);
+	width: 4rem;
+	height: 4rem;
+	background-color: white;
+	border-radius: 100%;
+	border: 1px solid var(--main-border-color);
+	z-index: -1;
+}
+.thread-view .thread .panelScroll .panel .footer::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	transform: translateY(50%);
+	width: 3.8rem;
+	height: 3.8rem;
+	border-radius: 100%;
+	background-color: white;
+	background-image: url(../img/resize.svg);
+	background-position: center;
+	background-size: 45%;
+	background-repeat: no-repeat;
+}
 .thread-view .thread .header {
   padding: 1rem 0;
 }
@@ -1289,6 +1325,15 @@ footer {
 }
 
 
+
+
+
+.messageKeyboard .expander {
+	display: none;
+}
+.messageKeyboard input.title {
+	padding-left: 1em;
+}
 
 
 

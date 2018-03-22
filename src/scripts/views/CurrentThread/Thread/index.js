@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
 import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
-import {ThreadHeader, ThreadFooter} from '../../CurrentBubble/ThreadItem/'
+import {ThreadFooter} from '../../CurrentBubble/ThreadItem/'
 
 
 export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
@@ -10,7 +10,7 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
       <div class="back" onclick={ev => {
         actions.location.go("/" + currentBubble.name);
       }}></div>
-      <ThreadHeader thread={currentThread} currentBubble={currentBubble} />
+    <ThreadFullHeader thread={currentThread} currentBubble={currentBubble} />
       <div class="options">
         <button onclick={ev => {
             if (ev.target.nextSibling.classList.contains("opened")) {
@@ -59,6 +59,12 @@ export const ThreadOptions = ({currentThread}) => (state, actions) => {
   }
 }
 
+
+export const ThreadFullHeader = ({thread, currentBubble}) =>
+  <div class="header">
+    <h2>{thread.title}</h2>
+    <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
+  </div>
 
 export const ThreadFullContent = ({thread, currentBubble}) => {
   if (thread.type == "default") {
