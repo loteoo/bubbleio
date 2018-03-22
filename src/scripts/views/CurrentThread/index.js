@@ -39,7 +39,7 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
             }}>
               <li class="loadMoreMessages"></li>
               <ul class="messages">
-                {currentThread.messages.map(message => MessageItem({message, state}))}
+                {currentThread.messages.map((message, index) => MessageItem({message, index}))}
               </ul>
             </div>
           </div>
@@ -58,13 +58,13 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
 }
 
 
-const MessageItem = ({message, state}) => {
+const MessageItem = ({message, index}) => (state, actions) => {
   return (
-    <li key={message._id} sent={(message.sender == state.user.username).toString()} oncreate={el => {
+    <li key={message._id} sent={(message.sender == state.user.username).toString()} index={index} oncreate={el => {
       el.classList.add("newmessage");
       setTimeout(() => {
         el.classList.remove("newmessage");
-      }, 25);
+      }, index * 20);
     }}>
       <div class="content">{message.message}</div>
       <div class="info">{message.sender + " " + timeSince(message.created)}</div>

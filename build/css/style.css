@@ -1006,6 +1006,10 @@ footer {
 	margin-bottom: -1px;
 	pointer-events: all;
 }
+.thread-view .thread .panelScroll .panel .content {
+	max-height: calc(100vh - 18rem);
+	overflow: scroll;
+}
 .thread-view .thread .header {
   padding: 1rem 0;
 }
@@ -1035,9 +1039,9 @@ footer {
 }
 .thread-view .messages li {
 	display: block;
-	border-radius: 2rem;
+	border-radius: 1rem;
 	margin: 0.5rem 1rem;
-	padding: 0.75rem 1.25rem;
+	padding: 0.5rem 1rem;
   max-width: 66%;
 	opacity: 1;
 	transition: opacity 300ms, transform 200ms;
@@ -1061,11 +1065,13 @@ footer {
   background-color: #d9d9d9;
   color: rgba(0, 0, 0, 1);
 	align-self: flex-start;
+  border-bottom-left-radius: 0;
 }
 .thread-view .messages li[sent="true"] {
   background-color: var(--primary-accent-color);
   color: rgba(255, 255, 255, 1);
 	align-self: flex-end;
+  border-bottom-right-radius: 0;
 }
 
 .thread-view.no-thread {

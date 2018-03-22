@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
 import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
-import {ThreadHeader, ThreadContent, ThreadFooter} from '../../CurrentBubble/ThreadItem/'
+import {ThreadHeader, ThreadFooter} from '../../CurrentBubble/ThreadItem/'
 
 
 export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
@@ -25,7 +25,9 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
     </div>
     <div class="panelScroll">
       <div class="panel">
-        <ThreadContent thread={currentThread} currentBubble={currentBubble} />
+        <div class="content">
+          <ThreadFullContent thread={currentThread} currentBubble={currentBubble} />
+        </div>
         <ThreadFooter thread={currentThread} />
       </div>
     </div>
@@ -54,5 +56,23 @@ export const ThreadOptions = ({currentThread}) => (state, actions) => {
         }}><span>Downvote</span></li>
       </ul>
     )
+  }
+}
+
+
+export const ThreadFullContent = ({thread, currentBubble}) => {
+  if (thread.type == "default") {
+    return
+  } else if (thread.type == "text") {
+    return <div class="text">{thread.text}</div>;
+  } else if (thread.type == "link") {
+    if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) { // If is youtube
+      thread.src = "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
+    } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
+      // this is a vimeo link
+    }
+    return <a href={thread.url} target="_blank" class="link">{thread.url}</a>
+  } else if (thread.type == "image") {
+    return <div class="img"><img src={thread.src} alt={thread.title} /></div>
   }
 }

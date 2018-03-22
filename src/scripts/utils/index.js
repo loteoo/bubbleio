@@ -13,6 +13,9 @@ export const timeSince = (date) => {
     return interval + " months ago";
   }
   interval = Math.floor(seconds / 86400);
+  if (interval == 1) {
+    return "yesterday";
+  }
   if (interval >= 1) {
     return interval + " days ago";
   }

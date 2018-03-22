@@ -64,8 +64,8 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
       <div class="link" onclick={ev => { ev.target.parentElement.parentElement.dataset.mode = "link"; ev.target.parentElement.classList.remove("opened") }}></div>
       <div class="image" onclick={ev => { ev.target.parentElement.parentElement.dataset.mode = "image"; ev.target.parentElement.classList.remove("opened") }}></div>
     </div>
-    <input type="text" name="title" placeholder="Type something..." class="title" />
-    <textarea name="text" placeholder="Type something..."></textarea>
+    <input type="text" name="title" placeholder="Type something..." class="title" maxlength="50" />
+    <textarea name="text" placeholder="Type something..." maxlength="1000"></textarea>
     <input type="text" name="link" placeholder="Paste link here" class="link" />
     <div class="image">
       <label for="image_file"></label>
