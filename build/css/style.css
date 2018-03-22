@@ -953,7 +953,22 @@ footer {
 
 
 
-
+.youtubePreview {
+	display: block;
+	position: relative;
+}
+.youtubePreview::after {
+	content: "";
+	position: absolute;
+	bottom: 3rem;
+	right: 3rem;
+	width: 6rem;
+	height: 6rem;
+	background-image: url(../img/youtube-white.svg);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
 
 
 

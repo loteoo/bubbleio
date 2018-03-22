@@ -74,11 +74,16 @@ export const ThreadFullContent = ({thread, currentBubble}) => {
   } else if (thread.type == "link") {
     if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) { // If is youtube
       thread.src = "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
+      return (
+        <a href={thread.url} target="_blank" class="youtubePreview">
+          <img src={thread.src} alt={thread.title} />
+        </a>
+      )
     } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
       // this is a vimeo link
     }
     return <a href={thread.url} target="_blank" class="link">{thread.url}</a>
   } else if (thread.type == "image") {
-    return <div class="img"><img src={thread.src} alt={thread.title} /></div>
+    return <div class="img"><a href={thread.src} target="_blank"><img src={thread.src} alt={thread.title} /></a></div>
   }
 }
