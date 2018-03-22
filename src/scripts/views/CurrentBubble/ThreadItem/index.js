@@ -4,8 +4,11 @@ import {timeSince, shortenText, getThumbnail, getYoutubeId} from '../../../utils
 
 
 export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (state, actions) => {
+  if (!thread.thumbnail) {
+    thread.thumbnail = getThumbnail(thread);
+  }
   return (
-    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} current={(thread._id == Object.assign({'_id': ""}, currentThread)._id).toString()} onclick={ev => {
+    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} current={(thread._id == Object.assign({'_id': ""}, currentThread)._id).toString()} hasthumbnail={(typeof thread.thumbnail !== 'undefined').toString()} onclick={ev => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }} oncreate={el => {
         el.style.transform = "translateX(-100%)";
@@ -36,7 +39,7 @@ export const ThreadInner = ({thread, currentBubble}) => {
   if (window.innerWidth >= 768) { // If desktop
     return (
       <div class="inner desktop">
-        <div class="thumbnail" Style={"background-image: url('"+getThumbnail(thread)+"')"}></div>
+        <div class="thumbnail" Style={"background-image: url('"+thread.thumbnail+"')"}></div>
         <div class="info">
           <ThreadHeader thread={thread} currentBubble={currentBubble} />
           <ThreadFooter thread={thread} />
