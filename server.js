@@ -643,9 +643,11 @@ io.on('connection', function (socket) {
 
     dbo.collection("bubbles").count({}, function(err, total) {
       if (err) throw err;
-      dbo.collection("bubbles").find({}).skip(Math.floor(Math.random()*total)).limit(1).toArray(function(err, bubbles) {
+      dbo.collection("bubbles").find({visibility: "public"}).skip(Math.floor(Math.random()*total)).limit(1).toArray(function(err, bubbles) {
         if (err) throw err;
-        socket.emit("redirect", "/" + bubbles[0].name);
+        if (bubbles && bubbles[0]) {
+          socket.emit("redirect", "/" + bubbles[0].name);
+        }
       });
     });
   });
