@@ -72,3 +72,5 @@ export const CurrentBubble = ({currentBubble, currentThread}) => (state, actions
     )
   }
 }
+
+// TODO: Delete owned bubbles
