@@ -18,9 +18,8 @@ export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (st
           el.style.transitionDuration = "0ms";
           el.style.zIndex = "1";
           el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
-          setTimeout(() => {
-            el.removeAttribute("style");
-          }, 10);
+          void el.offsetWidth; // This forces element render
+          el.removeAttribute("style");
         }
       }}>
       <ThreadInner thread={thread} currentBubble={currentBubble} />
@@ -92,9 +91,8 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
       <div class="count" userCount={thread.userCount} onupdate={(el, oldProps) => {
         if (oldProps.userCount < thread.userCount) {
           el.classList.add("countUp");
-          setTimeout(() => {
-            el.classList.remove("countUp");
-          }, 1);
+          void el.offsetWidth; // This forces element render
+          el.classList.remove("countUp");
         }
       }}>
         <span>{thread.userCount}</span>
@@ -104,9 +102,8 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
       <div class="count" messageCount={thread.messages.length} onupdate={(el, oldProps) => {
         if (oldProps.messageCount < thread.messages.length) {
           el.classList.add("countUp");
-          setTimeout(() => {
-            el.classList.remove("countUp");
-          }, 1);
+          void el.offsetWidth; // This forces element render
+          el.classList.remove("countUp");
         }
       }}>
         <span>{thread.messages.length}</span>
@@ -138,9 +135,8 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
       }} onupdate={(el, oldProps) => {
         if (oldProps.score < thread.score) {
           el.classList.add("countUp");
-          setTimeout(() => {
-            el.classList.remove("countUp");
-          }, 1);
+          void el.offsetWidth; // This forces element render
+          el.classList.remove("countUp");
         }
       }}>
         <span>{thread.score}</span>
