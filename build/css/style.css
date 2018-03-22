@@ -538,6 +538,9 @@ footer {
 	background-image: url(../img/more-vertical-white.svg);
 }
 
+.user-view .menu {
+	max-height: calc(100vh - 100px);
+}
 .user-view .menu>li {
 	margin: 3rem 0;
 }
