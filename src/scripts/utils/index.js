@@ -80,6 +80,29 @@ export const shortenText = (s, n) => {
 
 
 
+export const getThumbnail = thread => {
+  if (thread.type == "default") {
+    return
+  } else if (thread.type == "text") {
+    return
+  } else if (thread.type == "link") {
+    if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) {
+      // If is youtube
+      return "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
+    } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
+      // this is a vimeo link
+      return
+    }
+  } else if (thread.type == "image") {
+    return thread.src
+  }
+  return
+}
+
+
+
+
+
 export const getYoutubeId = url => {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
     var match = url.match(regExp);

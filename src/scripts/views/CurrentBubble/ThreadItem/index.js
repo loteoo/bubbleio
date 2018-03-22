@@ -1,11 +1,11 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
-import {timeSince, shortenText, getYoutubeId} from '../../../utils/'
+import {timeSince, shortenText, getThumbnail, getYoutubeId} from '../../../utils/'
 
 
 export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (state, actions) => {
   return (
-    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} hasthumbnail={(typeof thread.src != "undefined").toString()} current={(thread._id == Object.assign({'_id': ""}, currentThread)._id).toString()} onclick={ev => {
+    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} current={(thread._id == Object.assign({'_id': ""}, currentThread)._id).toString()} onclick={ev => {
         actions.location.go("/" + currentBubble.name + "/" + thread._id);
       }} oncreate={el => {
         el.style.transform = "translateX(-100%)";
@@ -36,7 +36,7 @@ export const ThreadInner = ({thread, currentBubble}) => {
   if (window.innerWidth >= 768) { // If desktop
     return (
       <div class="inner desktop">
-        <div class="thumbnail" Style={"background-image: url('"+thread.src+"')"}></div>
+        <div class="thumbnail" Style={"background-image: url('"+getThumbnail(thread)+"')"}></div>
         <div class="info">
           <ThreadHeader thread={thread} currentBubble={currentBubble} />
           <ThreadFooter thread={thread} />
@@ -69,11 +69,6 @@ export const ThreadContent = ({thread, currentBubble}) => {
   } else if (thread.type == "text") {
     return <div class="text">{shortenText(thread.text, 250)}</div>;
   } else if (thread.type == "link") {
-    if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) { // If is youtube
-      thread.src = "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
-    } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
-      // this is a vimeo link
-    }
     return <a href={thread.url} target="_blank" class="link">{thread.url}</a>
   } else if (thread.type == "image") {
     return <div class="img"><img src={thread.src} alt={thread.title} /></div>
