@@ -954,21 +954,29 @@ footer {
 
 
 
-.youtubePreview {
+.linkPreview {
 	display: block;
 	position: relative;
 }
-.youtubePreview::after {
+.linkPreview::after {
 	content: "";
 	position: absolute;
 	bottom: 3rem;
 	right: 3rem;
 	width: 6rem;
 	height: 6rem;
-	background-image: url(../img/youtube-white.svg);
+	background-image: url(../img/external-link-white.svg);
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;
+}
+
+
+.linkPreview.youtubePreview::after {
+	background-image: url(../img/youtube-white.svg);
+}
+.linkPreview.vimeoPreview::after {
+	background-image: url(../img/video-white.svg);
 }
 
 

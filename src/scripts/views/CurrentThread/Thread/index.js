@@ -1,6 +1,6 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
-import {timeSince, shortenText, getThumbnail, getYoutubeId, panelDrag} from '../../../utils/'
+import {timeSince, shortenText, getYoutubeId, panelDrag} from '../../../utils/'
 import {ThreadFooter} from '../../CurrentBubble/ThreadItem/'
 
 
@@ -74,12 +74,16 @@ export const ThreadFullContent = ({thread, currentBubble}) => {
   } else if (thread.type == "link") {
     if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) { // If is youtube
       return (
-        <a href={thread.url} target="_blank" class="youtubePreview">
-          <img src={getThumbnail(thread)} alt={thread.title} />
+        <a href={thread.url} target="_blank" class="linkPreview youtubePreview">
+          <img src={thread.thumbnail} alt={thread.title} />
         </a>
       )
     } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
-      // this is a vimeo link
+      return (
+        <a href={thread.url} target="_blank" class="linkPreview vimeoPreview">
+          <img src={thread.thumbnail} alt={thread.title} />
+        </a>
+      )
     }
     return <a href={thread.url} target="_blank" class="link">{thread.url}</a>
   } else if (thread.type == "image") {

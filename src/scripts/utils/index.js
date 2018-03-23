@@ -63,13 +63,13 @@ export const storeStateInStorage = (state) => window.localStorage.setItem('bubbl
 
 
 export const shortenText = (s, n) => {
-    if (s.length > n+3) {
-      var cut= s.indexOf(' ', n);
-      if(cut== -1) return s;
-      return s.substring(0, cut) + "..."
-    } else {
-      return s
-    }
+  if (s.length > n+3) {
+    let cut = s.indexOf(' ', n);
+    if(cut == -1) return s;
+    return s.substring(0, cut) + "..."
+  } else {
+    return s
+  }
 }
 
 
@@ -90,8 +90,12 @@ export const getThumbnail = thread => {
       // If is youtube
       return "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
     } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
-      // this is a vimeo link
-      return
+      fetch('http://vimeo.com/api/v2/video/' + getVimeoId(thread.url) + '.json')
+        .then(response => response.json())
+        .then(function(response) {
+          thread.thumbnail = response[0].thumbnail_large;
+          return thread.thumbnail;
+        });
     }
   } else if (thread.type == "image") {
     return thread.src
@@ -104,11 +108,14 @@ export const getThumbnail = thread => {
 
 
 export const getYoutubeId = url => {
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-    var match = url.match(regExp);
-    return (match&&match[7].length==11)? match[7] : false;
+  let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+  let match = url.match(regExp);
+  return (match&&match[7].length==11)? match[7] : false;
 }
-
+export const getVimeoId = url => {
+  let m = url.match(/^.+vimeo.com\/(.*\/)?([^#\?]*)/);
+  return m ? m[2] || m[1] : null;
+}
 
 
 
@@ -131,9 +138,9 @@ export const panelDrag = {
   onmouseup: ev => {
     if (ev.target.parentElement.parentElement.drag === true) {
       ev.target.parentElement.parentElement.drag = false;
-      var start = 1,
+      let start = 1,
       animate = () => {
-        var step = Math.sin(start);
+        let step = Math.sin(start);
         if (step <= 0) {
           window.cancelAnimationFrame(animate);
         } else {
@@ -159,12 +166,12 @@ export const mergeStates = (stateA, stateB) => {
 
   // Merge the threads array before merging the bubbles
   if (stateB.bubbles) {
-    for (var i = 0; i < stateB.bubbles.length; i++) { // For each new bubble
+    for (let i = 0; i < stateB.bubbles.length; i++) { // For each new bubble
       let matchFound = false;
 
       // Scan for matches
       if (stateA.bubbles) {
-        for (var j = 0; j < stateA.bubbles.length; j++) {
+        for (let j = 0; j < stateA.bubbles.length; j++) {
           if (stateB.bubbles[i]._id == stateA.bubbles[j]._id) {
             matchFound = true;
             stateA.bubbles[j] = mergeBubbles(stateA.bubbles[j], stateB.bubbles[i]);
@@ -210,12 +217,12 @@ const mergeBubbles = (bubbleA, bubbleB) => {
 
   // Merge the threads array before merging the bubbles
   if (bubbleB.threads) {
-    for (var i = 0; i < bubbleB.threads.length; i++) { // For each new bubble
+    for (let i = 0; i < bubbleB.threads.length; i++) { // For each new bubble
       let matchFound = false;
 
       // Scan for matches
       if (bubbleA.threads) {
-        for (var j = 0; j < bubbleA.threads.length; j++) {
+        for (let j = 0; j < bubbleA.threads.length; j++) {
           if (bubbleB.threads[i]._id == bubbleA.threads[j]._id) {
             matchFound = true;
             bubbleA.threads[j] = mergeThreads(bubbleA.threads[j], bubbleB.threads[i]);
@@ -258,12 +265,12 @@ const mergeThreads = (threadA, threadB) => {
 
   // Merge the messages array before merging the threads
   if (threadB.messages) {
-    for (var i = 0; i < threadB.messages.length; i++) { // For each new bubble
+    for (let i = 0; i < threadB.messages.length; i++) { // For each new bubble
       let matchFound = false;
 
       // Scan for matches
       if (threadA.messages) {
-        for (var j = 0; j < threadA.messages.length; j++) { // find match
+        for (let j = 0; j < threadA.messages.length; j++) { // find match
           if (threadB.messages[i]._id == threadA.messages[j]._id) {
             matchFound = true;
             threadA.messages[j] = Object.assign(threadA.messages[j], threadB.messages[i]); // Basic shallow merge
@@ -306,7 +313,7 @@ const sortByRelevance = (threads) => {
 
 
   // Calculate relevance for each thread
-  for (var i = 0; i < threads.length; i++) {
+  for (let i = 0; i < threads.length; i++) {
 
     if (!threads[i].messages) {
       threads[i].messages = [];
