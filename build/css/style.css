@@ -906,6 +906,7 @@ footer {
 	padding-bottom: 1rem;
 }
 .thread[type="text"] .text {
+	white-space: pre-wrap;
 	padding: 0 1.5rem;
 	font-size: 0.8em;
 }
@@ -1027,6 +1028,7 @@ footer {
 .thread-view .thread .panelScroll .panel .content {
 	/* max-height: calc(100vh - 18rem);
 	overflow: scroll; */
+	white-space: pre-wrap;
 }
 .thread-view .thread .panelScroll .panel .footer {
 	position: relative;
