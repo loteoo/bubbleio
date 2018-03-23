@@ -66,12 +66,27 @@ export const ThreadHeader = ({thread, currentBubble}) =>
 
 
 
+// TODO: Create a thread type for each link type, and set thumbnails on post creation (possibly directly in the thread form)
+
 export const ThreadContent = ({thread, currentBubble}) => {
   if (thread.type == "default") {
     return
   } else if (thread.type == "text") {
     return <div class="text">{shortenText(thread.text, 250)}</div>;
   } else if (thread.type == "link") {
+    if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) { // If is youtube
+      return (
+        <div class="linkPreview youtubePreview">
+          <img src={thread.thumbnail} alt={thread.title} />
+        </div>
+      )
+    } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
+      return (
+        <div class="linkPreview vimeoPreview">
+          <img src={thread.thumbnail} alt={thread.title} />
+        </div>
+      )
+    }
     return <a href={thread.url} target="_blank" class="link">{thread.url}</a>
   } else if (thread.type == "image") {
     return <div class="img"><img src={thread.src} alt={thread.title} /></div>

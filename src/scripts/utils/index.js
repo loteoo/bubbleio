@@ -45,14 +45,13 @@ export const isElementInViewport = (el) => {
   return (
     rect.top >= 0 &&
     rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   );
 }
 
 
-export const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) =>
-    s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h))
+export const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) => s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h))
 
 
 
