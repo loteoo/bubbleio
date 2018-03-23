@@ -25,12 +25,16 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
         });
         console.log("--> join thread: " + currentThread._id);
       }}>
-        <div class="frame" onscroll={ev => { if (isElementInViewport(ev.target.children[1].firstChild)) { console.log("Load more not working yet"); } }}>
+        <div class="frame">
 
           <Thread currentThread={currentThread} currentBubble={currentBubble} />
 
           <div class="scroller">
-            <div class="conversation" messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
+            <div class="conversation" onscroll={ev => {
+              if (isElementInViewport(ev.target.firstChild)) {
+                console.log("Load more not working yet");
+              }
+            }} messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
               // If there is a new message
               if (oldProps.messageCount < currentThread.messages.length) {
                 // Scroll down message list

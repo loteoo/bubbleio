@@ -1076,7 +1076,6 @@ footer {
 
 .thread-view .scroller {
 	position: relative;
-  min-height: 100vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
@@ -1088,6 +1087,7 @@ footer {
 	padding: 6rem 0;
 }
 .thread-view .messages {
+	min-height: 100vh;
 	display: flex;
   flex-direction: column-reverse;
 }
