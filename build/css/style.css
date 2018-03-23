@@ -1082,21 +1082,17 @@ footer {
 	position: relative;
 	/* background-color: var(--main-background-color); */
 	background-image: url(../img/topography.svg);
+	height: 100vh;
 	overflow: scroll;
   display: flex;
 	flex-direction: column-reverse;
 }
-.thread-view .scroller .conversation {
-	display: flex;
-  flex-direction: column;
-	min-height: calc(100vh + 1px); /* Just to trigger scrolling and keep the loadmore element outside viewport */
-}
 
 .thread-view .messages {
+	min-height: calc(100vh + 1px); /* Just to trigger scrolling and keep the loadmore element outside viewport */
 	display: flex;
   flex-direction: column-reverse;
-	padding: 6rem 0;
-	margin-top: auto;
+	padding: 0 0 6rem 0;
 }
 .thread-view .messages li {
 	display: block;
@@ -1107,6 +1103,13 @@ footer {
 	opacity: 1;
 	transition: opacity 300ms, transform 200ms;
 	transform: translateX(0);
+}
+
+.thread-view .messages li.loadMoreMessages {
+	background-color: transparent;
+	padding: 12rem 0 0 0;
+	margin: 0 0 auto 0;
+	max-width: none;
 }
 .thread-view .messages li.newmessage {
 	opacity: 0;

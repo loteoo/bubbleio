@@ -29,23 +29,21 @@ export const CurrentThread = ({currentThread, currentBubble}) => (state, actions
 
           <Thread currentThread={currentThread} currentBubble={currentBubble} />
 
-          <div class="scroller">
-            <div class="conversation" onscroll={ev => {
-              if (isElementInViewport(ev.target.firstChild)) {
-                console.log("Load more not working yet");
-              }
-            }} messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
-              // If there is a new message
-              if (oldProps.messageCount < currentThread.messages.length) {
-                // Scroll down message list
-                el.scrollTop = el.scrollHeight;
-              }
-            }}>
+          <div class="scroller" onscroll={ev => {
+            if (isElementInViewport(ev.target.children[0].lastChild)) {
+              console.log("Load more not working yet");
+            }
+          }} messageCount={currentThread.messages.length} onupdate={(el, oldProps) => {
+            // If there is a new message
+            if (oldProps.messageCount < currentThread.messages.length) {
+              // Scroll down message list
+              el.scrollTop = el.scrollHeight;
+            }
+          }}>
+            <ul class="messages">
+              {currentThread.messages.map((message, index) => MessageItem({message, index}))}
               <li class="loadMoreMessages"></li>
-              <ul class="messages">
-                {currentThread.messages.map((message, index) => MessageItem({message, index}))}
-              </ul>
-            </div>
+            </ul>
           </div>
 
           <MessageKeyboard currentThread={currentThread} />
