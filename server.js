@@ -551,7 +551,7 @@ io.on('connection', function (socket) {
           socket.userID = result.ops[0]._id;
 
           // Give him the default bubbles
-          dbo.collection("bubbles").find({default: true}).toArray(function(err, bubbles) {
+          dbo.collection("bubbles").find({'default': true}).toArray(function(err, bubbles) {
             if (err) throw err;
 
             // Inject user counts to bubbles

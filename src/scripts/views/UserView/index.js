@@ -67,7 +67,7 @@ export const UserView = ({currentBubble}) => (state, actions) =>
 
 
 const BubbleItem = ({bubble, currentBubble}) =>
-  <li current={(bubble.name == currentBubble.name).toString()} userCount={bubble.userCount}>
+  <li current={(bubble.name == Object.assign({"name": ""}, currentBubble).name).toString()} userCount={bubble.userCount}>
     <Link to={"/" + bubble.name}>
       {bubble.title}
       <div class="users">
