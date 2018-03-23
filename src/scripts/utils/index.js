@@ -116,6 +116,39 @@ export const getYoutubeId = url => {
 
 
 
+export const panelDrag = {
+  onmousedown: ev => {
+    ev.target.parentElement.parentElement.starty = ev.clientY + ev.target.parentElement.parentElement.scrollTop;
+    ev.target.parentElement.parentElement.diffy = 0;
+    ev.target.parentElement.parentElement.drag = true;
+  },
+  onmousemove: ev => {
+    if (ev.target.parentElement.parentElement.drag === true) {
+      ev.target.parentElement.parentElement.diffy = (ev.target.parentElement.parentElement.starty - (ev.clientY + ev.target.parentElement.parentElement.scrollTop));
+      ev.target.parentElement.parentElement.scrollTop += ev.target.parentElement.parentElement.diffy;
+    }
+  },
+  onmouseup: ev => {
+    if (ev.target.parentElement.parentElement.drag === true) {
+      ev.target.parentElement.parentElement.drag = false;
+      var start = 1,
+      animate = () => {
+        var step = Math.sin(start);
+        if (step <= 0) {
+          window.cancelAnimationFrame(animate);
+        } else {
+          ev.target.parentElement.parentElement.scrollTop += ev.target.parentElement.parentElement.diffy * step;
+          start -= 0.025;
+          window.requestAnimationFrame(animate);
+        }
+      }
+      animate()
+    }
+  }
+}
+
+
+
 
 
 

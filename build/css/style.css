@@ -1019,18 +1019,18 @@ footer {
 	pointer-events: none;
 }
 .thread-view .thread .panelScroll .panel {
-	user-select: none;
 	background-color: white;
 	border-bottom: 1px solid var(--main-border-color);
 	margin-bottom: -1px;
 	pointer-events: all;
 }
 .thread-view .thread .panelScroll .panel .content {
-	max-height: calc(100vh - 18rem);
-	overflow: scroll;
+	/* max-height: calc(100vh - 18rem);
+	overflow: scroll; */
 }
 .thread-view .thread .panelScroll .panel .footer {
 	position: relative;
+	user-select: none;
 }
 
 .thread-view .thread .panelScroll .panel .footer::before {
