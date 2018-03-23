@@ -53,6 +53,7 @@ export const CurrentBubble = ({currentBubble, currentThread}) => (state, actions
                   actions.deleteBubble(currentBubble);
                   socket.emit('leave bubble', currentBubble);
                 }}><span>Leave bubble</span></li>
+                <OwnerAction currentBubble={currentBubble} />
               </ul>
             </div>
           </div>
@@ -73,4 +74,16 @@ export const CurrentBubble = ({currentBubble, currentThread}) => (state, actions
   }
 }
 
-// TODO: Delete owned bubbles
+
+export const OwnerAction = ({currentBubble}) => (state, actions) => {
+  if (currentBubble.author == state.user.username) {
+    return (
+      <li onclick={ev => {
+        ev.target.parentElement.parentElement.classList.remove("opened");
+        actions.location.go("/");
+        actions.deleteBubble(currentBubble);
+        socket.emit('archive bubble', currentBubble);
+      }}><span>Delete bubble</span></li>
+    )
+  }
+}

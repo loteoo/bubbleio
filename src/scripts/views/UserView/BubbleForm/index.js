@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 
 
-export const BubbleForm = () => (state, actions) => 
+export const BubbleForm = () => (state, actions) =>
   <div class="overlay">
     <div class="inner">
       <div class="close" onclick={ev => {
@@ -19,6 +19,7 @@ export const BubbleForm = () => (state, actions) =>
               title: ev.target.title.value,
               desc: ev.target.desc.value,
               visibility: ev.target.visibility.value,
+              author: state.user.username,
               created: new Date().getTime()
             }
 
@@ -29,14 +30,15 @@ export const BubbleForm = () => (state, actions) =>
           }
 
       }}>
-        <h2>Create a brand new bubble</h2>
+        <h2>Let's create a brand new bubble.</h2>
+        <p>A welcoming home for a community of any common interest</p>
         <fieldset>
-          <label>Pick a name for the bubble</label>
-          <input type="text" name="title" placeholder="Bubble Name" required />
+          <fieldset>
+            <label>Pick a unique name alias</label>
+            <input type="text" name="name" placeholder="Lowercase letters and numbers only" pattern="[a-z0-9]+" minlength="3" maxlength="50" required />
         </fieldset>
-        <fieldset>
-          <label>Unique name alias</label>
-          <input type="text" name="name" placeholder="Lowercase letters and numbers only" pattern="[a-z0-9]+" minlength="3" maxlength="50" required />
+          <label>Chose a display name for the bubble</label>
+          <input type="text" name="title" placeholder="Display Name" minlength="3" maxlength="50" required />
         </fieldset>
         <fieldset>
           <label>Describe this bubble and what should be posted here.</label>

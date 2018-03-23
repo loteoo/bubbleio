@@ -10,7 +10,7 @@ import {CurrentThread} from './CurrentThread/'
 // Application root
 export const view = (state, actions) => {
 
-  // console.log(state);
+  console.log(state);
 
   // If logged in
   if (state.user._id) {

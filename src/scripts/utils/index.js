@@ -128,7 +128,9 @@ export const mergeStates = (stateA, stateB) => {
   if (stateB.bubbles) {
     for (var i = 0; i < stateB.bubbles.length; i++) { // For each new bubble
       let matchFound = false;
-      if (stateA.bubbles) { // Find match if possible
+
+      // Scan for matches
+      if (stateA.bubbles) {
         for (var j = 0; j < stateA.bubbles.length; j++) {
           if (stateB.bubbles[i]._id == stateA.bubbles[j]._id) {
             matchFound = true;
@@ -136,7 +138,10 @@ export const mergeStates = (stateA, stateB) => {
           }
         }
       }
-      if (!matchFound) {
+
+      // If there is no match -> we're adding a new bubble
+      // If the new bubble has a name -> this is NOT just a thread update keyed by bubble ID
+      if (!matchFound && stateB.bubbles[i].name) {
         if (!stateB.bubbles[i].threads) {
           stateB.bubbles[i].threads = [];
         }
@@ -175,7 +180,8 @@ const mergeBubbles = (bubbleA, bubbleB) => {
     for (var i = 0; i < bubbleB.threads.length; i++) { // For each new bubble
       let matchFound = false;
 
-      if (bubbleA.threads) { // Find match if possible
+      // Scan for matches
+      if (bubbleA.threads) {
         for (var j = 0; j < bubbleA.threads.length; j++) {
           if (bubbleB.threads[i]._id == bubbleA.threads[j]._id) {
             matchFound = true;
@@ -221,6 +227,8 @@ const mergeThreads = (threadA, threadB) => {
   if (threadB.messages) {
     for (var i = 0; i < threadB.messages.length; i++) { // For each new bubble
       let matchFound = false;
+
+      // Scan for matches
       if (threadA.messages) {
         for (var j = 0; j < threadA.messages.length; j++) { // find match
           if (threadB.messages[i]._id == threadA.messages[j]._id) {
@@ -228,11 +236,10 @@ const mergeThreads = (threadA, threadB) => {
             threadA.messages[j] = Object.assign(threadA.messages[j], threadB.messages[i]); // Basic shallow merge
           }
         }
-      } else {
-        threadA.messages = [];
       }
+
       if (!matchFound) {
-        threadA.messages.push(threadB.messages[i]); // Add at end
+        threadA.messages.push(threadB.messages[i]);
       }
     }
   }
