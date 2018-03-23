@@ -24,7 +24,32 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
       </div>
     </div>
     <div class="panelScroll">
-      <div class="panel">
+      <div class="panel" onmousedown={ev => {
+        ev.target.parentElement.parentElement.starty = ev.clientY + ev.target.parentElement.parentElement.scrollTop;
+        ev.target.parentElement.parentElement.diffy = 0;
+        ev.target.parentElement.parentElement.drag = true;
+      }} onmousemove={ev => {
+        if (ev.target.parentElement.parentElement.drag === true) {
+          ev.target.parentElement.parentElement.diffy = (ev.target.parentElement.parentElement.starty - (ev.clientY + ev.target.parentElement.parentElement.scrollTop));
+          ev.target.parentElement.parentElement.scrollTop += ev.target.parentElement.parentElement.diffy;
+        }
+      }} onmouseup={ev => {
+        ev.target.parentElement.parentElement.drag = false;
+        var start = 1,
+        animate = () => {
+          var step = Math.sin(start);
+          if (step <= 0) {
+            window.cancelAnimationFrame(animate);
+          } else {
+            ev.target.parentElement.parentElement.scrollTop += ev.target.parentElement.parentElement.diffy * step;
+            start -= 0.02;
+            window.requestAnimationFrame(animate);
+          }
+        }
+        animate()
+      }} onmouseout={ev => {
+        ev.target.parentElement.parentElement.drag = false;
+      }}>
         <div class="content">
           <ThreadFullContent thread={currentThread} currentBubble={currentBubble} />
         </div>

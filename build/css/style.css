@@ -1019,6 +1019,7 @@ footer {
 	pointer-events: none;
 }
 .thread-view .thread .panelScroll .panel {
+	user-select: none;
 	background-color: white;
 	border-bottom: 1px solid var(--main-border-color);
 	margin-bottom: -1px;
@@ -1063,6 +1064,7 @@ footer {
 	background-position: center;
 	background-size: 45%;
 	background-repeat: no-repeat;
+	cursor: pointer;
 }
 .thread-view .thread .header {
   padding: 1rem 0;
