@@ -67,6 +67,11 @@ export const ThreadHeader = ({thread, currentBubble}) =>
 
 
 // TODO: Create a thread type for each link type, and set thumbnails on post creation (possibly directly in the thread form)
+// and save the thumbnail link in DB
+
+
+
+// TODO: Create a component for content of each thread type
 
 export const ThreadContent = ({thread, currentBubble}) => {
   if (thread.type == "default") {
