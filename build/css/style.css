@@ -1076,20 +1076,23 @@ footer {
 
 .thread-view .scroller {
 	position: relative;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
 	/* background-color: var(--main-background-color); */
 	background-image: url(../img/topography.svg);
+	overflow: scroll;
+  display: flex;
+	flex-direction: column-reverse;
 }
 .thread-view .scroller .conversation {
-	overflow: auto;
-	padding: 6rem 0;
-}
-.thread-view .messages {
+	display: flex;
+  flex-direction: column;
 	min-height: 100vh;
+}
+
+.thread-view .messages {
 	display: flex;
   flex-direction: column-reverse;
+	padding: 6rem 0;
+	margin-top: auto;
 }
 .thread-view .messages li {
 	display: block;
