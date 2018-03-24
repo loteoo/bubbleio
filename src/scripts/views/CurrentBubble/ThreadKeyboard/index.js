@@ -52,6 +52,7 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
       socket.emit('new thread', thread);
 
 
+      ev.target.classList.remove("opened")
       ev.target.dataset.mode = "default";
       ev.target.reset();
     }
