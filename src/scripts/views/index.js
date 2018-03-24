@@ -74,7 +74,7 @@ export const view = (state, actions) => {
           return false;
         }}>
         <h2>Pick a name</h2>
-        <input type="text" placeholder="Type here..." name="username" autofocus />
+        <input type="text" placeholder="Type here..." name="username" minlength="3" maxlength="50" required autofocus />
       </form>
     )
   }

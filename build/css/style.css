@@ -1384,6 +1384,11 @@ footer {
 .threadKeyboard.opened .expander {
 	top: 0.5rem;
 	bottom: auto;
+  background-image: url(../img/plus.svg);
+  background-color: transparent;
+}
+.threadKeyboard.opened .expander.opened {
+  background-image: url(../img/x.svg);
 }
 
 
