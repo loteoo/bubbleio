@@ -26,7 +26,7 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
     <div class="panelScroll">
       <div class="panel" onmousedown={panelDrag.onmousedown} onmousemove={panelDrag.onmousemove} onmouseup={panelDrag.onmouseup} onmouseout={panelDrag.onmouseup}>
         <div class="content">
-          <ThreadFullContent thread={currentThread} currentBubble={currentBubble} />
+          <ThreadContent thread={currentThread} currentBubble={currentBubble} />
         </div>
         <ThreadFooter thread={currentThread} />
       </div>
@@ -60,33 +60,54 @@ export const ThreadOptions = ({currentThread}) => (state, actions) => {
 }
 
 
-export const ThreadFullHeader = ({thread, currentBubble}) =>
+const ThreadFullHeader = ({thread, currentBubble}) =>
   <div class="header">
     <h2>{thread.title}</h2>
     <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
   </div>
 
-export const ThreadFullContent = ({thread, currentBubble}) => {
+
+const ThreadContent = ({thread, currentBubble}) => {
   if (thread.type == "default") {
     return
   } else if (thread.type == "text") {
-    return <div class="text">{thread.text}</div>;
+    return <TextThreadContent thread={thread} />
   } else if (thread.type == "link") {
-    if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) { // If is youtube
-      return (
-        <a href={thread.url} target="_blank" class="linkPreview youtubePreview">
-          <img src={thread.thumbnail} alt={thread.title} />
-        </a>
-      )
-    } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
-      return (
-        <a href={thread.url} target="_blank" class="linkPreview vimeoPreview">
-          <img src={thread.thumbnail} alt={thread.title} />
-        </a>
-      )
-    }
-    return <a href={thread.url} target="_blank" class="link">{thread.url}</a>
+    return <LinkThreadContent thread={thread} />
+  } else if (thread.type == "youtube") {
+    return <YoutubeThreadContent thread={thread} />
+  } else if (thread.type == "vimeo") {
+    return <VimeoThreadContent thread={thread} />
   } else if (thread.type == "image") {
-    return <div class="img"><a href={thread.src} target="_blank"><img src={thread.src} alt={thread.title} /></a></div>
+    return <ImageThreadContent thread={thread} />
   }
 }
+
+
+
+
+
+const TextThreadContent = ({thread}) =>
+  <div class="text">
+    {thread.text}
+  </div>
+
+const LinkThreadContent = ({thread}) =>
+  <a href={thread.url} target="_blank" class="link">
+    {shortenText(thread.url, 32)}
+  </a>
+
+const ImageThreadContent = ({thread}) =>
+  <a href={thread.src} target="_blank" class="img">
+    <img src={thread.src} alt={thread.title} />
+  </a>
+
+const YoutubeThreadContent = ({thread}) =>
+  <a href={thread.url} target="_blank" class="linkPreview youtube">
+    <img src={thread.thumbnail} alt={thread.title} />
+  </a>
+
+const VimeoThreadContent = ({thread}) =>
+  <a href={thread.url} target="_blank" class="linkPreview vimeo">
+    <img src={thread.thumbnail} alt={thread.title} />
+  </a>

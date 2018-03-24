@@ -970,6 +970,9 @@ footer {
 	background-size: contain;
 	background-repeat: no-repeat;
 }
+.linkPreview img {
+	width: 100%;
+}
 
 
 .linkPreview.youtube::after {
@@ -1512,6 +1515,14 @@ footer {
 	}
 	.bubble-view.no-bubble {
 		right: 0;
+	}
+}
+@media (min-width:1400px) {
+	.slider>.bubble-view {
+    right: 480px;
+	}
+	.slider>.thread-view {
+    left: calc(100% - 480px);
 	}
 }
 
