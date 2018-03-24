@@ -58,11 +58,34 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
 
     return false;
   }}>
-    <div class="expander" onclick={ev => ev.target.classList.contains("opened") ? ev.target.classList.remove("opened") : ev.target.classList.add("opened")}>
-      <div class="default" onclick={ev => { ev.target.parentElement.parentElement.dataset.mode = "default"; ev.target.parentElement.classList.remove("opened") }}></div>
-      <div class="text" onclick={ev => { ev.target.parentElement.parentElement.dataset.mode = "text"; ev.target.parentElement.classList.remove("opened") }}></div>
-      <div class="link" onclick={ev => { ev.target.parentElement.parentElement.dataset.mode = "link"; ev.target.parentElement.classList.remove("opened") }}></div>
-      <div class="image" onclick={ev => { ev.target.parentElement.parentElement.dataset.mode = "image"; ev.target.parentElement.classList.remove("opened") }}></div>
+    <div class="expander" onclick={ev => {
+        if (ev.target.classList.contains("opened")) {
+          ev.target.parentElement.classList.remove("opened")
+            ev.target.classList.remove("opened")
+        } else {
+          ev.target.classList.add("opened")
+        }
+      }}>
+      <div class="default" onclick={ev => {
+        ev.target.parentElement.parentElement.dataset.mode = "default";
+        ev.target.parentElement.classList.remove("opened")
+        ev.target.parentElement.parentElement.classList.add("opened")
+      }}></div>
+      <div class="text" onclick={ev => {
+        ev.target.parentElement.parentElement.dataset.mode = "text";
+        ev.target.parentElement.classList.remove("opened")
+        ev.target.parentElement.parentElement.classList.add("opened")
+      }}></div>
+      <div class="link" onclick={ev => {
+        ev.target.parentElement.parentElement.dataset.mode = "link";
+        ev.target.parentElement.classList.remove("opened")
+        ev.target.parentElement.parentElement.classList.add("opened")
+      }}></div>
+      <div class="image" onclick={ev => {
+        ev.target.parentElement.parentElement.dataset.mode = "image";
+        ev.target.parentElement.classList.remove("opened")
+        ev.target.parentElement.parentElement.classList.add("opened")
+      }}></div>
     </div>
     <input type="text" name="title" placeholder="Type something..." class="title" maxlength="50" />
     <textarea name="text" placeholder="Type something..." maxlength="8000"></textarea>

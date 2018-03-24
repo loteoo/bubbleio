@@ -1207,7 +1207,7 @@ footer {
 }
 
 .keyboard input.title {
-  padding: 0.5em 1em;
+  padding: 0.5em 3em;
 }
 
 
@@ -1293,6 +1293,7 @@ footer {
 	background-position: center;
 	background-size: 60%;
 	background-repeat: no-repeat;
+	transition: all 200ms;
 }
 .keyboard .expander:active {
 	-webkit-tap-highlight-color: transparent;
@@ -1363,24 +1364,36 @@ footer {
 
 
 
-
+.threadKeyboard {
+	transition: transform 200ms;
+	transform: translateY(100%);
+}
 .threadKeyboard .expander {
 	top: auto;
-	left: auto;
-	right: 0.5rem;
 	bottom: calc(100% + 0.5rem);
 	border-radius: 100%;
   background-color: var(--secondary-accent-color);
   background-image: url(../img/plus-white.svg);
 }
 .threadKeyboard .expander.opened {
-background-image: url(../img/x-white.svg);
+	background-image: url(../img/x-white.svg);
 }
+.threadKeyboard.opened {
+	transform: translateY(0);
+}
+.threadKeyboard.opened .expander {
+	top: 0.5rem;
+	bottom: auto;
+}
+
 
 
 
 .messageKeyboard .expander {
 	display: none;
+}
+.messageKeyboard input.title {
+  padding-left: 1em;
 }
 
 
