@@ -114,7 +114,7 @@ const VimeoThreadPreview = ({thread}) =>
 
 
 
-export const ThreadFooter = ({thread}) => (actions) => (
+export const ThreadFooter = ({thread}) => (state, actions) => (
   <div class="footer">
     <div class="users">
       <div class="count" userCount={thread.userCount} onupdate={(el, oldProps) => {
