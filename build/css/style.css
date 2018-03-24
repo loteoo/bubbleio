@@ -972,10 +972,10 @@ footer {
 }
 
 
-.linkPreview.youtubePreview::after {
+.linkPreview.youtube::after {
 	background-image: url(../img/youtube-white.svg);
 }
-.linkPreview.vimeoPreview::after {
+.linkPreview.vimeo::after {
 	background-image: url(../img/video-white.svg);
 }
 

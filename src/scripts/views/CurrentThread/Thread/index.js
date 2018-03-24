@@ -1,6 +1,6 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
-import {timeSince, shortenText, getYoutubeId, panelDrag} from '../../../utils/'
+import {timeSince, shortenText, panelDrag} from '../../../utils/'
 import {ThreadFooter} from '../../CurrentBubble/ThreadItem/'
 
 

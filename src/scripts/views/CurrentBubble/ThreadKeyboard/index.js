@@ -1,5 +1,5 @@
 import {h} from 'hyperapp'
-import {ObjectId} from '../../../utils/'
+import {ObjectId, getYoutubeId, getVimeoId} from '../../../utils/'
 
 
 export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
@@ -7,6 +7,7 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
     ev.preventDefault();
 
     if (ev.target.title.value) {
+
 
 
       // Create the thread object
@@ -20,12 +21,32 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
         bubble_id: currentBubble._id
       }
 
+
       if (ev.target.dataset.mode == "text") {
         thread.text = ev.target.text.value;
       } else if (ev.target.dataset.mode == "link") {
         thread.url = ev.target.link.value;
+        if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) { // If is youtube
+          thread.type = "youtube";
+          thread.thumbnail = "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
+
+
+        } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
+          thread.type = "vimeo";
+
+          fetch('http://vimeo.com/api/v2/video/' + getVimeoId(thread.url) + '.json')
+            .then(response => response.json())
+            .then(function(response) {
+              thread.thumbnail = response[0].thumbnail_large;
+              socket.emit('update thread', thread);
+            });
+
+        } else {
+
+        }
       } else if (ev.target.dataset.mode == "image") {
         thread.src = ev.target.image_link.value;
+        thread.thumbnail = thread.src;
       }
 
 
@@ -55,9 +76,10 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
       ev.target.classList.remove("opened")
       ev.target.dataset.mode = "default";
       ev.target.reset();
+
     }
 
-    return false;
+    // return false;
   }}>
     <div class="expander" onclick={ev => {
         if (ev.target.classList.contains("opened")) {

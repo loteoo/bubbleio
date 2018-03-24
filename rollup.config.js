@@ -11,6 +11,6 @@ export default {
       browser: true,
       main: true
     }),
-    jsx( {factory: 'h'} )
+    jsx( {factory: 'h'} ),
   ]
 };

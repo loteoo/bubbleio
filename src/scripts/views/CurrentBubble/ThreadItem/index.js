@@ -1,34 +1,28 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
-import {timeSince, shortenText, getThumbnail, getYoutubeId} from '../../../utils/'
+import {timeSince, shortenText} from '../../../utils/'
 
 
-export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (state, actions) => {
-  if (!thread.thumbnail) {
-    thread.thumbnail = getThumbnail(thread);
-  }
-  return (
-    <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} current={(thread._id == Object.assign({'_id': ""}, currentThread)._id).toString()} hasthumbnail={(typeof thread.thumbnail !== 'undefined').toString()} onclick={ev => {
-        actions.location.go("/" + currentBubble.name + "/" + thread._id);
-      }} oncreate={el => {
-        el.style.transform = "translateX(-100%)";
-        el.style.opacity = "0";
-        setTimeout(() => {
-          el.removeAttribute("style");
-        }, index * 40 + 40);
-      }} onupdate={(el, oldProps) => {
-        if (index != oldProps.index) { // If order in list changed
-          el.style.transitionDuration = "0ms";
-          el.style.zIndex = "1";
-          el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
-          void el.offsetWidth; // This forces element render
-          el.removeAttribute("style");
-        }
-      }}>
-      <ThreadInner thread={thread} currentBubble={currentBubble} />
-    </li>
-  )
-}
+export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (state, actions) =>
+  <li key={thread._id} class="thread" index={index} type={thread.type} upvoted={thread.upvoted} current={(thread._id == Object.assign({'_id': ""}, currentThread)._id).toString()} hasthumbnail={(typeof thread.thumbnail !== 'undefined').toString()} onclick={ev => {
+      actions.location.go("/" + currentBubble.name + "/" + thread._id);
+    }} oncreate={el => {
+      el.style.transform = "translateX(-100%)";
+      el.style.opacity = "0";
+      setTimeout(() => {
+        el.removeAttribute("style");
+      }, index * 40 + 40);
+    }} onupdate={(el, oldProps) => {
+      if (index != oldProps.index) { // If order in list changed
+        el.style.transitionDuration = "0ms";
+        el.style.zIndex = "1";
+        el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
+        void el.offsetWidth; // This forces element render
+        el.removeAttribute("style");
+      }
+    }}>
+    <ThreadInner thread={thread} currentBubble={currentBubble} />
+  </li>
 
 
 
@@ -50,7 +44,7 @@ export const ThreadInner = ({thread, currentBubble}) => {
     return (
       <div class="inner mobile">
         <ThreadHeader thread={thread} currentBubble={currentBubble} />
-        <ThreadContent thread={thread} currentBubble={currentBubble} />
+        <ThreadPreview thread={thread} currentBubble={currentBubble} />
         <ThreadFooter thread={thread} />
       </div>
     )
@@ -58,7 +52,7 @@ export const ThreadInner = ({thread, currentBubble}) => {
 }
 
 
-export const ThreadHeader = ({thread, currentBubble}) =>
+const ThreadHeader = ({thread, currentBubble}) =>
   <div class="header">
     <h2>{shortenText(thread.title, 32)}</h2>
     <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
@@ -73,28 +67,19 @@ export const ThreadHeader = ({thread, currentBubble}) =>
 
 // TODO: Create a component for content of each thread type
 
-export const ThreadContent = ({thread, currentBubble}) => {
+const ThreadPreview = ({thread, currentBubble}) => {
   if (thread.type == "default") {
     return
   } else if (thread.type == "text") {
-    return <div class="text">{shortenText(thread.text, 250)}</div>;
+    return <TextThreadPreview thread={thread} />
   } else if (thread.type == "link") {
-    if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) { // If is youtube
-      return (
-        <div class="linkPreview youtubePreview">
-          <img src={thread.thumbnail} alt={thread.title} />
-        </div>
-      )
-    } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
-      return (
-        <div class="linkPreview vimeoPreview">
-          <img src={thread.thumbnail} alt={thread.title} />
-        </div>
-      )
-    }
-    return <a href={thread.url} target="_blank" class="link">{thread.url}</a>
+    return <LinkThreadPreview thread={thread} />
+  } else if (thread.type == "youtube") {
+    return <YoutubeThreadPreview thread={thread} />
+  } else if (thread.type == "vimeo") {
+    return <VimeoThreadPreview thread={thread} />
   } else if (thread.type == "image") {
-    return <div class="img"><img src={thread.src} alt={thread.title} /></div>
+    return <ImageThreadPreview thread={thread} />
   }
 }
 
@@ -102,8 +87,34 @@ export const ThreadContent = ({thread, currentBubble}) => {
 
 
 
+const TextThreadPreview = ({thread}) =>
+  <div class="text">
+    {shortenText(thread.text, 250)}
+  </div>
 
-export const ThreadFooter = ({thread}) => (state, actions) => (
+const LinkThreadPreview = ({thread}) =>
+  <a href={thread.url} target="_blank" class="link">
+    {shortenText(thread.url, 32)}
+  </a>
+
+const ImageThreadPreview = ({thread}) =>
+  <div class="img">
+    <img src={thread.src} alt={thread.title} />
+  </div>
+
+const YoutubeThreadPreview = ({thread}) =>
+  <div class="linkPreview youtube">
+    <img src={thread.thumbnail} alt={thread.title} />
+  </div>
+
+const VimeoThreadPreview = ({thread}) =>
+  <div class="linkPreview vimeo">
+    <img src={thread.thumbnail} alt={thread.title} />
+  </div>
+
+
+
+export const ThreadFooter = ({thread}) => (actions) => (
   <div class="footer">
     <div class="users">
       <div class="count" userCount={thread.userCount} onupdate={(el, oldProps) => {

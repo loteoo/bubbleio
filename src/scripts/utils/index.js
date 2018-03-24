@@ -102,31 +102,6 @@ export const onKeyDown = e => {
 
 
 
-export const getThumbnail = thread => {
-  if (thread.type == "default") {
-    return
-  } else if (thread.type == "text") {
-    return
-  } else if (thread.type == "link") {
-    if (thread.url.match(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/)) {
-      // If is youtube
-      return "https://img.youtube.com/vi/"+getYoutubeId(thread.url)+"/hqdefault.jpg";
-    } else if (thread.url.match(/^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/)) {
-      fetch('http://vimeo.com/api/v2/video/' + getVimeoId(thread.url) + '.json')
-        .then(response => response.json())
-        .then(function(response) {
-          thread.thumbnail = response[0].thumbnail_large;
-          return thread.thumbnail;
-        });
-    }
-  } else if (thread.type == "image") {
-    return thread.src
-  }
-  return
-}
-
-
-
 
 
 export const getYoutubeId = url => {

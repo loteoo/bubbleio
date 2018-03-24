@@ -493,7 +493,7 @@ io.on('connection', function (socket) {
     socket.broadcast.to(thread.bubble_id).emit('delete thread', thread);
 
     // Update clients in the thread
-    socket.broadcast.to(thread.thread_id).emit('delete thread', thread);
+    socket.broadcast.to(thread._id).emit('delete thread', thread);
 
     // Update DB
     dbo.collection("threads").findOneAndUpdate({ _id: ObjectID(thread._id) }, { $set: {
@@ -519,8 +519,7 @@ io.on('connection', function (socket) {
 
     // Update DB
     dbo.collection("threads").findOneAndUpdate({
-      _id: ObjectID(thread._id),
-      archived: { $exists: false }
+      _id: ObjectID(thread._id)
     }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
       if (err) throw err;
 
@@ -539,7 +538,53 @@ io.on('connection', function (socket) {
       socket.broadcast.to(thread.bubble_id).emit('update state', newState);
 
       // Update clients in the thread
-      socket.broadcast.to(thread.thread_id).emit('update state', newState);
+      socket.broadcast.to(thread._id).emit('update state', newState);
+
+    });
+  });
+
+
+
+
+
+
+
+  // Pass all received message to all clients
+  socket.on('update thread', function (thread) {
+
+
+    let tempID = thread._id;
+
+    delete thread._id;
+    delete thread.bubble_id;
+    delete thread.upvoted;
+    delete thread.relevance;
+    delete thread.userCount;
+
+    // Update DB
+    dbo.collection("threads").findOneAndUpdate({
+      _id: ObjectID(tempID)
+    }, {
+      $set: thread
+    }, { returnOriginal: false }, function(err, result) {
+      if (err) throw err;
+
+      let newState = {
+        bubbles: [
+          {
+            _id: result.value.bubble_id,
+            threads: [
+              result.value
+            ]
+          }
+        ]
+      };
+
+      // Update clients in the bubble
+      io.to(result.value.bubble_id).emit('update state', newState);
+
+      // Update clients in the thread
+      io.to(result.value._id).emit('update state', newState);
 
     });
   });
