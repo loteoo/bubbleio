@@ -73,6 +73,29 @@ export const shortenText = (s, n) => {
 
 
 
+export const onKeyDown = e => {
+  if (e.key == 'ArrowUp' || e.key == 'ArrowDown') {
+    let currentThread = document.querySelector('.bubble-view .thread[current="true"]');
+    let scrollIntoViewOptions = {
+      behavior: "auto",
+      block: "center",
+      inline: "nearest"
+    }
+    if (e.key == 'ArrowUp') {
+      if (currentThread.previousSibling) {
+        currentThread.previousSibling.click();
+        currentThread.previousSibling.scrollIntoView(scrollIntoViewOptions);
+      }
+    } else if (e.key == 'ArrowDown') {
+      if (currentThread.nextSibling) {
+        currentThread.nextSibling.click();
+        currentThread.nextSibling.scrollIntoView(scrollIntoViewOptions);
+      }
+    }
+  }
+}
+
+
 
 
 

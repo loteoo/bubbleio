@@ -8,6 +8,7 @@ import {location} from "@hyperapp/router"
 import {state} from './state/'
 import {actions} from './actions/'
 import {view} from './views/'
+import {onKeyDown} from './utils/'
 
 
 
@@ -36,6 +37,8 @@ window.socket.on('delete thread', thread => main.deleteThread(thread));
 window.socket.on('redirect', pathname => main.location.go(pathname));
 
 
+// Handle keyboard events
+document.onkeydown = onKeyDown;
 
 // // Activate the service worker
 // if ('serviceWorker' in navigator) {

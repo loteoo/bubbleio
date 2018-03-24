@@ -1207,7 +1207,7 @@ footer {
 }
 
 .keyboard input.title {
-  padding: 0.5em 3em;
+  padding: 0.5em 1em;
 }
 
 
@@ -1364,11 +1364,23 @@ footer {
 
 
 
+.threadKeyboard .expander {
+	top: auto;
+	left: auto;
+	right: 0.5rem;
+	bottom: calc(100% + 0.5rem);
+	border-radius: 100%;
+  background-color: var(--secondary-accent-color);
+  background-image: url(../img/plus-white.svg);
+}
+.threadKeyboard .expander.opened {
+background-image: url(../img/x-white.svg);
+}
+
+
+
 .messageKeyboard .expander {
 	display: none;
-}
-.messageKeyboard input.title {
-	padding-left: 1em;
 }
 
 
