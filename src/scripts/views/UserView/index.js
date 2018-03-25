@@ -23,6 +23,7 @@ export const UserView = ({currentBubble}) => (state, actions) =>
               localStorage.clear();
               location.reload();
             }}><span>Log out</span></li>
+            <LayoutModeSwitcher />
           </ul>
         </div>
       </div>
@@ -76,3 +77,31 @@ const BubbleItem = ({bubble, currentBubble}) =>
       </div>
     </Link>
   </li>
+
+
+const LayoutModeSwitcher = () => (state, actions) => {
+  if (state.user.layoutMode == "default") {
+    return (
+      <li onclick={ev => {
+        ev.target.parentElement.parentElement.classList.remove("opened");
+        actions.updateState({
+          user: {
+            layoutMode: "compact"
+          }
+        });
+        console.log(state.user.layoutMode);
+      }}><span>Use compact layout</span></li>
+    )
+  } else {
+    return (
+      <li onclick={ev => {
+        ev.target.parentElement.parentElement.classList.remove("opened");
+        actions.updateState({
+          user: {
+            layoutMode: "default"
+          }
+        });
+      }}><span>Use default layout</span></li>
+      )
+  }
+}

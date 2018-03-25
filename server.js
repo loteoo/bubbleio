@@ -776,6 +776,24 @@ io.on('connection', function (socket) {
 
 
 
+  // Pass all received message to all clients
+  socket.on('update user', function (user) {
+
+
+    let tempID = user._id;
+
+    delete user._id;
+
+    // Update DB
+    dbo.collection("users").findOneAndUpdate({
+      _id: ObjectID(tempID)
+    }, {
+      $set: user
+    }, { returnOriginal: false }, function(err, result) {
+      if (err) throw err;
+    });
+  });
+
 
 
 });

@@ -332,6 +332,7 @@ fieldset {
 .options {
 	position: relative;
 	color: var(--main-color);
+	user-select: none;
 }
 .options button {
 	display: block;
@@ -349,7 +350,7 @@ fieldset {
 	top: 100%;
 	right: 0;
 	z-index: 1;
-	width: 180px;
+	width: 200px;
 	background-color: white;
 	border-radius: 5px;
 	border: 1px solid var(--main-border-color);
@@ -693,11 +694,18 @@ footer {
 	opacity: 1;
 }
 .thread .inner {
+	width: 100%;
+	display: flex;
+	align-items: stretch;
+	flex-direction: column;
+}
+
+.bubble-view .thread {
 	position: relative;
 	margin: 0 0 1em 0;
 	background-color: white;
-  border-top: 1px solid var(--main-border-color);
-  border-bottom: 1px solid var(--main-border-color);
+	border-top: 1px solid var(--main-border-color);
+	border-bottom: 1px solid var(--main-border-color);
 	cursor: pointer;
 	overflow: hidden;
 }
@@ -776,7 +784,7 @@ footer {
 	border: 2px solid var(--main-color);
 	transition: all 200ms;
 }
-.thread .footer>*>.count.countUp>span {
+	.thread .footer>*>.count.countUp>span {
 	transform: scale(1.5);
 	transition: all 0ms;
 }
@@ -867,16 +875,14 @@ footer {
 
 
 /* Thread displays */
-
-
-.thread .desktop {
+.compact .thread {
 	display: flex;
 	align-items: stretch;
-  border: 1px solid var(--main-border-color);
-	border-radius: 0.5rem;
-	margin: 1em;
 }
-.thread .desktop .thumbnail {
+.compact .thread .inner {
+	flex-direction: row;
+}
+.compact .thread .thumbnail {
 	background-color: var(--main-border-color);
 	position: relative;
 	width: 12rem;
@@ -884,7 +890,7 @@ footer {
 	background-size: cover;
 	background-repeat: no-repeat;
 }
-.thread .desktop .info {
+.compact .thread .info {
 	width: calc(100% - 12rem);
 }
 
@@ -902,7 +908,7 @@ footer {
 
 
 /* Text thread */
-.thread[type="text"] .mobile .header {
+.thread[type="text"] .header {
 	padding-bottom: 1rem;
 }
 .thread[type="text"] .text {
@@ -930,7 +936,7 @@ footer {
 
 
 /* Image thread */
-.thread[type="image"] .mobile .header {
+.thread[type="image"] .header {
 	padding-bottom: 1rem;
 }
 .thread[type="image"][hasthumbnail="false"] .thumbnail {
@@ -1464,11 +1470,17 @@ footer {
 		right: 280px;
 		background-size: 200px;
 	}
-	.bubble-view .thread[current="true"] .inner {
+	.bubble-view .thread[current="true"] {
 		border-color: var(--primary-accent-color);
 	}
 	.bubble-view .bubble-header {
 		height: 6rem;
+	}
+
+	.bubble-view .thread {
+	  border: 1px solid var(--main-border-color);
+		border-radius: 0.5rem;
+		margin: 1em;
 	}
 
 

@@ -29,24 +29,23 @@ export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (st
 
 
 
-export const ThreadInner = ({thread, currentBubble}) => {
-  // TODO: This should be a "Compact mode" that the user can switch to
-  if (window.innerWidth >= 768) { // If desktop
+export const ThreadInner = ({thread, currentBubble}) => (state, actions) => {
+  if (state.user.layoutMode == "default") {
     return (
-      <div class="inner desktop">
+      <div class="inner">
+        <ThreadHeader thread={thread} currentBubble={currentBubble} />
+        <ThreadPreview thread={thread} currentBubble={currentBubble} />
+        <ThreadFooter thread={thread} />
+      </div>
+    )
+  } else { // Compact mode
+    return (
+      <div class="inner">
         <div class="thumbnail" Style={"background-image: url('"+thread.thumbnail+"')"}></div>
         <div class="info">
           <ThreadHeader thread={thread} currentBubble={currentBubble} />
           <ThreadFooter thread={thread} />
         </div>
-      </div>
-    )
-  } else { // if mobile
-    return (
-      <div class="inner mobile">
-        <ThreadHeader thread={thread} currentBubble={currentBubble} />
-        <ThreadPreview thread={thread} currentBubble={currentBubble} />
-        <ThreadFooter thread={thread} />
       </div>
     )
   }

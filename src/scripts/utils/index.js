@@ -57,7 +57,10 @@ export const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toStrin
 
 export const getStateFromStorage = () => JSON.parse(window.localStorage.getItem('bubbleio'))
 
-export const storeStateInStorage = (state) => window.localStorage.setItem('bubbleio', JSON.stringify(state))
+export const storeStateInStorage = (state) => {
+  window.localStorage.setItem('bubbleio', JSON.stringify(state));
+  return state;
+}
 
 
 
@@ -193,10 +196,12 @@ export const mergeStates = (stateA, stateB) => {
 
   stateB.bubbles = stateA.bubbles; // TODO: Optimize this (currently the array gets passed around 3 times, should be 1 time only)
 
-  // Merge the state
-  let newState = Object.assign({}, stateA, stateB);
-  storeStateInStorage(newState);
-  return newState;
+
+  // Merge user props
+  stateB.user = Object.assign({}, stateA.user, stateB.user);
+
+  // Merge the state, save in storage and return
+  return storeStateInStorage(Object.assign({}, stateA, stateB));
 }
 
 
