@@ -65,7 +65,7 @@ export const UserView = ({currentBubble}) => (state, actions) =>
     </div>
   </div>
 
-
+// TODO: micro animation when the user count changes?
 const BubbleItem = ({bubble, currentBubble}) =>
   <li current={(bubble.name == Object.assign({"name": ""}, currentBubble).name).toString()} userCount={bubble.userCount}>
     <Link to={"/" + bubble.name}>

@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 import {ObjectId, getYoutubeId, getVimeoId} from '../../../utils/'
 
-
+// TODO: This should be a full screen posting experience, very pimped out
 export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
   <form class="keyboard threadKeyboard" data-mode="default" onsubmit={ev => {
     ev.preventDefault();

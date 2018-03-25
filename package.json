@@ -8,8 +8,8 @@
     "ejs": "^2.5.7",
     "express": "^4.16.3",
     "hyperapp": "^1.2.1",
-    "mongodb": "^3.0.2",
-    "npm": "^5.7.1",
+    "mongodb": "^3.0.5",
+    "npm": "^5.8.0",
     "socket.io": "^2.0.4"
   },
   "devDependencies": {

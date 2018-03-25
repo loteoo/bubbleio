@@ -30,6 +30,7 @@ export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (st
 
 
 export const ThreadInner = ({thread, currentBubble}) => {
+  // TODO: This should be a "Compact mode" that the user can switch to
   if (window.innerWidth >= 768) { // If desktop
     return (
       <div class="inner desktop">
@@ -60,7 +61,7 @@ const ThreadHeader = ({thread, currentBubble}) =>
 
 
 
-
+// TODO: Max height on previews
 const ThreadPreview = ({thread, currentBubble}) => {
   if (thread.type == "default") {
     return
@@ -107,7 +108,7 @@ const VimeoThreadPreview = ({thread}) =>
   </div>
 
 
-
+// TODO: Upvote and downvotes
 export const ThreadFooter = ({thread}) => (state, actions) => (
   <div class="footer">
     <div class="users">

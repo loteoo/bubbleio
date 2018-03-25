@@ -119,7 +119,7 @@ export const getVimeoId = url => {
 
 
 
-
+// TODO: Only enable with compact mode on desktop
 export const panelDrag = {
   onmousedown: ev => {
     ev.target.parentElement.parentElement.starty = ev.clientY + ev.target.parentElement.parentElement.scrollTop;
