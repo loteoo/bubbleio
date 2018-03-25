@@ -47,13 +47,13 @@ export const CurrentBubble = ({currentBubble, currentThread}) => (state, actions
               }}>
               </button>
               <ul>
+                <NotificationToggle currentBubble={currentBubble} />
                 <li onclick={ev => {
                   ev.target.parentElement.parentElement.classList.remove("opened");
                   actions.location.go("/");
                   actions.deleteBubble(currentBubble);
                   socket.emit('leave bubble', currentBubble);
                 }}><span>Leave bubble</span></li>
-                <NotificationToggle currentBubble={currentBubble} />
                 <OwnerAction currentBubble={currentBubble} />
               </ul>
             </div>
@@ -75,19 +75,36 @@ export const CurrentBubble = ({currentBubble, currentThread}) => (state, actions
   }
 }
 
-// TODO: make this work VISUALLY for now
+
+
 // TODO: Push notifications!
 export const NotificationToggle = ({currentBubble}) => (state, actions) => {
   if (currentBubble.notifications === true) {
     return (
       <li onclick={ev => {
         console.log("Comming soon...");
+        actions.updateState({
+          bubbles: [
+            {
+              _id: currentBubble._id,
+              notifications: false
+            }
+          ]
+        });
       }}><span>Turn off notifications</span></li>
     )
   } else {
     return (
       <li onclick={ev => {
         console.log("Comming soon...");
+        actions.updateState({
+          bubbles: [
+            {
+              _id: currentBubble._id,
+              notifications: true
+            }
+          ]
+        });
       }}><span>Turn on notifications</span></li>
     )
   }

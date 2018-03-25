@@ -689,7 +689,7 @@ footer {
 
 
 .thread {
-	transition: all 200ms;
+	transition: all 250ms;
 	transform: translateX(0);
 	opacity: 1;
 }
@@ -1489,6 +1489,12 @@ footer {
 	}
 	.thread-view .thread .header {
 	  padding: 1rem 1.5rem;
+	}
+	.default .thread-view .thread .panelScroll {
+		display: none;
+	}
+	.default .thread-view .thread-header {
+		border-bottom: 1px solid var(--main-border-color);
 	}
 	.thread-view.no-thread {
 		background-size: 200px;

@@ -27,7 +27,16 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
             }
           }}>
         </button>
-        <ThreadOptions currentThread={currentThread} />
+        <ul>
+          <NotificationToggle currentThread={currentThread} />
+          <li onclick={ev => {
+            console.log("Saving comming soon...");
+          }}><span>Save</span></li>
+          <li onclick={ev => {
+              console.log("Downvote comming soon...");
+          }}><span>Downvote</span></li>
+          <DeleteThread currentThread={currentThread} />
+        </ul>
       </div>
     </div>
     <div class="panelScroll">
@@ -42,30 +51,58 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
 
 
 
-export const ThreadOptions = ({currentThread}) => (state, actions) => {
+export const DeleteThread = ({currentThread}) => (state, actions) => {
   if (currentThread.author == state.user.username) { // If user owns this thread
     return (
-      <ul>
-        <li onclick={ev => {
-          actions.deleteThread(currentThread)
-          socket.emit('archive thread', currentThread)
-        }}><span>Delete</span></li>
-      </ul>
-    )
-  } else {
-    return (
-      <ul>
-        <li onclick={ev => {
-          console.log("Saving comming soon...");
-        }}><span>Save</span></li>
-        <li onclick={ev => {
-            console.log("Downvote comming soon...");
-        }}><span>Downvote</span></li>
-      </ul>
+      <li onclick={ev => {
+        actions.deleteThread(currentThread)
+        socket.emit('archive thread', currentThread)
+      }}><span>Delete</span></li>
     )
   }
 }
 
+export const NotificationToggle = ({currentThread}) => (state, actions) => {
+  if (currentThread.notifications === true) {
+    return (
+      <li onclick={ev => {
+        console.log("Comming soon...");
+        actions.updateState({
+          bubbles: [
+            {
+              _id: currentThread.bubble_id,
+              threads: [
+                {
+                  _id: currentThread._id,
+                  notifications: false
+                }
+              ]
+            }
+          ]
+        });
+      }}><span>Turn off notifications</span></li>
+    )
+  } else {
+    return (
+      <li onclick={ev => {
+        console.log("Comming soon...");
+        actions.updateState({
+          bubbles: [
+            {
+              _id: currentThread.bubble_id,
+              threads: [
+                {
+                  _id: currentThread._id,
+                  notifications: true
+                }
+              ]
+            }
+          ]
+        });
+      }}><span>Turn on notifications</span></li>
+    )
+  }
+}
 
 const ThreadFullHeader = ({thread, currentBubble}) =>
   <div class="header">
