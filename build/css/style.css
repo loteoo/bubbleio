@@ -1101,6 +1101,7 @@ footer {
 	pointer-events: none;
 	padding: 0 1rem;
 	min-height: 5.5rem;
+	width: 100%;
 }
 .thread-view .thread-header .back {
 	pointer-events: all;
