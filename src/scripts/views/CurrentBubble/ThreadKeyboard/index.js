@@ -125,11 +125,11 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
     </div>
     <input type="text" name="title" placeholder="Type something..." class="title" maxlength="200" />
     <textarea name="text" placeholder="Type something..." maxlength="8000"></textarea>
-    <input type="text" name="link" placeholder="Paste link here" class="link" />
+    <input type="url" name="link" placeholder="Paste link here" class="link" />
     <div class="image">
       <label for="image_file"></label>
-      <input type="file" name="image_file" id="image_file" />
-      <input type="text" name="image_link" placeholder="Paste link here" />
+      <input type="file" name="image_file" id="image_file" accept="image/gif, image/jpeg, image/png" />
+      <input type="url" name="image_link" placeholder="Paste link here" />
     </div>
     <button type="submit" class="submit"></button>
   </form>

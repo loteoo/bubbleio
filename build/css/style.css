@@ -651,7 +651,8 @@ footer {
 	justify-content: flex-start;
 	background-color: white;
 	border-bottom: 1px solid var(--main-border-color);
-	padding: 0 1.5rem;
+	padding: 0 1rem;
+  min-height: 5.5rem;
 }
 
 .bubble-view .bubble-header .options {
@@ -660,11 +661,11 @@ footer {
 
 
 .bubble-view h2 {
-	margin: 0;
+	margin: 0 1rem;
 }
 
 .bubble-view ul.threads {
-	padding: 4rem 0 16rem 0;
+	padding: 6rem 0 16rem 0;
 }
 
 
@@ -695,6 +696,7 @@ footer {
 	transition: all 250ms;
 	transform: translateX(0);
 	opacity: 1;
+	user-select: none;
 }
 .thread .inner {
 	width: 100%;
@@ -711,6 +713,12 @@ footer {
 	border-radius: 0.5rem;
 	cursor: pointer;
 	overflow: hidden;
+
+	/* border-radius: 0;
+	margin: 0 0 1.5rem 0;
+	border: 0;
+	border-top: 1px solid var(--main-border-color);
+	border-bottom: 1px solid var(--main-border-color); */
 }
 
 .thread .header {
@@ -918,6 +926,7 @@ footer {
 	white-space: pre-wrap;
 	padding: 0 1.5rem;
 	font-size: 1.4rem;
+  user-select: text;
 }
 .thread[type="text"][hasthumbnail="false"] .thumbnail {
 	background-image: url(../img/align-left.svg) !important;
@@ -1012,6 +1021,7 @@ footer {
 	position: relative;
 	z-index: 1;
 	pointer-events: none;
+	padding: 0 1rem;
 	min-height: 5.5rem;
 }
 .thread-view .thread-header .back {
@@ -1054,7 +1064,6 @@ footer {
 }
 .thread-view .thread .panelScroll .panel .footer {
 	position: relative;
-	user-select: none;
 }
 
 .thread-view .thread .panelScroll .panel .footer::before {
@@ -1092,6 +1101,8 @@ footer {
 }
 .thread-view .thread .header {
   padding: 1rem 0;
+  margin: 0 1rem;
+	max-width: calc(100% - 12rem);
 }
 
 
@@ -1143,7 +1154,7 @@ footer {
 	transform: translateX(100%);
 }
 .thread-view .messages li .info {
-	font-size: 1rem;
+	font-size: 1.2rem;
 	opacity: 0.5;
 	line-height: 1;
 }
@@ -1475,7 +1486,6 @@ footer {
 
 	.bubble-view .bubble-header {
 		position: static;
-		min-height: 5.5rem;
 	}
 	.bubble-view ul.threads {
 		padding: 0 1.5rem 9rem 1.5rem;
@@ -1499,9 +1509,6 @@ footer {
 
 	.thread-view .thread-header .back {
 		display: none;
-	}
-	.thread-view .thread .header {
-	  padding: 1rem 1.5rem;
 	}
 	.default .thread-view .thread .panelScroll {
 		display: none;
