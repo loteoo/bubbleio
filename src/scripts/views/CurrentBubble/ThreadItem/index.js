@@ -132,40 +132,17 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
         <span>{thread.messages.length}</span>
       </div>
     </div>
-    <div class="score">
-      <button class="upvote" onclick={ev => {
-        ev.stopPropagation();
-
-        // Increase score and local upvoted count
-        thread.score++;
-        thread.upvoted++;
-
-        // Update immediately on this client
-        actions.updateState({
-          bubbles: [
-            {
-              _id: thread.bubble_id,
-              threads: [
-                thread
-              ]
-            }
-          ]
-        });
-
-        // Send to server
-        socket.emit('update thread', thread);
-
-      }}>
-      </button>
-      <div class="count" score={thread.score} onupdate={(el, oldProps) => {
-        if (oldProps.score < thread.score) {
-          el.classList.add("countUp");
-          void el.offsetWidth; // This forces element render
-          el.classList.remove("countUp");
-        }
-      }}>
-        <span>{thread.score}</span>
-      </div>
+    <div class="score" score={thread.score} onupdate={(el, oldProps) => {
+      if (oldProps.score < thread.score) {
+        el.classList.add("countUp");
+        void el.offsetWidth; // This forces element render
+        el.classList.remove("countUp");
+      } else if (oldProps.score > thread.score) {
+        el.classList.add("countDown");
+        void el.offsetWidth; // This forces element render
+        el.classList.remove("countDown");
+      }
+    }}>
       <button class="downvote" onclick={ev => {
         ev.stopPropagation();
 
@@ -188,6 +165,44 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
         // Send to server
         socket.emit('update thread', thread);
 
+        // Start cooldown animation
+        ev.target.style.pointerEvents = "none";
+        setTimeout(() => {
+          ev.target.style.pointerEvents = "all";
+        }, 2000);
+
+      }}>
+      </button>
+      <div class="count">
+        <span>{thread.score}</span>
+      </div>
+      <button class="upvote" onclick={ev => {
+        ev.stopPropagation();
+
+        // Increase score and local upvoted count
+        thread.score++;
+        thread.upvoted++;
+
+        // Update immediately on this client
+        actions.updateState({
+          bubbles: [
+            {
+              _id: thread.bubble_id,
+              threads: [
+                thread
+              ]
+            }
+          ]
+        });
+
+        // Send to server
+        socket.emit('update thread', thread);
+
+        // Start cooldown animation
+        ev.target.style.pointerEvents = "none";
+        setTimeout(() => {
+          ev.target.style.pointerEvents = "all";
+        }, 1000);
       }}>
       </button>
     </div>

@@ -795,7 +795,7 @@ footer {
 	border: 2px solid var(--main-color);
 	transition: all 200ms;
 }
-	.thread .footer>*>.count.countUp>span {
+.thread .footer>*>.count.countUp>span {
 	transform: scale(1.5);
 	transition: all 0ms;
 }
@@ -835,13 +835,35 @@ footer {
 .thread .footer .score {
 	margin: 0 0 0 auto;
 }
+.thread .footer .score button {
+	width: 4rem;
+	height: 4rem;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 66%;
+}
+.thread .footer .score button.downvote {
+	transform: scaleY(-1);
+	background-image: url(../img/thumbs-up.svg);
+}
+.thread .footer .score button.upvote {
+	background-image: url(../img/thumbs-up.svg);
+}
+
+.thread .footer .score.countUp .count>span {
+	transform: scale(1.5);
+	transition: all 0ms;
+}
+.thread .footer .score.countDown .count>span {
+	transform: scale(0.5);
+	transition: all 0ms;
+}
+
 .thread .footer .score .count {
 	width: 4rem;
 	height: 4rem;
 	border-radius: 100%;
-	background-image: url(../img/thumbs-up.svg);
 	border: 4px solid transparent;
-	background-size: 80%;
 }
 .thread .footer .score .count:active {
 	-webkit-tap-highlight-color: transparent;
@@ -856,8 +878,54 @@ footer {
 
 
 
+.thread .footer .score button {
+	transform: scale(1);
+	opacity: 1;
+}
+
+.thread .footer .score .downvote {
+	transition: all 2s;
+}
+.thread .footer .score.countDown .downvote {
+	transition: all 0ms;
+	transform: scale(0.25, -0.25);
+	opacity: 0.25;
+}
+
+.thread .footer .score .upvote {
+	transition: all 1s;
+}
+.thread .footer .score.countUp .upvote {
+	transition: all 0ms;
+	transform: scale(0.25);
+	opacity: 0.25;
+}
+
+
 
 /* Upvoted thread */
+.thread[upvoted="-5"] .footer .score .count {
+	background-color: var(--secondary-accent-color);
+  background-image: url(../img/thumbs-up-white.svg);
+	color: white;
+}
+.thread[upvoted="-4"] .footer .score .count {
+	border-color: var(--secondary-accent-color);
+}
+.thread[upvoted="-3"] .footer .score .count {
+	border-top-color: var(--secondary-accent-color);
+	border-left-color: var(--secondary-accent-color);
+	border-bottom-color: var(--secondary-accent-color);
+}
+.thread[upvoted="-2"] .footer .score .count {
+	border-top-color: var(--secondary-accent-color);
+	border-left-color: var(--secondary-accent-color);
+}
+.thread[upvoted="-1"] .footer .score .count {
+	border-top-color: var(--secondary-accent-color);
+}
+.thread[upvoted="0"] .footer .score .count {
+}
 .thread[upvoted="1"] .footer .score .count {
 	border-top-color: var(--primary-accent-color);
 }
@@ -876,8 +944,18 @@ footer {
 .thread[upvoted="5"] .footer .score .count {
 	background-color: var(--primary-accent-color);
   background-image: url(../img/thumbs-up-white.svg);
-	pointer-events: none;
 	color: white;
+}
+
+/* Prevent under -5 and when it lags  */
+.thread[upvoted="-5"] .footer .score button.downvote,
+.thread[upvoted="-6"] .footer .score button.downvote {
+	pointer-events: none;
+}
+/* Prevent over 5 and when it lags  */
+.thread[upvoted="5"] .footer .score button.upvote,
+.thread[upvoted="6"] .footer .score button.upvote {
+	pointer-events: none;
 }
 
 
@@ -1102,7 +1180,7 @@ footer {
 .thread-view .thread .header {
   padding: 1rem 0;
   margin: 0 1rem;
-	max-width: calc(100% - 12rem);
+	max-width: calc(100% - 10rem);
 }
 
 
