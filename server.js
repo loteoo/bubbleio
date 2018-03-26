@@ -508,47 +508,6 @@ io.on('connection', function (socket) {
 
 
 
-
-  // Pass all received message to all clients
-  socket.on('thread upvote', function (thread) {
-
-    // Just making sure...
-    delete thread.upvoted;
-    delete thread.relevance;
-    delete thread.userCount;
-
-    // Update DB
-    dbo.collection("threads").findOneAndUpdate({
-      _id: ObjectID(thread._id)
-    }, { $inc: { score: 1 } }, { returnOriginal: false }, function(err, result) {
-      if (err) throw err;
-
-      let newState = {
-        bubbles: [
-          {
-            _id: thread.bubble_id,
-            threads: [
-              result.value
-            ]
-          }
-        ]
-      };
-
-      // Update clients in the bubble
-      socket.broadcast.to(thread.bubble_id).emit('update state', newState);
-
-      // Update clients in the thread
-      socket.broadcast.to(thread._id).emit('update state', newState);
-
-    });
-  });
-
-
-
-
-
-
-
   // Pass all received message to all clients
   socket.on('update thread', function (thread) {
 
@@ -581,10 +540,10 @@ io.on('connection', function (socket) {
       };
 
       // Update clients in the bubble
-      io.to(result.value.bubble_id).emit('update state', newState);
+      socket.broadcast.to(result.value.bubble_id).emit('update state', newState);
 
       // Update clients in the thread
-      io.to(result.value._id).emit('update state', newState);
+      socket.broadcast.to(result.value._id).emit('update state', newState);
 
     });
   });

@@ -4,13 +4,6 @@ import {timeSince, shortenText, panelDrag} from '../../../utils/'
 import {ThreadFooter} from '../../CurrentBubble/ThreadItem/'
 
 
-// TODO: The pull down panel is very nice on mobile but not so great on desktop
-// NOTE: Maybe content (on desktop) should be full on the bubble view, (expandable maybe)
-// and the conversation on the right
-// Compact mode could re-enable the pull down menu on desktop
-
-// TODO: On create animation: (when switching threads:) maybe quick & snappy fadein + slide down
-
 export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
   <article key={currentThread._id} class="thread" type={currentThread.type} upvoted={currentThread.upvoted}>
     <div class="thread-header">

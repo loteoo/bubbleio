@@ -68,10 +68,16 @@ export const UserView = ({currentBubble}) => (state, actions) =>
 
 // TODO: micro animation when the user count changes?
 const BubbleItem = ({bubble, currentBubble}) =>
-  <li current={(bubble.name == Object.assign({"name": ""}, currentBubble).name).toString()} userCount={bubble.userCount}>
+  <li current={(bubble.name == Object.assign({"name": ""}, currentBubble).name).toString()}>
     <Link to={"/" + bubble.name}>
       {bubble.title}
-      <div class="users">
+      <div class="users" userCount={bubble.userCount} onupdate={(el, oldProps) => {
+        if (oldProps.userCount < bubble.userCount) {
+          el.classList.add("countUp");
+          void el.offsetWidth; // This forces element render
+          el.classList.remove("countUp");
+        }
+      }}>
         <div class="icon"></div>
         <span class="count">{bubble.userCount}</span>
       </div>

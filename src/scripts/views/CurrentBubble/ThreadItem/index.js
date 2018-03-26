@@ -54,7 +54,7 @@ export const ThreadInner = ({thread, currentBubble}) => (state, actions) => {
 
 const ThreadHeader = ({thread, currentBubble}) =>
   <div class="header">
-    <h2>{shortenText(thread.title, 32)}</h2>
+    <h2>{thread.title}</h2>
     <p>{"by " + thread.author + " on " + currentBubble.name + " " + timeSince(thread.created)}</p>
   </div>
 
@@ -132,8 +132,8 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
         <span>{thread.messages.length}</span>
       </div>
     </div>
-    <div class="upvote">
-      <button class="count" score={thread.score} onclick={ev => {
+    <div class="score">
+      <button class="upvote" onclick={ev => {
         ev.stopPropagation();
 
         // Increase score and local upvoted count
@@ -153,9 +153,11 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
         });
 
         // Send to server
-        socket.emit('thread upvote', thread);
+        socket.emit('update thread', thread);
 
-      }} onupdate={(el, oldProps) => {
+      }}>
+      </button>
+      <div class="count" score={thread.score} onupdate={(el, oldProps) => {
         if (oldProps.score < thread.score) {
           el.classList.add("countUp");
           void el.offsetWidth; // This forces element render
@@ -163,6 +165,30 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
         }
       }}>
         <span>{thread.score}</span>
+      </div>
+      <button class="downvote" onclick={ev => {
+        ev.stopPropagation();
+
+        // Increase score and local upvoted count
+        thread.score--;
+        thread.upvoted--;
+
+        // Update immediately on this client
+        actions.updateState({
+          bubbles: [
+            {
+              _id: thread.bubble_id,
+              threads: [
+                thread
+              ]
+            }
+          ]
+        });
+
+        // Send to server
+        socket.emit('update thread', thread);
+
+      }}>
       </button>
     </div>
   </div>

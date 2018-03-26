@@ -38,6 +38,18 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
             .then(response => response.json())
             .then(function(response) {
               thread.thumbnail = response[0].thumbnail_large;
+
+              // Update here
+              actions.updateState({
+                bubbles: [
+                  {
+                    _id: thread.bubble_id,
+                    threads: [
+                      thread
+                    ]
+                  }
+                ]
+              });
               socket.emit('update thread', thread);
             });
 
@@ -63,14 +75,15 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
       });
 
 
+      // Send new thread to server
+      socket.emit('new thread', thread);
+
+
       setTimeout(() => { // Scroll to top after the re-render/update cycle has ended (to include the new element's height)
         var threadList = document.querySelector(".bubble-view .frame");
         threadList.scrollTop = 0;
       }, 10)
 
-
-      // Send new thread to server
-      socket.emit('new thread', thread);
 
 
       ev.target.classList.remove("opened")
@@ -110,7 +123,7 @@ export const ThreadKeyboard = ({currentBubble}) => (state, actions) =>
         ev.target.parentElement.parentElement.classList.add("opened")
       }}></div>
     </div>
-    <input type="text" name="title" placeholder="Type something..." class="title" maxlength="50" />
+    <input type="text" name="title" placeholder="Type something..." class="title" maxlength="200" />
     <textarea name="text" placeholder="Type something..." maxlength="8000"></textarea>
     <input type="text" name="link" placeholder="Paste link here" class="link" />
     <div class="image">
