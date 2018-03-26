@@ -950,12 +950,12 @@ footer {
 /* Prevent under -5 and when it lags  */
 .thread[upvoted="-5"] .footer .score button.downvote,
 .thread[upvoted="-6"] .footer .score button.downvote {
-	pointer-events: none;
+	pointer-events: none !important;
 }
 /* Prevent over 5 and when it lags  */
 .thread[upvoted="5"] .footer .score button.upvote,
 .thread[upvoted="6"] .footer .score button.upvote {
-	pointer-events: none;
+	pointer-events: none !important;
 }
 
 
