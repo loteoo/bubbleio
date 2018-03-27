@@ -30,7 +30,7 @@ export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (st
 
 
 export const ThreadInner = ({thread, currentBubble}) => (state, actions) => {
-  if (state.user.layoutMode == "default") {
+  if (state.user.layoutMode == "preview") {
     return (
       <div class="inner">
         <ThreadHeader thread={thread} currentBubble={currentBubble} />
@@ -60,7 +60,6 @@ const ThreadHeader = ({thread, currentBubble}) =>
 
 
 
-// TODO: Max height on previews
 const ThreadPreview = ({thread, currentBubble}) => {
   if (thread.type == "default") {
     return
@@ -87,9 +86,11 @@ const TextThreadPreview = ({thread}) =>
   </div>
 
 const LinkThreadPreview = ({thread}) =>
-  <a href={thread.url} target="_blank" class="link">
-    {shortenText(thread.url, 32)}
-  </a>
+  <div class="link">
+    <a href={thread.url} target="_blank">
+      {shortenText(thread.url, 32)}
+    </a>
+  </div>
 
 const ImageThreadPreview = ({thread}) =>
 <div class="sixteen-by-nine">
@@ -113,7 +114,6 @@ const VimeoThreadPreview = ({thread}) =>
 </div>
 
 
-// TODO: Upvote and downvotes
 export const ThreadFooter = ({thread}) => (state, actions) => (
   <div class="footer">
     <div class="users">
@@ -152,31 +152,33 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
       <button class="downvote" onclick={ev => {
         ev.stopPropagation();
 
-        // Increase score and local upvoted count
-        thread.score--;
-        thread.upvoted--;
+        if (thread.upvoted > -5) {
 
-        // Update immediately on this client
-        actions.updateState({
-          bubbles: [
-            {
-              _id: thread.bubble_id,
-              threads: [
-                thread
-              ]
-            }
-          ]
-        });
+          // Increase score and local upvoted count
+          thread.score--;
+          thread.upvoted--;
 
-        // Send to server
-        socket.emit('update thread', thread);
+          // Update immediately on this client
+          actions.updateState({
+            bubbles: [
+              {
+                _id: thread.bubble_id,
+                threads: [
+                  thread
+                ]
+              }
+            ]
+          });
 
-        // Start cooldown animation
-        ev.target.style.pointerEvents = "none";
-        setTimeout(() => {
-          ev.target.style.pointerEvents = "all";
-        }, 2000);
+          // Send to server
+          socket.emit('update thread', thread);
 
+          // Start cooldown animation
+          ev.target.style.pointerEvents = "none";
+          setTimeout(() => {
+            ev.target.style.pointerEvents = "all";
+          }, 2000);
+        }
       }}>
       </button>
       <div class="count">
@@ -185,30 +187,32 @@ export const ThreadFooter = ({thread}) => (state, actions) => (
       <button class="upvote" onclick={ev => {
         ev.stopPropagation();
 
-        // Increase score and local upvoted count
-        thread.score++;
-        thread.upvoted++;
+        if (thread.upvoted < 5) {
+          // Increase score and local upvoted count
+          thread.score++;
+          thread.upvoted++;
 
-        // Update immediately on this client
-        actions.updateState({
-          bubbles: [
-            {
-              _id: thread.bubble_id,
-              threads: [
-                thread
-              ]
-            }
-          ]
-        });
+          // Update immediately on this client
+          actions.updateState({
+            bubbles: [
+              {
+                _id: thread.bubble_id,
+                threads: [
+                  thread
+                ]
+              }
+            ]
+          });
 
-        // Send to server
-        socket.emit('update thread', thread);
+          // Send to server
+          socket.emit('update thread', thread);
 
-        // Start cooldown animation
-        ev.target.style.pointerEvents = "none";
-        setTimeout(() => {
-          ev.target.style.pointerEvents = "all";
-        }, 1000);
+          // Start cooldown animation
+          ev.target.style.pointerEvents = "none";
+          setTimeout(() => {
+            ev.target.style.pointerEvents = "all";
+          }, 1000);
+        }
       }}>
       </button>
     </div>

@@ -86,7 +86,7 @@ const BubbleItem = ({bubble, currentBubble}) =>
 
 
 const LayoutModeSwitcher = () => (state, actions) => {
-  if (state.user.layoutMode == "default") {
+  if (state.user.layoutMode == "preview") {
     return (
       <li onclick={ev => {
         ev.target.parentElement.parentElement.classList.remove("opened");
@@ -104,10 +104,10 @@ const LayoutModeSwitcher = () => (state, actions) => {
         ev.target.parentElement.parentElement.classList.remove("opened");
         actions.updateState({
           user: {
-            layoutMode: "default"
+            layoutMode: "preview"
           }
         });
-      }}><span>Use default layout</span></li>
+      }}><span>Use preview layout</span></li>
       )
   }
 }

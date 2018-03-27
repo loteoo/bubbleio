@@ -25,9 +25,6 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
           <li onclick={ev => {
             console.log("Saving comming soon...");
           }}><span>Save</span></li>
-          <li onclick={ev => {
-              console.log("Downvote comming soon...");
-          }}><span>Downvote</span></li>
           <DeleteThread currentThread={currentThread} />
         </ul>
       </div>

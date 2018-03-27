@@ -2,7 +2,7 @@ import {getStateFromStorage} from '../utils/'
 
 export const state = getStateFromStorage() || {
   user: {
-    layoutMode: "default"
+    layoutMode: "preview"
   },
   bubbles: [],
   currentView: "userView",
