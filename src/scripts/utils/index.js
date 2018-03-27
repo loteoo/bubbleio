@@ -70,7 +70,15 @@ export const shortenText = (s, n) => {
     if(cut == -1) return s;
     return s.substring(0, cut) + "..."
   } else {
-    return s
+    return s;
+  }
+}
+
+export const shortenString = (s, n) => {
+  if (s.length > n+3) {
+    return s.substring(0, n) + "...";
+  } else {
+    return s;
   }
 }
 

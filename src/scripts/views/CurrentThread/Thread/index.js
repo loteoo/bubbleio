@@ -1,6 +1,6 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
-import {timeSince, shortenText, panelDrag} from '../../../utils/'
+import {timeSince, shortenText, shortenString, panelDrag, getYoutubeId, getVimeoId} from '../../../utils/'
 import {ThreadFooter} from '../../CurrentBubble/ThreadItem/'
 
 
@@ -127,7 +127,7 @@ const TextThreadContent = ({thread}) =>
 const LinkThreadContent = ({thread}) =>
   <div class="link">
     <a href={thread.url} target="_blank">
-      {shortenText(thread.url, 32)}
+      {shortenString(thread.url, 32)}
     </a>
   </div>
 
@@ -137,11 +137,7 @@ const ImageThreadContent = ({thread}) =>
   </a>
 
 const YoutubeThreadContent = ({thread}) =>
-  <a href={thread.url} target="_blank" class="linkPreview youtube">
-    <img src={thread.thumbnail} alt={thread.title} />
-  </a>
+  <iframe width="480" height="270" src={"https://www.youtube-nocookie.com/embed/"+getYoutubeId(thread.url)+"?rel=0&amp;controls=0"} frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 const VimeoThreadContent = ({thread}) =>
-  <a href={thread.url} target="_blank" class="linkPreview vimeo">
-    <img src={thread.thumbnail} alt={thread.title} />
-  </a>
+  <iframe src={"https://player.vimeo.com/video/"+getVimeoId(thread.url)} width="480" height="270" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
