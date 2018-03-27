@@ -429,6 +429,27 @@ fieldset {
 
 
 
+.sixteen-by-nine {
+	position: relative;
+}
+.sixteen-by-nine::after {
+	content: "";
+	padding-top: 56.25%;
+	display: block;
+}
+.sixteen-by-nine>.frame {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	overflow: hidden;
+}
+
+
 
 /*------------------------------------*\
     Header
@@ -761,12 +782,12 @@ footer {
 	display: flex;
   align-items: flex-end;
 	justify-content: flex-start;
-	padding: 0.5rem 1.5rem 1rem 1.5rem;
+	padding: 0.5rem 1.5rem;
 }
 .thread .footer>* {
   font-size: 1.2rem;
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 	justify-content: center;
 }
 .thread .footer>*>.count {
@@ -776,7 +797,6 @@ footer {
   display: inline-block;
 	width: 2.5rem;
 	height: 2.5rem;
-	background-image: url(../img/users.svg);
 	background-position: center;
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -843,11 +863,10 @@ footer {
 	background-size: 66%;
 }
 .thread .footer .score button.downvote {
-	transform: scaleY(-1);
-	background-image: url(../img/thumbs-up.svg);
+	background-image: url(../img/arrow-down-circle.svg);
 }
 .thread .footer .score button.upvote {
-	background-image: url(../img/thumbs-up.svg);
+	background-image: url(../img/arrow-up-circle.svg);
 }
 
 .thread .footer .score.countUp .count>span {
@@ -860,15 +879,21 @@ footer {
 }
 
 .thread .footer .score .count {
-	width: 4rem;
-	height: 4rem;
+	width: 3.2rem;
+	height: 3.2rem;
 	border-radius: 100%;
-	border: 4px solid transparent;
+	border: 2px solid transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .thread .footer .score .count:active {
 	-webkit-tap-highlight-color: transparent;
 }
 .thread .footer .score .count span {
+	position: static;
+	top: auto;
+	right: auto;
 	color: white;
 	background-color: var(--primary-accent-color);
 	border-color: var(--primary-accent-color);
@@ -888,7 +913,7 @@ footer {
 }
 .thread .footer .score.countDown .downvote {
 	transition: all 0ms;
-	transform: scale(0.25, -0.25);
+	transform: scale(0.9);
 	opacity: 0.25;
 }
 
@@ -897,16 +922,19 @@ footer {
 }
 .thread .footer .score.countUp .upvote {
 	transition: all 0ms;
-	transform: scale(0.25);
+	transform: scale(0.9);
 	opacity: 0.25;
 }
 
 
 
 /* Upvoted thread */
+.thread[upvoted="-5"] .footer .score .count>span {
+	background-color: var(--secondary-accent-color);
+	border-color: var(--secondary-accent-color);
+}
 .thread[upvoted="-5"] .footer .score .count {
 	background-color: var(--secondary-accent-color);
-  background-image: url(../img/thumbs-up-white.svg);
 	color: white;
 }
 .thread[upvoted="-4"] .footer .score .count {
@@ -914,15 +942,15 @@ footer {
 }
 .thread[upvoted="-3"] .footer .score .count {
 	border-top-color: var(--secondary-accent-color);
-	border-left-color: var(--secondary-accent-color);
+	border-right-color: var(--secondary-accent-color);
 	border-bottom-color: var(--secondary-accent-color);
 }
 .thread[upvoted="-2"] .footer .score .count {
-	border-top-color: var(--secondary-accent-color);
-	border-left-color: var(--secondary-accent-color);
+	border-bottom-color: var(--secondary-accent-color);
+	border-right-color: var(--secondary-accent-color);
 }
 .thread[upvoted="-1"] .footer .score .count {
-	border-top-color: var(--secondary-accent-color);
+	border-bottom-color: var(--secondary-accent-color);
 }
 .thread[upvoted="0"] .footer .score .count {
 }
@@ -943,7 +971,6 @@ footer {
 }
 .thread[upvoted="5"] .footer .score .count {
 	background-color: var(--primary-accent-color);
-  background-image: url(../img/thumbs-up-white.svg);
 	color: white;
 }
 
@@ -1031,14 +1058,7 @@ footer {
 	background-size: 45%;
 }
 
-.bubble-view 	.thread[type="image"] .img {
-	max-height: 60vw;
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
-.thread[type="image"] .img img {
+.thread[type="image"] img {
 	width: 100%;
 }
 
@@ -1573,13 +1593,10 @@ footer {
 		margin: 1.5rem auto;
 	}
 	.default .bubble-view .thread {
-		max-width: 620px;
+		max-width: 480px;
 	}
 	.bubble-view .thread[current="true"] {
 		border-color: var(--primary-accent-color);
-	}
-	.bubble-view .thread[type="image"] .img {
-		max-height: 25vw;
 	}
 	.bubble-view.no-bubble {
 		right: 280px;

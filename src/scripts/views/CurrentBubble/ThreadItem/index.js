@@ -92,19 +92,25 @@ const LinkThreadPreview = ({thread}) =>
   </a>
 
 const ImageThreadPreview = ({thread}) =>
-  <div class="img">
+<div class="sixteen-by-nine">
+  <div class="img frame">
     <img src={thread.src} alt={thread.title} />
   </div>
+</div>
 
 const YoutubeThreadPreview = ({thread}) =>
-  <div class="linkPreview youtube">
+<div class="sixteen-by-nine">
+  <div class="linkPreview youtube frame">
     <img src={thread.thumbnail} alt={thread.title} />
   </div>
+</div>
 
 const VimeoThreadPreview = ({thread}) =>
-  <div class="linkPreview vimeo">
+<div class="sixteen-by-nine">
+  <div class="linkPreview vimeo frame">
     <img src={thread.thumbnail} alt={thread.title} />
   </div>
+</div>
 
 
 // TODO: Upvote and downvotes
