@@ -18,12 +18,12 @@ export const UserView = ({currentBubble}) => (state, actions) =>
           }}>
           </button>
           <ul>
+            <LayoutModeSwitcher />
             <li onclick={ev => {
               console.log("logout");
               localStorage.clear();
               location.reload();
             }}><span>Log out</span></li>
-            <LayoutModeSwitcher />
           </ul>
         </div>
       </div>
@@ -66,7 +66,7 @@ export const UserView = ({currentBubble}) => (state, actions) =>
     </div>
   </div>
 
-// TODO: micro animation when the user count changes?
+
 const BubbleItem = ({bubble, currentBubble}) =>
   <li current={(bubble.name == Object.assign({"name": ""}, currentBubble).name).toString()}>
     <Link to={"/" + bubble.name}>

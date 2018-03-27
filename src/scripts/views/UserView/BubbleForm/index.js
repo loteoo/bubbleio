@@ -33,12 +33,12 @@ export const BubbleForm = () => (state, actions) =>
         <h2>Let's create a brand new bubble.</h2>
         <p>A welcoming home for a community of any common interest</p>
         <fieldset>
-          <fieldset>
-            <label>Pick a unique name alias</label>
-            <input type="text" name="name" placeholder="Lowercase letters and numbers only" pattern="[a-z0-9]+" minlength="3" maxlength="50" required />
-        </fieldset>
-          <label>Chose a display name for the bubble</label>
+          <label>Pick a name for the bubble</label>
           <input type="text" name="title" placeholder="Display Name" minlength="3" maxlength="50" required />
+        </fieldset>
+        <fieldset>
+            <label>Choose a unique name alias</label>
+            <input type="text" name="name" placeholder="Lowercase letters and numbers only" pattern="[a-z0-9]+" minlength="3" maxlength="50" required />
         </fieldset>
         <fieldset>
           <label>Describe this bubble and what should be posted here.</label>

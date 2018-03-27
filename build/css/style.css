@@ -748,7 +748,7 @@ footer {
 }
 
 .thread .header {
-	padding: 1rem 1.4rem;
+	padding: 0.8rem 1.2rem;
 }
 .thread .header h2 {
 	margin: 0;
@@ -787,13 +787,14 @@ footer {
 	display: flex;
   align-items: flex-end;
 	justify-content: flex-start;
-	padding: 0.5rem 1.5rem;
+	padding: 0.6rem 1.2rem;
 }
 .thread .footer>* {
   font-size: 1.2rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	margin: 0 0 0.2rem 0;
 }
 .thread .footer>*>.count {
 	position: relative;
@@ -848,7 +849,7 @@ footer {
 
 
 .thread .footer .replies {
-	margin: 0 1.5rem;
+	margin: 0 1.5rem 0.2rem 1.5rem;
 }
 .thread .footer .replies .count {
 	background-image: url(../img/message-square.svg);
@@ -1008,13 +1009,13 @@ footer {
 .compact .thread .thumbnail {
 	background-color: var(--main-border-color);
 	position: relative;
-	width: 12rem;
+	width: 10rem;
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
 }
 .compact .thread .info {
-	width: calc(100% - 12rem);
+	width: calc(100% - 10rem);
 }
 .compact .thread .info .footer {
 
@@ -1051,7 +1052,6 @@ footer {
 
 /* Link thread */
 .thread[type="link"] .link {
-	display: inline-block;
 	padding: 0.5rem 1.5rem;
 }
 .thread[type="link"] .link a {
@@ -1168,11 +1168,7 @@ footer {
 	margin-bottom: -1px;
 	pointer-events: all;
 }
-.thread-view .thread .panelScroll .panel .content {
-	/* max-height: calc(100vh - 18rem);
-	overflow: scroll; */
-	white-space: pre-wrap;
-}
+
 .thread-view .thread .panelScroll .panel .footer {
 	position: relative;
 }
@@ -1522,9 +1518,11 @@ footer {
 }
 .threadKeyboard.opened .expander {
 	top: 0.5rem;
+	left: 0.5rem;
 	bottom: auto;
   background-image: url(../img/plus.svg);
   background-color: transparent;
+	box-shadow: none;
 }
 .threadKeyboard.opened .expander.opened {
   background-image: url(../img/x.svg);

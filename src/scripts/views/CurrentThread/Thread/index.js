@@ -31,9 +31,7 @@ export const Thread = ({currentThread, currentBubble}) => (state, actions) =>
     </div>
     <div class="panelScroll">
       <div class="panel" onmousedown={panelDrag.onmousedown} onmousemove={panelDrag.onmousemove} onmouseup={panelDrag.onmouseup} onmouseout={panelDrag.onmouseup}>
-        <div class="content">
-          <ThreadContent thread={currentThread} currentBubble={currentBubble} />
-        </div>
+        <ThreadContent thread={currentThread} currentBubble={currentBubble} />
         <ThreadFooter thread={currentThread} />
       </div>
     </div>
@@ -127,9 +125,11 @@ const TextThreadContent = ({thread}) =>
   </div>
 
 const LinkThreadContent = ({thread}) =>
-  <a href={thread.url} target="_blank" class="link">
-    {shortenText(thread.url, 32)}
-  </a>
+  <div class="link">
+    <a href={thread.url} target="_blank">
+      {shortenText(thread.url, 32)}
+    </a>
+  </div>
 
 const ImageThreadContent = ({thread}) =>
   <a href={thread.src} target="_blank" class="img">

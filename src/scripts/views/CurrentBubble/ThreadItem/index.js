@@ -16,7 +16,7 @@ export const ThreadItem = ({thread, index, currentBubble, currentThread}) => (st
       if (index != oldProps.index) { // If order in list changed
         el.style.transitionDuration = "0ms";
         el.style.zIndex = "1";
-        el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)+"em))";
+        el.style.transform = "translateY(calc("+(oldProps.index - index)*100+"% + "+(oldProps.index - index)*1.5+"rem))";
         void el.offsetWidth; // This forces element render
         el.removeAttribute("style");
       }
