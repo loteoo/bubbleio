@@ -5,7 +5,17 @@ import {CurrentBubble} from './CurrentBubble/'
 import {CurrentThread} from './CurrentThread/'
 
 
+// TODO: Remove auto-fills on inputs
 
+// TODO: "username" is typing...
+
+// TODO: View full images & text on preview mode desktop
+
+// TODO: Deleting bugfix (use archived attr maybe)
+// Buggs when user loads thread, closes site, thread gets deleted, thread still apprear because cache hasent updated
+// Same thing with bubbles
+
+// TODO: Dynamic themes (gradients)
 
 // Application root
 export const view = (state, actions) => {
