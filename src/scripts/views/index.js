@@ -9,11 +9,19 @@ import {CurrentThread} from './CurrentThread/'
 
 // TODO: "username" is typing...
 
+// TODO: Linkify links (when someone shares a link in messages, create a <a href>)
+
 // TODO: View full images & text on preview mode desktop
 
 // TODO: Deleting bugfix (use archived attr maybe)
 // Buggs when user loads thread, closes site, thread gets deleted, thread still apprear because cache hasent updated
 // Same thing with bubbles
+
+// TODO: Add button to login screen (confusing for some people)
+
+// TODO: Links that link to other bubbles should not open in new tabs
+
+// TODO: Upvote/downvote btn should not be click through when cooling down
 
 // TODO: Dynamic themes (gradients)
 
