@@ -25,13 +25,13 @@ const getConnectionsInRoom = (roomName) => {
 let dbo;
 
 
-app.use(express.static('build'));
+app.use(express.static('public'));
 
 
 
 // On browser load
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/build/index.html');
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 // On browser load
@@ -42,7 +42,7 @@ app.get('/:bubbleName', function(req, res) {
   }, function(err, bubble) {
     if (err) throw err;
     if (bubble) { // If bubble actually exists
-      res.sendFile(__dirname + '/build/index.html');
+      res.sendFile(__dirname + '/public/index.html');
     } else {
       res.send("Unknown bubble");
     }
@@ -64,7 +64,7 @@ app.get('/:bubbleName/:threadId', function(req, res) {
         }, function(err, thread) {
           if (err) throw err;
           if (thread) { // If thread actually exists
-            res.sendFile(__dirname + '/build/index.html');
+            res.sendFile(__dirname + '/public/index.html');
           } else {
             res.send("Unknown thread");
           }
