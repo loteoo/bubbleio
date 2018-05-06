@@ -77,8 +77,9 @@ acronym {
 \*------------------------------------*/
 
 
-:root {
-
+html {
+	font-size: 62.5%;
+	
 	--main-color: #666666;
 	--main-background-color: #fafafa;
 	--main-border-color: #e6e6e6;
@@ -86,12 +87,6 @@ acronym {
 	--primary-accent-color: #7967ff;
 	--secondary-accent-color: #ff6369;
 	--tertiary-accent-color: #428ce1;
-
-}
-
-/* html element 62.5% font-size for REM use */
-html {
-	font-size: 62.5%;
 }
 body {
 	font-family: 'CircularStd-Book', 'Helvetica Neue', Helvetica, Arial, sans-serif;
