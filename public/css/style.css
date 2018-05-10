@@ -8,12 +8,6 @@
 *:before {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-
-	text-rendering: optimizeLegibility;
-	font-smoothing: antialiased;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-
   margin: 0;
   padding: 0;
 }
@@ -79,7 +73,7 @@ acronym {
 
 html {
 	font-size: 62.5%;
-	
+
 	--main-color: #666666;
 	--main-background-color: #fafafa;
 	--main-border-color: #e6e6e6;
@@ -93,15 +87,16 @@ body {
 	/* font-family: 'Lato', sans-serif; */
 	font-size: 1.6rem;
 	color: var(--main-color);
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 	background-color: var(--main-background-color);
   width: 100%;
   height: 100vh;
   margin: 0 auto;
   position: relative;
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+	font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img {
@@ -199,7 +194,6 @@ strong {
     Buttons / links
 \*------------------------------------*/
 
-.btn,
 button,
 input[type="button"],
 input[type="submit"] {
