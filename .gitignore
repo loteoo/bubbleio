@@ -64,4 +64,4 @@ typings/
 package-lock.json
 
 
-/build/js/main.min.js
+/public/js/app.js

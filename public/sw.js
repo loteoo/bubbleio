@@ -9,7 +9,7 @@ const RUNTIME = 'runtime';
 const PRECACHE_URLS = [
   '/',
   '/css/style.css',
-  '/js/main.min.js',
+  '/js/app.js',
   '/socket.io/socket.io.js',
   '/fonts/CircularStd/CircularStd-Book.otf'
 ];
