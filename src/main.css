@@ -6,65 +6,10 @@
 *,
 *:after,
 *:before {
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-
-fieldset,
-img {
-  border: 0;
-}
-
-legend {
-  color: inherit;
-}
-
-ol,
-ul,
-li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-sup {
-  vertical-align: text-top;
-}
-
-sub {
-  vertical-align: text-bottom;
-}
-
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-caption,
-th,
-td {
-	text-align: left;
-	vertical-align: top;
-	font-weight: normal;
-}
-
-input,
-textarea,
-select {
-	font-size: inherit;
-	line-height: inherit;
-}
-
-abbr,
-acronym {
-	border-bottom: .1em dotted;
-	cursor: help;
-}
-
-
-
 
 /*------------------------------------*\
     Global

@@ -1,6 +1,3 @@
-// Websocket connect
-window.socket = io.connect(window.location.host);
-
 
 // Load our hyperapp
 import {app} from 'hyperapp'
@@ -10,14 +7,18 @@ import {actions} from './actions/'
 import {view} from './views/'
 import {onKeyDown} from './utils/'
 
+import 'normalize.css'
+import './main.css'
 
 
 // Start hyperapp
 window.main = app(state, actions, view, document.body);
 
 // Activate our router
-const unsubscribe = location.subscribe(main.location);
+window.unsubscribe = location.subscribe(main.location);
 
+// Websocket connect
+window.socket = io.connect(window.location.host);
 
 // Login on load (sets a username on our socket connection)
 if (state.user._id) {
