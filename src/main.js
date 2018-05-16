@@ -17,25 +17,17 @@ window.main = app(state, actions, view, document.body);
 // Activate our router
 window.unsubscribe = location.subscribe(main.location);
 
-// Websocket connect
-window.socket = io.connect(window.location.host);
+// // Websocket connect
+// window.socket = io.connect(window.location.host);
+//
+// // Login on load (sets a username on our socket connection)
+// if (state.user._id) {
+//   socket.emit('login', {
+//     username: state.user.username
+//   });
+// }
+//
 
-// Login on load (sets a username on our socket connection)
-if (state.user._id) {
-  socket.emit('login', {
-    username: state.user.username
-  });
-}
-
-
-// Manage socket.io events
-window.socket.on('update state', newState => main.updateState(newState));
-
-window.socket.on('delete bubble', bubble => main.deleteBubble(bubble));
-
-window.socket.on('delete thread', thread => main.deleteThread(thread));
-
-window.socket.on('redirect', pathname => main.location.go(pathname));
 
 
 // Handle keyboard events
