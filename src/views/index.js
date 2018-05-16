@@ -16,7 +16,7 @@ export const view = (state, actions) => {
       <main>
         <Header />
         <LeftSidebar />
-        <h1>Loggedin</h1>
+        
       </main>
     )
   } else {

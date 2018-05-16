@@ -5,8 +5,10 @@
   "main": "server.js",
   "dependencies": {
     "@hyperapp/router": "^0.7.0",
+    "@material/button": "^0.35.0",
     "@material/drawer": "^0.35.0",
     "@material/list": "^0.35.0",
+    "@material/ripple": "^0.35.0",
     "@material/top-app-bar": "^0.35.1",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
