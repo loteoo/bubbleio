@@ -25,13 +25,13 @@ export default {
       plugins: [
         nested(),
         focus(),
-        cssnext(),
-        rucksack()
+        rucksack({autoprefixer: false}),
+        cssnext({warnForDuplicates: false})
       ],
       minimize: prod ? true : false,
       sourceMap: dev ? 'inline' : false
     }),
-    buble({ jsx: 'h', transforms: { forOf: false } }),
+    buble({ jsx: 'h' }),
     resolve({ jsnext: true }),
     commonjs(),
     prod && uglify(),
