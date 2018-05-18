@@ -4,6 +4,7 @@ import {Link} from "@hyperapp/router"
 import {Header} from './Header/Header'
 import {LeftSidebar} from './LeftSidebar/LeftSidebar'
 import {MainContainer} from './MainContainer/MainContainer'
+import {LoginForm} from './LoginForm/LoginForm'
 
 // Application root
 export const view = (state, actions) => {
@@ -11,21 +12,16 @@ export const view = (state, actions) => {
   // console.log(state);
 
   // If logged in
-  if (state.user._id) {
+  if (false) {
 
     return (
-      <main>
+      <div>
         <Header />
         <LeftSidebar />
         <MainContainer />
-      </main>
+      </div>
     )
   } else {
-    return (
-      <form class="loginForm">
-        <h2>Pick a name</h2>
-        <input type="text" placeholder="Type here..." name="username" minlength="3" maxlength="50" required autofocus />
-      </form>
-    )
+    return <LoginForm />
   }
 }

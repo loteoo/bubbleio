@@ -6,7 +6,7 @@ import './MainContainer.css'
 
 
 export const MainContainer = () => (state, actions) =>
-<div class="main-container mdc-top-app-bar--fixed-adjust">
+<main class="main-container mdc-top-app-bar--fixed-adjust">
 
 
 
@@ -16,8 +16,8 @@ export const MainContainer = () => (state, actions) =>
 
 
   <div>
-    Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
+    Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
   </div>
 
 
-</div>
+</main>

@@ -8,7 +8,7 @@ import {location} from "@hyperapp/router"
 import {state} from './state/'
 import {actions} from './actions/'
 import {view} from './views/'
-import {onKeyDown} from './utils/'
+
 
 
 // Start hyperapp

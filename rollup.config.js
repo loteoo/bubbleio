@@ -36,6 +36,6 @@ export default {
     resolve({ jsnext: true }),
     commonjs(),
     prod && uglify(),
-    dev && livereload('public')
+    dev && livereload('public/css')
   ]
 }

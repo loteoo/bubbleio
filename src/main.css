@@ -122,15 +122,6 @@ a:hover {
     Forms
 \*------------------------------------*/
 
-label {
-
-}
-
-input,
-textarea {
-}
-
-
-::placeholder {
-
+.mdc-text-field__input {
+	height: auto;
 }
