@@ -28,6 +28,7 @@ export default {
         rucksack({autoprefixer: false}),
         cssnext({warnForDuplicates: false})
       ],
+      extract: 'public/css/app.css',
       minimize: prod ? true : false,
       sourceMap: dev ? 'inline' : false
     }),

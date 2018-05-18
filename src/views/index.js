@@ -1,8 +1,9 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
 
-import {Header} from './Header/'
-import {LeftSidebar} from './LeftSidebar/'
+import {Header} from './Header/Header'
+import {LeftSidebar} from './LeftSidebar/LeftSidebar'
+import {MainContainer} from './MainContainer/MainContainer'
 
 // Application root
 export const view = (state, actions) => {
@@ -16,7 +17,7 @@ export const view = (state, actions) => {
       <main>
         <Header />
         <LeftSidebar />
-        
+        <MainContainer />
       </main>
     )
   } else {

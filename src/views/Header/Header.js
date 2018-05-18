@@ -1,13 +1,10 @@
 import {h} from 'hyperapp'
 
-import "@material/top-app-bar/dist/mdc.top-app-bar.css";
 
-import {MDCTopAppBar} from '@material/top-app-bar';
 
 export const Header = () => (state, actions) =>
-
 <header class="mdc-top-app-bar" oncreate={el => {
-  el.topAppBar = new MDCTopAppBar(el);
+  el.topAppBar = new mdc.topAppBar.MDCTopAppBar(el);
 }}>
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">

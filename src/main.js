@@ -31,7 +31,7 @@ window.unsubscribe = location.subscribe(main.location);
 
 
 // Handle keyboard events
-document.onkeydown = onKeyDown;
+// document.onkeydown = onKeyDown;
 
 // // Activate the service worker
 // if ('serviceWorker' in navigator) {

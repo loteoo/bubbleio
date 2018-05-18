@@ -2,11 +2,9 @@ import {getStateFromStorage} from '../utils/'
 
 export const state = getStateFromStorage() || {
   user: {
-    layoutMode: "compact"
+    bubbleList: []
   },
-  bubbles: [],
-  currentView: "userView",
-  currentBubble: null,
-  currentThread: null,
-  bubbleForm: {}
+  bubbles: {},
+  threads: {},
+  messages: {}
 }
