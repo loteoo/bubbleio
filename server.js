@@ -6,7 +6,7 @@ const mongo = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const mongo_url = "mongodb://localhost:27017/";
 const db_name = "bubbleio";
-const port = 80;
+const port = 8080;
 
 
 // Returns number of sockets connections currently in the specified room

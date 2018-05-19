@@ -1,13 +1,14 @@
 
-import 'normalize.css'
-import './main.css'
-
 // Load our hyperapp
 import {app} from 'hyperapp'
 import {location} from "@hyperapp/router"
 import {state} from './state/'
 import {actions} from './actions/'
 import {view} from './views/'
+
+// Bundle css
+import 'normalize.css'
+import './main.css'
 
 
 // Start hyperapp

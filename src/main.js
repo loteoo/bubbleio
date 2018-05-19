@@ -1,7 +1,4 @@
 
-import 'normalize.css'
-import './main.css'
-
 // Load our hyperapp
 import {app} from 'hyperapp'
 import {location} from "@hyperapp/router"
@@ -14,9 +11,13 @@ import {view} from './views/'
 import freeze from 'hyperapp-freeze'
 import devtools from 'hyperapp-devtools'
 
+// Bundle css
+import 'normalize.css'
+import './main.css'
+
 
 // Start hyperapp
-window.main = freeze(devtools)(app)(state, actions, view, document.body);
+window.main = freeze(devtools)(app)(state, actions, view, document.querySelector('#root'));
 
 window.main.init();
 

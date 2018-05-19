@@ -2,7 +2,6 @@ import buble from 'rollup-plugin-buble'
 import commonjs from 'rollup-plugin-commonjs'
 import resolve from 'rollup-plugin-node-resolve'
 import uglify from 'rollup-plugin-uglify'
-import serve from 'rollup-plugin-serve'
 import livereload from 'rollup-plugin-livereload'
 import postcss from 'rollup-plugin-postcss'
 import nested from 'postcss-nested'
@@ -14,7 +13,7 @@ const dev = !!process.env.ROLLUP_WATCH  // True if launched via npm start
 const prod = !process.env.ROLLUP_WATCH  // True if launched via npm run build
 
 export default {
-  input: dev ? 'src/main.js' : 'src/prod.js',
+  input: 'src/main.js',
   output: {
     file: 'public/js/app.js',
     sourcemap: dev ? 'inline' : false,
