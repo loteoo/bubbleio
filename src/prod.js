@@ -10,13 +10,8 @@ import {actions} from './actions/'
 import {view} from './views/'
 
 
-// Dev dependencies
-import freeze from 'hyperapp-freeze'
-import devtools from 'hyperapp-devtools'
-
-
 // Start hyperapp
-window.main = freeze(devtools)(app)(state, actions, view, document.body);
+window.main = app(state, actions, view, document.body);
 
 window.main.init();
 
