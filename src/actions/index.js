@@ -1,9 +1,11 @@
 import {location} from "@hyperapp/router"
-import {ObjectID} from '../utils/'
+import deepmerge from "deepmerge"
+import {ObjectID, dontMerge} from '../utils/'
 
 
 export const actions = {
   location: location.actions,
+  updateState: fragment => state => deepmerge(state, fragment, {arrayMerge: dontMerge}),
   init: () => (state, actions) => {
 
     // Activate our router
@@ -11,6 +13,10 @@ export const actions = {
 
     // Websocket connect
     window.socket = io.connect(window.location.host);
+
+    // Subscribe to socket events
+    window.socket.on('update state', newState => main.updateState(newState));
+
 
     // Login on load (sets a username on our socket connection)
     if (state.user._id) {
@@ -23,8 +29,8 @@ export const actions = {
   },
   handleLoginForm: ev => state => {
     ev.preventDefault();
-
-    console.log(ev);
-
+    socket.emit('login', {
+      username: ev.target.username.value
+    });
   }
 }

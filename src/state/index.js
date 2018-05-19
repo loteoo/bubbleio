@@ -2,7 +2,7 @@ import {getStateFromStorage} from '../utils/'
 
 export const state = getStateFromStorage() || {
   user: {
-    bubbleList: []
+    bubble_ids: []
   },
   bubbles: {},
   threads: {},

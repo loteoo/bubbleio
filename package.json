@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "@hyperapp/router": "^0.7.0",
+    "deepmerge": "^2.1.0",
     "express": "^4.16.3",
     "hyperapp": "^1.2.1",
     "material-components-web": "^0.35.1",

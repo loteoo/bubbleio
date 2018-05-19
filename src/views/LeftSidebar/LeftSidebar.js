@@ -12,15 +12,14 @@ export const LeftSidebar = () => (state, actions) =>
       </div>
     </header>
     <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
-      <MenuItem />
-      <MenuItem />
+      {state.user.bubble_ids.map(bubbleId => <MenuItem bubble={state.bubbles[bubbleId]} />)}
     </nav>
   </nav>
 </aside>
 
-const MenuItem = () =>
+const MenuItem = ({bubble}) =>
 <a class="mdc-list-item" href="#" oncreate={el => {
     el.ripple = new mdc.ripple.MDCRipple(el);
 }}>
-  <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+  <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>{bubble.title}
 </a>
