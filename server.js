@@ -94,6 +94,9 @@ app.use(express.static('public'));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
+app.get('/new-bubble', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
 
 // On browser load
 app.get('/:bubbleName', (req, res) => {

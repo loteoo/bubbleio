@@ -33,4 +33,9 @@ export const actions = {
       username: ev.target.username.value
     });
   }
+  },
+  handleNewBubbleForm: ev => state => {
+    ev.preventDefault();
+    console.log("New bubble!");
+  }
 }
