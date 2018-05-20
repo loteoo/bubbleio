@@ -6,7 +6,7 @@ const mongo = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const mongo_url = "mongodb://localhost:27017/";
 const db_name = "bubbleio";
-const port = 8080;
+const port = 80;
 
 
 // Returns number of sockets connections currently in the specified room
@@ -26,29 +26,64 @@ const getConnectionsInRoom = roomName => {
 
 
 
-// Inject user counts to bubbles or threads
-const injectUserCounts = collection => {
-  for (let i = 0; i < collection.length; i++) {
-    collection[i].userCount = getConnectionsInRoom(collection[i]._id);
-  }
-  return collection;
-}
 
-
-// Takes in an array of objects and returns a single object
-// with each item indexed as a property
-const getIndexedCollection = collection => {
-  let withUserCounts = injectUserCounts(collection);
-  let indexedCollection = {};
-  for (let i = 0; i < withUserCounts.length; i++) {
-    indexedCollection[withUserCounts[i]._id] = withUserCounts[i];
+// Takes in an array of threads and returns a single object
+// with each bubble indexed as a property by their id
+const getIndexedThreads = threads => {
+  let indexedThreads = {};
+  for (let i = 0; i < threads.length; i++) {
+    threads[i].userCount = getConnectionsInRoom(threads[i]._id);
+    indexedThreads[threads[i]._id] = threads[i];
   }
-  return indexedCollection;
+  return indexedThreads;
 }
 
 
 
-let dbo;
+
+
+// Takes in an array of bubbles and returns a single object
+// with each bubble indexed as a property by their unique names
+const getIndexedBubbles = bubbles => {
+  let indexedBubbles = {};
+  for (let i = 0; i < bubbles.length; i++) {
+    bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
+    indexedBubbles[bubbles[i].name] = bubbles[i];
+  }
+  return indexedBubbles;
+}
+
+
+
+// Update clients who have that this bubble in their user's bubble list
+// (joined in the room or not)
+const emitBubbleUserCounts = bubbleName => {
+
+  dbo.collection("users").find({ bubble_names: bubbleName }).toArray((err, users) => {
+    if (err) throw err;
+
+    for (socketId in io.sockets.sockets) {
+      users.forEach(user => {
+        if (io.sockets.sockets[socketId].userID) {
+          if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
+            io.sockets.sockets[socketId].emit("update state", {
+              bubbles: {
+                [bubbleName]: {
+                  userCount: getConnectionsInRoom(bubbleName)
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+
+}
+
+
+
+
 
 
 app.use(express.static('public'));
@@ -133,42 +168,11 @@ io.on('connection', socket => {
     // If user was in an other room before this
     if (navData.prevBubbleName) {
 
-      // Find ID, leave and update clients
-      dbo.collection("bubbles").findOne({
-        name: navData.prevBubbleName,
-        archived: { $exists: false }
-      }, (err, bubble) => {
-        if (err) throw err;
-        if (bubble) {
+      // Leave connection to the previous room
+      socket.leave(navData.prevBubbleName);
 
-          // Leave connection to the previous room
-          socket.leave(bubble._id);
+      emitBubbleUserCounts(navData.prevBubbleName);
 
-          // List of all users who have this bubble in their list
-          dbo.collection("users").find({ bubble_ids: ObjectID(bubble._id) }).toArray((err, users) => {
-            if (err) throw err;
-
-            // Append user counts to bubble
-            bubble.userCount = getConnectionsInRoom(bubble._id);
-
-
-            // Update clients who have that this bubble in their user's bubble list
-            for (socketId in io.sockets.sockets) {
-              users.forEach(user => {
-                if (io.sockets.sockets[socketId].userID) {
-                  if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
-                    io.sockets.sockets[socketId].emit("update state", {
-                      bubbles: [
-                        bubble
-                      ]
-                    });
-                  }
-                }
-              });
-            }
-          });
-        }
-      });
     }
 
 
@@ -210,57 +214,29 @@ io.on('connection', socket => {
           // Add this bubble to the user's bubble list
           dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
               $addToSet: {
-                bubble_ids: ObjectID(bubble._id)
+                bubble_names: bubble.name
               }
           }, { returnOriginal: false }, (err, result) => {
             if (err) throw err;
 
 
             // Join connection to the new room
-            socket.join(bubble._id);
+            socket.join(bubble.name);
 
+            // Update clients about new user
+            emitBubbleUserCounts(bubble.name);
 
-            // List of all users who have this bubble in their list
-            dbo.collection("users").find({ bubble_ids: ObjectID(bubble._id) }).toArray((err, users) => {
-              if (err) throw err;
-
-
-              // Append user counts to bubble
-              bubble.userCount = getConnectionsInRoom(bubble._id);
-
-
-              // Update clients who have that this bubble in their user's bubble list
-              // (User counts only)
-              for (socketId in io.sockets.sockets) {
-                users.forEach(user => {
-                  if (io.sockets.sockets[socketId].userID) {
-                    if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
-                      io.sockets.sockets[socketId].emit("update state", {
-                        bubbles: [
-                          bubble
-                        ]
-                      });
-                    }
-                  }
-                });
-              }
-
-
-              // Use this ocasion to send threads to the user
-
-
-              threads = injectUserCounts(threads);
-
-              // Inject threads to bubble
-              bubble.threads = threads;
-
-              // Send the threads
-              socket.emit("update state", {
-                bubbles: [
-                  bubble
-                ]
-              });
+            // Use this occasion to send threads to the user
+            socket.emit("update state", {
+              user: result.value,
+              bubbles: {
+                [bubble.name]: bubble
+              },
+              threads: getIndexedThreads(threads)
             });
+
+
+
           });
         });
       }
@@ -276,7 +252,7 @@ io.on('connection', socket => {
     // Remove the bubble from this user's bubble list in the database
     dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
         $pull: {
-          bubble_ids: ObjectID(bubble._id)
+          bubble_names: bubble.name
         }
     }, { returnOriginal: false }, (err, result) => {
       if (err) throw err;
@@ -296,7 +272,7 @@ io.on('connection', socket => {
       if (err) throw err;
 
       // List of all users who have this bubble in their list
-      dbo.collection("users").find({ bubble_ids: ObjectID(bubble._id) }).toArray((err, users) => {
+      dbo.collection("users").find({ bubble_names: bubble.name }).toArray((err, users) => {
         if (err) throw err;
 
 
@@ -304,7 +280,7 @@ io.on('connection', socket => {
         users.forEach(user => {
           dbo.collection("users").findOneAndUpdate({ _id: ObjectID(user._id) }, {
             $pull: {
-              bubble_ids: ObjectID(bubble._id)
+              bubble_names: bubble.name
             }
           }, { returnOriginal: false }, (err, result) => {
             if (err) throw err;
@@ -359,7 +335,6 @@ io.on('connection', socket => {
     ]).toArray((err, threads) => {
       if (err) throw err;
 
-        threads = injectUserCounts(threads);
 
         // Send the threads
         socket.emit("update state", {
@@ -632,9 +607,9 @@ io.on('connection', socket => {
           if (err) throw err;
 
           // Give the user the default bubbles
-          user.bubble_ids = [];
+          user.bubble_names = [];
           bubbles.forEach(bubble => {
-            user.bubble_ids.push(ObjectID(bubble._id));
+            user.bubble_names.push(bubble.name);
           });
 
           // Insert in DB
@@ -647,7 +622,7 @@ io.on('connection', socket => {
             // Update the client
             socket.emit("update state", {
               user: result.ops[0],
-              bubbles: getIndexedCollection(bubbles)
+              bubbles: getIndexedBubbles(bubbles)
             });
           });
         });
@@ -658,7 +633,7 @@ io.on('connection', socket => {
 
         // Send him his bubbles
         dbo.collection("bubbles").find({
-          _id: { $in: result.bubble_ids },
+          name: { $in: result.bubble_names },
           archived: { $exists: false }
         }).toArray((err, bubbles) => {
           if (err) throw err;
@@ -666,7 +641,7 @@ io.on('connection', socket => {
           // Update user bubbles
           socket.emit("update state", {
             user: result,
-            bubbles: getIndexedCollection(bubbles)
+            bubbles: getIndexedBubbles(bubbles)
           });
         });
       }
@@ -765,6 +740,10 @@ io.on('connection', socket => {
 
 
 
+
+
+// DB connection
+let dbo;
 
 
 // Create a DB connection and start listening http

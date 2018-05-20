@@ -32,7 +32,7 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "start": "node server.js && rollup -c -w"
+    "start": "rollup -c -w"
   },
   "repository": {
     "type": "git",
