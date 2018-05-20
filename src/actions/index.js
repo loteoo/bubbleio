@@ -32,7 +32,6 @@ export const actions = {
     socket.emit('login', {
       username: ev.target.username.value
     });
-  }
   },
   handleNewBubbleForm: ev => state => {
     ev.preventDefault();
