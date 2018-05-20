@@ -8,5 +8,8 @@ export const state = getStateFromStorage() || {
   },
   bubbles: {},
   threads: {},
-  messages: {}
+  messages: {},
+  newBubbleForm: {},
+  prevBubbleName: null,
+  prevThreadName: null,
 }

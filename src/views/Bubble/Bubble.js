@@ -2,11 +2,16 @@ import {h} from 'hyperapp'
 
 export const Bubble = ({match}) => (state, actions) => {
 
-  // Join room here
-  socket.emit('switch bubble', {
-    prevBubbleName: '',
-    nextBubbleName: match.params.bubbleName
-  });
+  if (match.params.bubbleName != state.prevBubbleName) {
+    // Join room here
+    socket.emit('switch bubble', {
+      prevBubbleName: state.prevBubbleName,
+      nextBubbleName: match.params.bubbleName
+    });
+    actions.updateState({
+      prevBubbleName: match.params.bubbleName
+    });
+  }
 
   if (state.bubbles[match.params.bubbleName]) {
     let bubble = state.bubbles[match.params.bubbleName];

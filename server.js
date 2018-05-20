@@ -667,22 +667,33 @@ io.on('connection', socket => {
       if (err) throw err;
       if (bubble) { // If bubble already exists
         socket.emit("update state", {
-          bubbleForm: {
+          newBubbleForm: {
             error: "nameTaken"
           }
         });
       } else {
 
         // Update DB
-        dbo.collection("bubbles").insertOne(newBubble, (err, result) => {
+        dbo.collection("bubbles").insertOne(newBubble, (err, bubble) => {
           if (err) throw err;
 
-          // Update user bubbles
-          socket.emit("update state", {
-            bubbles: [
-              result.ops[0]
-            ],
-            bubbleForm: {}
+          // Add this bubble to the user's bubble list
+          dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
+              $addToSet: {
+                bubble_names: bubble.ops[0].name
+              }
+          }, { returnOriginal: false }, (err, user) => {
+            if (err) throw err;
+
+            // Update user bubbles
+            socket.emit("update state", {
+              user: user.value,
+              bubbles: {
+                [bubble.ops[0].name]: bubble.ops[0]
+              },
+              newBubbleForm: {}
+            });
+
           });
         });
       }
@@ -768,7 +779,7 @@ mongo.connect(mongo_url, (err, db) => {
       dbo.collection("bubbles").insertOne({
         name: "general",
         title: "General",
-        desc: "A bubble for everyone!",
+        description: "A bubble for everyone!",
         visibility: "public",
         default: true,
         author: "loteoo",

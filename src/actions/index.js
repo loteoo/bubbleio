@@ -35,6 +35,14 @@ export const actions = {
   },
   handleNewBubbleForm: ev => state => {
     ev.preventDefault();
-    console.log("New bubble!");
+
+    socket.emit('new bubble', {
+      title: ev.target.title.value,
+      name: ev.target.name.value,
+      description: ev.target.description.value,
+      visibility: ev.target.visibility.value,
+      author: state.user.username,
+      created: new Date().getTime()
+    });
   }
 }
