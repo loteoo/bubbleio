@@ -1,24 +1,15 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
 
-import {Header} from './Header/Header'
-import {LeftSidebar} from './LeftSidebar/LeftSidebar'
-import {MainContainer} from './MainContainer/MainContainer'
-import {LoginForm} from './LoginForm/LoginForm'
+import {Header} from './Header'
+import {LeftSidebar} from './LeftSidebar'
+import {MainContainer} from './MainContainer'
 
 // Application root
-export const view = (state, actions) => {
-
-  // If logged in
-  if (state.user._id) {
-    return (
-      <div>
-        <Header />
-        <LeftSidebar />
-        <MainContainer />
-      </div>
-    )
-  } else {
-    return <LoginForm />
-  }
-}
+export const view = (state, actions) => (
+  <div class="app">
+    <Header />
+    <LeftSidebar />
+    <MainContainer />
+  </div>
+)

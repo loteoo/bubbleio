@@ -6,18 +6,16 @@ import {state} from './state/'
 import {actions} from './actions/'
 import {view} from './views/'
 
-
 // Dev dependencies
 import freeze from 'hyperapp-freeze'
 import devtools from 'hyperapp-devtools'
 
 // Bundle css
-import 'normalize.css'
-import './main.css'
+import './global.css'
 
 
 // Start hyperapp
-window.main = freeze(devtools)(app)(state, actions, view, document.querySelector('#root'));
+window.main = freeze(devtools)(app)(state, actions, view, document.body);
 
 window.main.init();
 

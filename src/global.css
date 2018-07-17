@@ -1,0 +1,86 @@
+
+/*------------------------------------*\
+    Basic reset / initialize
+\*------------------------------------*/
+
+*,
+*:after,
+*:before {
+	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/*------------------------------------*\
+    Global
+\*------------------------------------*/
+
+
+html {
+	/* --main-color: #666666;
+	--main-background-color: #fafafa;
+	--main-border-color: #e6e6e6;
+
+	--primary-accent-color: #7967ff;
+	--secondary-accent-color: #ff6369;
+	--tertiary-accent-color: #428ce1; */
+}
+body {
+  
+	font-size: responsive;
+	color: var(--main-color);
+	background-color: var(--main-background-color);
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+	font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+::selection {
+	background: var(--secondary-accent-color);
+	color: white;
+	text-shadow:none;
+}
+
+
+
+/*------------------------------------*\
+	Typography
+\*------------------------------------*/
+/* 
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+@font-face {
+	font-family: 'CircularStd-Book';
+	src: url('../fonts/CircularStd/CircularStd-Book.otf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'CircularStd-Medium';
+	src: url('../fonts/CircularStd/CircularStd-Medium.otf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'CircularStd-Bold';
+	src: url('../fonts/CircularStd/CircularStd-Bold.otf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'CircularStd-Black';
+	src: url('../fonts/CircularStd/CircularStd-Black.otf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+ */
+
+ 
