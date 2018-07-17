@@ -1,12 +1,13 @@
 import {h} from 'hyperapp'
 
 export const NoBubbleChosen = ({match}) => (state, actions) =>
-  <div>
-    <h1>No bubble chosen</h1>
-    <h2>Pick a bubble</h2>
-    
-    <div>
-      Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem 
-      ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+  <div class="empty">
+    <div class="empty-icon">
+      <i class="icon icon-people"></i>
+    </div>
+    <p class="empty-title h5">No bubble chosen</p>
+    <p class="empty-subtitle">Pick a bubble</p>
+    <div class="empty-action">
+      <button class="btn btn-primary">Pick a bubble</button>
     </div>
   </div>

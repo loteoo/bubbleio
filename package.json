@@ -12,7 +12,8 @@
     "npm": "^6.2.0",
     "postcss-nested": "^3.0.0",
     "rucksack-css": "^1.0.2",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "spectre.css": "^0.5.3"
   },
   "devDependencies": {
     "postcss-modules": "^1.1.0"

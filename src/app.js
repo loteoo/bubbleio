@@ -8,6 +8,11 @@ import {view} from './views/'
 
 
 // Bundle css
+import 'spectre.css'
+import 'spectre.css/dist/spectre-exp.css'
+import 'spectre.css/dist/spectre-icons.css'
+
+
 import './global.css'
 
 

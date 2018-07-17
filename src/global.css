@@ -3,29 +3,29 @@
     Basic reset / initialize
 \*------------------------------------*/
 
-*,
+/* *,
 *:after,
 *:before {
 	box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
+} */
 
 /*------------------------------------*\
     Global
 \*------------------------------------*/
-
+/* 
 
 html {
-	/* --main-color: #666666;
+	--main-color: #666666;
 	--main-background-color: #fafafa;
 	--main-border-color: #e6e6e6;
 
 	--primary-accent-color: #7967ff;
 	--secondary-accent-color: #ff6369;
-	--tertiary-accent-color: #428ce1; */
-}
-body {
+	--tertiary-accent-color: #428ce1;
+} */
+/* body {
   font-family: Arial;
 	font-size: responsive;
 	color: var(--main-color);
@@ -39,14 +39,42 @@ body {
 	font-smoothing: antialiased;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+} */
+
+
+
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr 420px;
+  grid-template-rows: 64px 1fr;
+  
+  height: 100vh;
+
+  
+
+  >header {
+    grid-column: 1/-1;
+    grid-row: 1/2;
+  }
+  >aside {
+    grid-column: 1/2;
+    grid-row: 2/-1;
+  }
+  >main {
+    grid-column: 2/-1;
+  }
 }
 
 
-::selection {
+
+
+
+/* ::selection {
 	background: var(--secondary-accent-color);
 	color: white;
 	text-shadow:none;
-}
+} */
+
 
 
 

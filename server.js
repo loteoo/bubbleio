@@ -86,69 +86,14 @@ const emitBubbleUserCounts = bubbleName => {
 
 
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 
 
-// On browser load
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
-});
-app.get('/new-bubble', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
-});
-
-// On browser load
-app.get('/:bubbleName', (req, res) => {
-  dbo.collection("bubbles").findOne({
-    name: req.params.bubbleName,
-    archived: { $exists: false }
-  }, (err, bubble) => {
-    if (err) throw err;
-    if (bubble) { // If bubble actually exists
-      res.sendFile(__dirname + '/public/index.html');
-    } else {
-      res.send("Unknown bubble");
-    }
-  });
-});
-
-// On browser load
-app.get('/:bubbleName/:threadId', (req, res) => {
-  dbo.collection("bubbles").findOne({
-    name: req.params.bubbleName,
-    archived: { $exists: false }
-  }, (err, bubble) => {
-    if (err) throw err;
-    if (bubble) { // If bubble actually exists
-      if (ObjectID.isValid(req.params.threadId)) {
-        dbo.collection("threads").findOne({
-          _id: ObjectID(req.params.threadId),
-          archived: { $exists: false }
-        }, (err, thread) => {
-          if (err) throw err;
-          if (thread) { // If thread actually exists
-            res.sendFile(__dirname + '/public/index.html');
-          } else {
-            res.send("Unknown thread");
-          }
-        });
-      } else {
-        res.send("Invalid thread ID");
-      }
-    } else {
-      res.send("Unknown bubble");
-    }
-  });
-});
-
-
-
-
-
-
-
-
+// // On browser load
+// app.get('/', (req, res) => {
+//   res.sendFile(__dirname + '/public/index.html');
+// });
 
 
 
