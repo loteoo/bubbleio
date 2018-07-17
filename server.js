@@ -1,5 +1,3 @@
-const express = require('express');
-const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const mongo = require('mongodb').MongoClient;
@@ -80,22 +78,6 @@ const emitBubbleUserCounts = bubbleName => {
   });
 
 }
-
-
-
-
-
-
-// app.use(express.static('public'));
-
-
-
-// // On browser load
-// app.get('/', (req, res) => {
-//   res.sendFile(__dirname + '/public/index.html');
-// });
-
-
 
 
 

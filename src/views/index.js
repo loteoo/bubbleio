@@ -6,10 +6,14 @@ import {OffCanvas} from './OffCanvas'
 import {MainContainer} from './MainContainer'
 
 // Application root
-export const view = (state, actions) => (
-  <div class="app">
-    <Header />
-    <OffCanvas />
-    <MainContainer />
-  </div>
-)
+export const view = (state, actions) => {
+  console.log(state);
+  
+  return (
+    <div class="app">
+      <Header />
+      <OffCanvas />
+      <MainContainer />
+    </div>
+  )
+}

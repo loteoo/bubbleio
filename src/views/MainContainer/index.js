@@ -13,8 +13,7 @@ export const MainContainer = () => (state, actions) => (
   <main class="main-container">
     <Switch>
       <Route path="/" render={NoBubbleChosen} />
-      <Route path="/new-bubble" render={NewBubbleForm} />
-      <Route path="/:bubbleName" render={Bubble} />
+      <Route parent path="/:bubbleName" render={Bubble} />
     </Switch>
   </main>
 )
