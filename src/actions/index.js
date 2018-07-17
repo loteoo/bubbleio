@@ -12,18 +12,18 @@ export const actions = {
     window.unsubscribe = location.subscribe(main.location);
 
     // Websocket connect
-    window.socket = io.connect(window.location.host);
+    // window.socket = io.connect(window.location.host);
 
-    // Subscribe to socket events
-    window.socket.on('update state', newState => main.updateState(newState));
+    // // Subscribe to socket events
+    // window.socket.on('update state', newState => main.updateState(newState));
 
 
     // Login on load (sets a username on our socket connection)
-    if (state.user._id) {
-      socket.emit('login', {
-        username: state.user.username
-      });
-    }
+    // if (state.user._id) {
+    //   socket.emit('login', {
+    //     username: state.user.username
+    //   });
+    // }
 
 
   },

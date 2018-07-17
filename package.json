@@ -5,21 +5,20 @@
   "main": "server.js",
   "dependencies": {
     "@hyperapp/router": "^0.7.0",
-    "deepmerge": "^2.1.0",
+    "deepmerge": "^2.1.1",
     "express": "^4.16.3",
-    "hyperapp": "^1.2.1",
-    "mongodb": "^3.0.8",
-    "npm": "^6.0.1",
-    "socket.io": "^2.1.1",
+    "hyperapp": "^1.2.6",
+    "mongodb": "^3.1.1",
+    "npm": "^6.2.0",
     "postcss-nested": "^3.0.0",
-    "rucksack-css": "^1.0.2"
+    "rucksack-css": "^1.0.2",
+    "socket.io": "^2.1.1"
   },
   "devDependencies": {
-    "hyperapp-devtools": "^0.3.0",
-    "hyperapp-freeze": "^0.2.0"
+    "postcss-modules": "^1.1.0"
   },
   "scripts": {
-    "start": "parcel public/index.html",
+    "start": "parcel serve watch public/index.html",
     "build": "parcel build ./public/index.html --no-source-maps --experimental-scope-hoisting --detailed-report --public-url ./"
   },
   "repository": {
