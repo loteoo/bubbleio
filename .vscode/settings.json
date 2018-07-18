@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "**/views/**/*.js": "javascriptreact",
+    "**/src/**/*.css": "scss"
+  }
+}

@@ -36,12 +36,6 @@ const UserSidebar = ({user}) => (
 
     {state.user ? state.user.bubble_names.map(bubbleName => <BubbleLink bubble={state.bubbles[bubbleName]} />) : null}
 
-    <li class="menu-item">
-      <div class="menu-badge">
-        <label class="label label-primary">4</label>
-      </div>
-      <a class="active" href="#menus">General</a>
-    </li>
 
   </ul>
 )
@@ -50,33 +44,45 @@ const UserSidebar = ({user}) => (
 
 const GuestSidebar = () => (
   <ul class="menu">
+
+    <li class="menu-item">
+      
+    </li>
+    
     <li class="menu-item">
       <button class="btn btn-primary btn-block">Pick a name</button>
     </li>
+
     <li class="divider"></li>
 
+    <BubbleLink bubble={{title: "General", name: "general"}} />
+    
+    <li class="divider"></li>
+    
     <li class="menu-item">
-      <div class="menu-badge">
-        <label class="label label-primary">4</label>
-      </div>
-      <a class="active" href="#menus">General</a>
+      <button class="btn btn-primary btn-block">Create bubble</button>
     </li>
-    
-    
+
     
 
   </ul>
-  
 )
 
 
 
 const BubbleLink = ({bubble}) =>
-<Link to={bubble.name}>
-  {bubble.title} {bubble.userCount}
-</Link>
+<li class="menu-item">
+  <div class="menu-badge">
+    <label class="label label-primary">0</label>
+  </div>
+  <Link to={bubble.name}>{bubble.title}</Link>
+</li>
+
 
 const NewBubbleLink = () =>
-<Link to="/new-bubble">
-  New Bubble
-</Link>
+<li class="menu-item">
+  <div class="menu-badge">
+    <label class="label label-primary">0</label>
+  </div>
+  <Link to={bubble.name}>{bubble.title}</Link>
+</li>
