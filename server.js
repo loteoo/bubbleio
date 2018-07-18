@@ -1,12 +1,113 @@
-const express = require('express');
-const app = express();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+// ===============
+// HTTP server
+// ===============
+
+// HTTP dependency
+const fs = require('fs');
+
+// HTTP handler
+const handler = (req, res) => {
+  fs.readFile(__dirname + '/public/index.html',
+  function (err, data) {
+    if (err) {
+      res.writeHead(500);
+      return res.end('Error loading index.html');
+    }
+
+    res.writeHead(200);
+    res.end(data);
+  });
+}
+
+// Http server
+const app = require('http').createServer(handler);
+
+// Start listening http
+app.listen(80);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// =================
+// Mongo DB
+// =================
+
+// MongoDB dependencies
 const mongo = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const mongo_url = "mongodb://localhost:27017/";
 const db_name = "bubbleio";
-const port = 80;
+
+
+// DB connection
+let dbo;
+
+
+// Create a DB connection
+mongo.connect(mongo_url, (err, db) => {
+  if (err) throw err;
+  dbo = db.db(db_name);
+  
+
+  // When the server gets launched with a brand new database,
+  // we create the first bubble:
+  // Check if bubble "general" exists.
+  // If not, create it.
+  dbo.collection("bubbles").findOne({name: "general"}, (err, bubble) => {
+    if (err) throw err;
+    if (!bubble) {
+      // Update DB
+      dbo.collection("bubbles").insertOne({
+        name: "general",
+        title: "General",
+        description: "A bubble for everyone!",
+        visibility: "public",
+        default: true,
+        author: "loteoo",
+        created: new Date().getTime()
+      }, (err, result) => {
+        if (err) throw err;
+      });
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ===============
+// Websockets
+// ===============
+
+
+// Dependencies
+const io = require('socket.io')(app);
 
 
 // Returns number of sockets connections currently in the specified room
@@ -86,7 +187,7 @@ const emitBubbleUserCounts = bubbleName => {
 
 
 // ================================
-// Manage socket.io events
+// Manage events
 // ================================
 
 
@@ -686,37 +787,4 @@ io.on('connection', socket => {
 
 
 
-// DB connection
-let dbo;
-
-
-// Create a DB connection and start listening http
-mongo.connect(mongo_url, (err, db) => {
-  if (err) throw err;
-  dbo = db.db(db_name);
-  server.listen(port, () => {
-   console.log('Server listening on http://localhost:' + port);
-  });
-
-  // When the server gets launched with a brand new database,
-  // we create the first bubble:
-  // Check if bubble "general" exists.
-  // If not, create it.
-  dbo.collection("bubbles").findOne({name: "general"}, (err, bubble) => {
-    if (err) throw err;
-    if (!bubble) {
-      // Update DB
-      dbo.collection("bubbles").insertOne({
-        name: "general",
-        title: "General",
-        description: "A bubble for everyone!",
-        visibility: "public",
-        default: true,
-        author: "loteoo",
-        created: new Date().getTime()
-      }, (err, result) => {
-        if (err) throw err;
-      });
-    }
-  });
-});
+console.log('Server started!');
