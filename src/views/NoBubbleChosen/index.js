@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 
 export const NoBubbleChosen = ({match}) => (state, actions) =>
-  <div class="empty">
+  <div class="empty" key="no-bubble-chosen">
     <div class="empty-icon">
       <i class="icon icon-people"></i>
     </div>

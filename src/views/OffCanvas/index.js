@@ -46,7 +46,7 @@ const GuestSidebar = () => (
   <ul class="menu">
 
     <li class="menu-item">
-      
+      <h4>Bubbleio</h4>
     </li>
     
     <li class="menu-item">
@@ -62,8 +62,6 @@ const GuestSidebar = () => (
     <li class="menu-item">
       <button class="btn btn-primary btn-block">Create bubble</button>
     </li>
-
-    
 
   </ul>
 )

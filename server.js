@@ -1,3 +1,5 @@
+const express = require('express');
+const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const mongo = require('mongodb').MongoClient;
@@ -162,7 +164,8 @@ io.on('connection', socket => {
               bubbles: {
                 [bubble.name]: bubble
               },
-              threads: getIndexedThreads(threads)
+              threads: getIndexedThreads(threads),
+              prevBubbleName: bubble.name
             });
 
 
