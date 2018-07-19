@@ -129,7 +129,7 @@ io.on('connection', function (socket) {
 
 
             // Update clients who have that this bubble in their user's bubble list
-            for (socketId in io.sockets.sockets) {
+            for (let socketId in io.sockets.sockets) {
               users.forEach(user => {
                 if (io.sockets.sockets[socketId].userID) {
                   if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
