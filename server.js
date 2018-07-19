@@ -207,7 +207,7 @@ io.on('connection', function (socket) {
 
               // Update clients who have that this bubble in their user's bubble list
               // (User counts only)
-              for (socketId in io.sockets.sockets) {
+              for (let socketId in io.sockets.sockets) {
                 users.forEach(user => {
                   if (io.sockets.sockets[socketId].userID) {
                     if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
@@ -764,7 +764,7 @@ io.on('connection', function (socket) {
 
 
 // Create a DB connection and start listening http
-mongo.connect(mongo_url, function(err, db) {
+mongo.connect(mongo_url, { useNewUrlParser: true }, function(err, db) {
   if (err) throw err;
   dbo = db.db(db_name);
   server.listen(port, function() {
