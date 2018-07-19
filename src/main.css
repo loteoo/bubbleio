@@ -234,6 +234,7 @@ textarea:focus {
 fieldset {
 	position: relative;
 	margin: 3rem 0;
+     	border: 0;
 }
 
 .error {
@@ -295,7 +296,9 @@ fieldset {
 	opacity: 1;
 	pointer-events: all;
 }
-
+.options ul li {
+	list-style: none;
+}
 .options ul li:not(:last-child) {
 	border-bottom: 1px solid var(--main-border-color);
 }
@@ -474,8 +477,10 @@ footer {
 \*------------------------------------*/
 
 .slider>.user-view {
-	left: -100%;
-	right: 100%;
+	
+left: -100%;
+	
+right: 100%;
 }
 
 .user-view {
@@ -1052,8 +1057,10 @@ footer {
 \*------------------------------------*/
 
 .slider>.thread-view {
-	left: 100%;
-	right: -100%;
+	
+left: 100%;
+	
+right: -100%;
 }
 .thread-view .thread-header {
 	display: flex;
