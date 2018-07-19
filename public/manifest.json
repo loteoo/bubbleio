@@ -6,36 +6,23 @@
   "orientation": "portrait",
   "background_color": "#f5f7fa",
   "theme_color": "#007bff",
+  "dir": "ltr",
+  "lang": "en",
   "icons": [
     {
-      "src": "/img/logo/48.png",
-      "type": "image/png",
-      "sizes": "48x48"
-    },
-    {
-      "src": "/img/logo/64.png",
-      "type": "image/png",
-      "sizes": "64x64"
-    },
-    {
-      "src": "/img/logo/96.png",
-      "type": "image/png",
-      "sizes": "96x96"
-    },
-    {
-      "src":"/img/logo/144.png",
-      "sizes": "144x144",
+      "src": "/icons/icon-180x180.png",
+      "sizes": "180x180",
       "type": "image/png"
     },
     {
-      "src": "/img/logo/192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "/img/logo/512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }

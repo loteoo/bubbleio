@@ -9,9 +9,7 @@ const RUNTIME = 'runtime';
 const PRECACHE_URLS = [
   '/',
   '/css/style.css',
-  '/js/app.js',
-  '/socket.io/socket.io.js',
-  '/fonts/CircularStd/CircularStd-Book.otf'
+  '/client.js'
 ];
 
 // The install handler takes care of precaching the resources we always need.
