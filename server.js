@@ -1,3 +1,5 @@
+'use stric';
+
 // ===============
 // HTTP server
 // ===============
@@ -49,10 +51,11 @@ app.listen(80);
 // =================
 
 // MongoDB dependencies
-const mongo = require('mongodb').MongoClient;
-const ObjectID = require('mongodb').ObjectID;
-const mongo_url = "mongodb://localhost:27017/";
-const db_name = "bubbleio";
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
+const ObjectID = mongodb.ObjectID;
+
+
 
 
 // DB connection
@@ -60,9 +63,9 @@ let dbo;
 
 
 // Create a DB connection
-mongo.connect(mongo_url, (err, db) => {
+MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, (err, db) => {
   if (err) throw err;
-  dbo = db.db(db_name);
+  dbo = db.db('bubbleio');
   
 
   // When the server gets launched with a brand new database,
