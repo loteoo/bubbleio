@@ -11,13 +11,13 @@ export const LeftMenu = () => (state, actions) => state.user ? <UserSidebar user
 
 
 
-const UserSidebar = ({user}) => (
+const UserSidebar = ({user}) => (state, actions) => (
   <div class="left-menu">
     <div class="heading">
       {user.username}
     </div>
     <nav class="menu">
-      {state.user.bubble_names.map(bubbleName => <BubbleLink bubble={state.bubbles[bubbleName]} />)}
+      {user.bubble_names.map(bubbleName => <BubbleLink bubble={state.bubbles[bubbleName]} />)}
     </nav>
   </div>
 )
@@ -38,7 +38,7 @@ const GuestSidebar = () => (
 
 
 const BubbleLink = ({bubble}) => (
-  <Link class="bubble-link" to={bubble.name}>
+  <Link class="bubble-link" to={`/${bubble.name}`}>
     {bubble.title} - {bubble.userCount}
   </Link>
 )

@@ -4,6 +4,7 @@ import {Link} from "@hyperapp/router"
 
 import {LeftMenu} from './layout/LeftMenu/LeftMenu'
 import {MainContainer} from './layout/MainContainer/MainContainer'
+import {RightPanel} from './layout/RightPanel/RightPanel'
 
 // Bundle css
 import './global.css'
@@ -16,6 +17,7 @@ export const view = (state, actions) => {
     <div class="app">
       <LeftMenu />
       <MainContainer />
+      <RightPanel />
     </div>
   )
 }

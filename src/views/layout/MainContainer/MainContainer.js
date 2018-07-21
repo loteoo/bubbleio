@@ -1,11 +1,9 @@
 import {h} from 'hyperapp'
 import { Link, Route, Switch, Redirect, location } from "@hyperapp/router"
 
-import {NoBubbleChosen} from '../../NoBubbleChosen'
-import {NewBubbleForm} from '../../NewBubbleForm'
-import {Bubble} from '../../Bubble'
-// import {Thread} from './Thread/Thread'
-
+import {Home} from '../../components/Home/Home.js'
+import {FourOFour} from '../../components/FourOFour/FourOFour.js'
+import {BubbleLoader} from '../../components/BubbleLoader/BubbleLoader.js'
 
 
 import './main-container.css'
@@ -13,8 +11,9 @@ import './main-container.css'
 export const MainContainer = () => (state, actions) => (
   <main class="main-container">
     <Switch>
-      <Route path="/" render={NoBubbleChosen} />
-      <Route parent path="/:bubbleName" render={Bubble} />
+      <Route path="/" render={Home} />
+      <Route parent path="/:bubbleName" render={BubbleLoader} />
+      <Route render={FourOFour} />
     </Switch>
   </main>
 )
