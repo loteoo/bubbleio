@@ -7,14 +7,6 @@ import {actions} from './actions/'
 import {view} from './views/'
 
 
-// Bundle css
-import 'spectre.css'
-import 'spectre.css/dist/spectre-exp.css'
-import 'spectre.css/dist/spectre-icons.css'
-
-
-import './global.css'
-
 
 // Start hyperapp
 window.main = app(state, actions, view, document.body);

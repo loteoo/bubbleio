@@ -2,6 +2,7 @@ import {h} from 'hyperapp'
 
 export const Bubble = ({match}) => (state, actions) => {
 
+  
   if (match.params.bubbleName != state.prevBubbleName) {
     // Join room here
     socket.emit('switch bubble', {
@@ -53,7 +54,7 @@ const ThreadPreview = ({thread}) => (state, actions) => (
     </div>
     <div class="card-body">Body here</div>
     {/* <Route path={`/${bubble.name}/${thread._id}`} render={({ match }) => <Thread thread={thread} />} /> */}
-    <div class="card-image">IMAGE HERE</div>
+    <div class="card-image"><img src="https://i.imgur.com/pkfzTji.jpg" alt={thread.title} /></div>
     <div class="card-footer"><a class="btn btn-primary" href="#cards">Search</a><a class="btn btn-link" href="#cards">Share</a></div>
   </div>
 )

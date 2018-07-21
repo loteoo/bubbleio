@@ -25,47 +25,38 @@ html {
 	--secondary-accent-color: #ff6369;
 	--tertiary-accent-color: #428ce1;
 } */
-/* body {
-  font-family: Arial;
-	font-size: responsive;
-	color: var(--main-color);
-	background-color: var(--main-background-color);
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
+body {
   position: relative;
-  overflow-x: hidden;
-  text-rendering: optimizeLegibility;
-	font-smoothing: antialiased;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-} */
+  
+}
 
 
 
 .app {
+
   display: grid;
   grid-template-columns: 240px 1fr 420px;
-  grid-template-rows: 64px 1fr;
   
-  height: 100vh;
+  width: 100vw;
+  height: 100vh;  
 
   
-
-  >header {
-    grid-column: 1/-1;
-    grid-row: 1/2;
-  }
-  >aside {
+  >.left-menu {
     grid-column: 1/2;
-    grid-row: 1/-1;
   }
-  >main {
-    grid-column: 2/-1;
-    grid-row: 1/-1;
+  >.main-container {
+    grid-column: 2/3;
+  }
+  >.thread-panel {
+    grid-column: 3/4;
   }
 }
 
+
+
+img {
+  max-width: 100%;
+}
 
 
 

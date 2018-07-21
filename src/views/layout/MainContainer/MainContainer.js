@@ -1,13 +1,14 @@
 import {h} from 'hyperapp'
 import { Link, Route, Switch, Redirect, location } from "@hyperapp/router"
 
-import {NoBubbleChosen} from '../NoBubbleChosen'
-import {NewBubbleForm} from '../NewBubbleForm'
-import {Bubble} from '../Bubble'
+import {NoBubbleChosen} from '../../NoBubbleChosen'
+import {NewBubbleForm} from '../../NewBubbleForm'
+import {Bubble} from '../../Bubble'
 // import {Thread} from './Thread/Thread'
 
 
 
+import './main-container.css'
 
 export const MainContainer = () => (state, actions) => (
   <main class="main-container">

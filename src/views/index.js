@@ -1,9 +1,12 @@
 import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
 
-import {Header} from './Header'
-import {OffCanvas} from './OffCanvas'
-import {MainContainer} from './MainContainer'
+
+import {LeftMenu} from './layout/LeftMenu/LeftMenu'
+import {MainContainer} from './layout/MainContainer/MainContainer'
+
+// Bundle css
+import './global.css'
 
 // Application root
 export const view = (state, actions) => {
@@ -11,8 +14,7 @@ export const view = (state, actions) => {
   
   return (
     <div class="app">
-      <Header />
-      <OffCanvas />
+      <LeftMenu />
       <MainContainer />
     </div>
   )
