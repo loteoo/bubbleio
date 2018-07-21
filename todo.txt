@@ -1,5 +1,6 @@
-refaire le backend sans express (peut-être koa? mais pas nécéssairement)
+refaire le backend avec koa, ex: https://github.com/frenzzy/hyperapp-starter/blob/master/src/server.js
 
+refaire backend avec mongoose DB util
 
 https://marked.js.org
 
