@@ -2,6 +2,8 @@ import {h} from 'hyperapp'
 
 import {Message} from '../Message/Message.js'
 
+import {MessageForm} from '../MessageForm/MessageForm.js'
+
 import './thread.css'
 
 export const Thread = ({thread}) => (state, actions) => (
@@ -12,6 +14,7 @@ export const Thread = ({thread}) => (state, actions) => (
     
     <Messages thread={thread} />
     
+    <MessageForm thread={thread} />
 
   </div>
 )

@@ -6,10 +6,5 @@
   margin: 1rem auto;
   max-width: 30rem;
 
-  >.bottom {
-    display: flex;
-    justify-content: space-between;
-  }
-
 }
  

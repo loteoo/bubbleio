@@ -588,22 +588,12 @@ io.on('connection', socket => {
 
 
   // Pass all received message to all clients
-  socket.on('new message', message => {
+  socket.on('new message', ({threadId, message}) => {
 
     let newState = {
-      bubbles: [
-        {
-          _id: message.bubble_id,
-          threads: [
-            {
-              _id: message.thread_id,
-              messages: [
-                message
-              ]
-            }
-          ]
-        }
-      ]
+      messages: {
+        
+      }
     };
 
     // Update all clients in bubble

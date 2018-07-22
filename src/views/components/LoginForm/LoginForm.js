@@ -1,5 +1,6 @@
 import {h} from 'hyperapp'
 
+import './login-form.css'
 
 const handleLoginForm = ev => state => {
   ev.preventDefault();

@@ -13,7 +13,6 @@ import './global.css'
 // Application root
 export const view = (state, actions) => {
   console.log(state);
-  
   return (
     <div class="app">
       <LeftMenu />
