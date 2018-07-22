@@ -15,7 +15,6 @@
     Global
 \*------------------------------------*/
 /* 
-
 html {
 	--main-color: #666666;
 	--main-background-color: #fafafa;
@@ -25,11 +24,28 @@ html {
 	--secondary-accent-color: #ff6369;
 	--tertiary-accent-color: #428ce1;
 } */
+
+
 body {
   position: relative;
+
+  background: #fff;
+  color: #50596c;
   
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
 }
 
+
+h1, h2, h3, h4, h5, h6, p {
+  margin-bottom: 0;
+  &:first-child {
+    margin-top: 0;
+  }
+}
 
 
 .app {
@@ -38,7 +54,11 @@ body {
   grid-template-columns: 240px 1fr 420px;
   
   width: 100vw;
-  height: 100vh;  
+
+  >* {
+    height: 100vh;
+    overflow-y: auto;
+  }
 
   
   >.left-menu {
@@ -58,7 +78,9 @@ img {
   max-width: 100%;
 }
 
-
+::-webkit-scrollbar {
+  display: none;
+}
 
 
 /* ::selection {
@@ -73,34 +95,5 @@ img {
 /*------------------------------------*\
 	Typography
 \*------------------------------------*/
-/* 
-@import url('https://fonts.googleapis.com/css?family=Lato');
-
-@font-face {
-	font-family: 'CircularStd-Book';
-	src: url('../fonts/CircularStd/CircularStd-Book.otf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'CircularStd-Medium';
-	src: url('../fonts/CircularStd/CircularStd-Medium.otf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'CircularStd-Bold';
-	src: url('../fonts/CircularStd/CircularStd-Bold.otf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'CircularStd-Black';
-	src: url('../fonts/CircularStd/CircularStd-Black.otf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
-
- */
 
  

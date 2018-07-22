@@ -7,6 +7,7 @@ import {MainContainer} from './layout/MainContainer/MainContainer'
 import {RightPanel} from './layout/RightPanel/RightPanel'
 
 // Bundle css
+import 'sanitize.css'
 import './global.css'
 
 // Application root

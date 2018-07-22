@@ -131,27 +131,27 @@ const getConnectionsInRoom = roomName => {
 
 
 
-// Takes in an array of threads and returns a single object
-// with each bubble indexed as a property by their id
-const getIndexedThreads = threads => {
-  let indexedThreads = {};
-  for (let i = 0; i < threads.length; i++) {
-    threads[i].userCount = getConnectionsInRoom(threads[i]._id);
-    indexedThreads[threads[i]._id] = threads[i];
+
+// Takes in an array of objects and returns a single object
+// with each object indexed as a property by their unique names
+const getIndexedCollection = collection => {
+  let indexedCollection = {};
+  for (let i = 0; i < collection.length; i++) {
+    collection[i].userCount = getConnectionsInRoom(collection[i]._id);
+    indexedCollection[collection[i]._id] = collection[i];
   }
-  return indexedThreads;
+  return indexedCollection;
 }
 
 
 
 
-
-// Takes in an array of bubbles and returns a single object
-// with each bubble indexed as a property by their unique names
+// Takes in an array of objects and returns a single object
+// with each object indexed as a property by their unique names
 const getIndexedBubbles = bubbles => {
   let indexedBubbles = {};
   for (let i = 0; i < bubbles.length; i++) {
-    bubbles[i].userCount = getConnectionsInRoom(bubbles[i]._id);
+    bubbles[i].userCount = getConnectionsInRoom(bubbles[i].name);
     indexedBubbles[bubbles[i].name] = bubbles[i];
   }
   return indexedBubbles;
@@ -198,16 +198,16 @@ io.on('connection', socket => {
 
 
   // Handle rooms user counts from user navigation in the app
-  socket.on('switch bubble', navData => {
+  socket.on('switch bubble', ({prevBubbleName, nextBubbleName}) => {
 
 
     // If user was in an other room before this
-    if (navData.prevBubbleName) {
+    if (prevBubbleName) {
 
       // Leave connection to the previous room
-      socket.leave(navData.prevBubbleName);
+      socket.leave(prevBubbleName);
 
-      emitBubbleUserCounts(navData.prevBubbleName);
+      emitBubbleUserCounts(prevBubbleName);
 
     }
 
@@ -215,7 +215,7 @@ io.on('connection', socket => {
 
     // Fetch, join and update clients
     dbo.collection("bubbles").findOne({
-      name: navData.nextBubbleName,
+      name: nextBubbleName,
       archived: { $exists: false }
     }, (err, bubble) => {
       if (err) throw err;
@@ -268,7 +268,7 @@ io.on('connection', socket => {
               bubbles: {
                 [bubble.name]: bubble
               },
-              threads: getIndexedThreads(threads),
+              threads: getIndexedCollection(threads),
               prevBubbleName: bubble.name
             });
 
@@ -391,38 +391,48 @@ io.on('connection', socket => {
 
 
   // Handle user thread rooms
-  socket.on('switch thread', navData => {
+  socket.on('switch thread', ({prevThreadId, nextThreadId}) => {
 
 
     // If user was in an other thread before this
-    if (navData.prevThread) {
+    if (prevThreadId) {
 
       // Leave connection to the new room
-      socket.leave(navData.prevThread._id);
+      socket.leave(prevThreadId);
 
-      // Update the thread's user count
-      navData.prevThread.userCount = getConnectionsInRoom(navData.prevThread._id);
+      
+      dbo.collection("threads").findOne({
+        _id: ObjectID(prevThreadId),
+        archived: { $exists: false }
+      }, (err, thread) => {
+        if (err) throw err;
+        if (thread) { // If thread actually exists
+          
+          // Update clients in the previous thread's bubble
+          io.to(thread.bubble_id).emit("update state", {
+            threads: {
+              [thread._id]: {
+                userCount: getConnectionsInRoom(thread._id)
+              }
+            }
+          });
 
-      // Update clients in the previous thread's bubble
-      io.to(navData.prevThread.bubble_id).emit("update state", {
-        bubbles: [
-          {
-            _id: navData.prevThread.bubble_id,
-            threads: [
-              navData.prevThread
-            ]
-          }
-        ]
+        }
       });
+            
+      
+      
     }
 
 
     dbo.collection("threads").findOne({
-      _id: ObjectID(navData.nextThread._id),
+      _id: ObjectID(nextThreadId),
       archived: { $exists: false }
     }, (err, thread) => {
       if (err) throw err;
       if (thread) { // If thread actually exists
+
+        
         dbo.collection("messages").find({ thread_id: ObjectID(thread._id) }).toArray((err, messages) => {
           if (err) throw err;
 
@@ -431,45 +441,36 @@ io.on('connection', socket => {
           socket.join(thread._id);
 
 
-          // Append user counts to thread
-          thread.userCount = getConnectionsInRoom(thread._id);
-
-
           // Update clients in the thread's bubble (user counts only)
           socket.broadcast.to(thread.bubble_id).emit("update state", {
-            bubbles: [
-              {
-                _id: thread.bubble_id,
-                threads: [
-                  thread
-                ]
+            threads: {
+              [thread._id]: {
+                userCount: getConnectionsInRoom(thread._id)
               }
-            ]
+            }
           });
-
-
-
-
-          // Inject messages to thread
-          thread.messages = messages;
 
 
           // Update user count and messages from the DB for the switching client
           socket.emit("update state", {
-            bubbles: [
-              {
-                _id: thread.bubble_id,
-                threads: [
-                  thread
-                ]
+            threads: {
+              [thread._id]: {
+                userCount: getConnectionsInRoom(thread._id)
               }
-            ]
+            },
+            messages: getIndexedCollection(messages),
+            prevThreadId: thread._id
           });
 
 
         });
+
       }
     });
+
+
+
+
   });
 
 

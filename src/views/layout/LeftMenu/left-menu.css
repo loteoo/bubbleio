@@ -1,3 +1,5 @@
 .left-menu {
-  
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-right: .05rem solid #e7e9ed;
 }

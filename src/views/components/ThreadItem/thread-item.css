@@ -1,5 +1,15 @@
 
 .thread-item {
 
+  border: .05rem solid #e7e9ed;
+  padding: 0.5rem;
+  margin: 1rem auto;
+  max-width: 30rem;
+
+  >.bottom {
+    display: flex;
+    justify-content: space-between;
+  }
+
 }
  

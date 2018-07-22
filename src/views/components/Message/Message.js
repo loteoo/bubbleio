@@ -3,8 +3,8 @@ import {h} from 'hyperapp'
 
 import './message.css'
 
-export const Message = () => (
-  <div class="message">
-    My new Message component!
+export const Message = ({message}) => (
+  <div class="message" key={message._id}>
+    {message.message}
   </div>
 )

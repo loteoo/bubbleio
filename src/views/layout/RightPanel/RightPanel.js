@@ -11,8 +11,7 @@ import './right-panel.css'
 export const RightPanel = () => (
   <div class="right-panel">
     <Switch>
-      <Route path="/:bubbleName" render={Home} />
-      <Route parent path="/:bubbleName/:threadId" render={ThreadLoader} />
+      <Route path="/:bubbleName/:threadId" render={ThreadLoader} />
       <Route render={FourOFour} />
     </Switch>
   </div>
