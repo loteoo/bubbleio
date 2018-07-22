@@ -30,11 +30,19 @@ const GuestSidebar = () => (
       Bubbleio
     </div>
     <nav class="menu">
+      <HomeLink />
       <BubbleLink bubble={{title: "General", name: "general"}} />
     </nav>
   </div>
 )
 
+
+
+const HomeLink = () => (
+  <Link class="bubble-link" to="/">
+    Home
+  </Link>
+)
 
 
 const BubbleLink = ({bubble}) => (

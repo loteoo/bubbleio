@@ -2,9 +2,13 @@ import {h} from 'hyperapp'
 
 import {Message} from '../Message/Message.js'
 
+import './thread.css'
+
 export const Thread = ({thread}) => (state, actions) => (
   <div class="thread" key={thread._id}>
-    <h2>{thread.title}</h2>
+    <div class="heading">
+      <h2>{thread.title}</h2>
+    </div>
     
     <Messages thread={thread} />
     

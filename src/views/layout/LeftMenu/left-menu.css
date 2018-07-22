@@ -1,5 +1,25 @@
 .left-menu {
-  padding: 1rem;
   background-color: #f8f9fa;
   border-right: .05rem solid #e7e9ed;
+  >.heading {
+    padding: 2rem;
+  }
+  >.menu {
+    padding: 1rem;
+    >.bubble-link {
+      display: block;
+      color: inherit;
+      border-radius: .1rem;
+      margin: 0.5rem 0;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      &:hover, &:focus {
+        background: #f1f1fc;
+        color: #5755d9;
+      }
+      &:focus {
+        box-shadow: 0 0 0 0.1rem rgba(87,85,217,.2);
+      }
+    }
+  }
 }
