@@ -30,31 +30,6 @@ const app = require(path.resolve(__dirname, './server/Http.js'));
 const {Bubble, Thread, Message, User} = require(path.resolve(__dirname, './server/Models.js'));
 
 
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
-const ObjectID = mongodb.ObjectID;
-
-
-
-// DB connection
-let dbo;
-
-
-// Create a DB connection
-MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, (err, db) => {
-  if (err) throw err;
-  dbo = db.db('bubbleio');
-});
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -118,7 +93,7 @@ const getIndexedBubbles = bubbles => {
 // (joined in the room or not)
 const emitBubbleUserCounts = bubbleName => {
 
-  dbo.collection("users").find({ bubble_names: bubbleName }).toArray((err, users) => {
+  User.find({ bubble_names: bubbleName }).toArray((err, users) => {
     if (err) throw err;
 
     for (socketId in io.sockets.sockets) {
@@ -203,7 +178,7 @@ io.on('connection', socket => {
   //         if (err) throw err;
 
   //         // Add this bubble to the user's bubble list
-  //         dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
+  //         User.findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
   //             $addToSet: {
   //               bubble_names: bubble.name
   //             }
@@ -285,7 +260,7 @@ io.on('connection', socket => {
           if (err) throw err;
 
           // Add this bubble to the user's bubble list
-          dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
+          User.findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
               $addToSet: {
                 bubble_names: bubble.name
               }
@@ -324,7 +299,7 @@ io.on('connection', socket => {
   socket.on('leave bubble', bubble => {
 
     // Remove the bubble from this user's bubble list in the database
-    dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
+    User.findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
         $pull: {
           bubble_names: bubble.name
         }
@@ -346,13 +321,13 @@ io.on('connection', socket => {
       if (err) throw err;
 
       // List of all users who have this bubble in their list
-      dbo.collection("users").find({ bubble_names: bubble.name }).toArray((err, users) => {
+      User.find({ bubble_names: bubble.name }).toArray((err, users) => {
         if (err) throw err;
 
 
         // Remove the bubble from these user's bubble list in the database
         users.forEach(user => {
-          dbo.collection("users").findOneAndUpdate({ _id: ObjectID(user._id) }, {
+          User.findOneAndUpdate({ _id: ObjectID(user._id) }, {
             $pull: {
               bubble_names: bubble.name
             }
@@ -470,7 +445,7 @@ io.on('connection', socket => {
       if (thread) { // If thread actually exists
 
         
-        dbo.collection("messages").find({ thread_id: ObjectID(thread._id) }).toArray((err, messages) => {
+        Message.find({ thread_id: ObjectID(thread._id) }).toArray((err, messages) => {
           if (err) throw err;
 
 
@@ -646,7 +621,7 @@ io.on('connection', socket => {
     message.thread_id = ObjectID(message.thread_id);
 
     // Update DB
-    dbo.collection("messages").insertOne(message, (err, result) => {
+    Message.insertOne(message, (err, result) => {
       if (err) throw err;
     });
   });
@@ -661,14 +636,14 @@ io.on('connection', socket => {
 
   // Pass all received message to all clients
   socket.on('login', user => {
-    dbo.collection("users").findOne(user, (err, result) => {
+    User.findOne(user, (err, result) => {
       if (err) throw err;
 
       // If this is a new user
       if (!result) {
 
         // Get the default bubbles
-        dbo.collection("bubbles").find({default: true}).toArray((err, bubbles) => {
+        Bubble.find({default: true}).toArray((err, bubbles) => {
           if (err) throw err;
 
           // Give the user the default bubbles
@@ -678,7 +653,7 @@ io.on('connection', socket => {
           });
 
           // Insert in DB
-          dbo.collection("users").insertOne(user, (err, result) => {
+          User.insertOne(user, (err, result) => {
             if (err) throw err;
 
             // Link the user ID to the socket connection
@@ -697,7 +672,7 @@ io.on('connection', socket => {
         socket.userID = result._id;
 
         // Send him his bubbles
-        dbo.collection("bubbles").find({
+        Bubble.find({
           name: { $in: result.bubble_names },
           archived: { $exists: false }
         }).toArray((err, bubbles) => {
@@ -736,11 +711,11 @@ io.on('connection', socket => {
       } else {
 
         // Update DB
-        dbo.collection("bubbles").insertOne(newBubble, (err, bubble) => {
+        Bubble.insertOne(newBubble, (err, bubble) => {
           if (err) throw err;
 
           // Add this bubble to the user's bubble list
-          dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
+          User.findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
               $addToSet: {
                 bubble_names: bubble.ops[0].name
               }
@@ -773,9 +748,9 @@ io.on('connection', socket => {
   // Redirect to random public bubble
   socket.on('random bubble', () => {
 
-    dbo.collection("bubbles").count({archived: { $exists: false }}, (err, total) => {
+    Bubble.count({archived: { $exists: false }}, (err, total) => {
       if (err) throw err;
-      dbo.collection("bubbles").find({
+      Bubble.find({
         visibility: "public",
         archived: { $exists: false }
       }).skip(Math.floor(Math.random()*total)).limit(1).toArray((err, bubbles) => {
@@ -801,7 +776,7 @@ io.on('connection', socket => {
     delete user._id;
 
     // Update DB
-    dbo.collection("users").findOneAndUpdate({
+    User.findOneAndUpdate({
       _id: ObjectID(tempID)
     }, {
       $set: user
