@@ -1,11 +1,13 @@
 // =================
-// Mongo DB
+// Mongoose models
 // =================
 
-// MongoDB dependencies
+// Dependencies
 const mongoose = require('mongoose');
 const {Schema, connection: db} = mongoose;
 const {ObjectId} = Schema.Types;
+
+
 
 // Bubble Schema
 const bubbleSchema = new Schema({
@@ -29,6 +31,10 @@ const bubbleSchema = new Schema({
     type: Boolean,
     required: true
   },
+  threads:  [{
+    type: ObjectId,
+    ref: 'Thread'
+  }],
   user:  {
     type: ObjectId,
     ref: 'User',
@@ -57,6 +63,10 @@ const threadSchema = new Schema({
     default: 'default',
     required: true
   },
+  messages:  [{
+    type: ObjectId,
+    ref: 'Message'
+  }],
   bubble:  {
     type: ObjectId,
     ref: 'Bubble',
@@ -109,14 +119,23 @@ const userSchema = new Schema({
     type: Array,
     default: [],
     required: true
-  }
+  },
+  threads:  [{
+    type: ObjectId,
+    ref: 'Thread'
+  }],
+  createdBubbles:  [{
+    type: ObjectId,
+    ref: 'Bubble'
+  }],
 }, {
   timestamps: true
 });
 
 
-// Create our models using the schemas
 
+
+// Create our models using the schemas
 const Bubble = mongoose.model('Bubble', bubbleSchema);
 const Thread = mongoose.model('Thread', threadSchema);
 const Message = mongoose.model('Message', messageSchema);
@@ -133,6 +152,11 @@ db.once('open', () => {
 
   
   console.log('Connected to the database')
+
+
+
+
+
 
 
   // Initialize some data if this is a new database
@@ -176,6 +200,10 @@ db.once('open', () => {
   
   // Bubble.findOne({name: 'general'}).populate('user').exec((err, bubble) => {
   //   console.log(bubble);
+  // });
+
+  // User.findOne({username: 'loteoo'}).populate('createdBubbles').exec((err, user) => {
+  //   console.log(user);
   // });
 
 });
