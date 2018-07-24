@@ -1,34 +1,12 @@
 'use stric';
 
+const path = require('path');
+
+
 // ===============
 // HTTP server
 // ===============
-
-// HTTP dependency
-const fs = require('fs');
-
-// HTTP handler
-const handler = (req, res) => {
-  fs.readFile(__dirname + '/public/index.html',
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-
-    res.writeHead(200);
-    res.end(data);
-  });
-}
-
-// Http server
-const app = require('http').createServer(handler);
-
-// Start listening http
-app.listen(80);
-
-
-
+const app = require(path.resolve(__dirname, './server/Http.js'));
 
 
 
@@ -49,12 +27,12 @@ app.listen(80);
 // =================
 // Mongo DB
 // =================
+const {Bubble, Thread, Message, User} = require(path.resolve(__dirname, './server/Models.js'));
 
-// MongoDB dependencies
+
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 const ObjectID = mongodb.ObjectID;
-
 
 
 
@@ -66,29 +44,6 @@ let dbo;
 MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, (err, db) => {
   if (err) throw err;
   dbo = db.db('bubbleio');
-  
-
-  // When the server gets launched with a brand new database,
-  // we create the first bubble:
-  // Check if bubble "general" exists.
-  // If not, create it.
-  dbo.collection("bubbles").findOne({name: "general"}, (err, bubble) => {
-    if (err) throw err;
-    if (!bubble) {
-      // Update DB
-      dbo.collection("bubbles").insertOne({
-        name: "general",
-        title: "General",
-        description: "A bubble for everyone!",
-        visibility: "public",
-        default: true,
-        author: "loteoo",
-        created: new Date().getTime()
-      }, (err, result) => {
-        if (err) throw err;
-      });
-    }
-  });
 });
 
 
@@ -197,6 +152,88 @@ const emitBubbleUserCounts = bubbleName => {
 io.on('connection', socket => {
 
 
+  // // Handle rooms user counts from user navigation in the app
+  // socket.on('switch bubble', ({prevBubbleName, nextBubbleName}) => {
+
+
+  //   // If user was in an other room before this
+  //   if (prevBubbleName) {
+
+  //     // Leave connection to the previous room
+  //     socket.leave(prevBubbleName);
+
+  //     emitBubbleUserCounts(prevBubbleName);
+
+  //   }
+
+
+
+  //   // Fetch, join and update clients
+  //   Bubble.findOne({
+  //     name: nextBubbleName,
+  //     archived: { $exists: false }
+  //   }, (err, bubble) => {
+  //     if (err) throw err;
+  //     if (bubble) {
+  //       // TODO: Only load user messages count, not the entire message list
+  //       Thread.aggregate([
+  //         {
+  //           $match: {
+  //             bubble_id: ObjectID(bubble._id),
+  //             archived: { $exists: false }
+  //           }
+  //         },
+  //         {
+  //           $lookup: {
+  //             from: 'messages',
+  //             localField: '_id',
+  //             foreignField: 'thread_id',
+  //             as: 'messages'
+  //           }
+  //         },
+  //         {
+  //           $sort: {
+  //             created: -1
+  //           }
+  //         },
+  //         {
+  //           $limit : 20
+  //         }
+  //       ]).toArray((err, threads) => {
+  //         if (err) throw err;
+
+  //         // Add this bubble to the user's bubble list
+  //         dbo.collection("users").findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
+  //             $addToSet: {
+  //               bubble_names: bubble.name
+  //             }
+  //         }, { returnOriginal: false }, (err, result) => {
+  //           if (err) throw err;
+
+
+  //           // Join connection to the new room
+  //           socket.join(bubble.name);
+
+  //           // Update clients about new user
+  //           emitBubbleUserCounts(bubble.name);
+
+  //           // Use this occasion to send threads to the user
+  //           socket.emit("update state", {
+  //             user: result.value,
+  //             bubbles: {
+  //               [bubble.name]: bubble
+  //             },
+  //             threads: getIndexedCollection(threads),
+  //             prevBubbleName: bubble.name
+  //           });
+
+
+
+  //         });
+  //       });
+  //     }
+  //   });
+  // });
   // Handle rooms user counts from user navigation in the app
   socket.on('switch bubble', ({prevBubbleName, nextBubbleName}) => {
 
@@ -214,14 +251,14 @@ io.on('connection', socket => {
 
 
     // Fetch, join and update clients
-    dbo.collection("bubbles").findOne({
+    Bubble.findOne({
       name: nextBubbleName,
       archived: { $exists: false }
     }, (err, bubble) => {
       if (err) throw err;
       if (bubble) {
         // TODO: Only load user messages count, not the entire message list
-        dbo.collection("threads").aggregate([
+        Thread.aggregate([
           {
             $match: {
               bubble_id: ObjectID(bubble._id),
@@ -303,7 +340,7 @@ io.on('connection', socket => {
   socket.on('archive bubble', bubble => {
 
     // Update DB
-    dbo.collection("bubbles").findOneAndUpdate({ _id: ObjectID(bubble._id) }, { $set: {
+    Bubble.findOneAndUpdate({ _id: ObjectID(bubble._id) }, { $set: {
       archived: true
     }}, { returnOriginal: false }, (err, result) => {
       if (err) throw err;
@@ -343,7 +380,7 @@ io.on('connection', socket => {
 
   // Feed threads to clients
   socket.on('get bubble', data => {
-    dbo.collection("threads").aggregate([
+    Thread.aggregate([
       {
         $match: {
           bubble_id: ObjectID(data.bubble_id),
@@ -401,7 +438,7 @@ io.on('connection', socket => {
       socket.leave(prevThreadId);
 
       
-      dbo.collection("threads").findOne({
+      Thread.findOne({
         _id: ObjectID(prevThreadId),
         archived: { $exists: false }
       }, (err, thread) => {
@@ -425,7 +462,7 @@ io.on('connection', socket => {
     }
 
 
-    dbo.collection("threads").findOne({
+    Thread.findOne({
       _id: ObjectID(nextThreadId),
       archived: { $exists: false }
     }, (err, thread) => {
@@ -505,7 +542,7 @@ io.on('connection', socket => {
     thread.bubble_id = ObjectID(thread.bubble_id);
 
     // Update DB
-    dbo.collection("threads").insertOne(thread, (err, result) => {
+    Thread.insertOne(thread, (err, result) => {
       if (err) throw err;
     });
   });
@@ -526,7 +563,7 @@ io.on('connection', socket => {
     socket.broadcast.to(thread._id).emit('delete thread', thread);
 
     // Update DB
-    dbo.collection("threads").findOneAndUpdate({ _id: ObjectID(thread._id) }, { $set: {
+    Thread.findOneAndUpdate({ _id: ObjectID(thread._id) }, { $set: {
       archived: true
     }}, { returnOriginal: false }, (err, result) => {
       if (err) throw err;
@@ -551,7 +588,7 @@ io.on('connection', socket => {
     delete thread.userCount;
 
     // Update DB
-    dbo.collection("threads").findOneAndUpdate({
+    Thread.findOneAndUpdate({
       _id: ObjectID(tempID)
     }, {
       $set: thread
@@ -588,7 +625,7 @@ io.on('connection', socket => {
 
 
   // Pass all received message to all clients
-  socket.on('new message', ({threadId, message}) => {
+  socket.on('new message', ({userId, threadId, message}) => {
 
     let newState = {
       messages: {
@@ -685,7 +722,7 @@ io.on('connection', socket => {
   socket.on('new bubble', newBubble => {
 
     // Check if bubble name is already taken
-    dbo.collection("bubbles").findOne({
+    Bubble.findOne({
       name: newBubble.name,
       archived: { $exists: false }
     }, (err, bubble) => {
