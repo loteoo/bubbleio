@@ -1,6 +1,6 @@
 .thread {
   display: grid;
-  grid-template-rows: 60px 1fr;
+  grid-template-rows: 60px 1fr 60px;
 
   >.heading {
     padding: 0 1rem;
@@ -9,7 +9,7 @@
     align-items: center;
   }
   >.messages {
-    height: calc(100vh - 60px);
+    height: calc(100vh - 120px);
     overflow-y: auto;
     padding: 1rem;
   }

@@ -2,7 +2,7 @@ import { h } from "hyperapp"
 
 import "./thread-footer.css"
 
-const upvote = thread => {
+const upvote = thread => (state, actions) => {
   if (state.user) {
     if (thread.upvoted >= 5) {
       socket.emit('upvote', thread._id)
@@ -12,7 +12,7 @@ const upvote = thread => {
   }
 }
 
-const downvote = thread => {
+const downvote = thread => (state, actions) => {
   if (state.user) {
     if (thread.upvoted <= -5) {
       socket.emit('downvote', thread._id)
@@ -23,7 +23,7 @@ const downvote = thread => {
 }
 
 
-export const ThreadFooter = ({ thread }) => (
+export const ThreadFooter = ({ thread }) => (state, actions) => (
   <div class="thread-footer" key="thread-footer">
     <div class="infos">
       <span>{thread.score} points</span>
@@ -31,8 +31,8 @@ export const ThreadFooter = ({ thread }) => (
       <span>{thread.messageCount} messages</span>
     </div>
     <div class="actions">
-      <button onclick={ev => upvote(thread)}>UP</button>
-      <button onlcikc={ev => downvote(thread)}>DOWN</button>
+      <button onclick={ev => upvote(thread)(state, actions)}>UP</button>
+      <button onlcikc={ev => downvote(thread)(state, actions)}>DOWN</button>
     </div>
   </div>
 )
