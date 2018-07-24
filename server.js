@@ -1,12 +1,9 @@
 'use stric';
 
-const path = require('path');
-
-
 // ===============
 // HTTP server
 // ===============
-const app = require(path.resolve(__dirname, './server/Http.js'));
+const app = require('./server/Http.js');
 
 
 
@@ -27,7 +24,14 @@ const app = require(path.resolve(__dirname, './server/Http.js'));
 // =================
 // Mongo DB
 // =================
-const {Bubble, Thread, Message, User} = require(path.resolve(__dirname, './server/Models.js'));
+const {Bubble, Thread, Message, User} = require('./server/Models.js');
+
+
+
+
+
+
+
 
 
 
@@ -93,7 +97,7 @@ const getIndexedBubbles = bubbles => {
 // (joined in the room or not)
 const emitBubbleUserCounts = bubbleName => {
 
-  User.find({ bubble_names: bubbleName }).toArray((err, users) => {
+  User.find({ bubblesIds: bubbleName }).toArray((err, users) => {
     if (err) throw err;
 
     for (socketId in io.sockets.sockets) {
@@ -126,7 +130,7 @@ const emitBubbleUserCounts = bubbleName => {
 
 io.on('connection', socket => {
 
-  
+
   // Handle rooms user counts from user navigation in the app
   socket.on('switch bubble', ({prevBubbleName, nextBubbleName}) => {
 
@@ -144,43 +148,17 @@ io.on('connection', socket => {
 
 
     // Fetch, join and update clients
-    Bubble.findOne({
-      name: nextBubbleName,
-      archived: { $exists: false }
-    }, (err, bubble) => {
+    Bubble.findOne({name: nextBubbleName, trashed: false}, (err, bubble) => {
       if (err) throw err;
       if (bubble) {
         // TODO: Only load user messages count, not the entire message list
-        Thread.aggregate([
-          {
-            $match: {
-              bubble_id: ObjectID(bubble._id),
-              archived: { $exists: false }
-            }
-          },
-          {
-            $lookup: {
-              from: 'messages',
-              localField: '_id',
-              foreignField: 'thread_id',
-              as: 'messages'
-            }
-          },
-          {
-            $sort: {
-              created: -1
-            }
-          },
-          {
-            $limit : 20
-          }
-        ]).toArray((err, threads) => {
+        Thread.find({bubbleId: bubble._id}, (err, threads) => {
           if (err) throw err;
 
           // Add this bubble to the user's bubble list
-          User.findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
+          User.findByIdAndUpdate(socket.userID, {
               $addToSet: {
-                bubble_names: bubble.name
+                bubblesIds: bubble._id
               }
           }, { returnOriginal: false }, (err, result) => {
             if (err) throw err;
@@ -217,9 +195,9 @@ io.on('connection', socket => {
   socket.on('leave bubble', bubble => {
 
     // Remove the bubble from this user's bubble list in the database
-    User.findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
+    User.findByIdAndUpdate(socket.userID, {
         $pull: {
-          bubble_names: bubble.name
+          bubblesIds: bubble._id
         }
     }, { returnOriginal: false }, (err, result) => {
       if (err) throw err;
@@ -233,13 +211,13 @@ io.on('connection', socket => {
   socket.on('archive bubble', bubble => {
 
     // Update DB
-    Bubble.findOneAndUpdate({ _id: ObjectID(bubble._id) }, { $set: {
+    Bubble.findByIdAndUpdate(bubble._id, { $set: {
       archived: true
     }}, { returnOriginal: false }, (err, result) => {
       if (err) throw err;
 
       // List of all users who have this bubble in their list
-      User.find({ bubble_names: bubble.name }).toArray((err, users) => {
+      User.find({ bubblesIds: bubble._id }).toArray((err, users) => {
         if (err) throw err;
 
 
@@ -247,7 +225,7 @@ io.on('connection', socket => {
         users.forEach(user => {
           User.findOneAndUpdate({ _id: ObjectID(user._id) }, {
             $pull: {
-              bubble_names: bubble.name
+              bubblesIds: bubble._id
             }
           }, { returnOriginal: false }, (err, result) => {
             if (err) throw err;
@@ -273,33 +251,7 @@ io.on('connection', socket => {
 
   // Feed threads to clients
   socket.on('get bubble', data => {
-    Thread.aggregate([
-      {
-        $match: {
-          bubble_id: ObjectID(data.bubble_id),
-          archived: { $exists: false }
-        }
-      },
-      {
-        $lookup: {
-          from: 'messages',
-          localField: '_id',
-          foreignField: 'thread_id',
-          as: 'messages'
-        }
-      },
-      {
-        $sort: {
-          created: -1
-        }
-      },
-      {
-        $skip : data.skip
-      },
-      {
-        $limit : data.limit
-      }
-    ]).toArray((err, threads) => {
+    Thread.find({bubbleId: bubble._id}, (err, threads) => {
       if (err) throw err;
 
 
@@ -565,9 +517,9 @@ io.on('connection', socket => {
           if (err) throw err;
 
           // Give the user the default bubbles
-          user.bubble_names = [];
+          user.bubblesIds = [];
           bubbles.forEach(bubble => {
-            user.bubble_names.push(bubble.name);
+            user.bubblesIds.push(bubble.name);
           });
 
           // Insert in DB
@@ -591,7 +543,7 @@ io.on('connection', socket => {
 
         // Send him his bubbles
         Bubble.find({
-          name: { $in: result.bubble_names },
+          name: { $in: result.bubblesIds },
           archived: { $exists: false }
         }).toArray((err, bubbles) => {
           if (err) throw err;
@@ -633,9 +585,9 @@ io.on('connection', socket => {
           if (err) throw err;
 
           // Add this bubble to the user's bubble list
-          User.findOneAndUpdate({ _id: ObjectID(socket.userID) }, {
+          User.findByIdAndUpdate(socket.userID, {
               $addToSet: {
-                bubble_names: bubble.ops[0].name
+                bubblesIds: bubble.ops[0].name
               }
           }, { returnOriginal: false }, (err, user) => {
             if (err) throw err;

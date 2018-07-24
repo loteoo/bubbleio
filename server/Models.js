@@ -71,6 +71,11 @@ const threadSchema = new Schema({
     default: 'default',
     required: true
   },
+  trashed:  {
+    type: Boolean,
+    default: false,
+    required: true
+  },
   messages:  [{
     type: ObjectId,
     ref: 'Message'
@@ -123,7 +128,7 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  bubbles:  {
+  bubblesIds:  {
     type: Array,
     default: [],
     required: true
