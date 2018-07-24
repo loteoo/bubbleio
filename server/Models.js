@@ -25,10 +25,17 @@ const bubbleSchema = new Schema({
   },
   public:  {
     type: Boolean,
+    default: true,
     required: true
   },
   default:  {
     type: Boolean,
+    default: false,
+    required: true
+  },
+  trashed:  {
+    type: Boolean,
+    default: false,
     required: true
   },
   threads:  [{
@@ -56,6 +63,7 @@ const threadSchema = new Schema({
   },
   score:  {
     type: Number,
+    default: 0,
     required: true
   },
   type:  {
