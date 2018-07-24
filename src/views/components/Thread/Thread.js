@@ -23,7 +23,7 @@ const Messages = ({thread}) => (state, actions) => (
   <div class="messages">
     {
       Object.keys(state.messages)
-      .filter(message_id => state.messages[message_id].thread_id == thread._id)
+      .filter(message_id => state.messages[message_id].threadId == thread._id)
       .map(message_id => <Message message={state.messages[message_id]} />)
     }
   </div>

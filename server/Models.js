@@ -42,7 +42,7 @@ const bubbleSchema = new Schema({
     type: ObjectId,
     ref: 'Thread'
   }],
-  user:  {
+  userId:  {
     type: ObjectId,
     ref: 'User',
     required: true
@@ -80,12 +80,12 @@ const threadSchema = new Schema({
     type: ObjectId,
     ref: 'Message'
   }],
-  bubble:  {
+  bubbleId:  {
     type: ObjectId,
     ref: 'Bubble',
     required: true
   },
-  user:  {
+  userId:  {
     type: ObjectId,
     ref: 'User',
     required: true
@@ -98,16 +98,16 @@ const threadSchema = new Schema({
 
 // Message Schema
 const messageSchema = new Schema({
-  message:  {
+  text:  {
     type: String,
     required: true
   },
-  thread:  {
+  threadId:  {
     type: ObjectId,
     ref: 'Thread',
     required: true
   },
-  user:  {
+  userId:  {
     type: ObjectId,
     ref: 'User',
     required: true

@@ -16,8 +16,8 @@ export const Bubble = ({bubble}) => (state, actions) => (
     <div class="threads">
       {
         Object.keys(state.threads)
-        .filter(thread_id => state.threads[thread_id].bubble_id == bubble._id)
-        .map(thread_id => <ThreadItem thread={state.threads[thread_id]} bubble={bubble} />)
+        .filter(threadId => state.threads[threadId].bubbleId == bubble._id)
+        .map(threadId => <ThreadItem thread={state.threads[threadId]} bubble={bubble} />)
       }
     </div>
     

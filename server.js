@@ -259,7 +259,7 @@ io.on('connection', socket => {
         socket.emit("update state", {
           bubbles: [
             {
-              _id: data.bubble_id,
+              _id: data.bubbleId,
               threads
             }
           ]
@@ -291,7 +291,7 @@ io.on('connection', socket => {
         if (thread) { // If thread actually exists
           
           // Update clients in the previous thread's bubble
-          io.to(thread.bubble_id).emit("update state", {
+          io.to(thread.bubbleId).emit("update state", {
             threads: {
               [thread._id]: {
                 userCount: getConnectionsInRoom(thread._id)
@@ -312,7 +312,7 @@ io.on('connection', socket => {
       if (thread) { // If thread actually exists
 
         
-        Message.find({ thread_id: ObjectID(thread._id) }).toArray((err, messages) => {
+        Message.find({ threadId: ObjectID(thread._id) }).toArray((err, messages) => {
           if (err) throw err;
 
 
@@ -321,7 +321,7 @@ io.on('connection', socket => {
 
 
           // Update clients in the thread's bubble (user counts only)
-          socket.broadcast.to(thread.bubble_id).emit("update state", {
+          socket.broadcast.to(thread.bubbleId).emit("update state", {
             threads: {
               [thread._id]: {
                 userCount: getConnectionsInRoom(thread._id)
@@ -367,10 +367,10 @@ io.on('connection', socket => {
     delete thread.userCount;
 
     // Update clients in the bubble
-    socket.broadcast.to(thread.bubble_id).emit('update state', {
+    socket.broadcast.to(thread.bubbleId).emit('update state', {
       bubbles: [
         {
-          _id: thread.bubble_id,
+          _id: thread.bubbleId,
           threads: [
             thread
           ]
@@ -381,7 +381,7 @@ io.on('connection', socket => {
 
     // Proper indexes for mongodb
     thread._id = ObjectID(thread._id);
-    thread.bubble_id = ObjectID(thread.bubble_id);
+    thread.bubbleId = ObjectID(thread.bubbleId);
 
     // Update DB
     Thread.insertOne(thread, (err, result) => {
@@ -399,7 +399,7 @@ io.on('connection', socket => {
     delete thread.userCount;
 
     // Update clients in the bubble
-    socket.broadcast.to(thread.bubble_id).emit('delete thread', thread);
+    socket.broadcast.to(thread.bubbleId).emit('delete thread', thread);
 
     // Update clients in the thread
     socket.broadcast.to(thread._id).emit('delete thread', thread);
@@ -424,7 +424,7 @@ io.on('connection', socket => {
     let tempID = thread._id;
 
     delete thread._id;
-    delete thread.bubble_id;
+    delete thread.bubbleId;
     delete thread.upvoted;
     delete thread.relevance;
     delete thread.userCount;
@@ -440,7 +440,7 @@ io.on('connection', socket => {
       let newState = {
         bubbles: [
           {
-            _id: result.value.bubble_id,
+            _id: result.value.bubbleId,
             threads: [
               result.value
             ]
@@ -449,7 +449,7 @@ io.on('connection', socket => {
       };
 
       // Update clients in the bubble
-      socket.broadcast.to(result.value.bubble_id).emit('update state', newState);
+      socket.broadcast.to(result.value.bubbleId).emit('update state', newState);
 
       // Update clients in the thread
       socket.broadcast.to(result.value._id).emit('update state', newState);
@@ -467,30 +467,29 @@ io.on('connection', socket => {
 
 
   // Pass all received message to all clients
-  socket.on('new message', ({userId, threadId, message}) => {
+  socket.on('new message', ({userId, threadId, text}) => {
 
-    let newState = {
-      messages: {
-        
-      }
-    };
+    let message = new Message({userId, threadId, text});
 
-    // Update all clients in bubble
-    socket.broadcast.to(message.bubble_id).emit('update state', newState);
+    // Save message
+    message.save((err, message) => {
 
-    // Update all clients in the thread
-    socket.broadcast.to(message.thread_id).emit('update state', newState);
-
-
-    // Proper indexes for mongodb
-    message._id = ObjectID(message._id);
-    message.bubble_id = ObjectID(message.bubble_id);
-    message.thread_id = ObjectID(message.thread_id);
-
-    // Update DB
-    Message.insertOne(message, (err, result) => {
-      if (err) throw err;
+      let newState = {
+        messages: {
+          [message._id]: message
+        }
+      };
+  
+      // Update all clients in bubble
+      socket.broadcast.to(message.bubbleId).emit('update state', newState);
+  
+      // Update all clients in the thread
+      socket.broadcast.to(message.threadId).emit('update state', newState);
+  
+      
     });
+
+  
   });
 
 
