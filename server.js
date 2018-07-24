@@ -285,7 +285,7 @@ io.on('connection', socket => {
       
       Thread.findOne({
         _id: ObjectID(prevThreadId),
-        archived: { $exists: false }
+        trashed: false
       }, (err, thread) => {
         if (err) throw err;
         if (thread) { // If thread actually exists
@@ -307,10 +307,7 @@ io.on('connection', socket => {
     }
 
 
-    Thread.findOne({
-      _id: ObjectID(nextThreadId),
-      archived: { $exists: false }
-    }, (err, thread) => {
+    Thread.findById(nextThreadId, (err, thread) => {
       if (err) throw err;
       if (thread) { // If thread actually exists
 
@@ -543,8 +540,8 @@ io.on('connection', socket => {
 
         // Send him his bubbles
         Bubble.find({
-          name: { $in: result.bubblesIds },
-          archived: { $exists: false }
+          _id: { $in: result.bubblesIds },
+          trashed: false
         }).toArray((err, bubbles) => {
           if (err) throw err;
 
@@ -569,7 +566,7 @@ io.on('connection', socket => {
     // Check if bubble name is already taken
     Bubble.findOne({
       name: newBubble.name,
-      archived: { $exists: false }
+      trashed: false
     }, (err, bubble) => {
       if (err) throw err;
       if (bubble) { // If bubble already exists
@@ -618,11 +615,11 @@ io.on('connection', socket => {
   // Redirect to random public bubble
   socket.on('random bubble', () => {
 
-    Bubble.count({archived: { $exists: false }}, (err, total) => {
+    Bubble.count({trashed: false}, (err, total) => {
       if (err) throw err;
       Bubble.find({
         visibility: "public",
-        archived: { $exists: false }
+        trashed: false
       }).skip(Math.floor(Math.random()*total)).limit(1).toArray((err, bubbles) => {
         if (err) throw err;
         if (bubbles && bubbles[0]) {
