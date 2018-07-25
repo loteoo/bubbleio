@@ -1,7 +1,7 @@
 import {h} from 'hyperapp'
 
-
 import {ThreadItem} from '../ThreadItem/ThreadItem.js'
+import {ThreadForm} from '../ThreadForm/ThreadForm.js'
 
 import './bubble.css'
 
@@ -22,6 +22,7 @@ export const Bubble = ({bubble}) => (state, actions) => (
     </div>
     
 
+    <ThreadForm bubble={bubble} />
 
   </div>
 )

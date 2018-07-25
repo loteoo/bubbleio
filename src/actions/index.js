@@ -26,6 +26,10 @@ export const actions = {
     }
 
 
+  },
+
+  openLoginForm: () => (state, actions) => {
+    actions.update({loginForm: {opened: true}});
   }
   
 }

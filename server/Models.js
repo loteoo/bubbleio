@@ -38,15 +38,15 @@ const bubbleSchema = new Schema({
     default: false,
     required: true
   },
-  threads:  [{
-    type: ObjectId,
-    ref: 'Thread'
-  }],
   userId:  {
     type: ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  threads:  [{
+    type: ObjectId,
+    ref: 'Thread'
+  }]
 }, {
   timestamps: true
 });
@@ -76,10 +76,6 @@ const threadSchema = new Schema({
     default: false,
     required: true
   },
-  messages:  [{
-    type: ObjectId,
-    ref: 'Message'
-  }],
   bubbleId:  {
     type: ObjectId,
     ref: 'Bubble',
@@ -89,7 +85,11 @@ const threadSchema = new Schema({
     type: ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  messages:  [{
+    type: ObjectId,
+    ref: 'Message'
+  }]
 }, {
   timestamps: true
 });
@@ -141,6 +141,10 @@ const userSchema = new Schema({
     type: ObjectId,
     ref: 'Bubble'
   }],
+  messages:  [{
+    type: ObjectId,
+    ref: 'Message'
+  }]
 }, {
   timestamps: true
 });
@@ -176,35 +180,28 @@ db.once('open', () => {
 
   // Init user
   User.findOne({username: 'loteoo'}, (err, user) => {
-    if (err) return handleError(err);
+    if (err) throw err;
     if (!user) {
       let user = new User({
         username: 'loteoo',
         password: 'testtest'
       });
-      user.save((err, User) => {
-        if (err) return handleError(err);
+      user.save((err, user) => {
+        if (err) throw err;
         console.log('Created user ' + user.username);
 
         // Init bubble
-        Bubble.findOne({name: 'general'}, (err, bubble) => {
-          if (err) return handleError(err);
-          if (!bubble) {
-            let bubble = new Bubble({
-              name: 'general',
-              title: 'General',
-              description: 'A bubble for everyone!',
-              public: true,
-              default: true,
-              user: user._id
-            });
-          
-            bubble.save((err, bubble) => {
-              
-              console.log('Created bubble ' + bubble.name);
-            });
-          }
+        let bubble = new Bubble({
+          name: 'general',
+          title: 'General',
+          description: 'A bubble for everyone!',
+          public: true,
+          default: true,
+          userId: user._id
         });
+      
+        bubble.save((err, bubble) => console.log('Created bubble ' + bubble.name));
+
       });
     }
   });

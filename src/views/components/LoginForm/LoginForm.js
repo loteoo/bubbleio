@@ -1,17 +1,24 @@
+
 import {h} from 'hyperapp'
+import cc from 'classcat'
 
 import './login-form.css'
 
-const handleLoginForm = ev => state => {
+const set = fragment => (state, actions) => actions.update({
+  loginForm: fragment
+});
+
+
+const handleThreadForm = (ev, bubble) => (state, actions) => {
   ev.preventDefault();
-  socket.emit('login', {
-    username: ev.target.username.value
-  });
+
+  
 }
 
-
-export const LoginForm = () => (state, actions) =>
-  <form class="login-form" method="post" onsubmit={handleLoginForm}>
-
-LOGIN
+export const LoginForm = () => (state, actions, {username, password, opened} = state.loginForm || {}) => (
+  <form class={cc(['login-form', {opened}])} key="login-form" method="post" onsubmit={ev => handleThreadForm(ev, bubble)(state, actions)}>
+    <h2>Login</h2>
+    <input type="text" name="username" oninput={ev => set({username: ev.target.value})(state, actions)} />
+    <input type="text" name="password" oninput={ev => set({password: ev.target.value})(state, actions)} />
   </form>
+)

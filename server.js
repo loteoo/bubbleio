@@ -97,13 +97,13 @@ const getIndexedBubbles = bubbles => {
 // (joined in the room or not)
 const emitBubbleUserCounts = bubbleName => {
 
-  User.find({ bubblesIds: bubbleName }).toArray((err, users) => {
+  User.find({ bubblesIds: bubbleName }, (err, users) => {
     if (err) throw err;
 
     for (socketId in io.sockets.sockets) {
       users.forEach(user => {
-        if (io.sockets.sockets[socketId].userID) {
-          if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
+        if (io.sockets.sockets[socketId].userId) {
+          if (io.sockets.sockets[socketId].userId.toString() == user._id.toString()) {
             io.sockets.sockets[socketId].emit("update state", {
               bubbles: {
                 [bubbleName]: {
@@ -134,6 +134,7 @@ io.on('connection', socket => {
   // Handle rooms user counts from user navigation in the app
   socket.on('switch bubble', ({prevBubbleName, nextBubbleName}) => {
 
+    
 
     // If user was in an other room before this
     if (prevBubbleName) {
@@ -156,13 +157,8 @@ io.on('connection', socket => {
           if (err) throw err;
 
           // Add this bubble to the user's bubble list
-          User.findByIdAndUpdate(socket.userID, {
-              $addToSet: {
-                bubblesIds: bubble._id
-              }
-          }, { returnOriginal: false }, (err, result) => {
+          User.findByIdAndUpdate(socket.userId, {$addToSet: {bubblesIds: bubble._id}}, (err, user) => {
             if (err) throw err;
-
 
             // Join connection to the new room
             socket.join(bubble.name);
@@ -172,14 +168,13 @@ io.on('connection', socket => {
 
             // Use this occasion to send threads to the user
             socket.emit("update state", {
-              user: result.value,
+              user,
               bubbles: {
                 [bubble.name]: bubble
               },
               threads: getIndexedCollection(threads),
               prevBubbleName: bubble.name
             });
-
 
 
           });
@@ -192,14 +187,10 @@ io.on('connection', socket => {
 
 
   // Handle user bubble leaving
-  socket.on('leave bubble', bubble => {
+  socket.on('remove user bubble', bubble => {
 
     // Remove the bubble from this user's bubble list in the database
-    User.findByIdAndUpdate(socket.userID, {
-        $pull: {
-          bubblesIds: bubble._id
-        }
-    }, { returnOriginal: false }, (err, result) => {
+    User.findByIdAndUpdate(socket.userId, {$pull: {bubblesIds: bubble._id}}, (err, result) => {
       if (err) throw err;
     });
   });
@@ -236,8 +227,8 @@ io.on('connection', socket => {
         // Update clients who have that this bubble in their user's bubble list
         for (socketId in io.sockets.sockets) {
           users.forEach(user => {
-            if (io.sockets.sockets[socketId].userID) {
-              if (io.sockets.sockets[socketId].userID.toString() == user._id.toString()) {
+            if (io.sockets.sockets[socketId].userId) {
+              if (io.sockets.sockets[socketId].userId.toString() == user._id.toString()) {
                 io.sockets.sockets[socketId].emit("delete bubble", bubble);
               }
             }
@@ -523,7 +514,7 @@ io.on('connection', socket => {
             if (err) throw err;
 
             // Link the user ID to the socket connection
-            socket.userID = result.ops[0]._id;
+            socket.userId = result.ops[0]._id;
 
             // Update the client
             socket.emit("update state", {
@@ -535,7 +526,7 @@ io.on('connection', socket => {
       } else {
 
         // Add the user ID to the socket connection
-        socket.userID = result._id;
+        socket.userId = result._id;
 
         // Send him his bubbles
         Bubble.find({
@@ -581,7 +572,7 @@ io.on('connection', socket => {
           if (err) throw err;
 
           // Add this bubble to the user's bubble list
-          User.findByIdAndUpdate(socket.userID, {
+          User.findByIdAndUpdate(socket.userId, {
               $addToSet: {
                 bubblesIds: bubble.ops[0].name
               }
