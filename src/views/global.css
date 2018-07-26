@@ -51,6 +51,23 @@ button, input, select, textarea {
   color: inherit;
 }
 
+
+img {
+  max-width: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* ::selection {
+	background: var(--secondary-accent-color);
+	color: white;
+	text-shadow:none;
+} */
+
+
 .app {
   position: relative;
   overflow: hidden;
@@ -84,26 +101,5 @@ button, input, select, textarea {
 
 
 
-img {
-  max-width: 100%;
-}
-
-::-webkit-scrollbar {
-  display: none;
-}
 
 
-/* ::selection {
-	background: var(--secondary-accent-color);
-	color: white;
-	text-shadow:none;
-} */
-
-
-
-
-/*------------------------------------*\
-	Typography
-\*------------------------------------*/
-
- 
