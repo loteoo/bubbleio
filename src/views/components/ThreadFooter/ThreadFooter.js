@@ -32,7 +32,7 @@ export const ThreadFooter = ({ thread }) => (state, actions) => (
     </div>
     <div class="actions">
       <button onclick={ev => upvote(thread)(state, actions)}>UP</button>
-      <button onlcikc={ev => downvote(thread)(state, actions)}>DOWN</button>
+      <button onclick={ev => downvote(thread)(state, actions)}>DOWN</button>
     </div>
   </div>
 )

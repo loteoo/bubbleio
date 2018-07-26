@@ -6,6 +6,7 @@ import io from 'socket.io-client/dist/socket.io.slim'
 export const actions = {
   location: location.actions,
   update: fragment => state => deepmerge(state, fragment, {arrayMerge: dontMerge}),
+  set: fragment => fragment,
   init: () => (state, actions) => {
 
     // Activate our router

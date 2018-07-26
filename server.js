@@ -350,33 +350,23 @@ io.on('connection', socket => {
 
 
   // Pass all received thread to all clients
-  socket.on('new thread', thread => {
-
-    // Just making sure...
-    delete thread.upvoted;
-    delete thread.relevance;
-    delete thread.userCount;
-
-    // Update clients in the bubble
-    socket.broadcast.to(thread.bubbleId).emit('update state', {
-      bubbles: [
-        {
-          _id: thread.bubbleId,
-          threads: [
-            thread
-          ]
-        }
-      ]
-    });
+  socket.on('new thread', ({title, score, type, trashed, userId, bubbleId}) => {
 
 
-    // Proper indexes for mongodb
-    thread._id = ObjectID(thread._id);
-    thread.bubbleId = ObjectID(thread.bubbleId);
-
+    let thread = new Thread({title, score, type, trashed, userId, bubbleId});
+    
     // Update DB
-    Thread.insertOne(thread, (err, result) => {
+    thread.save((err, thread) => {
       if (err) throw err;
+          
+
+      // Update clients in the bubble
+      socket.broadcast.to(thread.bubbleId).emit('update state', {
+        threads: {
+          [thread.bubbleId]: thread
+        }
+      });
+
     });
   });
 
@@ -494,7 +484,7 @@ io.on('connection', socket => {
   // Pass all received message to all clients
   socket.on('login', ({username, password, mode}) => {
 
-    console.log('login');
+    console.log('user login');
 
     User.findOne({username}, (err, user) => {
       if (err) throw err;
@@ -522,7 +512,10 @@ io.on('connection', socket => {
             // Update the client
             socket.emit("update state", {
               user,
-              bubbles: getIndexedBubbles(bubbles)
+              bubbles: getIndexedBubbles(bubbles),
+              threadForm: {
+                opened: false
+              }
             });
           });
 
@@ -538,8 +531,11 @@ io.on('connection', socket => {
 
           // Update user bubbles
           socket.emit("update state", {
-            user: user,
-            bubbles: getIndexedBubbles(bubbles)
+            user,
+            bubbles: getIndexedBubbles(bubbles),
+            threadForm: {
+              opened: false
+            }
           });
         });
       }
@@ -593,7 +589,6 @@ io.on('connection', socket => {
         });
       }
     });
-
   });
 
 

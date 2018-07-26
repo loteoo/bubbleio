@@ -17,6 +17,7 @@ const UserSidebar = ({user}) => (state, actions) => (
       {user.username}
     </div>
     <nav class="menu">
+      <Link class="bubble-link" to="/">Home</Link>
       {user.bubbleNames.map(bubbleName => <BubbleLink bubble={state.bubbles[bubbleName]} />)}
     </nav>
   </div>
@@ -32,8 +33,8 @@ const GuestSidebar = () => (state, actions) => (
     <nav class="menu">
     
       <Link class="bubble-link" to="/">Home</Link>
-      <BubbleLink bubble={{title: "General", name: "general"}} />
 
+      <BubbleLink bubble={{title: "General", name: "general"}} />
       
       <button class="bubble-link" onclick={actions.openLoginForm}>Login</button>
       
