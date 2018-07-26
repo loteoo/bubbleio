@@ -10,18 +10,19 @@ import './login-form.css'
 const set = fragment => main.update({loginForm: fragment});
 
 
-const handleThreadForm = (ev, bubble) => (state, actions) => {
+const handleSubmit = (ev) => (state, actions, {username, password, mode} = state.loginForm) => {
   ev.preventDefault();
 
-  
+  socket.emit('login', {username, password, mode});
 }
 
-export const LoginForm = () => (state, actions, {username, password, opened} = state.loginForm || {}) => (
+export const LoginForm = ({username, password, mode = mode || 'login', opened}) => (state, actions) => (
   <ModalContainer opened={opened} close={() => set({opened: false})}>
-    <form class="login-form" key="login-form" method="post" onsubmit={ev => handleThreadForm(ev, bubble)(state, actions)}>
+    <form class="login-form" key="login-form" method="post" onsubmit={ev => handleSubmit(ev)(state, actions)}>
       <h2>Login</h2>
-      <NiceInput label="Username" name="username" setter={set} />
-      <NiceInput label="Password" name="password" setter={set} />
+      <NiceInput label="Username" name="username" value={username} required setter={set} />
+      <NiceInput label="Password" name="password" value={password} required setter={set} />
+      <button type="submit">Login</button>
     </form>
   </ModalContainer>
 )

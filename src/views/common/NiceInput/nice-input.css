@@ -12,7 +12,6 @@
   }
   input {
     border: none;
-    padding: 0.5rem;
     border-bottom: 1px solid currentColor;
     &:focus {
       background: #f1f1fc;

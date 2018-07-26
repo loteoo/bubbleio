@@ -22,7 +22,7 @@ export const view = (state, actions) => {
         <MainContainer />
         <RightPanel />
       </div>
-      <LoginForm />
+      <LoginForm {...state.loginForm}/>
     </div>
   )
 }

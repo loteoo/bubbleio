@@ -13,6 +13,9 @@
       margin: 0.5rem 0;
       padding: 0.5rem 1rem;
       text-decoration: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
       &:hover, &:focus {
         background: #f1f1fc;
         color: #5755d9;

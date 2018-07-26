@@ -17,7 +17,7 @@ const handleThreadForm = (ev, bubble) => (state, actions) => {
       type: 'default',
       trashed: false,
       userId: state.user._id,
-      bubbleId: bubbleId
+      bubbleId: bubble._id
     });
   } else {
     actions.openLoginForm()

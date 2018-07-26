@@ -125,10 +125,9 @@ const userSchema = new Schema({
     required: true
   },
   password:  {
-    type: String,
-    required: true
+    type: String
   },
-  bubblesIds:  {
+  bubbleNames:  {
     type: Array,
     default: [],
     required: true

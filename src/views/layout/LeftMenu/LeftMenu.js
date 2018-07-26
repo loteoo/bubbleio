@@ -17,32 +17,32 @@ const UserSidebar = ({user}) => (state, actions) => (
       {user.username}
     </div>
     <nav class="menu">
-      {user.bubble_names.map(bubbleName => <BubbleLink bubble={state.bubbles[bubbleName]} />)}
+      {user.bubbleNames.map(bubbleName => <BubbleLink bubble={state.bubbles[bubbleName]} />)}
     </nav>
   </div>
 )
 
 
 
-const GuestSidebar = () => (
+const GuestSidebar = () => (state, actions) => (
   <div class="left-menu">
     <div class="heading">
       Bubbleio
     </div>
     <nav class="menu">
-      <HomeLink />
+    
+      <Link class="bubble-link" to="/">Home</Link>
       <BubbleLink bubble={{title: "General", name: "general"}} />
+
+      
+      <button class="bubble-link" onclick={actions.openLoginForm}>Login</button>
+      
     </nav>
   </div>
 )
 
 
 
-const HomeLink = () => (
-  <Link class="bubble-link" to="/">
-    Home
-  </Link>
-)
 
 
 const BubbleLink = ({bubble}) => (
