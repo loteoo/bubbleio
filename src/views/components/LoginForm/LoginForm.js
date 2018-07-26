@@ -2,7 +2,7 @@
 import {h} from 'hyperapp'
 import cc from 'classcat'
 
-
+import {NiceInput} from '../../common/NiceInput/NiceInput.js'
 import {ModalContainer} from '../../common/ModalContainer/ModalContainer.js'
 
 import './login-form.css'
@@ -20,8 +20,8 @@ export const LoginForm = () => (state, actions, {username, password, opened} = s
   <ModalContainer opened={opened} close={() => set({opened: false})}>
     <form class="login-form" key="login-form" method="post" onsubmit={ev => handleThreadForm(ev, bubble)(state, actions)}>
       <h2>Login</h2>
-      <input type="text" name="username" oninput={ev => set({username: ev.target.value})} />
-      <input type="text" name="password" oninput={ev => set({password: ev.target.value})} />
+      <NiceInput label="Username" name="username" setter={set} />
+      <NiceInput label="Password" name="password" setter={set} />
     </form>
   </ModalContainer>
 )
