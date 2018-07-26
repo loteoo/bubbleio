@@ -2,11 +2,12 @@
 import {h} from 'hyperapp'
 import cc from 'classcat'
 
+
+import {ModalContainer} from '../../common/ModalContainer/ModalContainer.js'
+
 import './login-form.css'
 
-const set = fragment => (state, actions) => actions.update({
-  loginForm: fragment
-});
+const set = fragment => main.update({loginForm: fragment});
 
 
 const handleThreadForm = (ev, bubble) => (state, actions) => {
@@ -16,9 +17,11 @@ const handleThreadForm = (ev, bubble) => (state, actions) => {
 }
 
 export const LoginForm = () => (state, actions, {username, password, opened} = state.loginForm || {}) => (
-  <form class={cc(['login-form', {opened}])} key="login-form" method="post" onsubmit={ev => handleThreadForm(ev, bubble)(state, actions)}>
-    <h2>Login</h2>
-    <input type="text" name="username" oninput={ev => set({username: ev.target.value})(state, actions)} />
-    <input type="text" name="password" oninput={ev => set({password: ev.target.value})(state, actions)} />
-  </form>
+  <ModalContainer opened={opened} close={() => set({opened: false})}>
+    <form class="login-form" key="login-form" method="post" onsubmit={ev => handleThreadForm(ev, bubble)(state, actions)}>
+      <h2>Login</h2>
+      <input type="text" name="username" oninput={ev => set({username: ev.target.value})} />
+      <input type="text" name="password" oninput={ev => set({password: ev.target.value})} />
+    </form>
+  </ModalContainer>
 )

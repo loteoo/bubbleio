@@ -1,0 +1,30 @@
+.modal-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute 0;
+  background-color: rgba(248,249,250,.75);
+  opacity: 0;
+  transition: opacity 300ms;
+  pointer-events: none;
+  >.modal {
+    transition: transform 300ms;
+    transform: translateY(3em);
+    background: #fff;
+    border-radius: .1rem;
+    box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+    padding: 1rem;
+    >.close {
+      position: absolute 10px 10px auto auto;
+      cursor: pointer;
+    }
+  }
+  &.opened {
+    opacity: 1;
+    pointer-events: all;
+    >.modal {
+      transform: translateY(0);
+    }
+  }
+}
+ 
