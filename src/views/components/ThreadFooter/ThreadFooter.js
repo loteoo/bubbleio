@@ -28,7 +28,7 @@ export const ThreadFooter = ({ thread }) => (state, actions) => (
     <div class="infos">
       <span>{thread.score} points</span>
       <span>{thread.userCount} users</span>
-      <span>{thread.messageCount} messages</span>
+      <span>{thread.messageCount || 0} messages</span>
     </div>
     <div class="actions">
       <button onclick={ev => upvote(thread)(state, actions)}>UP</button>

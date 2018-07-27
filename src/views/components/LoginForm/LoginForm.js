@@ -13,7 +13,8 @@ const set = fragment => main.update({loginForm: fragment});
 const handleSubmit = (ev) => (state, actions, {username, password, mode} = state.loginForm) => {
   ev.preventDefault();
 
-  socket.emit('login', {username, password, mode});
+  socket.emit('login', {username, password, mode})
+  actions.set({loginForm: {}})
 }
 
 export const LoginForm = ({username, password, mode = mode || 'login', opened}) => (state, actions) => (

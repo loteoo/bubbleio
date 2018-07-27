@@ -295,13 +295,16 @@ io.on('connection', socket => {
           
           console.log('LEAVE THREAD');
           
-          // Update clients in the previous thread's bubble
-          io.to(thread.bubbleId).emit("update state", {
-            threads: {
-              [thread._id]: {
-                userCount: getConnectionsInRoom(thread._id)
+          Bubble.findById(thread.bubbleId, (err, bubble) => {
+            if (err) throw err;
+            // Update clients in the previous thread's bubble
+            io.to(bubble.name).emit("update state", {
+              threads: {
+                [thread._id]: {
+                  userCount: getConnectionsInRoom(thread._id)
+                }
               }
-            }
+            });
           });
         }
       });
@@ -315,27 +318,30 @@ io.on('connection', socket => {
         Message.find({ threadId: ObjectId(thread._id) }, (err, messages) => {
           if (err) throw err;
 
-          // Join connection to the new room
-          socket.join(thread._id);
+          Bubble.findById(thread.bubbleId, (err, bubble) => {
+            if (err) throw err;
+            // Join connection to the new room
+            socket.join(thread._id);
 
-          // Update clients in the thread's bubble (user counts only)
-          socket.broadcast.to(thread.bubbleId).emit("update state", {
-            threads: {
-              [thread._id]: {
-                userCount: getConnectionsInRoom(thread._id)
+            // Update clients in the thread's bubble (user counts only)
+            socket.broadcast.to(bubble.name).emit("update state", {
+              threads: {
+                [thread._id]: {
+                  userCount: getConnectionsInRoom(thread._id)
+                }
               }
-            }
-          });
+            });
 
-          // Update user count and messages from the DB for the switching client
-          socket.emit("update state", {
-            threads: {
-              [thread._id]: {
-                userCount: getConnectionsInRoom(thread._id)
-              }
-            },
-            messages: getIndexedCollection(messages),
-            prevThreadId: thread._id
+            // Update user count and messages from the DB for the switching client
+            socket.emit("update state", {
+              threads: {
+                [thread._id]: {
+                  userCount: getConnectionsInRoom(thread._id)
+                }
+              },
+              messages: getIndexedCollection(messages),
+              prevThreadId: thread._id
+            });
           });
 
         });
@@ -353,94 +359,99 @@ io.on('connection', socket => {
 
 
 
-  // Pass all received thread to all clients
+  // Pass all received thread to clients in bubble
   socket.on('new thread', ({title, score, type, trashed, userId, bubbleId}) => {
-
 
     let thread = new Thread({title, score, type, trashed, userId, bubbleId});
     
     // Update DB
     thread.save((err, thread) => {
       if (err) throw err;
-          
+      
+      Bubble.findById(thread.bubbleId, (err, bubble) => {
 
-      // Update clients in the bubble
-      socket.broadcast.to(thread.bubbleId).emit('update state', {
-        threads: {
-          [thread.bubbleId]: thread
-        }
-      });
-
-    });
-  });
-
-
-  // Archive thread
-  socket.on('archive thread', thread => {
-
-    // Just making sure...
-    delete thread.upvoted;
-    delete thread.relevance;
-    delete thread.userCount;
-
-    // Update clients in the bubble
-    socket.broadcast.to(thread.bubbleId).emit('delete thread', thread);
-
-    // Update clients in the thread
-    socket.broadcast.to(thread._id).emit('delete thread', thread);
-
-    // Update DB
-    Thread.findOneAndUpdate({ _id: ObjectId(thread._id) }, { $set: {
-      archived: true
-    }}, { returnOriginal: false }, (err, result) => {
-      if (err) throw err;
-    });
-
-  });
-
-
-
-
-
-  // Pass all received message to all clients
-  socket.on('update thread', thread => {
-
-
-    let tempID = thread._id;
-
-    delete thread._id;
-    delete thread.bubbleId;
-    delete thread.upvoted;
-    delete thread.relevance;
-    delete thread.userCount;
-
-    // Update DB
-    Thread.findOneAndUpdate({
-      _id: ObjectId(tempID)
-    }, {
-      $set: thread
-    }, { returnOriginal: false }, (err, result) => {
-      if (err) throw err;
-
-      let newState = {
-        bubbles: [
-          {
-            _id: result.value.bubbleId,
-            threads: [
-              result.value
-            ]
+        // Update clients in the bubble
+        io.in(bubble.name).emit('update state', {
+          threads: {
+            [thread._id]: thread
           }
-        ]
-      };
-
-      // Update clients in the bubble
-      socket.broadcast.to(result.value.bubbleId).emit('update state', newState);
-
-      // Update clients in the thread
-      socket.broadcast.to(result.value._id).emit('update state', newState);
-
+        });
+      });
     });
   });
+
+
+
+
+
+
+
+  // // Archive thread
+  // socket.on('archive thread', thread => {
+
+  //   // Just making sure...
+  //   delete thread.upvoted;
+  //   delete thread.relevance;
+  //   delete thread.userCount;
+
+  //   // Update clients in the bubble
+  //   socket.broadcast.to(bubble.name).emit('delete thread', thread);
+
+  //   // Update clients in the thread
+  //   socket.broadcast.to(thread._id).emit('delete thread', thread);
+
+  //   // Update DB
+  //   Thread.findOneAndUpdate({ _id: ObjectId(thread._id) }, { $set: {
+  //     archived: true
+  //   }}, { returnOriginal: false }, (err, result) => {
+  //     if (err) throw err;
+  //   });
+
+  // });
+
+
+
+
+
+  // // Pass all received message to all clients
+  // socket.on('update thread', thread => {
+
+
+  //   let tempID = thread._id;
+
+  //   delete thread._id;
+  //   delete thread.bubbleId;
+  //   delete thread.upvoted;
+  //   delete thread.relevance;
+  //   delete thread.userCount;
+
+  //   // Update DB
+  //   Thread.findOneAndUpdate({
+  //     _id: ObjectId(tempID)
+  //   }, {
+  //     $set: thread
+  //   }, { returnOriginal: false }, (err, result) => {
+  //     if (err) throw err;
+
+  //     let newState = {
+  //       bubbles: [
+  //         {
+  //           _id: result.value.bubbleId,
+  //           threads: [
+  //             result.value
+  //           ]
+  //         }
+  //       ]
+  //     };
+
+  //     // Update clients in the bubble
+  //     socket.broadcast.to(result.value.bubbleId).emit('update state', newState);
+
+  //     // Update clients in the thread
+  //     socket.broadcast.to(result.value._id).emit('update state', newState);
+
+  //   });
+  // });
 
 
 
@@ -458,23 +469,35 @@ io.on('connection', socket => {
 
     // Save message
     message.save((err, message) => {
+      if (err) throw err;
 
-      let newState = {
-        messages: {
-          [message._id]: message
-        }
-      };
-  
-      // Update all clients in bubble
-      socket.broadcast.to(message.bubbleId).emit('update state', newState);
-  
-      // Update all clients in the thread
-      socket.broadcast.to(message.threadId).emit('update state', newState);
-  
-      
+
+      Thread.findById(message.threadId, (err, thread) => {
+        if (err) throw err;
+        Bubble.findById(thread.bubbleId, (err, bubble) => {
+          if (err) throw err;
+          Message.countDocuments({threadId: message.threadId}, (err, count) => {
+            if (err) throw err;
+              
+            // Update all clients in the thread
+            io.in(message.threadId).emit('update state', {
+              messages: {
+                [message._id]: message
+              }
+            });
+
+            // Update all message count in bubble
+            socket.broadcast.to(bubble.name).emit('update state', {
+              threads: {
+                [thread._id]: {
+                  messageCount: count
+                }
+              }
+            });
+          });
+        });
+      });
     });
-
-  
   });
 
 
@@ -579,8 +602,7 @@ io.on('connection', socket => {
               user: user.value,
               bubbles: {
                 [bubble.name]: bubble
-              },
-              newBubbleForm: {}
+              }
             });
 
           });

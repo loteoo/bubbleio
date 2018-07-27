@@ -19,7 +19,7 @@ const handleThreadForm = (ev, bubble) => (state, actions, {title, type = type ||
       userId: state.user._id,
       bubbleId: bubble._id
     });
-    actions.update({threadForm: {}})
+    actions.set({threadForm: {}})
   } else {
     actions.openLoginForm()
   }
