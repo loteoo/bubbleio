@@ -4,8 +4,11 @@ import "./thread-footer.css"
 
 const upvote = thread => (state, actions) => {
   if (state.user) {
-    if (thread.upvoted >= 5) {
-      socket.emit('upvote', thread._id)
+    if ((thread.voted || 0) <= 5) {
+      socket.emit('vote', {
+        threadId: thread._id,
+        quantity: 1
+      })
     }
   } else {
     actions.openLoginForm()
@@ -14,8 +17,11 @@ const upvote = thread => (state, actions) => {
 
 const downvote = thread => (state, actions) => {
   if (state.user) {
-    if (thread.upvoted <= -5) {
-      socket.emit('downvote', thread._id)
+    if ((thread.voted || 0) >= -5) {
+      socket.emit('vote', {
+        threadId: thread._id,
+        quantity: -1
+      })
     }
   } else {
     actions.openLoginForm()
@@ -27,7 +33,7 @@ export const ThreadFooter = ({ thread }) => (state, actions) => (
   <div class="thread-footer" key="thread-footer">
     <div class="infos">
       <span>{thread.score} points</span>
-      <span>{thread.userCount} users</span>
+      <span>{thread.userCount || 0} users</span>
       <span>{thread.messageCount || 0} messages</span>
     </div>
     <div class="actions">

@@ -15,6 +15,7 @@ const UserSidebar = ({user}) => (state, actions) => (
     <nav class="menu">
       <Link class="bubble-link" to="/">Home</Link>
       {user.bubbleNames.map(bubbleName => <BubbleLink bubble={state.bubbles[bubbleName]} />)}
+      <button class="bubble-link" onclick={actions.openBubbleForm}>Login</button>
     </nav>
   </div>
 )

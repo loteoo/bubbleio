@@ -2,5 +2,11 @@
 .thread-footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  >.actions {
+    >button {
+      margin: 0;
+    }
+  }
 }
  

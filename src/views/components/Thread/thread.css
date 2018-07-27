@@ -1,15 +1,17 @@
 .thread {
   display: grid;
-  grid-template-rows: 60px 1fr 60px;
+  grid-template-rows: 120px 1fr 60px;
 
-  >.heading {
+  >.preview {
     padding: 0 1rem;
     border-bottom: .05rem solid #e7e9ed;
-    display: flex;
-    align-items: center;
+    >.heading {
+      display: flex;
+      align-items: center;
+    }
   }
   >.messages {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 180px);
     overflow-y: auto;
     padding: 1rem;
   }
