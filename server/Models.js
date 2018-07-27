@@ -225,5 +225,6 @@ module.exports = {
   Bubble,
   Thread,
   Message,
-  User
+  User,
+  ObjectId: mongoose.Types.ObjectId
 }

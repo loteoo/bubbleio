@@ -24,7 +24,7 @@ const app = require('./server/Http.js');
 // =================
 // Mongo DB
 // =================
-const {Bubble, Thread, Message, User} = require('./server/Models.js');
+const {Bubble, Thread, Message, User, ObjectId} = require('./server/Models.js');
 
 
 
@@ -95,8 +95,21 @@ const getIndexedBubbles = bubbles => {
 
 // Update clients who have that this bubble in their user's bubble list
 // (joined in the room or not)
-const emitBubbleUserCounts = bubbleName => {
+const emitBubbleUserCounts = (bubbleName, socket) => {
 
+  let newState = {
+    bubbles: {
+      [bubbleName]: {
+        userCount: getConnectionsInRoom(bubbleName)
+      }
+    }
+  };
+
+  // Emit to this connection, logged in or not
+  socket.emit("update state", newState);
+
+  // Find users who have this bubble in their list AND and logged in, 
+  // but not necessarly in the bubble
   User.find({ bubbleNames: bubbleName }, (err, users) => {
     if (err) throw err;
 
@@ -104,19 +117,13 @@ const emitBubbleUserCounts = bubbleName => {
       users.forEach(user => {
         if (io.sockets.sockets[socketId].userId) {
           if (io.sockets.sockets[socketId].userId.toString() == user._id.toString()) {
-            io.sockets.sockets[socketId].emit("update state", {
-              bubbles: {
-                [bubbleName]: {
-                  userCount: getConnectionsInRoom(bubbleName)
-                }
-              }
-            });
+            console.log('BUBLE USER COUNT');
+            io.sockets.sockets[socketId].emit("update state", newState);
           }
         }
       });
     }
   });
-
 }
 
 
@@ -131,10 +138,20 @@ const emitBubbleUserCounts = bubbleName => {
 io.on('connection', socket => {
 
 
+
+  // Get the default bubbles
+  Bubble.find({default: true}, (err, bubbles) => {
+    if (err) throw err;
+
+    // Update the client
+    socket.emit("update state", {
+      bubbles: getIndexedBubbles(bubbles)
+    });
+  });
+
+
   // Handle rooms user counts from user navigation in the app
   socket.on('switch bubble', ({prevBubbleName, nextBubbleName}) => {
-
-    
 
     // If user was in an other room before this
     if (prevBubbleName) {
@@ -142,8 +159,7 @@ io.on('connection', socket => {
       // Leave connection to the previous room
       socket.leave(prevBubbleName);
 
-      emitBubbleUserCounts(prevBubbleName);
-
+      emitBubbleUserCounts(prevBubbleName, socket);
     }
 
 
@@ -164,7 +180,7 @@ io.on('connection', socket => {
             socket.join(bubble.name);
 
             // Update clients about new user
-            emitBubbleUserCounts(bubble.name);
+            emitBubbleUserCounts(bubble.name, socket);            
 
             // Use this occasion to send threads to the user
             socket.emit("update state", {
@@ -186,77 +202,77 @@ io.on('connection', socket => {
 
 
 
-  // Handle user bubble leaving
-  socket.on('remove user bubble', bubble => {
+  // // Handle user bubble leaving
+  // socket.on('remove user bubble', bubble => {
 
-    // Remove the bubble from this user's bubble list in the database
-    User.findByIdAndUpdate(socket.userId, {$pull: {bubbleNames: bubble.name}}, (err, result) => {
-      if (err) throw err;
-    });
-  });
-
-
-
-
-  // Handle user bubble leaving
-  socket.on('archive bubble', bubble => {
-
-    // Update DB
-    Bubble.findByIdAndUpdate(bubble._id, { $set: {
-      archived: true
-    }}, { returnOriginal: false }, (err, result) => {
-      if (err) throw err;
-
-      // List of all users who have this bubble in their list
-      User.find({ bubbleNames: bubble.name }, (err, users) => {
-        if (err) throw err;
-
-
-        // Remove the bubble from these user's bubble list in the database
-        users.forEach(user => {
-          User.findOneAndUpdate({ _id: ObjectID(user._id) }, {
-            $pull: {
-              bubbleNames: bubble.name
-            }
-          }, { returnOriginal: false }, (err, result) => {
-            if (err) throw err;
-          });
-        });
-
-
-        // Update clients who have that this bubble in their user's bubble list
-        for (socketId in io.sockets.sockets) {
-          users.forEach(user => {
-            if (io.sockets.sockets[socketId].userId) {
-              if (io.sockets.sockets[socketId].userId.toString() == user._id.toString()) {
-                io.sockets.sockets[socketId].emit("delete bubble", bubble);
-              }
-            }
-          });
-        }
-      });
-    });
-  });
+  //   // Remove the bubble from this user's bubble list in the database
+  //   User.findByIdAndUpdate(socket.userId, {$pull: {bubbleNames: bubble.name}}, (err, result) => {
+  //     if (err) throw err;
+  //   });
+  // });
 
 
 
-  // Feed threads to clients
-  socket.on('get bubble', data => {
-    Thread.find({bubbleId: bubble._id}, (err, threads) => {
-      if (err) throw err;
+
+  // // Handle user bubble leaving
+  // socket.on('archive bubble', bubble => {
+
+  //   // Update DB
+  //   Bubble.findByIdAndUpdate(bubble._id, { $set: {
+  //     archived: true
+  //   }}, { returnOriginal: false }, (err, result) => {
+  //     if (err) throw err;
+
+  //     // List of all users who have this bubble in their list
+  //     User.find({ bubbleNames: bubble.name }, (err, users) => {
+  //       if (err) throw err;
 
 
-        // Send the threads
-        socket.emit("update state", {
-          bubbles: [
-            {
-              _id: data.bubbleId,
-              threads
-            }
-          ]
-        });
-    });
-  });
+  //       // Remove the bubble from these user's bubble list in the database
+  //       users.forEach(user => {
+  //         User.findOneAndUpdate({ _id: ObjectId(user._id) }, {
+  //           $pull: {
+  //             bubbleNames: bubble.name
+  //           }
+  //         }, { returnOriginal: false }, (err, result) => {
+  //           if (err) throw err;
+  //         });
+  //       });
+
+
+  //       // Update clients who have that this bubble in their user's bubble list
+  //       for (socketId in io.sockets.sockets) {
+  //         users.forEach(user => {
+  //           if (io.sockets.sockets[socketId].userId) {
+  //             if (io.sockets.sockets[socketId].userId.toString() == user._id.toString()) {
+  //               io.sockets.sockets[socketId].emit("delete bubble", bubble);
+  //             }
+  //           }
+  //         });
+  //       }
+  //     });
+  //   });
+  // });
+
+
+
+  // // Feed threads to clients
+  // socket.on('get bubble', data => {
+  //   Thread.find({bubbleId: bubble._id}, (err, threads) => {
+  //     if (err) throw err;
+
+
+  //       // Send the threads
+  //       socket.emit("update state", {
+  //         bubbles: [
+  //           {
+  //             _id: data.bubbleId,
+  //             threads
+  //           }
+  //         ]
+  //       });
+  //   });
+  // });
 
 
 
@@ -273,13 +289,11 @@ io.on('connection', socket => {
       // Leave connection to the new room
       socket.leave(prevThreadId);
 
-      
-      Thread.findOne({
-        _id: ObjectID(prevThreadId),
-        trashed: false
-      }, (err, thread) => {
+      Thread.findById(prevThreadId, (err, thread) => {
         if (err) throw err;
         if (thread) { // If thread actually exists
+          
+          console.log('LEAVE THREAD');
           
           // Update clients in the previous thread's bubble
           io.to(thread.bubbleId).emit("update state", {
@@ -289,27 +303,20 @@ io.on('connection', socket => {
               }
             }
           });
-
         }
       });
-            
-      
-      
     }
 
 
     Thread.findById(nextThreadId, (err, thread) => {
       if (err) throw err;
       if (thread) { // If thread actually exists
-
         
-        Message.find({ threadId: ObjectID(thread._id) }, (err, messages) => {
+        Message.find({ threadId: ObjectId(thread._id) }, (err, messages) => {
           if (err) throw err;
-
 
           // Join connection to the new room
           socket.join(thread._id);
-
 
           // Update clients in the thread's bubble (user counts only)
           socket.broadcast.to(thread.bubbleId).emit("update state", {
@@ -319,7 +326,6 @@ io.on('connection', socket => {
               }
             }
           });
-
 
           // Update user count and messages from the DB for the switching client
           socket.emit("update state", {
@@ -332,9 +338,7 @@ io.on('connection', socket => {
             prevThreadId: thread._id
           });
 
-
         });
-
       }
     });
 
@@ -386,7 +390,7 @@ io.on('connection', socket => {
     socket.broadcast.to(thread._id).emit('delete thread', thread);
 
     // Update DB
-    Thread.findOneAndUpdate({ _id: ObjectID(thread._id) }, { $set: {
+    Thread.findOneAndUpdate({ _id: ObjectId(thread._id) }, { $set: {
       archived: true
     }}, { returnOriginal: false }, (err, result) => {
       if (err) throw err;
@@ -412,7 +416,7 @@ io.on('connection', socket => {
 
     // Update DB
     Thread.findOneAndUpdate({
-      _id: ObjectID(tempID)
+      _id: ObjectId(tempID)
     }, {
       $set: thread
     }, { returnOriginal: false }, (err, result) => {
@@ -512,10 +516,7 @@ io.on('connection', socket => {
             // Update the client
             socket.emit("update state", {
               user,
-              bubbles: getIndexedBubbles(bubbles),
-              threadForm: {
-                opened: false
-              }
+              bubbles: getIndexedBubbles(bubbles)
             });
           });
 
@@ -532,10 +533,7 @@ io.on('connection', socket => {
           // Update user bubbles
           socket.emit("update state", {
             user,
-            bubbles: getIndexedBubbles(bubbles),
-            threadForm: {
-              opened: false
-            }
+            bubbles: getIndexedBubbles(bubbles)
           });
         });
       }
@@ -630,7 +628,7 @@ io.on('connection', socket => {
 
     // Update DB
     User.findOneAndUpdate({
-      _id: ObjectID(tempID)
+      _id: ObjectId(tempID)
     }, {
       $set: user
     }, { returnOriginal: false }, (err, result) => {

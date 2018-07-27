@@ -33,9 +33,10 @@ const GuestSidebar = () => (state, actions) => (
     <nav class="menu">
     
       <Link class="bubble-link" to="/">Home</Link>
-
-      <BubbleLink bubble={{title: "General", name: "general"}} />
-      
+      {
+        Object.keys(state.bubbles)
+        .map(bubbleName => <BubbleLink bubble={state.bubbles[bubbleName]} />)
+      }
       <button class="bubble-link" onclick={actions.openLoginForm}>Login</button>
       
     </nav>
