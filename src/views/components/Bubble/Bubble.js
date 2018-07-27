@@ -39,7 +39,6 @@ export const Bubble = ({bubble}) => (state, actions) => (
       }
     </div>
     
-
     <ThreadForm bubble={bubble} />
 
   </div>
