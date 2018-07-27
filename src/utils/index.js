@@ -15,7 +15,7 @@ export const isElementInViewport = (el) => {
 
 export const dontMerge = (destination, source) => source;
 
-export const ObjectID = (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) => s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h))
+export const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) => s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h))
 
 export const getStateFromStorage = () => JSON.parse(window.localStorage.getItem('bubbleio'))
 
@@ -23,6 +23,49 @@ export const storeStateInStorage = (state) => {
   window.localStorage.setItem('bubbleio', JSON.stringify(state));
   return state;
 }
+
+
+
+export const timeSince = (date) => {
+
+  let seconds = Math.floor((new Date() - new Date(date)) / 1000);
+
+  let interval = Math.floor(seconds / 31536000);
+  if (interval >= 1) {
+    return interval + " years ago";
+  }
+
+  interval = Math.floor(seconds / 2592000);
+  if (interval >= 1) {
+    return interval + " months ago";
+  }
+
+  interval = Math.floor(seconds / 86400);
+  if (interval == 1) {
+    return "yesterday";
+  }
+
+  if (interval >= 1) {
+    return interval + " days ago";
+  }
+
+  interval = Math.floor(seconds / 3600);
+  if (interval >= 1) {
+    return interval + " hours ago";
+  }
+
+  interval = Math.floor(seconds / 60);
+  if (interval >= 1) {
+    return interval + " minutes ago";
+  }
+
+  if (seconds > 1) {
+    return Math.floor(seconds) + " seconds ago";
+  }
+  
+  return "now";
+}
+
 
 
 
@@ -68,58 +111,39 @@ export const getVimeoId = url => {
 
 
 
-const getSortedThreadsArray = threads => {
+// const getSortedThreadsArray = threads => {
 
-  // Calculate relevance score for each threads
-  for (var i = 0; i < threads.length; i++) {
+//   // Calculate relevance score for each threads
+//   for (var i = 0; i < threads.length; i++) {
     
-    // Score = (P-1) / (T+2)^G
-    //
-    // where,
-    // P = points of an item (and -1 is to negate submitters vote)
-    // T = time since submission (in hours)
-    // G = Gravity, defaults to 1.8
+//     // Score = (P-1) / (T+2)^G
+//     //
+//     // where,
+//     // P = points of an item (and -1 is to negate submitters vote)
+//     // T = time since submission (in hours)
+//     // G = Gravity, defaults to 1.8
 
-    // Todo: query message count
-    if (!threads[i].messages) {
-      threads[i].messages = [];
-    }
+//     // Todo: query message count
+//     if (!threads[i].messages) {
+//       threads[i].messages = [];
+//     }
 
-    threads[i].relevance = (threads[i].score + (threads[i].messages.length/2) + 1) / Math.pow(((new Date() - threads[i].created) / 3600000), 1.8);
-  }
+//     threads[i].relevance = (threads[i].score + (threads[i].messages.length/2) + 1) / Math.pow(((new Date() - threads[i].created) / 3600000), 1.8);
+//   }
 
-  // Sort by relevance
-  threads.sort(compareRelevance);
+//   // Sort by relevance
+//   threads.sort(compareRelevance);
 
-  // Build id array
-  let sortedThreads = [];
-  for (var i = 0; i < threads.length; i++) {
-    sortedThreads.push(threads[i]._id);
-  }
+//   // Build id array
+//   let sortedThreads = [];
+//   for (var i = 0; i < threads.length; i++) {
+//     sortedThreads.push(threads[i]._id);
+//   }
 
-  return sortedThreads;
-}
-
-
+//   return sortedThreads;
+// }
 
 
-const compareRelevance = (a, b) => {
-  if (a.relevance < b.relevance) {
-    return 1;
-  }
-  if (a.relevance > b.relevance) {
-    return -1;
-  }
-  return 0;
-}
 
 
-const compareAge = (a, b) => {
-  if (a.created < b.created) {
-    return 1;
-  }
-  if (a.created > b.created) {
-    return -1;
-  }
-  return 0;
-}
+

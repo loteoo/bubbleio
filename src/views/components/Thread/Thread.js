@@ -7,6 +7,10 @@ import {MessageForm} from '../MessageForm/MessageForm.js'
 
 import './thread.css'
 
+
+export const compareAge = (messages) => (a, b) => messages[a].createdAt > messages[b].createdAt
+
+
 export const Thread = ({thread}) => (state, actions) => (
   <div class="thread" key={thread._id}>
     <div class="preview">
@@ -28,6 +32,7 @@ const Messages = ({thread}) => (state, actions) => (
     {
       Object.keys(state.messages)
       .filter(messageId => state.messages[messageId].threadId == thread._id)
+      .sort(compareAge(state.messages))
       .map(messageId => <Message message={state.messages[messageId]} />)
     }
   </div>
