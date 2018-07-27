@@ -18,14 +18,12 @@ export const actions = {
     // // Subscribe to socket events
     window.socket.on('update state', newState => main.update(newState));
 
-
     // Login on load (sets a username on our socket connection)
     if (state.user) {
       socket.emit('login', {
         username: state.user.username
       });
     }
-
 
   },
 
