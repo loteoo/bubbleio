@@ -10,9 +10,6 @@ import './right-panel.css'
 
 export const RightPanel = () => (
   <div class="right-panel">
-    <Switch>
-      <Route path="/:bubbleName/:threadId" render={ThreadLoader} />
-      <Route render={FourOFour} />
-    </Switch>
+    <ThreadLoader />
   </div>
 )

@@ -1,23 +1,26 @@
 import {h} from 'hyperapp'
 
 import {Thread} from '../Thread/Thread.js'
+import {Spinner} from '../../common/Spinner/Spinner.js'
 
-export const ThreadLoader = ({match}) => (state, actions) => {
+export const ThreadLoader = () => (state, actions) => {
 
-  if (match.params.threadId != state.prevThreadId) {
+  let nextThreadId = window.location.pathname.split('/')[2];
+
+  if (nextThreadId && nextThreadId != state.prevThreadId) {
     // Join room here
     socket.emit('switch thread', {
       prevThreadId: state.prevThreadId,
-      nextThreadId: match.params.threadId
+      nextThreadId: nextThreadId
     });
   }
 
-  if (state.threads && state.threads[match.params.threadId]) {
-    return <Thread thread={state.threads[match.params.threadId]} />
+  if (state.threads && state.threads[state.prevThreadId]) {
+    return <Thread thread={state.threads[state.prevThreadId]} />
   } else {
     return (
       <div key="loading">
-        Loading...
+        <Spinner />
       </div>
     )
   }

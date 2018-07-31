@@ -10,10 +10,6 @@ import './main-container.css'
 
 export const MainContainer = () => (state, actions) => (
   <main class="main-container">
-    <Switch>
-      <Route path="/" render={Home} />
-      <Route parent path="/:bubbleName" render={BubbleLoader} />
-      <Route render={FourOFour} />
-    </Switch>
+    <BubbleLoader />
   </main>
 )
