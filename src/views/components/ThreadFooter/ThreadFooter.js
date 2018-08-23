@@ -32,7 +32,7 @@ const downvote = thread => (state, actions) => {
 }
 
 
-export const ThreadFooter = ({ thread }) => (state, actions) => (
+export const ThreadFooter = ({thread}) => (state, actions) => (
   <div class="thread-footer" key="thread-footer">
     <div class="info">
       <span>{thread.score} points</span>

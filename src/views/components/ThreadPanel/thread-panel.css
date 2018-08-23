@@ -8,14 +8,14 @@
   .thread {
     >.preview {
       padding: 0 1rem;
-      border-bottom: .05rem solid #e7e9ed;
+      border-bottom: 1px solid #e7e9ed;
       >.heading {
         display: flex;
         align-items: center;
       }
     }
     >.messages {
-      padding: 1rem;
+      padding: 0;
     }
   }
 }

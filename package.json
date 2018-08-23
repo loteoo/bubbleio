@@ -12,6 +12,7 @@
     "hyperapp": "^1.2.6",
     "mongoose": "^5.2.5",
     "npm": "^6.2.0",
+    "p-iteration": "^1.1.7",
     "postcss-nested": "^3.0.0",
     "rucksack-css": "^1.0.2",
     "sanitize.css": "^6.0.0",

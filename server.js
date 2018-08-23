@@ -132,7 +132,7 @@ User.findOne({username: 'loteoo'}, (err, user) => {
 
 // Dependencies
 const io = require('socket.io')(app);
-
+const {map: pmap} = require('p-iteration');
 
 // Returns number of sockets connections currently in the specified room
 const getConnectionsInRoom = roomName => {
@@ -155,28 +155,56 @@ const getConnectionsInRoom = roomName => {
 
 // Takes in an array of objects and returns a single object
 // with each object indexed as a property by their unique names
-const getIndexedCollection = collection => {
-  let indexedCollection = {};
-  for (let i = 0; i < collection.length; i++) {
-    collection[i].userCount = getConnectionsInRoom(collection[i]._id);
-    indexedCollection[collection[i]._id] = collection[i];
+const getIndexedBubbles = bubbles => {
+  let indexedBubbles = {};
+  for (let i = 0; i < bubbles.length; i++) {
+    indexedBubbles[bubbles[i].name] = bubbles[i].toObject();
+    indexedBubbles[bubbles[i].name].userCount = getConnectionsInRoom(bubbles[i].name);
   }
-  return indexedCollection;
+  return indexedBubbles;
 }
+
 
 
 
 
 // Takes in an array of objects and returns a single object
 // with each object indexed as a property by their unique names
-const getIndexedBubbles = bubbles => {
-  let indexedBubbles = {};
-  for (let i = 0; i < bubbles.length; i++) {
-    bubbles[i].userCount = getConnectionsInRoom(bubbles[i].name);
-    indexedBubbles[bubbles[i].name] = bubbles[i];
+const getIndexedThreads = threads => {
+  let indexedThreads = {};
+  
+
+
+  let decoratedThreads = pmap(threads, async thread => {
+    let decorated = thread.toObject();
+    decorated.userCount = getConnectionsInRoom(thread._id);
+    decorated.messageCount = await Message.countDocuments({threadId: thread._id});
+  });
+
+  
+  for (let i = 0; i < decoratedThreads.length; i++) {
+    indexedThreads[decoratedThreads[i]._id] = decoratedThreads[i];
   }
-  return indexedBubbles;
+
+  return indexedThreads;
 }
+
+
+
+
+
+// Takes in an array of objects and returns a single object
+// with each object indexed as a property by their unique names
+const getIndexedMessages = collection => {
+  let indexedCollection = {};
+  for (let i = 0; i < collection.length; i++) {
+    indexedCollection[collection[i]._id] = collection[i].toObject();
+  }
+  return indexedCollection;
+}
+
+
+
 
 
 
@@ -282,7 +310,7 @@ io.on('connection', socket => {
               bubbles: {
                 [bubble.name]: bubble
               },
-              threads: getIndexedCollection(threads),
+              threads: getIndexedThreads(threads),
               prevBubbleName: bubble.name
             });
             console.log(`${socket.userId ? user.username : 'Anonymous'} joined bubble ${bubble.name} (${bubble.title})`);
@@ -293,80 +321,7 @@ io.on('connection', socket => {
   });
 
 
-
-
-  // // Handle user bubble leaving
-  // socket.on('remove user bubble', bubble => {
-
-  //   // Remove the bubble from this user's bubble list in the database
-  //   User.findByIdAndUpdate(socket.userId, {$pull: {bubbleNames: bubble.name}}, (err, result) => {
-  //     if (err) throw err;
-  //   });
-  // });
-
-
-
-
-  // // Handle user bubble leaving
-  // socket.on('archive bubble', bubble => {
-
-  //   // Update DB
-  //   Bubble.findByIdAndUpdate(bubble._id, { $set: {
-  //     archived: true
-  //   }}, { returnOriginal: false }, (err, result) => {
-  //     if (err) throw err;
-
-  //     // List of all users who have this bubble in their list
-  //     User.find({ bubbleNames: bubble.name }, (err, users) => {
-  //       if (err) throw err;
-
-
-  //       // Remove the bubble from these user's bubble list in the database
-  //       users.forEach(user => {
-  //         User.findOneAndUpdate({ _id: ObjectId(user._id) }, {
-  //           $pull: {
-  //             bubbleNames: bubble.name
-  //           }
-  //         }, { returnOriginal: false }, (err, result) => {
-  //           if (err) throw err;
-  //         });
-  //       });
-
-
-  //       // Update clients who have that this bubble in their user's bubble list
-  //       for (socketId in io.sockets.sockets) {
-  //         users.forEach(user => {
-  //           if (io.sockets.sockets[socketId].userId) {
-  //             if (io.sockets.sockets[socketId].userId.toString() == user._id.toString()) {
-  //               io.sockets.sockets[socketId].emit("delete bubble", bubble);
-  //             }
-  //           }
-  //         });
-  //       }
-  //     });
-  //   });
-  // });
-
-
-
-  // // Feed threads to clients
-  // socket.on('get bubble', data => {
-  //   Thread.find({bubbleId: bubble._id}, (err, threads) => {
-  //     if (err) throw err;
-
-
-  //       // Send the threads
-  //       socket.emit('update state', {
-  //         bubbles: [
-  //           {
-  //             _id: data.bubbleId,
-  //             threads
-  //           }
-  //         ]
-  //       });
-  //   });
-  // });
-
+  
 
 
 
@@ -432,7 +387,7 @@ io.on('connection', socket => {
                   userCount: getConnectionsInRoom(thread._id)
                 }
               },
-              messages: getIndexedCollection(messages),
+              messages: getIndexedMessages(messages),
               prevThreadId: thread._id
             });
             console.log(`${socket.userId || 'Anonymous'} joined thread #${thread._id} (${thread.title})`);
@@ -477,76 +432,7 @@ io.on('connection', socket => {
 
 
 
-
-
-
-  // // Archive thread
-  // socket.on('archive thread', thread => {
-
-  //   // Just making sure...
-  //   delete thread.upvoted;
-  //   delete thread.relevance;
-  //   delete thread.userCount;
-
-  //   // Update clients in the bubble
-  //   socket.broadcast.to(bubble.name).emit('delete thread', thread);
-
-  //   // Update clients in the thread
-  //   socket.broadcast.to(thread._id).emit('delete thread', thread);
-
-  //   // Update DB
-  //   Thread.findOneAndUpdate({ _id: ObjectId(thread._id) }, { $set: {
-  //     archived: true
-  //   }}, { returnOriginal: false }, (err, result) => {
-  //     if (err) throw err;
-  //   });
-
-  // });
-
-
-
-
-
-  // // Pass all received message to all clients
-  // socket.on('update thread', thread => {
-
-
-  //   let tempID = thread._id;
-
-  //   delete thread._id;
-  //   delete thread.bubbleId;
-  //   delete thread.upvoted;
-  //   delete thread.relevance;
-  //   delete thread.userCount;
-
-  //   // Update DB
-  //   Thread.findOneAndUpdate({
-  //     _id: ObjectId(tempID)
-  //   }, {
-  //     $set: thread
-  //   }, { returnOriginal: false }, (err, result) => {
-  //     if (err) throw err;
-
-  //     let newState = {
-  //       bubbles: [
-  //         {
-  //           _id: result.value.bubbleId,
-  //           threads: [
-  //             result.value
-  //           ]
-  //         }
-  //       ]
-  //     };
-
-  //     // Update clients in the bubble
-  //     socket.broadcast.to(result.value.bubbleId).emit('update state', newState);
-
-  //     // Update clients in the thread
-  //     socket.broadcast.to(result.value._id).emit('update state', newState);
-
-  //   });
-  // });
-
+  
 
 
 
@@ -605,6 +491,11 @@ io.on('connection', socket => {
             io.in(message.threadId).emit('update state', {
               messages: {
                 [message._id]: message
+              },
+              threads: {
+                [thread._id]: {
+                  messageCount: count
+                }
               }
             });
 
