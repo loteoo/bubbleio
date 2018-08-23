@@ -38,6 +38,79 @@ const {Bubble, Thread, Message, User, ObjectId} = require('./server/Models.js');
 
 
 
+// =================
+// Seed database
+// =================
+
+
+const faker = require('faker');
+
+
+
+
+
+// Initialize some data if this is a new database
+
+// Init user
+User.findOne({username: 'loteoo'}, (err, user) => {
+  if (err) throw err;
+  if (!user) {
+    let user = new User({
+      username: 'loteoo',
+      password: 'testtest'
+    });
+    user.save((err, user) => {
+      if (err) throw err;
+      console.log('Created user ' + user.username);
+
+      // Init bubble
+      let bubble = new Bubble({
+        name: 'general',
+        title: 'General',
+        description: 'A bubble for everyone!',
+        public: true,
+        default: true,
+        userId: user._id
+      });
+    
+      bubble.save((err, bubble) => {
+        console.log('Created bubble ' + bubble.name)
+
+
+
+        for (let index = 0; index < 15; index++) {
+          new Thread({
+            title: faker.name.title(),
+            score: 0,
+            type: 'text',
+            trashed: false,
+            userId: user._id,
+            bubbleId: bubble._id
+          }).save((err, thread) => console.log('Thread ' + thread.title + ' created'));
+        }
+      });
+    });
+  }
+});
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ===============
 // Websockets
 // ===============

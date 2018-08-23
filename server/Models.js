@@ -164,58 +164,7 @@ const User = mongoose.model('User', userSchema);
 mongoose.connect('mongodb://localhost:27017/bubbleio');
 
 db.on('error', console.error.bind(console, 'Database connection error:'));
-db.once('open', () => {
-
-  
-  console.log('Connected to the database')
-
-
-
-
-
-
-
-  // Initialize some data if this is a new database
-
-  // Init user
-  User.findOne({username: 'loteoo'}, (err, user) => {
-    if (err) throw err;
-    if (!user) {
-      let user = new User({
-        username: 'loteoo',
-        password: 'testtest'
-      });
-      user.save((err, user) => {
-        if (err) throw err;
-        console.log('Created user ' + user.username);
-
-        // Init bubble
-        let bubble = new Bubble({
-          name: 'general',
-          title: 'General',
-          description: 'A bubble for everyone!',
-          public: true,
-          default: true,
-          userId: user._id
-        });
-      
-        bubble.save((err, bubble) => console.log('Created bubble ' + bubble.name));
-
-      });
-    }
-  });
-
-
-  
-  // Bubble.findOne({name: 'general'}).populate('user').exec((err, bubble) => {
-  //   console.log(bubble);
-  // });
-
-  // User.findOne({username: 'loteoo'}).populate('createdBubbles').exec((err, user) => {
-  //   console.log(user);
-  // });
-
-});
+db.once('open', () => console.log('Connected to the database'));
 
 
 
