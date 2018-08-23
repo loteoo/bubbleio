@@ -1,7 +1,6 @@
 .thread-panel {
   position: absolute 0 0 0 auto;
-  background-color: #f8f9fa;
-  border-left: .05rem solid #e7e9ed;
+  background-color: #fafafa;
   width: 320px;
   height: 100vh;
   overflow-y: auto;

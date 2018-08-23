@@ -20,6 +20,7 @@ export const view = (state, actions) => {
       <MainMenu />
       <BubbleView />
       {state.threadPanelOpened ? <ThreadPanel /> : null}
+      {state.loginForm && state.loginForm.opened ? <LoginForm {...state.loginForm} /> : null}
     </div>
   )
 }

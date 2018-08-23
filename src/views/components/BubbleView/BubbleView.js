@@ -82,7 +82,9 @@ const Bubble = ({bubble}) => (state, actions) => (
       }
     </div>
     
-    { state.newThreadForm && state.newThreadForm.opened ? <NewThreadForm bubble={bubble} /> : null }
+    {state.newThreadForm && state.newThreadForm.opened ? <NewThreadForm bubble={bubble} /> : null}
+
+    <button onclick={ev => actions.update({newThreadForm: {opened: true}})}>+</button>
 
   </div>
 )

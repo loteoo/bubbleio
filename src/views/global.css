@@ -72,6 +72,9 @@ img {
 	text-shadow:none;
 } */
 
+svg {
+  fill: none;
+}
 
 .app {
   position: relative;
