@@ -1,5 +1,9 @@
 .bubble-view {
 
+  max-height: 100vh;
+  overflow-y: auto;
+  
+
   .bubble {
     max-width: 768px;
     margin: 0 auto;
@@ -12,8 +16,6 @@
     }
 
     >.listing {
-      max-height: calc(100vh - 120px);
-      overflow-y: auto;
       padding: 1rem;
     }
 

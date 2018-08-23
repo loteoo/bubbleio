@@ -5,7 +5,6 @@ import {h} from 'hyperapp'
 import {Spinner} from '../../common/Spinner/Spinner.js'
 
 
-import {FourOFour} from '../FourOFour/FourOFour.js'
 import {ThreadItem} from '../ThreadItem/ThreadItem.js'
 import {NewThreadForm} from '../NewThreadForm/NewThreadForm.js'
 
@@ -40,7 +39,7 @@ export const BubbleView = () => (
         bubble
           ? bubble._id
             ? <Bubble bubble={bubble} />
-            : <FourOFour />
+            : <h2>Bubble not found</h2>
           : <Spinner />
       }
     </div>

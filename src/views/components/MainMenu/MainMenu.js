@@ -2,13 +2,13 @@ import {h} from 'hyperapp'
 import { Link } from "@hyperapp/router"
 
 
-import './left-menu.css'
+import './main-menu.css'
 
-export const LeftMenu = () => (state, actions) => state.user ? <UserSidebar user={state.user} /> : <GuestSidebar />
+export const MainMenu = () => (state, actions) => state.user ? <UserMenu user={state.user} /> : <GuestMenu />
 
 
-const UserSidebar = ({user}) => (state, actions) => (
-  <div class="left-menu">
+const UserMenu = ({user}) => (state, actions) => (
+  <div class="main-menu">
     <div class="heading">
       {user.username}
     </div>
@@ -24,8 +24,8 @@ const UserSidebar = ({user}) => (state, actions) => (
 )
 
 
-const GuestSidebar = () => (state, actions) => (
-  <div class="left-menu">
+const GuestMenu = () => (state, actions) => (
+  <div class="main-menu">
     <div class="heading">
       Bubbleio
     </div>

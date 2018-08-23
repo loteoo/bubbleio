@@ -2,7 +2,7 @@ import {h} from 'hyperapp'
 import {Link} from "@hyperapp/router"
 
 
-import {LeftMenu} from './layout/LeftMenu/LeftMenu'
+import {MainMenu} from './components/MainMenu/MainMenu'
 import {BubbleView} from './components/BubbleView/BubbleView'
 import {ThreadPanel} from './components/ThreadPanel/ThreadPanel'
 
@@ -17,9 +17,9 @@ export const view = (state, actions) => {
   console.log(state);
   return (
     <div class="app">
-      <LeftMenu />
+      <MainMenu />
       <BubbleView />
-      <ThreadPanel />
+      {state.threadPanelOpened ? <ThreadPanel /> : null}
     </div>
   )
 }

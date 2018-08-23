@@ -5,5 +5,6 @@ export const state = getStateFromStorage() || {
   location: location.state,
   bubbles: {},
   threads: {},
-  messages: {}
+  messages: {},
+  threadPanelOpened: true
 }
