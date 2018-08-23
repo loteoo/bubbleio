@@ -2,6 +2,7 @@
   position: absolute 0 0 0 auto;
   background-color: #f8f9fa;
   border-left: .05rem solid #e7e9ed;
+  max-width: 320px;
   .thread {
     display: grid;
     grid-template-rows: 120px 1fr 60px;

@@ -78,7 +78,7 @@ User.findOne({username: 'loteoo'}, (err, user) => {
 
 
 
-        for (let index = 0; index < 15; index++) {
+        for (let i = 0; i < 15; i++) {
           new Thread({
             title: faker.name.title(),
             score: 0,
@@ -86,7 +86,21 @@ User.findOne({username: 'loteoo'}, (err, user) => {
             trashed: false,
             userId: user._id,
             bubbleId: bubble._id
-          }).save((err, thread) => console.log('Thread ' + thread.title + ' created'));
+          }).save((err, thread) => {
+            console.log('Thread ' + thread.title + ' created')
+
+            
+            for (let j = 0; j < 15; j++) {
+              new Message({
+                userId: user._id,
+                threadId: thread._id,
+                text: faker.lorem.text()
+              }).save((err, message) => {
+                console.log('Message generated');
+              });
+            }
+
+          });
         }
       });
     });
