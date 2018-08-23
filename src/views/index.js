@@ -4,7 +4,7 @@ import {Link} from "@hyperapp/router"
 
 import {LeftMenu} from './layout/LeftMenu/LeftMenu'
 import {BubbleView} from './components/BubbleView/BubbleView'
-import {RightPanel} from './layout/RightPanel/RightPanel'
+import {ThreadPanel} from './components/ThreadPanel/ThreadPanel'
 
 import {LoginForm} from './components/LoginForm/LoginForm'
 
@@ -19,7 +19,7 @@ export const view = (state, actions) => {
     <div class="app">
       <LeftMenu />
       <BubbleView />
-      <RightPanel />
+      <ThreadPanel />
     </div>
   )
 }

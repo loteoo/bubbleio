@@ -1,0 +1,24 @@
+.thread-panel {
+  position: absolute 0 0 0 auto;
+  background-color: #f8f9fa;
+  border-left: .05rem solid #e7e9ed;
+  .thread {
+    display: grid;
+    grid-template-rows: 120px 1fr 60px;
+  
+    >.preview {
+      padding: 0 1rem;
+      border-bottom: .05rem solid #e7e9ed;
+      >.heading {
+        display: flex;
+        align-items: center;
+      }
+    }
+    >.messages {
+      height: calc(100vh - 180px);
+      overflow-y: auto;
+      padding: 1rem;
+    }
+    
+  }
+}

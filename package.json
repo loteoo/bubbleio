@@ -8,6 +8,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "classcat": "^3.1.2",
     "deepmerge": "^2.1.1",
+    "faker": "^4.1.0",
     "hyperapp": "^1.2.6",
     "mongoose": "^5.2.5",
     "npm": "^6.2.0",
