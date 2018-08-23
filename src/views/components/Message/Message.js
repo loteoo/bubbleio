@@ -5,6 +5,7 @@ import './message.css'
 
 export const Message = ({message}) => (
   <div class="message" key={message._id}>
-    {message.text}
+    <b>{message.userId.username}</b>
+    <p>{message.text}</p>
   </div>
 )

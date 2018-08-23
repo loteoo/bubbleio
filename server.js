@@ -132,7 +132,7 @@ User.findOne({username: 'loteoo'}, (err, user) => {
 
 // Dependencies
 const io = require('socket.io')(app);
-const {map: pmap} = require('p-iteration');
+
 
 // Returns number of sockets connections currently in the specified room
 const getConnectionsInRoom = roomName => {
@@ -172,20 +172,11 @@ const getIndexedBubbles = bubbles => {
 // with each object indexed as a property by their unique names
 const getIndexedThreads = threads => {
   let indexedThreads = {};
-  
-
-
-  let decoratedThreads = pmap(threads, async thread => {
-    let decorated = thread.toObject();
-    decorated.userCount = getConnectionsInRoom(thread._id);
-    decorated.messageCount = await Message.countDocuments({threadId: thread._id});
-  });
-
-  
-  for (let i = 0; i < decoratedThreads.length; i++) {
-    indexedThreads[decoratedThreads[i]._id] = decoratedThreads[i];
+  for (let i = 0; i < threads.length; i++) {
+    indexedThreads[threads[i]._id] = threads[i].toObject();
+    indexedThreads[threads[i]._id].userCount = getConnectionsInRoom(threads[i]._id);
+    indexedThreads[threads[i]._id].messageCount = 0; threads[i].messages.length
   }
-
   return indexedThreads;
 }
 
@@ -271,7 +262,7 @@ io.on('connection', socket => {
 
 
 
-  
+
 
   // ==============================================
   // Handle bubble navigation
@@ -291,7 +282,7 @@ io.on('connection', socket => {
       if (err) throw err;
       if (bubble) {
         // TODO: Only load user messages count, not the entire message list
-        Thread.find({bubbleId: bubble._id}, (err, threads) => {
+        Thread.find({bubbleId: bubble._id}).populate('messages').exec((err, threads) => {
           if (err) throw err;
 
           // Add this bubble to the user's bubble list
@@ -363,7 +354,7 @@ io.on('connection', socket => {
       if (err) throw err;
       if (thread) { // If thread actually exists
         
-        Message.find({ threadId: ObjectId(thread._id) }, (err, messages) => {
+        Message.find({ threadId: ObjectId(thread._id) }).populate('userId', 'username').exec((err, messages) => {
           if (err) throw err;
 
           Bubble.findById(thread.bubbleId, (err, bubble) => {
@@ -486,28 +477,33 @@ io.on('connection', socket => {
           if (err) throw err;
           Message.countDocuments({threadId: message.threadId}, (err, count) => {
             if (err) throw err;
-              
-            // Update all clients in the thread
-            io.in(message.threadId).emit('update state', {
-              messages: {
-                [message._id]: message
-              },
-              threads: {
-                [thread._id]: {
-                  messageCount: count
-                }
-              }
-            });
 
-            // Update all message count in bubble
-            socket.broadcast.to(bubble.name).emit('update state', {
-              threads: {
-                [thread._id]: {
-                  messageCount: count
+
+            User.findOne({_id: message.userId}, (err, user) => {
+              if (err) throw err;
+
+              // Update all clients in the thread
+              io.in(message.threadId).emit('update state', {
+                messages: {
+                  [message._id]: message
+                },
+                threads: {
+                  [thread._id]: {
+                    messageCount: count
+                  }
                 }
-              }
+              });
+  
+              // Update all message count in bubble
+              socket.broadcast.to(bubble.name).emit('update state', {
+                threads: {
+                  [thread._id]: {
+                    messageCount: count
+                  }
+                }
+              });
+              console.log(`User #${socket.userId} sent a message in thread #${thread._id} (${thread.title}). Message: ${text}`);
             });
-            console.log(`User #${socket.userId} sent a message in thread #${thread._id} (${thread.title}). Message: ${text}`);
           });
         });
       });
