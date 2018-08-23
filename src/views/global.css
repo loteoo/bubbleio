@@ -14,29 +14,29 @@
 /*------------------------------------*\
     Global
 \*------------------------------------*/
-/* 
+
+:root {
+	--text-color: #50596c;
+	--background-color: #ffffff;
+	--border-color: #e7e9ed;
+	--accent-color: #5755d9;
+}
+
 html {
-	--main-color: #666666;
-	--main-background-color: #fafafa;
-	--main-border-color: #e6e6e6;
-
-	--primary-accent-color: #7967ff;
-	--secondary-accent-color: #ff6369;
-	--tertiary-accent-color: #428ce1;
-} */
-
-
-body {
-  position: relative;
-
-  background: #fff;
-  color: #50596c;
-  
-  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  font-family: 'Arial', sans-serif;
+  font-size: responsive;
+  color: var(--text-color);
+  background-color: var(--background-color);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
 
+
+body {
+  width: 100%;
+  height: 100%;
 }
 
 
@@ -78,31 +78,6 @@ img {
   overflow: hidden;
   width: 100vw;
   height: 100vh;
-}
-
-
-.layout {
-
-  display: grid;
-  grid-template-columns: 240px 1fr 420px;
-  
-
-  >* {
-    height: 100vh;
-    overflow-y: auto;
-    position: relative;
-  }
-
-  
-  >.left-menu {
-    grid-column: 1/2;
-  }
-  >.main-container {
-    grid-column: 2/3;
-  }
-  >.thread-panel {
-    grid-column: 3/4;
-  }
 }
 
 

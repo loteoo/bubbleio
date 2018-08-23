@@ -14,7 +14,7 @@ const handleNewBubbleForm = ev => state => {
   });
 }
 
-export const BubbleForm = () => (state, actions) =>
+export const NewBubbleForm = () => (state, actions) =>
   <form class="new-bubble-form" method="post" onsubmit={handleNewBubbleForm}>
     <h2>Let's create a brand new bubble.</h2>
     <p>A welcoming home for a community of any common interest</p>

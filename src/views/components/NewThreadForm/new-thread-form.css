@@ -1,5 +1,4 @@
-
-.thread-form {
+.new-thread-form {
   display: flex;
   justify-content: space-between;
   >input[name=title] {
@@ -10,4 +9,3 @@
     width: 100px;
   }
 }
- 

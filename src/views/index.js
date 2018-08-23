@@ -3,7 +3,7 @@ import {Link} from "@hyperapp/router"
 
 
 import {LeftMenu} from './layout/LeftMenu/LeftMenu'
-import {MainContainer} from './layout/MainContainer/MainContainer'
+import {BubbleView} from './components/BubbleView/BubbleView'
 import {RightPanel} from './layout/RightPanel/RightPanel'
 
 import {LoginForm} from './components/LoginForm/LoginForm'
@@ -17,12 +17,9 @@ export const view = (state, actions) => {
   console.log(state);
   return (
     <div class="app">
-      <div class="layout">
-        <LeftMenu />
-        <MainContainer />
-        <RightPanel />
-      </div>
-      <LoginForm {...state.loginForm}/>
+      <LeftMenu />
+      <BubbleView />
+      <RightPanel />
     </div>
   )
 }
