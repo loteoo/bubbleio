@@ -1,6 +1,7 @@
 import {location} from "@hyperapp/router"
 import deepmerge from "deepmerge"
 import {ObjectID, dontMerge, storeStateInStorage} from '../utils/'
+import Echo from "laravel-echo"
 import io from 'socket.io-client/dist/socket.io.slim'
 
 export const actions = {

@@ -10,13 +10,15 @@
     "deepmerge": "^2.1.1",
     "faker": "^4.1.0",
     "hyperapp": "^1.2.6",
+    "laravel-echo": "^1.4.0",
     "mongoose": "^5.2.5",
     "npm": "^6.2.0",
     "p-iteration": "^1.1.7",
     "postcss-nested": "^3.0.0",
     "rucksack-css": "^1.0.2",
     "sanitize.css": "^6.0.0",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
