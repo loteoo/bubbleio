@@ -20,7 +20,8 @@ class CreateMessagesTable extends Migration
             $table->increments('id');
             $table->text('text');
             $table->unsignedInteger('thread_id');
-            $table->unsignedInteger('bubble_id');
+            $table->unsignedInteger('user_id');
+
             $table->softDeletes();
             $table->timestamps();
             
@@ -29,9 +30,9 @@ class CreateMessagesTable extends Migration
                   ->on('threads')
                   ->onDelete('restrict');
                   
-            $table->foreign('bubble_id')
+            $table->foreign('user_id')
                   ->references('id')
-                  ->on('bubbles')
+                  ->on('users')
                   ->onDelete('restrict');
         });
     }

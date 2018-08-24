@@ -23,8 +23,10 @@ class CreateBubblesTable extends Migration
             $table->text('description');
             $table->boolean('public');
             $table->boolean('default');
-            $table->softDeletes();
+            
             $table->unsignedInteger('user_id');
+
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('user_id')

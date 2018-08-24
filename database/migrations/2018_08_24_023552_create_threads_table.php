@@ -26,6 +26,7 @@ class CreateThreadsTable extends Migration
             $table->enum('type', ['default', 'text', 'link', 'image']);
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('bubble_id');
+            
             $table->softDeletes();
             $table->timestamps();
             
