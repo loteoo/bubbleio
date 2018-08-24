@@ -26,4 +26,19 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function bubbles() {
+        return $this->hasMany('App\Bubble');
+    }
+
+
+    public function threads() {
+        return $this->hasMany('App\Thread');
+    }
+
+
+    public function messages() {
+        return $this->hasMany('App\Message');
+    }
 }
