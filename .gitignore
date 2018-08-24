@@ -14,3 +14,9 @@ yarn-error.log
 .phpunit.result.cache
 
 *cache
+
+
+/public/*
+!/public/index.php
+!/public/.htaccess
+!/public/robots.txt

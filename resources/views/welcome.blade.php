@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1">
 
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
     <title>Hyperapp boilerplate</title>
     <meta name="description" content="A minimalist progressive web app compliant template for hyperapp projects">
 
@@ -32,6 +36,6 @@
 
   </head>
   <body>
-    blade file
+  
   </body>
 </html>
