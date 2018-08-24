@@ -23,7 +23,7 @@
     "postcss-modules": "^1.1.0"
   },
   "scripts": {
-    "start": "parcel src/index.html --out-dir public --open",
+    "start": "parcel src/app.js --out-dir public --open",
     "build": "parcel build ./src/index.html --no-source-maps --out-dir public --detailed-report --public-url ./"
   },
   "repository": {

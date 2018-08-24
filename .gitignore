@@ -16,7 +16,6 @@ yarn-error.log
 *cache
 
 
-/public/*
-!/public/index.php
-!/public/.htaccess
-!/public/robots.txt
+/public/app.css
+/public/app.js
+/public/app.map
