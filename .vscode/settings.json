@@ -2,6 +2,5 @@
   "prettier.eslintIntegration": true,
   "files.associations": {
     "*.css": "scss",
-    "*.js": "javascriptreact"
   }
 }
