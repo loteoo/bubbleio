@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "hyperapp": "github:jorgebucaran/hyperapp#V2",
-    "hyperapp-render": "^3.0.0"
+    "hyperapp-render": "^3.0.0",
+    "parcel-plugin-static-files-copy": "^2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^9.4.3",

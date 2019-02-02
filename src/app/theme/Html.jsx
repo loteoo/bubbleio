@@ -1,7 +1,8 @@
 import {h} from 'hyperapp'
 
+
 // Import styles
-import './style.css'
+import './theme.css'
 
 // Root container component
 export const Html = ({state}, children) => (
@@ -15,7 +16,7 @@ export const Html = ({state}, children) => (
 
       <link rel="home" href="https://github.com/loteoo/hyperapp-boilerplate"/>
       <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-      <link rel="icon" type="image/png" href="../assets/favicon.png"/>
+      <link rel="icon" type="image/png" href="/favicon.png"/>
       <link rel="canonical" href="https://github.com/loteoo/hyperapp-boilerplate" />
 
       {/* Open graph */}
@@ -23,8 +24,8 @@ export const Html = ({state}, children) => (
       <meta property="og:description" content={state.description} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://github.com/loteoo/hyperapp-boilerplate" />
-      <meta property="og:image" content="../assets/card.png" />
-      <meta property="og:image:secure_url" content="../assets/card.png" />
+      <meta property="og:image" content="/card.png" />
+      <meta property="og:image:secure_url" content="/card.png" />
       <meta property="og:image:type" content="image/png" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
@@ -36,7 +37,7 @@ export const Html = ({state}, children) => (
       <meta name="twitter:title" content={state.title}/>
 
       {/* Android */}
-      <link rel="manifest" href="../assets/manifest.json"/>
+      <link rel="manifest" href="/manifest.json"/>
       <meta name="mobile-web-app-capable" content="yes"/>
       <meta name="theme-color" content="#ffffff"/>
 
@@ -44,10 +45,10 @@ export const Html = ({state}, children) => (
       <meta name="apple-mobile-web-app-capable" content="yes"/>
       <meta name="apple-mobile-web-app-status-bar-style" content="#ffffff"/>
       <meta name="apple-mobile-web-app-title" content={state.title}/>
-      <link rel="apple-touch-icon" sizes="180x180" href="../assets/icon-512x512.png"/>
+      <link rel="apple-touch-icon" sizes="180x180" href="/icon-512x512.png"/>
 
       {/* Windows */}
-      <meta name="msapplication-TileImage" content="../assets/icon-512x512.png"/>
+      <meta name="msapplication-TileImage" content="/icon-512x512.png"/>
       <meta name="msapplication-TileColor" content="#ffffff"/>
 
       {/* Parcel bundles */}

@@ -6,10 +6,17 @@ import {SetValue} from './actions'
 // Import components
 import {Html} from './theme/Html'
 
+import {TestPage} from './TestPage'
+
+import './app.css'
+
 // Root view
 export const view = state => (
   <Html state={state}>
-    <header>
+
+    <TestPage />
+
+    {/* <header>
       <div class="container">
         <h1>{state.title}</h1>
         <p>{state.description}</p>
@@ -24,6 +31,6 @@ export const view = state => (
         <h4>App state: </h4>
         <pre>{JSON.stringify(state, null, 2)}</pre>
       </div>
-    </main>
+    </main> */}
   </Html>
 )
