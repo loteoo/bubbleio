@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Bumps', {
+    return queryInterface.createTable('bumps', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -14,14 +14,14 @@ module.exports = {
       threadId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Threads',
+          model: 'threads',
           key: 'id'
         }
       },
       userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
+          model: 'users',
           key: 'id'
         }
       },
@@ -36,6 +36,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Bumps');
+    return queryInterface.dropTable('bumps');
   }
 };
