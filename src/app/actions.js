@@ -7,3 +7,9 @@ export const ToggleMenu = (state) => ({
   ...state,
   menuOpened: !state.menuOpened
 })
+
+
+export const ReceiveBubbles = (state, bubbles) => ({
+  ...state,
+  bubbles
+})

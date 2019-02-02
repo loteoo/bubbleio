@@ -14,7 +14,7 @@ module.exports = {
       bubbles.push({
         name: faker.helpers.slugify(word).toLowerCase(),
         title: word,
-        description: faker.random.words(),
+        description: faker.lorem.sentences(),
         public: faker.random.boolean(),
         default: faker.random.boolean(),
         userId: Math.floor(Math.random() * 98) + 1,

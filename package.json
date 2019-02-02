@@ -9,17 +9,19 @@
     "build_client": "parcel build ./src/index.html --no-source-maps --detailed-report --no-content-hash",
     "build_ssr_server": "parcel build ./src/server.js --target node --no-minify --no-source-maps --detailed-report --no-content-hash",
     "start_ssr_server": "npm run build_ssr_server && node ./dist/server.js",
-    "build_websocket_server": "parcel build ./src/websockets.js --target node --no-minify --no-source-maps --detailed-report --no-content-hash",
-    "start_websocket_server": "npm run build_websocket_server && node ./dist/websockets.js"
+    "websocket_server": "node ./src/websockets.js"
   },
   "dependencies": {
     "faker": "^4.1.0",
     "hyperapp": "github:jorgebucaran/hyperapp#V2",
     "hyperapp-render": "^3.0.0",
+    "koa": "^2.7.0",
     "mysql2": "^1.6.4",
     "parcel-plugin-static-files-copy": "^2.0.0",
     "sequelize": "^4.42.0",
-    "sequelize-cli": "^5.4.0"
+    "sequelize-cli": "^5.4.0",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^9.4.3",
