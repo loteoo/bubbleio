@@ -1,1 +1,5 @@
 /_templates
+config
+models
+migrations
+seeders

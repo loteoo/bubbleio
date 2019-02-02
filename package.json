@@ -13,11 +13,13 @@
     "start_websocket_server": "npm run build_websocket_server && node ./dist/websockets.js"
   },
   "dependencies": {
+    "faker": "^4.1.0",
     "hyperapp": "github:jorgebucaran/hyperapp#V2",
     "hyperapp-render": "^3.0.0",
     "mysql2": "^1.6.4",
     "parcel-plugin-static-files-copy": "^2.0.0",
-    "sequelize": "^4.42.0"
+    "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^9.4.3",
