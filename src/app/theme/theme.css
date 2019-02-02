@@ -213,6 +213,16 @@ svg:not(:root) {
 
 table {
   border-collapse: collapse;
+  th {
+    background-color: var(--hover-background-color);
+  }
+  th, td {
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+  }
+}
+caption {
+  margin: 1rem 0;
 }
 
 
