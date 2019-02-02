@@ -1,0 +1,22 @@
+.text-input {
+  margin: 1rem 0;
+  label {
+    display: block;
+    margin: 0.25rem 1rem;
+  }
+  input {
+    display: block;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    border: 1px solid var(--border-color);
+    &:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+  }
+  .hint {
+    margin: 0.25rem 0 0.25rem 1rem;
+    font-size: 0.8rem;
+    opacity: 0.5;
+  }
+}

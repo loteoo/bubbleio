@@ -5,7 +5,7 @@ import {h} from 'hyperapp'
 import './theme.css'
 
 // Root container component
-export const Html = ({state}, children) => (
+export const Html = ({state, ...rest}, children) => (
   <html>
     <head>
       <meta charset="utf-8"/>
@@ -55,7 +55,7 @@ export const Html = ({state}, children) => (
       <link rel="stylesheet" href="/client.62456f60.css"/>
 
     </head>
-    <body>
+    <body {...rest}>
       {children}
       {
         // This will only appear in the Server-side rendered views.

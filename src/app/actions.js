@@ -1,10 +1,9 @@
 // ====================
-// Global app actions 
+// Global app actions
 // ====================
 
-
 // Sets the a value to the given key in the state
-export const SetValue = (state, key, ev) => ({
+export const ToggleMenu = (state) => ({
   ...state,
-  [key]: ev.target.value
+  menuOpened: !state.menuOpened
 })

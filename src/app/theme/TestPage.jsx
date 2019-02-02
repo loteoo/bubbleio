@@ -1,5 +1,7 @@
 import {h} from 'hyperapp'
 
+import {TextInput} from './TextInput'
+
 export const TestPage = () => (
   <div id="top" class="page" role="document">
     <aside class="left-sidebar">
@@ -258,10 +260,12 @@ export const TestPage = () => (
         <form>
           <fieldset id="forms__input">
             <legend>Input fields</legend>
-            <p>
-              <label for="input__text">Text Input</label>
-              <input id="input__text" type="text" placeholder="Text Input" />
-            </p>
+            <TextInput
+              name="input__text"
+              label="Text Label"
+              placeholder="Text placeholder"
+              hint="Test hint"
+            />
             <p>
               <label for="input__password">Password</label>
               <input id="input__password" type="password" placeholder="Type your Password" />
