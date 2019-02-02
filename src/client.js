@@ -1,13 +1,16 @@
 import {app} from 'hyperapp'
-import {init} from './app/init'
+import {init as defaultState} from './app/init'
 import {view} from './app/view'
 import {subscriptions} from './app/subscriptions'
 
+import {ParseUrl} from './app/actions'
+
+// Build the client-side initial state
+const init = ParseUrl({
+  ...defaultState,
+  ...window.initialState
+}, window.location.pathname)
+
 
 // Initialize the app on the document
-app({
-  init: {...init, ...window.initialState},
-  view,
-  subscriptions,
-  container: document
-})
+app({init, view, subscriptions, container: document})
