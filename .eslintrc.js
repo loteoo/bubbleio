@@ -7,6 +7,7 @@ module.exports = {
   'rules': {
     'no-unused-vars': [2, { 'varsIgnorePattern': 'h' }],
     'object-curly-spacing': [2, 'never'],
+    'no-multiple-empty-lines': 0,
     'fp/no-unused-expression': 0,
     'no-use-before-define': 0,
     'operator-linebreak': 0,
