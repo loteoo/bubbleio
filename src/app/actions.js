@@ -11,5 +11,18 @@ export const ToggleMenu = (state) => ({
 
 export const ReceiveBubbles = (state, bubbles) => ({
   ...state,
-  bubbles
+  menuBubbles: bubbles.map(bubble => bubble.name),
+  bubbles: bubbles.reduce((bubbles, bubble) => ({...bubbles, [bubble.name]: bubble}), state.bubbles)
 })
+
+export const ParseUrl = (state, path) => {
+  const parts = path.split('/').filter((part, index) => index !== 0)
+  return {
+    ...state,
+    location: {
+      path,
+      bubbleName: parts[0] || '',
+      threadId: parts[1] || ''
+    }
+  }
+}

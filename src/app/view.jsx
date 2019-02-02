@@ -3,9 +3,14 @@ import {h} from 'hyperapp'
 // Import actions
 import {ToggleMenu} from './actions'
 
+import {Location} from '../utils'
+
 // Import components
 import {Html} from './theme/Html'
 // import {TestPage} from './theme/TestPage'
+
+import {Bubble} from './components/Bubble'
+import {Thread} from './components/Thread'
 
 import './app.css'
 
@@ -22,25 +27,31 @@ export const view = state => (
       </header>
       <nav role="navigation">
         <ul>
-          <li><a href="#">Link 1</a></li>
-          <li><a href="#">Link 2</a></li>
-          <li><a href="#">Link 3</a></li>
+          {state.menuBubbles.map(name => {
+            const bubble = state.bubbles[name]
+            return (
+              <li><a onclick={(state) => [state, Location.go({to: '/' + bubble.name})]}>{bubble.title}</a></li>
+            )
+          })}
         </ul>
       </nav>
       <button onclick={ToggleMenu}>Toggle menu</button>
     </aside>
     <div class="menu-overlay" onclick={ToggleMenu}></div>
 
+
+
     <main class="main-content" role="main">
 
-      <div class="topics">
-        <h2>Main content</h2>
-        <button onclick={ToggleMenu}>Toggle menu</button>
-      </div>
+      {state.location.bubbleName && (
+        <Bubble bubble={state.bubbles[state.location.bubbleName]} />
+      )}
 
-      <div class="topic">
-        <h2>Topic page</h2>
-      </div>
+
+      {state.location.threadId && (
+        <Thread thread={state.threads[state.location.threadId]} />
+      )}
+
 
     </main>
 

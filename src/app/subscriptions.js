@@ -1,14 +1,20 @@
 
-import {Socket} from '../utils'
+import {Socket, Location} from '../utils'
 
-import {ReceiveBubbles} from './actions'
+import {
+  ReceiveBubbles,
+  ParseUrl
+} from './actions'
 
 export const subscriptions = state => {
   console.log(state)
   return [
-    Socket.listen({
+    Socket.on({
       event: 'receive bubbles',
       action: ReceiveBubbles
+    }),
+    Location.changed({
+      action: ParseUrl
     })
   ]
 }
