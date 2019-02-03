@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 20rem;
+  width: 16rem;
   padding: 1rem;
   background-color: var(--dark-background-color);
   color: var(--background-color);
@@ -62,12 +62,32 @@
 
 
 
-.main-content {
+.content-panel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 3rem;
   transition: margin 200ms;
+  background-color: var(--background-color);
 }
+
 @media (min-width: 420px) {
-  [menu-opened] .main-content {
-    margin-left: 20rem;
+  [menu-opened] .content-panel {
+    margin-left: 16rem;
   }
 }
+
+.bubble {
+  overflow: auto;
+}
+
+.thread {
+  
+}
+
+/*
+
+
+*/

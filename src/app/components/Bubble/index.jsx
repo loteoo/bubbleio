@@ -11,7 +11,10 @@ const ReceiveBubble = (state, {bubble, threads}) => ({
       threadIds: threads.map(thread => thread.id)
     }
   },
-  threads: threads.reduce((threads, thread) => ({...threads, [thread.id]: thread}), state.threads)
+  threads: threads.reduce(
+    (threads, thread) => ({...threads, [thread.id]: thread}),
+    state.threads
+  )
 })
 
 
@@ -25,24 +28,30 @@ const OnMount = (state) => [
 ]
 
 
-const Thread = ({thread}) => (
-  <div class="thread">
+const ThreadPreview = ({thread}) => (
+  <div class="thread-preview">
     <h4>
       <a onclick={(state) => [state, Location.go({to: '/' + state.location.bubbleName + '/' + thread.id})]}>
         {thread.title}
       </a>
     </h4>
+    {
+      thread.type === 'image'
+        ? <img src={thread.image + '?id=' + thread.id} />
+        : thread.type === 'link' ? <a href={thread.link}></a>
+          : <p>{thread.text}</p>
+    }
   </div>
 )
 
 
 export const Bubble = ({bubble, threads}) => bubble && (
-  <div class="bubble" key={bubble.id} onmount={OnMount}>
+  <div class="content-panel bubble" key={bubble.id} onmount={OnMount}>
     <div class="inner">
       <h2>{bubble.title}</h2>
       <p>{bubble.description}</p>
       <ul>
-        {bubble.threadIds && bubble.threadIds.map(threadId => <Thread thread={threads[threadId]} />)}
+        {bubble.threadIds && bubble.threadIds.map(threadId => <ThreadPreview thread={threads[threadId]} />)}
       </ul>
     </div>
   </div>
