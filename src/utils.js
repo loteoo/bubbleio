@@ -1,17 +1,21 @@
+/* eslint-disable fp/no-mutation */
 
 import io from 'socket.io-client/dist/socket.io.slim'
 
 const socket = io.connect('http://localhost:8888')
+
+
 
 // Socket.io baggy (subs & effects builders)
 export const Socket = {
 
   emit: (props) => ({
     effect: (props, dispatch) => {
-      socket.emit(props.event, props.data)
+      socket.emit(props.event, props.data, res => dispatch(props.action, res))
     },
     event: props.event,
-    data: props.data
+    data: props.data,
+    action: props.action
   }),
 
   // Listen to location changes
@@ -62,3 +66,16 @@ export const Location = {
   })
 }
 
+
+
+
+// DOM custom event (hyperapp will treat this like any other event)
+export const enableOnMountDomEvent = () => {
+  const mountEvent = new Event('mount')
+  const realCreateElement = document.createElement.bind(document)
+  document.createElement = (name) => {
+    const el = realCreateElement(name)
+    setTimeout(() => el.dispatchEvent(mountEvent))
+    return el
+  }
+}

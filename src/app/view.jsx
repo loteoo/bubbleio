@@ -44,7 +44,10 @@ export const view = state => (
     <main class="main-content" role="main">
 
       {state.location.bubbleName && (
-        <Bubble bubble={state.bubbles[state.location.bubbleName]} />
+        <Bubble
+          bubble={state.bubbles[state.location.bubbleName]}
+          threads={state.threads}
+        />
       )}
 
 

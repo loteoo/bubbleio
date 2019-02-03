@@ -5,6 +5,10 @@ import {subscriptions} from './app/subscriptions'
 
 import {ParseUrl} from './app/actions'
 
+import {enableOnMountDomEvent} from './utils'
+
+enableOnMountDomEvent()
+
 // Build the client-side initial state
 const init = ParseUrl({
   ...defaultState,
