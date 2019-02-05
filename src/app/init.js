@@ -5,7 +5,9 @@ export const init = {
   location: {
     path: '/',
     bubbleName: '',
-    threadId: ''
+    threadId: '',
+    lastBubbleName: '',
+    lastThreadId: ''
   },
 
   menuOpened: true,

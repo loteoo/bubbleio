@@ -1,9 +1,64 @@
 const db = require('../models')
 const io = require("socket.io");
 
-const server = io.listen(8888);
+const sockets = io.listen(8888);
 
-server.on("connection", (socket) => {
+
+
+// Returns number of sockets connections currently in the specified room
+const getConnectionsInRoom = roomName => {
+  let room = [];
+  let allSockets = Object.keys(sockets.sockets.sockets);
+  for (let i = 0; i < allSockets.length; i++) {
+    let roomsOfSocket = Object.keys(sockets.sockets.adapter.sids[allSockets[i]]);
+    for (let j = 0; j < roomsOfSocket.length; j++) {
+      if (roomsOfSocket[j] == roomName) {
+        room.push(allSockets[i]);
+      }
+    }
+  }
+  return room.length;
+}
+
+
+
+
+// Update clients who have this bubble in their user's bubble list
+// (joined in the room or not)
+const emitBubbleUserCounts = (bubbleName, socket) => {
+
+  // Emit to this connection, logged in or not
+  socket.emit('update bubble', {
+    userCount: getConnectionsInRoom(bubbleName)
+  });
+
+  // Find users who have this bubble in their list AND and are logged in, 
+  // but not necessarly in the bubble's room
+  // User.find({ bubbleNames: bubbleName }, (err, users) => {
+  //   if (err) throw err;
+
+  //   for (socketId in io.sockets.sockets) {
+  //     users.forEach(user => {
+  //       if (io.sockets.sockets[socketId].userId) {
+  //         if (io.sockets.sockets[socketId].userId.toString() == user._id.toString()) {
+  //           console.log('BUBLE USER COUNT');
+  //           io.sockets.sockets[socketId].emit('update state', newState);
+  //         }
+  //       }
+  //     });
+  //   }
+  // });
+}
+
+
+
+
+
+
+
+
+
+sockets.on("connection", (socket) => {
   
   db.Bubble.findAll({
     where: {
@@ -14,7 +69,23 @@ server.on("connection", (socket) => {
   );
 
 
-  socket.on('load and join bubble', (bubbleName, reply) => {
+  socket.on('load and join bubble', ({lastBubbleName, bubbleName}, reply) => {
+    
+    if (lastBubbleName) {
+      // Leave connection to the previous room
+      socket.leave(lastBubbleName);
+
+      emitBubbleUserCounts(lastBubbleName, socket)
+
+      // console.log(`${socket.userId ? 'User #' + socket.userId : 'Anonymous'} left bubble ${lastBubbleName}`);
+
+    }
+
+
+    socket.join(bubbleName);
+    
+
+    // console.log(socket.id);
     db.Bubble.findOne({
       where: {
         name: bubbleName
@@ -22,7 +93,14 @@ server.on("connection", (socket) => {
     })
     .then(bubble => {
       bubble.getThreads()
-        .then(threads => reply({bubble, threads}))
+        .then(threads => {
+          
+          socket.join(lastBubbleName)
+
+          emitBubbleUserCounts(lastBubbleName, socket)
+
+          reply({bubble, threads})
+        })
     })
   })
 

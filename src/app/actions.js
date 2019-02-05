@@ -22,7 +22,9 @@ export const ParseUrl = (state, path) => {
     location: {
       path,
       bubbleName: parts[0] || '',
-      threadId: parts[1] || ''
+      threadId: parts[1] || '',
+      lastBubbleName: state.location.bubbleName,
+      lastThreadId: state.location.threadId
     }
   }
 }

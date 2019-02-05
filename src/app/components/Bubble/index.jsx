@@ -24,7 +24,7 @@ const OnMount = (state) => [
   state,
   Socket.emit({
     event: 'load and join bubble',
-    data: state.location.bubbleName,
+    data: state.location,
     action: ReceiveBubble
   })
 ]
