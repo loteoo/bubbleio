@@ -50,11 +50,9 @@ export const view = state => (
         />
       )}
 
-
       {state.location.threadId && (
         <Thread thread={state.threads[state.location.threadId]} />
       )}
-
 
     </main>
 

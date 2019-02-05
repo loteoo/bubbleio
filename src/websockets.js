@@ -27,6 +27,15 @@ server.on("connection", (socket) => {
   })
 
 
+  socket.on('load and join thread', (threadId, reply) => {
+    db.Thread.findById(threadId)
+    .then(thread => {
+      thread.getMessages()
+        .then(messages => reply({thread, messages}))
+    })
+  })
+
+
 
 });
 
