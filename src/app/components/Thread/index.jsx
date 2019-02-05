@@ -2,6 +2,7 @@ import {h} from 'hyperapp'
 
 import {Socket, Location} from '../../../utils'
 
+import {MessageForm} from '../MessageForm'
 
 // Trigger css slidein transition
 const slideIn = el => {
@@ -23,10 +24,7 @@ const ReceiveThread = (state, {thread, messages}) => ({
   ...state,
   threads: {
     ...state.threads,
-    [thread.id]: {
-      ...thread,
-      messages: messages.map(message => message.id)
-    }
+    [thread.id]: thread
   },
   messages: messages.reduce(
     (messages, message) => ({...messages, [message.id]: message}),
@@ -50,13 +48,21 @@ const Message = ({message}) => (
 )
 
 
-export const Thread = ({thread, messages}) => thread && (
+export const Thread = ({thread, messages, messageForm}) => thread && (
   <div class="thread content-panel" key={thread.id} onmount={OnMount} onCreate={slideIn} onRemove={slideOut} >
     <button onclick={(state) => [state, Location.go({to: '/' + state.location.bubbleName})]}>Back</button>
     <h2>{thread.title}</h2>
     <p>{thread.text}</p>
     <div class="list">
-      {thread.messages && thread.messages.map(id => <Message message={messages[id]} />)}
+      {
+        Object.keys(messages)
+          .filter(messageId => messages[messageId].ThreadId === thread.id)
+          .map(messageId => <Message message={messages[messageId]} />)
+      }
     </div>
+    <MessageForm messageForm={messageForm} />
   </div>
 )
+
+
+

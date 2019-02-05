@@ -8,10 +8,7 @@ const ReceiveBubble = (state, {bubble, threads}) => ({
   ...state,
   bubbles: {
     ...state.bubbles,
-    [bubble.name]: {
-      ...bubble,
-      threadIds: threads.map(thread => thread.id)
-    }
+    [bubble.name]: bubble
   },
   threads: threads.reduce(
     (threads, thread) => ({...threads, [thread.id]: thread}),
@@ -53,7 +50,11 @@ export const Bubble = ({bubble, threads}) => bubble && (
       <h2>{bubble.title}</h2>
       <p>{bubble.description}</p>
       <div class="list">
-        {bubble.threadIds && bubble.threadIds.map(threadId => <ThreadPreview thread={threads[threadId]} />)}
+        {
+          Object.keys(threads)
+            .filter(threadId => threads[threadId].BubbleId === bubble.id)
+            .map(threadId => <ThreadPreview thread={threads[threadId]} />)
+        }
       </div>
     </div>
   </div>

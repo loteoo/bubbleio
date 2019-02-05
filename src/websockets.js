@@ -60,6 +60,14 @@ const emitBubbleUserCounts = (bubbleName, socket) => {
 
 sockets.on("connection", (socket) => {
   
+  
+
+
+
+  // ==============================================
+  // Get the default bubbles on login, for anyone
+  // ==============================================
+
   db.Bubble.findAll({
     where: {
       public: 1
@@ -68,6 +76,13 @@ sockets.on("connection", (socket) => {
     socket.emit("receive bubbles", bubbles)
   );
 
+
+
+
+
+  // ==============================================
+  // Bubble navigation
+  // ==============================================
 
   socket.on('load and join bubble', ({lastBubbleName, bubbleName}, reply) => {
     
@@ -105,6 +120,14 @@ sockets.on("connection", (socket) => {
   })
 
 
+
+
+
+
+  // ==============================================
+  // Thread navigation
+  // ==============================================
+
   socket.on('load and join thread', (threadId, reply) => {
     db.Thread.findById(threadId)
     .then(thread => {
@@ -112,6 +135,86 @@ sockets.on("connection", (socket) => {
         .then(messages => reply({thread, messages}))
     })
   })
+
+
+
+
+
+
+  // ==============================================
+  // New message
+  // ==============================================
+  socket.on('new message', ({message}, reply) => {
+
+    // TODO: figure out user's current thread + userID from socket object
+    const threadId = 1;
+    const userId = 1;
+
+    db.Message.create({
+      message,
+      userId,
+      threadId
+    })
+    .then(message => {
+      db.Thread.findById(threadId)
+      .then(thread => {
+        db.Bubble.findById(thread.BubbleId)
+        .then(bubble => {
+
+          // Update all clients in the thread
+
+          // Update all message count in bubble
+
+          reply({bubble, thread, message})
+        })
+      })
+    })
+
+    // let message = new Message({userId, threadId, text});
+
+    // // Save message
+    // message.save((err, message) => {
+    //   if (err) throw err;
+
+
+    //   Thread.findById(message.threadId, (err, thread) => {
+    //     if (err) throw err;
+    //     Bubble.findById(thread.bubbleId, (err, bubble) => {
+    //       if (err) throw err;
+    //       Message.countDocuments({threadId: message.threadId}, (err, count) => {
+    //         if (err) throw err;
+              
+    //         // Update all clients in the thread
+    //         io.in(message.threadId).emit('update state', {
+    //           messages: {
+    //             [message._id]: message
+    //           },
+    //           threads: {
+    //             [thread._id]: {
+    //               messageCount: count
+    //             }
+    //           }
+    //         });
+
+    //         // Update all message count in bubble
+    //         socket.broadcast.to(bubble.name).emit('update state', {
+    //           threads: {
+    //             [thread._id]: {
+    //               messageCount: count
+    //             }
+    //           }
+    //         });
+    //         console.log(`User #${socket.userId} sent a message in thread #${thread._id} (${thread.title}). Message: ${text}`);
+    //       });
+    //     });
+    //   });
+    // });
+
+
+  });
+
+
+
 
 
 

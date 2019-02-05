@@ -10,12 +10,14 @@ export const init = {
     lastThreadId: ''
   },
 
+  userId: '',
+
   menuOpened: true,
 
   menuBubbles: [],
+
+  users: {},
   bubbles: {},
   threads: {},
   messages: {}
-
-
 }
