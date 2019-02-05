@@ -16,7 +16,10 @@ import './app.css'
 
 // Root view
 export const view = state => (
-  <Html state={state} menu-opened={state.menuOpened}>
+  <Html
+    state={state}
+    menu-opened={state.menuOpened}
+  >
 
     {/* <TestPage /> */}
 
@@ -43,16 +46,15 @@ export const view = state => (
 
     <main class="main-content" role="main">
 
-      {state.location.bubbleName && (
-        <Bubble
-          bubble={state.bubbles[state.location.bubbleName]}
-          threads={state.threads}
-        />
-      )}
+      <Bubble
+        bubble={state.bubbles[state.location.bubbleName]}
+        threads={state.threads}
+      />
 
-      {state.location.threadId && (
-        <Thread thread={state.threads[state.location.threadId]} />
-      )}
+      <Thread
+        thread={state.threads[state.location.threadId]}
+        messages={state.messages}
+      />
 
     </main>
 
