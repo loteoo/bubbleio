@@ -1,3 +1,5 @@
+import {init} from './init'
+
 // ====================
 // Global app actions
 // ====================
@@ -17,14 +19,22 @@ export const ReceiveBubbles = (state, bubbles) => ({
 
 export const ParseUrl = (state, path) => {
   const parts = path.split('/').filter((part, index) => index !== 0)
+  const bubbleName = parts[0]
+  const threadId = parts[1]
+  const currentBubble = state.bubbles[bubbleName]
+  const currentThread = state.threads[threadId]
   return {
     ...state,
     location: {
       path,
-      bubbleName: parts[0] || '',
-      threadId: parts[1] || '',
+      bubbleName: bubbleName,
+      threadId: threadId,
       lastBubbleName: state.location.bubbleName,
       lastThreadId: state.location.threadId
+    },
+    meta: {
+      title: currentThread ? currentThread.title : currentBubble ? currentBubble.title : init.meta.title,
+      description: currentThread ? currentThread.description : currentBubble ? currentBubble.description : init.meta.description
     }
   }
 }

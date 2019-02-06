@@ -17,7 +17,7 @@ import './app.css'
 // Root view
 export const view = state => (
   <Html
-    state={state}
+    meta={state.meta}
     menu-opened={state.menuOpened}
   >
 

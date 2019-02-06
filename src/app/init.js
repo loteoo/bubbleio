@@ -10,6 +10,11 @@ export const init = {
     lastThreadId: ''
   },
 
+  meta: {
+    title: 'Bubbleio',
+    description: 'Lorem ipraoum'
+  },
+
   userId: '',
 
   menuOpened: true,
