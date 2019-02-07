@@ -25,8 +25,8 @@ export const view = state => (
 
     <aside class="left-menu">
       <header role="banner">
-        <h2>Title</h2>
-        <p>someusername</p>
+        <h2>{state.user ? state.user.name : 'Anonymous'}</h2>
+        <p>{state.user && state.user.email}</p>
       </header>
       <nav role="navigation">
         <ul>
@@ -56,7 +56,7 @@ export const view = state => (
         messages={state.messages}
         messageForm={state.messageForm}
         pickNameForm={state.pickNameForm}
-        user={state.users[state.userId]}
+        user={state.user}
       />
 
     </main>

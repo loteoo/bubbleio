@@ -15,13 +15,12 @@ export const init = {
     description: 'Lorem ipraoum'
   },
 
-  userId: null,
+  user: null,
 
   menuOpened: true,
 
   menuBubbles: [],
 
-  users: {},
   bubbles: {},
   threads: {},
   messages: {}

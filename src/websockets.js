@@ -40,7 +40,7 @@ const emitBubbleUserCounts = (bubbleName, socket) => {
   //   for (socketId in io.sockets.sockets) {
   //     users.forEach(user => {
   //       if (io.sockets.sockets[socketId].userId) {
-  //         if (io.sockets.sockets[socketId].userId.toString() == user._id.toString()) {
+  //         if (io.sockets.sockets[socketId].userId.toString() == user.id.toString()) {
   //           console.log('BUBLE USER COUNT');
   //           io.sockets.sockets[socketId].emit('update state', newState);
   //         }
@@ -58,7 +58,7 @@ const emitBubbleUserCounts = (bubbleName, socket) => {
 
 
 
-sockets.on("connection", (socket) => {
+sockets.on('connection', (socket) => {
   
   
 
@@ -73,7 +73,7 @@ sockets.on("connection", (socket) => {
       public: 1
     }
   }).then(bubbles => 
-    socket.emit("receive bubbles", bubbles)
+    socket.emit('receive bubbles', bubbles)
   );
 
 
@@ -163,67 +163,22 @@ sockets.on("connection", (socket) => {
   // ==============================================
   // Login form
   // ==============================================
-  socket.on('pick name', ({name}) => {
+  socket.on('pick name', (name, reply) => {
 
     console.log(`Pick name: ${name}`);
 
 
-    db.User.findOne({
+    db.User.findOrCreate({
       where: {
-        name: bubbleName
+        name
       }
     })
-    .then(user => {
+    .then(([user, wasCreated]) => {
 
-      // If this user exists
-      if (user) {
+      // Add the user ID to the socket connection
+      socket.userId = user.id;
 
-        // Add the user ID to the socket connection
-        socket.userId = user.id;
-
-        // // Send him his bubbles
-        // db.Bubble.findOne({name: { $in: user.bubbleNames }, trashed: false}, (err, bubbles) => {
-        //   if (err) throw err;
-
-        //   // Update user bubbles
-        //   socket.emit('update state', {
-        //     user,
-        //     bubbles: getIndexedBubbles(bubbles)
-        //   });
-        //   console.log(`User ${username} logged in. (#${user._id})`);
-        // });
-
-
-      } else {
-
-        // Get the default bubbles
-        Bubble.find({default: true}, (err, bubbles) => {
-          if (err) throw err;
-
-          // Give the user the default bubbles
-          let user = new User({
-            username,
-            password,
-            bubbleNames: bubbles.map(bubble => bubble.name)
-          });
-          
-          user.save((err, user) => {
-            if (err) throw err;
-
-            // Link the user ID to the socket connection
-            socket.userId = user._id;
-
-            // Update the client
-            socket.emit('update state', {
-              user,
-              bubbles: getIndexedBubbles(bubbles)
-            });
-          });
-          console.log(`Created user ${username}. (#${user._id})`);
-
-        });
-
-      }
+      reply(user)
     })
     
   });
@@ -293,10 +248,10 @@ sockets.on("connection", (socket) => {
     //         // Update all clients in the thread
     //         io.in(message.threadId).emit('update state', {
     //           messages: {
-    //             [message._id]: message
+    //             [message.id]: message
     //           },
     //           threads: {
-    //             [thread._id]: {
+    //             [thread.id]: {
     //               messageCount: count
     //             }
     //           }
@@ -305,12 +260,12 @@ sockets.on("connection", (socket) => {
     //         // Update all message count in bubble
     //         socket.broadcast.to(bubble.name).emit('update state', {
     //           threads: {
-    //             [thread._id]: {
+    //             [thread.id]: {
     //               messageCount: count
     //             }
     //           }
     //         });
-    //         console.log(`User #${socket.userId} sent a message in thread #${thread._id} (${thread.title}). Message: ${text}`);
+    //         console.log(`User #${socket.userId} sent a message in thread #${thread.id} (${thread.title}). Message: ${text}`);
     //       });
     //     });
     //   });

@@ -12,8 +12,11 @@ const init = {
 
 
 
-const ReceiveLoginInfo = (state, info) => {
-  console.log(info)
+const ReceiveLoginInfo = (state, user) => {
+  return {
+    ...state,
+    user
+  }
 }
 
 // Actions
