@@ -11,7 +11,7 @@ module.exports = {
     for (let i = 0; i < 200; i++) {
       const types = faker.helpers.shuffle(["text", "image", "link"]);
       threads.push({
-        title: faker.random.word(),
+        title: faker.random.words(),
         type: types[0],
         link: faker.internet.url(),
         image: faker.image.imageUrl(),

@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Bump)
     User.hasMany(models.Thread)
     User.hasMany(models.Message)
+    User.hasMany(models.UserBubbles)
   };
   return User;
 };

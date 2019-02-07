@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   Bubble.associate = function(models) {
     Bubble.belongsTo(models.User)
     Bubble.hasMany(models.Thread)
+    Bubble.hasMany(models.User)
   };
   return Bubble;
 };
