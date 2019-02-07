@@ -1,0 +1,12 @@
+
+.bubble {
+  overflow: auto;
+}
+
+.thread-preview {
+  display: block;
+  padding: 1rem;
+  border: 0.1rem solid var(--border-color);
+  border-radius: 0.25rem;
+  margin: 1rem 0;
+}

@@ -55,6 +55,8 @@ export const view = state => (
         thread={state.threads[state.location.threadId]}
         messages={state.messages}
         messageForm={state.messageForm}
+        pickNameForm={state.pickNameForm}
+        user={state.users[state.userId]}
       />
 
     </main>

@@ -1,0 +1,12 @@
+
+
+.not-logged-in {
+  border: 0.1rem solid var(--border-color);
+  padding: 1rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  span {
+    margin-right: auto;
+  }
+}

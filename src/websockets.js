@@ -141,10 +141,116 @@ sockets.on("connection", (socket) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // ==============================================
+  // Login form
+  // ==============================================
+  socket.on('pick name', ({name}) => {
+
+    console.log(`Pick name: ${name}`);
+
+
+    db.User.findOne({
+      where: {
+        name: bubbleName
+      }
+    })
+    .then(user => {
+
+      // If this user exists
+      if (user) {
+
+        // Add the user ID to the socket connection
+        socket.userId = user.id;
+
+        // // Send him his bubbles
+        // db.Bubble.findOne({name: { $in: user.bubbleNames }, trashed: false}, (err, bubbles) => {
+        //   if (err) throw err;
+
+        //   // Update user bubbles
+        //   socket.emit('update state', {
+        //     user,
+        //     bubbles: getIndexedBubbles(bubbles)
+        //   });
+        //   console.log(`User ${username} logged in. (#${user._id})`);
+        // });
+
+
+      } else {
+
+        // Get the default bubbles
+        Bubble.find({default: true}, (err, bubbles) => {
+          if (err) throw err;
+
+          // Give the user the default bubbles
+          let user = new User({
+            username,
+            password,
+            bubbleNames: bubbles.map(bubble => bubble.name)
+          });
+          
+          user.save((err, user) => {
+            if (err) throw err;
+
+            // Link the user ID to the socket connection
+            socket.userId = user._id;
+
+            // Update the client
+            socket.emit('update state', {
+              user,
+              bubbles: getIndexedBubbles(bubbles)
+            });
+          });
+          console.log(`Created user ${username}. (#${user._id})`);
+
+        });
+
+      }
+    })
+    
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // ==============================================
   // New message
   // ==============================================
-  socket.on('new message', ({message}, reply) => {
+  socket.on('new message', (message, reply) => {
 
     // TODO: figure out user's current thread + userID from socket object
     const threadId = 1;
@@ -212,6 +318,9 @@ sockets.on("connection", (socket) => {
 
 
   });
+
+
+
 
 
 

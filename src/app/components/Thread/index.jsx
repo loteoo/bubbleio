@@ -3,6 +3,7 @@ import {h} from 'hyperapp'
 import {Socket, Location} from '../../../utils'
 
 import {MessageForm} from '../MessageForm'
+import {PickNameForm} from '../PickNameForm'
 
 // Trigger css slidein transition
 const slideIn = el => {
@@ -48,7 +49,7 @@ const Message = ({message}) => (
 )
 
 
-export const Thread = ({thread, messages, messageForm}) => thread && (
+export const Thread = ({thread, messages, messageForm, pickNameForm, user}) => thread && (
   <div class="thread content-panel" key={thread.id} onmount={OnMount} onCreate={slideIn} onRemove={slideOut} >
     <button onclick={(state) => [state, Location.go({to: '/' + state.location.bubbleName})]}>Back</button>
     <h2>{thread.title}</h2>
@@ -60,7 +61,11 @@ export const Thread = ({thread, messages, messageForm}) => thread && (
           .map(messageId => <Message message={messages[messageId]} />)
       }
     </div>
-    <MessageForm messageForm={messageForm} />
+    {
+      user
+        ? <MessageForm messageForm={messageForm} />
+        : <PickNameForm pickNameForm={pickNameForm} />
+    }
   </div>
 )
 

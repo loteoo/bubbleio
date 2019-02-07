@@ -4,10 +4,10 @@ export const init = {
 
   location: {
     path: '/',
-    bubbleName: '',
-    threadId: '',
-    lastBubbleName: '',
-    lastThreadId: ''
+    bubbleName: null,
+    threadId: null,
+    lastBubbleName: null,
+    lastThreadId: null
   },
 
   meta: {
@@ -15,7 +15,7 @@ export const init = {
     description: 'Lorem ipraoum'
   },
 
-  userId: '',
+  userId: null,
 
   menuOpened: true,
 

@@ -195,6 +195,7 @@ audio:not([controls]) {
 }
 
 img {
+  width: 100%;
   border-style: none;
 }
 

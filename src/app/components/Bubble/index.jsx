@@ -2,7 +2,7 @@ import {h} from 'hyperapp'
 import {Socket, Location} from '../../../utils'
 
 
-
+import './style.css'
 
 const ReceiveBubble = (state, {bubble, threads}) => ({
   ...state,

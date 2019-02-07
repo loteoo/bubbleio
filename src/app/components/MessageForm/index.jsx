@@ -3,6 +3,8 @@ import {h} from 'hyperapp'
 import {TextInput} from '../../theme/TextInput'
 import {Socket} from '../../../utils'
 
+import './style.css'
+
 // Init
 const init = {
   message: ''
@@ -35,7 +37,7 @@ const HandleMessageForm = (state, ev) => {
     },
     Socket.emit({
       event: 'new message',
-      data: state.messageForm.value,
+      data: state.messageForm.message,
       action: ReceiveMessage
     })
   ]
@@ -52,7 +54,7 @@ const SetMessageForm = (state, key, value) => ({
 
 // View
 export const MessageForm = ({messageForm = messageForm || init}) => (
-  <form method="post" onsubmit={HandleMessageForm}>
+  <form method="post" class="message-form" onsubmit={HandleMessageForm}>
     <TextInput
       name="message"
       label="New message"
