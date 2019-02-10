@@ -33,7 +33,7 @@ export const view = state => (
           {state.menuBubbles.map(name => {
             const bubble = state.bubbles[name]
             return (
-              <li><a onclick={(state) => [state, Location.go({to: '/' + bubble.name})]}>{bubble.title}</a></li>
+              <li><a class={bubble.name === state.location.bubbleName ? 'active' : ''} onclick={(state) => [state, Location.go({to: '/' + bubble.name})]}>{bubble.title}</a></li>
             )
           })}
         </ul>

@@ -25,11 +25,13 @@
     padding: 0.5rem 1rem;
     &:hover,
     &:focus {
+      color: var(--dark-text-title-color);
       background-color: var(--dark-hover-color);
-      outline: none;
     }
-    &:active {
+    &:active,
+    &.active {
       background-color: var(--dark-active-color);
+      outline: none;
     }
   }
 }

@@ -1,0 +1,36 @@
+.thread {
+
+
+  .header {
+    padding: 1rem;
+    background-color: var(--elevated-background-color);
+    border-bottom: var(--border-style);
+    margin-bottom: 1rem;
+  }
+
+  .message-list {
+
+  }
+
+  .message {
+    margin: 1rem;
+    .info {
+      display: flex;
+      align-items: center;
+      b {
+        margin-right: 0.5rem;
+      }
+      span {
+        font-size: 0.8rem;
+        color: var(--text-muted-color);
+      }
+    }
+  }
+
+  .bottom {
+    padding: 1rem;
+    background-color: var(--elevated-background-color);
+    border-top: var(--border-style);
+    margin-top: 1rem;
+  }
+}

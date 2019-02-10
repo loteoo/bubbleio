@@ -1,5 +1,7 @@
 import {h} from 'hyperapp'
 
+import './style.css'
+
 import {Socket, Location} from '../../../utils'
 
 import {MessageForm} from '../MessageForm'
@@ -45,27 +47,34 @@ const OnMount = (state) => [
 
 
 const Message = ({message}) => (
-  <div key={message.id}>{message.text}</div>
+  <div class="message" key={message.id}>
+    <div class="info"><b>author</b><span>x hours ago</span></div>
+    <div class="text">{message.text}</div>
+  </div>
 )
 
 
 export const Thread = ({thread, messages, messageForm, pickNameForm, user}) => thread && (
   <div class="thread content-panel" key={thread.id} onmount={OnMount} onCreate={slideIn} onRemove={slideOut} >
-    <button onclick={(state) => [state, Location.go({to: '/' + state.location.bubbleName})]}>Back</button>
-    <h2>{thread.title}</h2>
-    <p>{thread.text}</p>
-    <div class="list">
+    <div class="header">
+      <button onclick={(state) => [state, Location.go({to: '/' + state.location.bubbleName})]}>Back</button>
+      <h2>{thread.title}</h2>
+      <p>{thread.text}</p>
+    </div>
+    <div class="message-list">
       {
         Object.keys(messages)
           .filter(messageId => messages[messageId].ThreadId === thread.id)
           .map(messageId => <Message message={messages[messageId]} />)
       }
     </div>
-    {
-      user
-        ? <MessageForm messageForm={messageForm} />
-        : <PickNameForm pickNameForm={pickNameForm} />
-    }
+    <div class="bottom">
+      {
+        user
+          ? <MessageForm messageForm={messageForm} />
+          : <PickNameForm pickNameForm={pickNameForm} />
+      }
+    </div>
   </div>
 )
 

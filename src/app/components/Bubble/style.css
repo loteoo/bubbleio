@@ -8,26 +8,27 @@
 .bubble-title {
   position: sticky;
   top: -1rem;
-  padding: 1rem 3rem 0 3rem;
+  padding: 1rem 1rem 0 1rem;
   margin: 0;
   background-color: var(--elevated-background-color);
   height: 3rem;
   display: flex;
   align-items: center;
+  font-size: 1rem;
 }
 
 .bubble-description {
-  padding: 1rem 3rem;
+  padding: 1rem;
   margin: 0;
   background-color: var(--elevated-background-color);
 }
 
 .bubble-info {
   position: sticky;
-  top: 2rem;
+  top: 1.95rem;
   display: flex;
   align-items: center;
-  padding: 0 3rem 0.5rem 3rem;
+  padding: 0 1rem 0.5rem 1rem;
   margin: 0;
   font-size: 0.8rem;
   color: var(--text-muted-color);
@@ -41,15 +42,22 @@
 }
 
 .thread-preview {
-  display: block;
-  padding: 1rem 3rem;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
   background-color: var(--elevated-background-color);
   border-bottom: var(--border-style);
-  &:hover .title {
-    text-decoration: underline;
+  .thumbnail {
+    height: 3rem;
+    width: 3rem;
+    background-color: var(--text-muted-color);
+    margin-right: 1rem;
   }
   .title {
     margin: 0;
+  }
+  &:hover .title {
+    text-decoration: underline;
   }
   .info {
     font-size: 0.8rem;
