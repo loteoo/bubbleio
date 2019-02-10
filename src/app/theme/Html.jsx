@@ -59,8 +59,8 @@ export const Html = ({meta, ...rest}, children) => (
       {children}
       {
         // This will only appear in the Server-side rendered views.
-        // We use this to directly pass meta to the app before 
-        // it's initialization.
+        // We use this to directly pass the state to the app before
+        // it's initialization. This is required for a seamless hydration.
         typeof window === 'undefined' && [
           <script>window.initialState = [INJECT_INIT_STATE]</script>,
           <script src="/client.62456f60.js"></script>

@@ -3,10 +3,30 @@
   overflow: auto;
 }
 
+.bubble-header {
+  padding: 1rem 3rem;
+  background-color: var(--elevated-background-color);
+  border-bottom: var(--border-style);
+  margin-bottom: 1rem;
+}
+
+.thread-list {
+  border-top: var(--border-style);
+}
+
 .thread-preview {
   display: block;
-  padding: 1rem;
-  border: 0.1rem solid var(--border-color);
-  border-radius: 0.25rem;
-  margin: 1rem 0;
+  padding: 1rem 3rem;
+  background-color: var(--elevated-background-color);
+  border-bottom: var(--border-style);
+  &:hover .title {
+    text-decoration: underline;
+  }
+  .title {
+    margin: 0;
+  }
+  .info {
+    font-size: 0.8rem;
+    opacity: 0.4;
+  }
 }
