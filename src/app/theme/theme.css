@@ -15,7 +15,8 @@
 :root {
 
 	--text-color: #111;
-	--text-emphasis-color: rgb(32, 33, 36);
+	--text-title-color: #222;
+	--text-muted-color: #a0a0a0;
 	--background-color: #f4f4f4;
 	--elevated-background-color: #ffffff;
   --border-color: #dadce0;
@@ -24,7 +25,7 @@
 	--dark-hover-color: #3a3a3a;
   --dark-active-color: #1d1d1d;
   --dark-text-color: #99999b;
-  --dark-text-emphasis-color: #ccc;
+  --dark-text-title-color: #ccc;
 
 
   --accent-color: rgb(51, 133, 255);
@@ -110,7 +111,7 @@ h3,
 h4,
 h5,
 h6 {
-  opacity: 0.9;
+  color: var(--text-title-color);
 }
 
 hr {

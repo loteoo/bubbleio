@@ -52,10 +52,9 @@ const ThreadPreview = ({thread}) => (
 
 export const Bubble = ({bubble, threads}) => bubble && (
   <div class="content-panel bubble" key={bubble.id} onmount={OnMount}>
-    <div class="bubble-header">
-      <h2>{bubble.title}</h2>
-      <p>{bubble.description}</p>
-    </div>
+    <h2 class="bubble-title">{bubble.title}</h2>
+    <p class="bubble-description">{bubble.description}</p>
+    <div class="bubble-info">738 members, 1293 threads. 45 active</div>
     <div class="thread-list">
       {
         Object.keys(threads)

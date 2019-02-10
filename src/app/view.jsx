@@ -25,7 +25,7 @@ export const view = state => (
 
     <aside class="left-menu">
       <header role="banner">
-        <h2>{state.user ? state.user.name : 'Anonymous'}</h2>
+        <h2 class="username">{state.user ? state.user.name : 'Anonymous'}</h2>
         <p>{state.user && state.user.email}</p>
       </header>
       <nav role="navigation">
