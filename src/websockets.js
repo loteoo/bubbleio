@@ -1,6 +1,7 @@
 const io = require("socket.io");
 const sockets = io.listen(8888);
 
+const Sequelize = require('sequelize');
 const {User, Bubble, Thread, Message, Bump, UserBubble} = require('../models')
 
 
@@ -101,6 +102,12 @@ sockets.on('connection', (socket) => {
     // console.log(socket.id);
     Bubble.findOne({
       where: {name: bubbleName},
+      attributes: {
+        include: [
+          [Sequelize.literal('(SELECT COUNT(*) FROM Threads WHERE Threads.bubbleId = Bubble.id)'), 'threadCount'],
+          [Sequelize.literal('(SELECT COUNT(*) FROM UserBubbles WHERE UserBubbles.bubbleId = Bubble.id)'), 'userCount']
+        ]
+      },
       include: [
         User,
         {

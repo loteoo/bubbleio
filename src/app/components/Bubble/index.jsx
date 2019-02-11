@@ -62,7 +62,7 @@ const Bubble = ({bubble}) => (
   <div class="content-panel bubble" key={bubble.id}>
     <h2 class="bubble-title">{bubble.title}</h2>
     <p class="bubble-description">{bubble.description}</p>
-    <div class="bubble-info">738 members, 1293 threads. 45 active</div>
+    <div class="bubble-info">{bubble.userCount} members, {bubble.threadCount} threads. 45 active</div>
     <div class="thread-list">
       {bubble.Threads.map(thread => <ThreadPreview thread={thread} />)}
     </div>
