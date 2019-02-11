@@ -1,7 +1,7 @@
-const db = require('../models')
 const io = require("socket.io");
-
 const sockets = io.listen(8888);
+
+const {User, Bubble, Thread, Message, Bump, UserBubble} = require('../models')
 
 
 
@@ -68,10 +68,8 @@ sockets.on('connection', (socket) => {
   // Get the default bubbles on login, for anyone
   // ==============================================
 
-  db.Bubble.findAll({
-    where: {
-      public: 1
-    }
+  Bubble.findAll({
+    where: {public: 1}
   }).then(bubbles => 
     socket.emit('receive bubbles', bubbles)
   );
@@ -101,13 +99,11 @@ sockets.on('connection', (socket) => {
     
 
     // console.log(socket.id);
-    db.Bubble.findOne({
-      where: {
-        name: bubbleName
-      }
+    Bubble.findOne({
+      where: {name: bubbleName}
     })
     .then(bubble => {
-      bubble.getThreads()
+      bubble.getThreads({include: [User]})
         .then(threads => {
           
           socket.join(lastBubbleName)
@@ -129,9 +125,9 @@ sockets.on('connection', (socket) => {
   // ==============================================
 
   socket.on('load and join thread', (threadId, reply) => {
-    db.Thread.findById(threadId)
+    Thread.findById(threadId, {include: [User]})
     .then(thread => {
-      thread.getMessages()
+      thread.getMessages({include: [User]})
         .then(messages => reply({thread, messages}))
     })
   })
@@ -163,15 +159,13 @@ sockets.on('connection', (socket) => {
   // ==============================================
   // Login form
   // ==============================================
-  socket.on('pick name', (name, reply) => {
+  socket.on('pick name', (userName, reply) => {
 
-    console.log(`Pick name: ${name}`);
+    console.log(`Pick name: ${userName}`);
 
 
-    db.User.findOrCreate({
-      where: {
-        name
-      }
+    User.findOrCreate({
+      where: {name: userName}
     })
     .then(([user, wasCreated]) => {
 
@@ -211,15 +205,15 @@ sockets.on('connection', (socket) => {
     const threadId = 1;
     const userId = 1;
 
-    db.Message.create({
+    Message.create({
       message,
       userId,
       threadId
     })
     .then(message => {
-      db.Thread.findById(threadId)
+      Thread.findById(threadId)
       .then(thread => {
-        db.Bubble.findById(thread.BubbleId)
+        Bubble.findById(thread.BubbleId)
         .then(bubble => {
 
           // Update all clients in the thread

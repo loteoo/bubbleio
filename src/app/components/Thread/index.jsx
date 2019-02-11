@@ -1,5 +1,7 @@
 import {h} from 'hyperapp'
 
+import {format} from 'timeago.js'
+
 import './style.css'
 
 import {Socket, Location} from '../../../utils'
@@ -48,7 +50,10 @@ const OnMount = (state) => [
 
 const Message = ({message}) => (
   <div class="message" key={message.id}>
-    <div class="info"><b>author</b><span>x hours ago</span></div>
+    <div class="info">
+      <b>{message.User.name}</b>
+      <span>{format(message.createdAt)}</span>
+    </div>
     <div class="text">{message.text}</div>
   </div>
 )

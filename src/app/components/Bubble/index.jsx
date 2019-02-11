@@ -2,6 +2,8 @@ import {h} from 'hyperapp'
 import {Socket, Location} from '../../../utils'
 
 
+import {format} from 'timeago.js'
+
 import './style.css'
 
 const ReceiveBubble = (state, {bubble, threads}) => ({
@@ -37,7 +39,7 @@ const ThreadPreview = ({thread}) => (
     <div class="content">
       <h4 class="title">{thread.title}</h4>
       <div class="info">
-        by - [author] on [bubble], x time ago.
+        {thread.User.name}, {format(thread.createdAt)}
       </div>
       {/* {
         thread.type === 'image'
