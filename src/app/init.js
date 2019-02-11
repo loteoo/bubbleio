@@ -22,6 +22,6 @@ export const init = {
   menuBubbles: [],
 
   bubbles: {},
-  threads: {},
-  messages: {}
+  threads: {}
+
 }

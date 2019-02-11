@@ -19,11 +19,13 @@
     .scroller {
       position: absolute 0;
       overflow: auto;
+      display: flex;
+      flex-direction: column-reverse;
     }
   }
 
   .message {
-    margin: 1rem;
+    margin: 0.5rem 1rem;
     .info {
       display: flex;
       align-items: center;

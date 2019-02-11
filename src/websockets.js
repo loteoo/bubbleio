@@ -124,13 +124,21 @@ sockets.on('connection', (socket) => {
   // Thread navigation
   // ==============================================
 
-  socket.on('load and join thread', (threadId, reply) => {
-    Thread.findById(threadId, {include: [User]})
-    .then(thread => {
-      thread.getMessages({include: [User], order: [['createdAt', 'DESC']]})
-        .then(messages => reply({thread, messages}))
+  socket.on('load and join thread', (threadId, reply) =>
+    Thread.findById(threadId, {
+      include: [
+        User,
+        {
+          model: Message,
+          include: [User]
+        }
+      ],
+      order: [
+        [Message, 'createdAt', 'DESC']
+      ]
     })
-  })
+    .then(reply)
+  )
 
 
 
