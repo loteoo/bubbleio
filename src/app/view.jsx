@@ -9,8 +9,8 @@ import {Location} from '../utils'
 import {Html} from './theme/Html'
 // import {TestPage} from './theme/TestPage'
 
-import {Bubble} from './components/Bubble'
-import {Thread} from './components/Thread'
+import {BubbleLoader} from './components/Bubble'
+import {ThreadLoader} from './components/Thread'
 
 import './app.css'
 
@@ -30,12 +30,13 @@ export const view = state => (
       </header>
       <nav role="navigation">
         <ul>
-          {state.menuBubbles.map(name => {
-            const bubble = state.bubbles[name]
-            return (
-              <li><a class={bubble.name === state.location.bubbleName ? 'active' : ''} onclick={(state) => [state, Location.go({to: '/' + bubble.name})]}>{bubble.title}</a></li>
-            )
-          })}
+          {state.menuBubbles.map(bubble =>
+            <li>
+              <a class={bubble.name === state.location.bubbleName ? 'active' : ''} onclick={(state) => [state, Location.go({to: '/' + bubble.name})]}>
+                {bubble.title}
+              </a>
+            </li>
+          )}
         </ul>
       </nav>
       <button onclick={ToggleMenu}>Toggle menu</button>
@@ -46,17 +47,19 @@ export const view = state => (
 
     <main class="main-content" role="main">
 
-      <Bubble
-        bubble={state.bubbles[state.location.bubbleName]}
-        threads={state.threads}
-      />
+      {state.location.bubbleName && (
+        <BubbleLoader bubbles={state.bubbles} bubbleName={state.location.bubbleName} />
+      )}
 
-      <Thread
-        thread={state.threads[state.location.threadId]}
-        messageForm={state.messageForm}
-        pickNameForm={state.pickNameForm}
-        user={state.user}
-      />
+      {state.location.threadId && (
+        <ThreadLoader
+          threads={state.threads}
+          threadId={state.location.threadId}
+          messageForm={state.messageForm}
+          pickNameForm={state.pickNameForm}
+          user={state.user}
+        />
+      )}
 
     </main>
 

@@ -13,8 +13,7 @@ export const ToggleMenu = (state) => ({
 
 export const ReceiveBubbles = (state, bubbles) => ({
   ...state,
-  menuBubbles: bubbles.map(bubble => bubble.name),
-  bubbles: bubbles.reduce((bubbles, bubble) => ({...bubbles, [bubble.name]: bubble}), state.bubbles)
+  menuBubbles: bubbles
 })
 
 export const ParseUrl = (state, path) => {

@@ -100,18 +100,22 @@ sockets.on('connection', (socket) => {
 
     // console.log(socket.id);
     Bubble.findOne({
-      where: {name: bubbleName}
+      where: {name: bubbleName},
+      include: [
+        User,
+        {
+          model: Thread,
+          include: [User]
+        }
+      ],
+      order: [
+        [Thread, 'createdAt', 'DESC']
+      ]
     })
     .then(bubble => {
-      bubble.getThreads({include: [User]})
-        .then(threads => {
-          
-          socket.join(lastBubbleName)
-
-          emitBubbleUserCounts(lastBubbleName, socket)
-
-          reply({bubble, threads})
-        })
+      socket.join(lastBubbleName)
+      emitBubbleUserCounts(lastBubbleName, socket)
+      reply(bubble)
     })
   })
 

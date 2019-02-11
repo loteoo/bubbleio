@@ -55,33 +55,34 @@ const Message = ({message}) => (
 )
 
 
-export const Thread = ({thread, messageForm, pickNameForm, user}) => {
-  if (thread) {
-    return (
-      <div class="thread content-panel" key={thread.id} onmount={OnMount} onCreate={slideIn} onRemove={slideOut} >
-        <div class="header">
-          <button onclick={(state) => [state, Location.go({to: '/' + state.location.bubbleName})]}>Back</button>
-          <h2>{thread.title}</h2>
-          <p>{thread.text}</p>
-        </div>
-        <div class="message-list">
-          {thread.Messages && (
-            <div class="scroller" onCreate={el => { el.scrollTop = el.scrollHeight }}>
-              {thread.Messages.map(message => <Message message={message} />)}
-            </div>
-          )}
-        </div>
-        <div class="bottom">
-          {
-            user
-              ? <MessageForm messageForm={messageForm} />
-              : <PickNameForm pickNameForm={pickNameForm} />
-          }
-        </div>
-      </div>
-    )
-  }
-}
+export const ThreadLoader = ({threads, threadId, rest}) => (
+  <div class="thread-loader" key={threadId} onmount={OnMount}>
+    {threads[threadId] ? <Thread thread={threads[threadId]} {...rest} /> : 'Loading...'}
+  </div>
+)
 
 
 
+const Thread = ({thread, messageForm, pickNameForm, user}) => (
+  <div class="thread content-panel" key={thread.id} onCreate={slideIn} onRemove={slideOut} >
+    <div class="header">
+      <button onclick={(state) => [state, Location.go({to: '/' + state.location.bubbleName})]}>Back</button>
+      <h2>{thread.title}</h2>
+      <p>{thread.text}</p>
+    </div>
+    <div class="message-list">
+      {thread.Messages && (
+        <div class="scroller" onCreate={el => { el.scrollTop = el.scrollHeight }}>
+          {thread.Messages.map(message => <Message message={message} />)}
+        </div>
+      )}
+    </div>
+    <div class="bottom">
+      {
+        user
+          ? <MessageForm messageForm={messageForm} />
+          : <PickNameForm pickNameForm={pickNameForm} />
+      }
+    </div>
+  </div>
+)

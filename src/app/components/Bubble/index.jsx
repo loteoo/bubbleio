@@ -6,16 +6,12 @@ import {format} from 'timeago.js'
 
 import './style.css'
 
-const ReceiveBubble = (state, {bubble, threads}) => ({
+const ReceiveBubble = (state, bubble) => ({
   ...state,
   bubbles: {
     ...state.bubbles,
     [bubble.name]: bubble
-  },
-  threads: threads.reduce(
-    (threads, thread) => ({...threads, [thread.id]: thread}),
-    state.threads
-  )
+  }
 })
 
 
@@ -23,7 +19,10 @@ const OnMount = (state) => [
   state,
   Socket.emit({
     event: 'load and join bubble',
-    data: state.location,
+    data: {
+      lastBubbleName: state.location.lastBubbleName,
+      bubbleName: state.location.bubbleName
+    },
     action: ReceiveBubble
   })
 ]
@@ -52,17 +51,20 @@ const ThreadPreview = ({thread}) => (
 )
 
 
-export const Bubble = ({bubble, threads}) => bubble && (
-  <div class="content-panel bubble" key={bubble.id} onmount={OnMount}>
+export const BubbleLoader = ({bubbles, bubbleName}) => (
+  <div class="bubble-loader" key={bubbleName} onmount={OnMount}>
+    {bubbles[bubbleName] ? <Bubble bubble={bubbles[bubbleName]} /> : 'Loading...'}
+  </div>
+)
+
+
+const Bubble = ({bubble}) => (
+  <div class="content-panel bubble" key={bubble.id}>
     <h2 class="bubble-title">{bubble.title}</h2>
     <p class="bubble-description">{bubble.description}</p>
     <div class="bubble-info">738 members, 1293 threads. 45 active</div>
     <div class="thread-list">
-      {
-        Object.keys(threads)
-          .filter(threadId => threads[threadId].BubbleId === bubble.id)
-          .map(threadId => <ThreadPreview thread={threads[threadId]} />)
-      }
+      {bubble.Threads.map(thread => <ThreadPreview thread={thread} />)}
     </div>
   </div>
 )
