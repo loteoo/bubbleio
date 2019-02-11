@@ -59,29 +59,36 @@ const Message = ({message}) => (
 )
 
 
-export const Thread = ({thread, messages, messageForm, pickNameForm, user}) => thread && (
-  <div class="thread content-panel" key={thread.id} onmount={OnMount} onCreate={slideIn} onRemove={slideOut} >
-    <div class="header">
-      <button onclick={(state) => [state, Location.go({to: '/' + state.location.bubbleName})]}>Back</button>
-      <h2>{thread.title}</h2>
-      <p>{thread.text}</p>
-    </div>
-    <div class="message-list">
-      {
-        Object.keys(messages)
-          .filter(messageId => messages[messageId].ThreadId === thread.id)
-          .map(messageId => <Message message={messages[messageId]} />)
-      }
-    </div>
-    <div class="bottom">
-      {
-        user
-          ? <MessageForm messageForm={messageForm} />
-          : <PickNameForm pickNameForm={pickNameForm} />
-      }
-    </div>
-  </div>
-)
+export const Thread = ({thread, messages, messageForm, pickNameForm, user}) => {
+  if (thread) {
+    const messageList = Object.keys(messages)
+      .filter(messageId => messages[messageId].ThreadId === thread.id)
+      .map(messageId => messages[messageId])
+    return (
+      <div class="thread content-panel" key={thread.id} onmount={OnMount} onCreate={slideIn} onRemove={slideOut} >
+        <div class="header">
+          <button onclick={(state) => [state, Location.go({to: '/' + state.location.bubbleName})]}>Back</button>
+          <h2>{thread.title}</h2>
+          <p>{thread.text}</p>
+        </div>
+        <div class="message-list">
+          {messageList.length > 0 && (
+            <div class="scroller" onCreate={el => { el.scrollTop = el.scrollHeight }}>
+              {messageList.map(message => <Message message={message} />)}
+            </div>
+          )}
+        </div>
+        <div class="bottom">
+          {
+            user
+              ? <MessageForm messageForm={messageForm} />
+              : <PickNameForm pickNameForm={pickNameForm} />
+          }
+        </div>
+      </div>
+    )
+  }
+}
 
 
 

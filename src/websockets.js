@@ -127,7 +127,7 @@ sockets.on('connection', (socket) => {
   socket.on('load and join thread', (threadId, reply) => {
     Thread.findById(threadId, {include: [User]})
     .then(thread => {
-      thread.getMessages({include: [User]})
+      thread.getMessages({include: [User], order: [['createdAt', 'DESC']]})
         .then(messages => reply({thread, messages}))
     })
   })

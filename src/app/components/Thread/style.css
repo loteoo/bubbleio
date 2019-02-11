@@ -1,15 +1,25 @@
 .thread {
 
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .header {
     padding: 1rem;
     background-color: var(--elevated-background-color);
     border-bottom: var(--border-style);
-    margin-bottom: 1rem;
   }
 
   .message-list {
-
+    position: relative;
+    overflow: hidden;
+    flex-grow: 1;
+    .scroller {
+      position: absolute 0;
+      overflow: auto;
+    }
   }
 
   .message {
@@ -31,6 +41,5 @@
     padding: 1rem;
     background-color: var(--elevated-background-color);
     border-top: var(--border-style);
-    margin-top: 1rem;
   }
 }
