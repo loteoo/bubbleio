@@ -9,8 +9,8 @@ module.exports = {
 
     for (let i = 0; i < 1000; i++) {
       userbubbles.push({
-        userId: Math.floor(Math.random() * 98) + 1,
-        bubbleId: Math.floor(Math.random() * 18) + 1,
+        userId: Math.floor(Math.random() * 198) + 1,
+        bubbleId: Math.floor(Math.random() * 48) + 1,
         updatedAt: faker.date.past(),
         createdAt: faker.date.past(),
       })

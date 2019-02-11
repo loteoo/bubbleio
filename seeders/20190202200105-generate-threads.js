@@ -8,7 +8,7 @@ module.exports = {
     
     let threads = [];
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 500; i++) {
       const types = faker.helpers.shuffle(["text", "image", "link"]);
       threads.push({
         title: faker.random.words(),
@@ -16,8 +16,8 @@ module.exports = {
         link: faker.internet.url(),
         image: faker.image.imageUrl(),
         text: faker.lorem.sentences(),
-        bubbleId: Math.floor(Math.random() * 18) + 1,
-        userId: Math.floor(Math.random() * 98) + 1,
+        bubbleId: Math.floor(Math.random() * 48) + 1,
+        userId: Math.floor(Math.random() * 198) + 1,
         updatedAt: faker.date.past(),
         createdAt: faker.date.past(),
       });

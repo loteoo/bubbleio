@@ -7,7 +7,7 @@ module.exports = {
 
     let bubbles = [];
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 50; i++) {
       
      const word = faker.random.word();
 
@@ -17,7 +17,7 @@ module.exports = {
         description: faker.lorem.sentences(),
         public: faker.random.boolean(),
         default: faker.random.boolean(),
-        userId: Math.floor(Math.random() * 98) + 1,
+        userId: Math.floor(Math.random() * 198) + 1,
         updatedAt: faker.date.past(),
         createdAt: faker.date.past(),
       });
