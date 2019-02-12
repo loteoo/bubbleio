@@ -16,6 +16,18 @@ export const ReceiveBubbles = (state, bubbles) => ({
   menuBubbles: bubbles
 })
 
+
+export const ReceiveMessage = (state, message) => ({
+  ...state,
+  threads: {
+    ...state.threads,
+    [message.ThreadId]: {
+      ...state.threads[message.ThreadId],
+      Messages: [message].concat(state.threads[message.ThreadId].Messages)
+    }
+  }
+})
+
 export const ParseUrl = (state, path) => {
   const parts = path.split('/').filter((part, index) => index !== 0)
   const bubbleName = parts[0]

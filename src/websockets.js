@@ -83,13 +83,13 @@ sockets.on('connection', (socket) => {
   // Bubble navigation
   // ==============================================
 
-  socket.on('load and join bubble', ({lastBubbleName, bubbleName}, reply) => {
+  socket.on('load and join bubble', ({bubbleName, lastBubbleName}, reply) => {
     
     if (lastBubbleName) {
       // Leave connection to the previous room
       socket.leave(lastBubbleName);
 
-      emitBubbleUserCounts(lastBubbleName, socket)
+      // emitBubbleUserCounts(lastBubbleName, socket)
 
       // console.log(`${socket.userId ? 'User #' + socket.userId : 'Anonymous'} left bubble ${lastBubbleName}`);
 
@@ -121,7 +121,7 @@ sockets.on('connection', (socket) => {
     })
     .then(bubble => {
       socket.join(lastBubbleName)
-      emitBubbleUserCounts(lastBubbleName, socket)
+      // emitBubbleUserCounts(lastBubbleName, socket)
       reply(bubble)
     })
   })
@@ -135,7 +135,18 @@ sockets.on('connection', (socket) => {
   // Thread navigation
   // ==============================================
 
-  socket.on('load and join thread', (threadId, reply) =>
+  socket.on('load and join thread', ({threadId, lastThreadId}, reply) => {
+        
+    if (lastThreadId) {
+      // Leave connection to the previous room
+      socket.leave(lastThreadId);
+
+      // emitBubbleUserCounts(lastThreadId, socket)
+
+      // console.log(`${socket.userId ? 'User #' + socket.userId : 'Anonymous'} left bubble ${lastBubbleName}`);
+
+    }
+
     Thread.findById(threadId, {
       include: [
         User,
@@ -148,8 +159,12 @@ sockets.on('connection', (socket) => {
         [Message, 'createdAt', 'DESC']
       ]
     })
-    .then(reply)
-  )
+    .then(thread => {
+      socket.join(threadId)
+      reply(thread)
+    })
+
+  })
 
 
 
@@ -218,7 +233,7 @@ sockets.on('connection', (socket) => {
   // ==============================================
   // New message
   // ==============================================
-  socket.on('new message', ({threadId, text}, reply) => {
+  socket.on('new message', ({threadId, text}) => {
     Message.create({
       text: text,
       UserId: socket.user.id,
@@ -227,7 +242,7 @@ sockets.on('connection', (socket) => {
     .then(message => Message.findById(message.id, {
       include: [User]
     }))
-    .then(reply)
+    .then(message => sockets.in(threadId).emit('new message', message))
 
     // let message = new Message({userId, threadId, text});
 

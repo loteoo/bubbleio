@@ -11,18 +11,6 @@ const init = {
 }
 
 
-const ReceiveMessage = (state, message) => ({
-  ...state,
-  threads: {
-    ...state.threads,
-    [message.ThreadId]: {
-      ...state.threads[message.ThreadId],
-      Messages: [message].concat(state.threads[message.ThreadId].Messages)
-    }
-  }
-})
-
-
 
 
 // Actions
@@ -41,8 +29,7 @@ const HandleMessageForm = (state, ev) => {
       data: {
         threadId: state.location.threadId,
         text: state.messageForm.text
-      },
-      action: ReceiveMessage
+      }
     })
   ]
 }

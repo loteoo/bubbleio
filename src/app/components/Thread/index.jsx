@@ -38,7 +38,10 @@ const OnMount = (state) => [
   state,
   Socket.emit({
     event: 'load and join thread',
-    data: state.location.threadId,
+    data: {
+      threadId: state.location.threadId,
+      lastThreadId: state.location.lastThreadId
+    },
     action: ReceiveThread
   })
 ]
