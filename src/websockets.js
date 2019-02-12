@@ -199,9 +199,20 @@ sockets.on('connection', (socket) => {
 
 
     User.findOrCreate({
-      where: {name: userName}
+      where: {name: userName},
+      include: [
+        {
+          model: UserBubble,
+          include: [Bubble]
+        }
+      ],
+      order: [
+        [UserBubble, 'createdAt', 'DESC']
+      ]
     })
     .then(([user, wasCreated]) => {
+
+      // console.log(user)
 
       // Add the user ID to the socket connection
       socket.user = user;
