@@ -189,7 +189,7 @@ sockets.on('connection', (socket) => {
     .then(([user, wasCreated]) => {
 
       // Add the user ID to the socket connection
-      socket.userId = user.id;
+      socket.user = user;
 
       reply(user)
     })
@@ -218,31 +218,16 @@ sockets.on('connection', (socket) => {
   // ==============================================
   // New message
   // ==============================================
-  socket.on('new message', (message, reply) => {
-
-    // TODO: figure out user's current thread + userID from socket object
-    const threadId = 1;
-    const userId = 1;
-
+  socket.on('new message', ({threadId, text}, reply) => {
     Message.create({
-      message,
-      userId,
-      threadId
+      text: text,
+      UserId: socket.user.id,
+      ThreadId: threadId
     })
-    .then(message => {
-      Thread.findById(threadId)
-      .then(thread => {
-        Bubble.findById(thread.BubbleId)
-        .then(bubble => {
-
-          // Update all clients in the thread
-
-          // Update all message count in bubble
-
-          reply({bubble, thread, message})
-        })
-      })
-    })
+    .then(message => Message.findById(message.id, {
+      include: [User]
+    }))
+    .then(reply)
 
     // let message = new Message({userId, threadId, text});
 

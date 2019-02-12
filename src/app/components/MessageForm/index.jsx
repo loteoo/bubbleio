@@ -13,10 +13,11 @@ const init = {
 
 const ReceiveMessage = (state, message) => ({
   ...state,
-  messages: {
-    ...state.messages,
-    [message.id]: {
-      ...message
+  threads: {
+    ...state.threads,
+    [message.ThreadId]: {
+      ...state.threads[message.ThreadId],
+      Messages: [message].concat(state.threads[message.ThreadId].Messages)
     }
   }
 })
@@ -32,12 +33,15 @@ const HandleMessageForm = (state, ev) => {
       ...state,
       messageForm: {
         ...state.messageForm,
-        message: ''
+        text: ''
       }
     },
     Socket.emit({
       event: 'new message',
-      data: state.messageForm.message,
+      data: {
+        threadId: state.location.threadId,
+        text: state.messageForm.text
+      },
       action: ReceiveMessage
     })
   ]
@@ -55,12 +59,13 @@ const SetMessageForm = (state, key, value) => ({
 // View
 export const MessageForm = ({messageForm = messageForm || init}) => (
   <form method="post" class="message-form" onsubmit={HandleMessageForm}>
-    <TextInput
-      name="message"
-      label="New message"
-      placeholder="Type something..."
-      value={messageForm.message}
-      setter={SetMessageForm}
+    <input
+      type="text"
+      name="text"
+      id="text"
+      value={messageForm.text}
+      oninput={(state, ev) => SetMessageForm(state, 'text', ev.target.value)}
     />
+    <button type="submit">GO</button>
   </form>
 )

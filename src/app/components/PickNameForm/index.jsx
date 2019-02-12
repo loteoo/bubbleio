@@ -53,15 +53,13 @@ const SetPickNameForm = (state, key, value) => ({
 
 export const PickNameForm = ({pickNameForm = pickNameForm || init}) => (
   <form method="post" class="pick-name-form" onsubmit={HandlePickNameForm}>
-    <TextInput
+    <input
+      type="text"
       name="name"
-      label="Name"
-      placeholder="Pick a name and share your thoughts!"
       value={pickNameForm.name}
-      setter={SetPickNameForm}
+      oninput={(state, ev) => SetPickNameForm(state, 'name', ev.target.value)}
     />
-    <button filled>Pick a name</button>
-    <button outlined>Log in</button>
+    <button type="submit">Pick a name</button>
   </form>
 )
 

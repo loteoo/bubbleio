@@ -55,7 +55,7 @@ const Message = ({message}) => (
 )
 
 
-export const ThreadLoader = ({threads, threadId, rest}) => (
+export const ThreadLoader = ({threads, threadId, ...rest}) => (
   <div class="thread-loader" key={threadId} onmount={OnMount}>
     {threads[threadId] ? <Thread thread={threads[threadId]} {...rest} /> : 'Loading...'}
   </div>
