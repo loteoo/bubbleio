@@ -25,7 +25,7 @@ export const LeftMenu = ({state}) => [
     </header>
     <nav role="navigation">
       <ul>
-        {state.user && state.user.UserBubbles.map(userBubble => <MenuItem bubble={userBubble.Bubble} current={state.location.bubbleName} />)}
+        {state.user && state.user.UserBubbles && state.user.UserBubbles.map(userBubble => <MenuItem bubble={userBubble.Bubble} current={state.location.bubbleName} />)}
       </ul>
       <ul>
         {state.menuBubbles.map(bubble => <MenuItem bubble={bubble} current={state.location.bubbleName} />)}
