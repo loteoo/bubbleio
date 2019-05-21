@@ -2,16 +2,29 @@
   Global css
 \*------------------------------------*/
 
+@import url('https://rsms.me/inter/inter-ui.css');
+
 /* === Global variables === */
 :root {
-	--background-color: #ffffff;
-	--alt-background-color: #f4f4f4;
 	--text-color: #111;
-  --accent-color: #4641FF;
-  --border-color: #eee;
+	--text-title-color: #222;
+	--text-muted-color: #a0a0a0;
+	--background-color: #f4f4f4;
+	--elevated-background-color: #ffffff;
+  --border-color: #dadce0;
+	--dark-background-color: #2b2b2b;
+	--dark-hover-color: #3a3a3a;
+  --dark-active-color: #1d1d1d;
+  --dark-text-color: #99999b;
+  --dark-text-title-color: #ccc;
+  --accent-color: rgb(51, 133, 255);
+  --alt-accent-color: #4641FF;
   --success-color: #06d19c;
   --danger-color: tomato;
+  --border-style: 0.1rem solid var(--border-color);
 }
+
+
 
 /* === Default cascade === */
 html {
