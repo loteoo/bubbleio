@@ -28,9 +28,17 @@ G = Gravity, defaults to 2 (controls the influence of "time" on the score)
 
 As you can see, the main factor of the relevance algorithm is the points that are given by the users.
 
-This is a good overall solution, but the problem is that, by itself it assumes that every user thinks wisely about their votes. In a place where a user can only vote once, this means that a quick upvote to a funny cat picture will have as much effect as an upvote to a 1000 word detailed explaination about a subject.
+This is a good overall solution, but the problem is that, by itself, it assumes that every user thinks wisely about their votes. In a place where a user can only vote once, this means that a quick upvote to a funny cat picture will have as much impact as an upvote to a 1000 word detailed explaination about a subject.
 
-Basically, users need to be more "concensius" about their votes. They also need a way to "upvote more" some post than others.
+Since the cat picture takes 2 seconds to look at and is funny, many users will upvote it.
+Since the 1000 word explaination takes a while to read and evaluate, few users will upvote it.
+
+Result: Cat pictures everywhere! Quick & easy content prevails and memes take over.
+
+
+Basically, users need to be more "aware" about their votes. They also need a way to vote "more strongly" on  some post than others.
+
+So how can we make sure users moderate carefully what a comunnity sees?
 
 **Part 2: Multiple votes and stamina**
 
@@ -40,12 +48,16 @@ Basically, users need to be more "concensius" about their votes. They also need 
 
 
 
+Now we have fixed an important issue that is about rewarding quality content mode accurately.
 
-Problem with this, is that "democratic" part
+We still face one last problem with this system. Some toxic group of users might want to abuse the voting mechanisms to promote their agendas. 
+Basically, we need a way to know which users are more reputable than others.
 
-This means that in any bubble, a brand new user, with a very shallow understanding of the community and the topic, can moderate what is shown to all users, as much as some users of that community. The second part of making this system less spam-prone and make it reward invested users, is to control how much a user can "vote" on influence the posts.
+We then give mode "stamina" to reputable users.
 
-Every user will have an "relevance" score
+> Hold up, that doesn't sound very democratic
+
+Depends on how stamina is given.
 
 
 
